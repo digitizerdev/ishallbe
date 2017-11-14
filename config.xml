@@ -44,4 +44,12 @@
         <variable name="UPDATE_API" value="https://api.ionicjs.com" />
         <variable name="MAX_STORE" value="2" />
     </plugin>
+    <plugin name="cordova-plugin-file" spec="^5.0.0" />
+    <plugin name="cordova-plugin-camera" spec="^3.0.0" />
+    <plugin name="cordova-plugin-media-capture" spec="^2.0.0" />
+    <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
+        <variable name="APP_ID" value="1977260348954388" />
+        <variable name="APP_NAME" value="TDCT" />
+    </plugin>
+    <plugin name="phonegap-plugin-push" spec="^2.1.0" />
 </widget>
