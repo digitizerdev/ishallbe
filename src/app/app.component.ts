@@ -9,7 +9,6 @@ import {RegisterPage} from '../pages/register/register';
 import {HomePage} from '../pages/home/home';
 import {AboutPage} from '../pages/about/about';
 import {PortfolioPage} from '../pages/portfolio/portfolio';
-import {ServicesPage} from '../pages/services/services';
 import {ContactPage} from '../pages/contact/contact';
 import {AccountPage} from '../pages/account/account';
 import {ClientPage} from '../pages/client/client';
