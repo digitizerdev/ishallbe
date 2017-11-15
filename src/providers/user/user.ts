@@ -10,12 +10,6 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/finally';
 import 'rxjs/add/operator/first';
 
-// start firebase
-import { FirebaseProvider } from '../firebase/firebase';
-import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
-// end firebase
-
 @Injectable()
 export class UserProvider {
 
@@ -26,12 +20,9 @@ export class UserProvider {
     public loader: LoadingController,
     public toast: ToastController,
     public storage: Storage,
-    public fireData: FirebaseProvider,
     public events: Events,
     public facebook: Facebook,
     public file: File,
-    public afAuth: AngularFireAuth,
    ) {
-    console.log('Hello UserProvider Provider');
   }
 }

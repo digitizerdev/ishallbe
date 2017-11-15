@@ -1,5 +1,13 @@
+import {UserProvider} from '../src/providers/user/user';
+import {ContentProvider} from '../src/providers/content/content';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Facebook } from '@ionic-native/facebook';
+import { Camera } from '@ionic-native/camera';
+import { MediaCapture } from '@ionic-native/media-capture';
+import { Push } from '@ionic-native/push';
+import { File } from '@ionic-native/file';
+import { IonicStorageModule } from '@ionic/storage';
 
 export class PlatformMock {
   public ready(): Promise<string> {
@@ -66,6 +74,24 @@ export class PlatformMock {
   }
 }
 
+export class UserProviderMock extends UserProvider {
+  styleDefault() {
+    return;
+  }
+}
+
+export class ContentProviderMock extends ContentProvider {
+  styleDefault() {
+    return;
+  }
+}
+
+export class StorageMock extends IonicStorageModule {
+  styleDefault() {
+    return;
+  }
+}
+
 export class StatusBarMock extends StatusBar {
   styleDefault() {
     return;
@@ -73,6 +99,24 @@ export class StatusBarMock extends StatusBar {
 }
 
 export class SplashScreenMock extends SplashScreen {
+  hide() {
+    return;
+  }
+}
+
+export class FacebookMock extends Facebook {
+  hide() {
+    return;
+  }
+}
+
+export class FileMock extends File {
+  hide() {
+    return;
+  }
+}
+
+export class PushMock extends Push {
   hide() {
     return;
   }

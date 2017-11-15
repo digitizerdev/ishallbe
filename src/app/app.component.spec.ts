@@ -1,14 +1,29 @@
 import { async, TestBed } from '@angular/core/testing';
 import { IonicModule, Platform } from 'ionic-angular';
 
+import { UserProvider } from '../providers/user/user';
+import { ContentProvider } from '../providers/content/content';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Facebook } from '@ionic-native/facebook';
+import { Camera } from '@ionic-native/camera';
+import { MediaCapture } from '@ionic-native/media-capture';
+import { Push } from '@ionic-native/push';
+import { File } from '@ionic-native/file';
+import { Storage } from '@ionic/storage';
+import {} from 'jasmine';
 
 import { Sean } from './app.component';
 import {
   PlatformMock,
   StatusBarMock,
-  SplashScreenMock
+  SplashScreenMock,
+  UserProviderMock,
+  ContentProviderMock,
+  StorageMock,
+  FacebookMock,
+  FileMock,
+  PushMock
 } from '../../test-config/mocks-ionic';
 
 describe('Sean Component', () => {
@@ -22,9 +37,15 @@ describe('Sean Component', () => {
         IonicModule.forRoot(Sean)
       ],
       providers: [
+        { provide: UserProvider, useClass: UserProviderMock },    
+        { provide: ContentProvider, useClass: ContentProviderMock },                
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
-        { provide: Platform, useClass: PlatformMock }
+        { provide: Platform, useClass: PlatformMock },
+        { provide: Storage, useClass: StorageMock },       
+        { provide: Facebook, useClass: FacebookMock },
+        { provide: File, useClass: FileMock },
+        { provide: Push, useClass: PushMock }                                        
       ]
     })
   }));

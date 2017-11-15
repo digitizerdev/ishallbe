@@ -8,13 +8,9 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
 import { MediaCapture } from '@ionic-native/media-capture';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
-import { AngularFireAuthModule } from 'angularfire2/auth';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { IonicStorageModule } from '@ionic/storage';
-
 
 // start import pages
 import {LoginPage} from '../pages/login/login';
@@ -41,20 +37,9 @@ import {TutorialPage} from '../pages/tutorial/tutorial'
 // end import pages
 
 // start import providers
-import {FirebaseProvider} from '../providers/firebase/firebase';
 import {UserProvider} from '../providers/user/user';
 import {ContentProvider} from '../providers/content/content';
 // end import providers
-
-// start angularfire2 config
-export const firebaseConfig = {
-  apiKey: 'AIzaSyCDrJSCUI30ppP98Mlyq4Lxr8QlPyeU8LE',
-  authDomain: 'troydcthompson-53077.firebaseapp.com',
-  databaseURL: 'https://troydcthompson-53077.firebaseio.com',
-  storageBucket: 'troydcthompson-53077.appspot.com',
-  messagingSenderId: '13086048268'
-};
-// end angularfire2 config
 
 @NgModule({
   declarations: [
@@ -83,9 +68,6 @@ export const firebaseConfig = {
   imports: [
     BrowserModule,
     IonicModule.forRoot(Sean, {}, { links: [] }),
-    AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule,
-    AngularFireAuthModule,
     IonicStorageModule.forRoot(),
     HttpModule   
   ],
@@ -116,10 +98,8 @@ export const firebaseConfig = {
   providers: [
     StatusBar,
     SplashScreen,
-    FirebaseProvider,
     UserProvider,
-    ContentProvider,
-    AngularFireDatabase,   
+    ContentProvider,  
     Push,
     File,
     Facebook,

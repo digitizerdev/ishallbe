@@ -59,6 +59,7 @@ export class Sean {
     { title: 'Register', name: 'RegisterPage', component: RegisterPage, icon: 'person-add' }
   ];
   rootPage: any;
+  pages: Array<{ title: string, component: any }>;
   
   constructor(
     public platform: Platform, 
@@ -74,6 +75,11 @@ export class Sean {
     platform.ready();
 
     this.listenToLoginEvents();
+
+    this.pages = [
+      { title: 'Page One', component: LoginPage },
+      { title: 'Page Two', component: ContactPage }
+    ];
   }
 
   openPage(page: PageInterface) {
