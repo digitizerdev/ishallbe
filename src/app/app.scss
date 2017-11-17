@@ -124,6 +124,7 @@ a {
   
     ion-icon {
       position: absolute;
+      font-weight: 2em;
       top: 12px;
       left: 18px;
       color: #999999;
@@ -145,10 +146,11 @@ a {
       color: color($colors, dark);
   
       .item-icon {
-        font-size: 32px;
+        font-size: 2em;
       }
     }
   }
+
   
   // login and register page
   .auth-page {

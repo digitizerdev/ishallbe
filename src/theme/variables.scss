@@ -15,6 +15,9 @@ $background-color:  #fff;
 $borderColor:       #DDD;
 $textColor:         #666;
 
+$toolbar-ios-title-text-align: left;
+
+
 // Named Color Variables
 // --------------------------------------------------
 // Named colors makes it easy to reuse colors on various components.
@@ -47,6 +50,15 @@ $colors: (
 
 @import "ionic.theme.default";
 
+@font-face {
+  font-family: "Lato";
+  src: url('../assets/fonts/lato.woff') format('woff')
+  }
+ 
+  $font-family-md-base: "Lato";
+  $font-family-ios-base: "Lato";
+  $font-family-wp-base: "Lato";
+
 
 // Ionicons
 // --------------------------------------------------
@@ -57,13 +69,4 @@ $ionicons-font-path: "../assets/fonts";
 @import "ionic.ionicons";
 
 
-// Fonts
-/* @font-face {
-  font-family: Lato;
-  src: url('../assets/fonts/lato.ttf') format('ttf')
-  }
-
-  *{
-    font-family: Lato;
-  }
- */
+ 

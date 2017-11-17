@@ -43,19 +43,19 @@ export class Sean {
   @ViewChild(Nav) nav: Nav;
 
   appPages: PageInterface[] = [
-    { title: 'Home', name: 'TabsPage', component: TabsPage, tabComponent: HomePage, icon: 'home' },
-    { title: 'Portfolio', name: 'TabsPage', component: TabsPage, tabComponent: PortfolioPage, index: 1, icon: 'albums' },
-    { title: 'About', name: 'TabsPage', component: TabsPage, tabComponent: AboutPage, index: 2, icon: 'information-circle' }
+    { title: 'Home', name: 'TabsPage', component: TabsPage, tabComponent: HomePage, icon: 'ios-home-outline' },
+    { title: 'Portfolio', name: 'TabsPage', component: TabsPage, tabComponent: PortfolioPage, index: 1, icon: 'ios-albums-outline' },
+    { title: 'About', name: 'TabsPage', component: TabsPage, tabComponent: AboutPage, index: 2, icon: 'ios-information-circle-outline' }
   ];
   loggedInPages: PageInterface[] = [
-    { title: 'Account', name: 'AccountPage', component: AccountPage, icon: 'person' },
-    { title: 'Contact', name: 'ContactPage', component: ContactPage, icon: 'help' },
-    { title: 'Logout', name: 'TabsPage', component: TabsPage, icon: 'log-out', logsOut: true }
+    { title: 'Account', name: 'AccountPage', component: AccountPage, icon: 'ios-person' },
+    { title: 'Contact', name: 'ContactPage', component: ContactPage, icon: 'ios-help-outline' },
+    { title: 'Logout', name: 'TabsPage', component: TabsPage, icon: 'ios-log-out', logsOut: true }
   ];
   loggedOutPages: PageInterface[] = [
-    { title: 'Login', name: 'LoginPage', component: LoginPage, icon: 'log-in' },
-    { title: 'Contact', name: 'ContactPage', component: ContactPage, icon: 'help' },
-    { title: 'Register', name: 'RegisterPage', component: RegisterPage, icon: 'person-add' }
+    { title: 'Login', name: 'LoginPage', component: LoginPage, icon: 'ios-log-in' },
+    { title: 'Contact', name: 'ContactPage', component: ContactPage, icon: 'ios-help-circle-outline' },
+    { title: 'Register', name: 'RegisterPage', component: RegisterPage, icon: 'ios-contact' }
   ];
   rootPage: any;
   pages: Array<{ title: string, component: any }>;
