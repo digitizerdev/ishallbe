@@ -124,7 +124,7 @@ a {
   
     ion-icon {
       position: absolute;
-      font-weight: 2em;
+      font-weight: em;
       top: 12px;
       left: 18px;
       color: #999999;
@@ -143,11 +143,8 @@ a {
     }
   
     .menu-item {
-      color: color($colors, dark);
+      color: color($colors, primary);
   
-      .item-icon {
-        font-size: 2em;
-      }
     }
   }
 
@@ -163,6 +160,7 @@ a {
   
     .item-block, .item:first-child,.item:last-child {
       padding-left: 0;
+      padding-bottom: 0;
       background: none;
       border: none;
       border-bottom: 1px solid $borderColor;
@@ -181,4 +179,27 @@ a {
       }
     }
   }
+
+  .md .block-title,
+  .ios .block-title {
+      color: #000000;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0;
+      background: rgba(189, 159, 84, 0.10);
+      font-size: 1.25em,
+  }
+
+  .outer-content {
+    background: rgba(200, 165, 89, 0.10);
+  }
   
+  .menu-list {
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+  }
+
+  .menu-navs {
+    font-size: 1.5em;
+  }
+
