@@ -30,7 +30,8 @@ import {CaptureImagePage} from '../pages/capture-image/capture-image';
 import {SelectImagePage} from '../pages/select-image/select-image';
 import {CaptureVideoPage} from '../pages/capture-video/capture-video';
 import {ClientPage} from '../pages/client/client';
-import {CollaboratorPage} from '../pages/collaborator/collaborator';
+import {ContractorPage} from '../pages/contractor/contractor';
+import {CollabPage} from '../pages/collab/collab';
 import {PartnerPage} from '../pages/partner/partner';
 import {TabsPage} from '../pages/tabs/tabs';
 import {TutorialPage} from '../pages/tutorial/tutorial'
@@ -59,8 +60,9 @@ import {ContentProvider} from '../providers/content/content';
     AccountEmailPage,
     SelectImagePage,
     CaptureVideoPage,
+    CollabPage,    
     ClientPage,
-    CollaboratorPage,
+    ContractorPage,
     PartnerPage,
     TabsPage,
     TutorialPage
@@ -89,8 +91,9 @@ import {ContentProvider} from '../providers/content/content';
     AccountEmailPage,
     SelectImagePage,
     CaptureVideoPage,
-    ClientPage,
-    CollaboratorPage,
+    CollabPage,
+    ClientPage,    
+    ContractorPage,
     PartnerPage,
     TabsPage,
     TutorialPage

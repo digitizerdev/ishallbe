@@ -8,7 +8,7 @@ import {LoginPage} from '../pages/login/login';
 import {RegisterPage} from '../pages/register/register';
 import {HomePage} from '../pages/home/home';
 import {AboutPage} from '../pages/about/about';
-import {PortfolioPage} from '../pages/portfolio/portfolio';
+import {CollabPage} from '../pages/collab/collab';
 import {ContactPage} from '../pages/contact/contact';
 import {AccountPage} from '../pages/account/account';
 import {ClientPage} from '../pages/client/client';
@@ -44,7 +44,7 @@ export class Sean {
 
   appPages: PageInterface[] = [
     { title: 'Home', name: 'TabsPage', component: TabsPage, tabComponent: HomePage, icon: 'ios-home-outline' },
-    { title: 'Portfolio', name: 'TabsPage', component: TabsPage, tabComponent: PortfolioPage, index: 1, icon: 'ios-albums-outline' },
+    { title: 'Collaborate', name: 'TabsPage', component: TabsPage, tabComponent: CollabPage, index: 1, icon: 'ios-contract-outline' },
     { title: 'About', name: 'TabsPage', component: TabsPage, tabComponent: AboutPage, index: 2, icon: 'ios-information-circle-outline' }
   ];
   loggedInPages: PageInterface[] = [

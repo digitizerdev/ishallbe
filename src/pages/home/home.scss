@@ -4,14 +4,6 @@ page-home {
         margin-top: 0px !important;
     }
 
-    .scroll-content {
-        margin-top: 0px !important;
-    }
-
-    .no-scroll .scroll-content{
-     overflow: hidden;
-    }
-
     .main-banner {
         background: url(../assets/img/home-bg.png) top center / cover no-repeat;
         padding: 70px 0 50px 0;
@@ -46,6 +38,7 @@ page-home {
     .banner-content img {
         max-width: 80%;
         margin: 0 auto;
+        max-height: 250px;
     }
 
     .md .block-strong::before,
@@ -66,21 +59,6 @@ page-home {
     .ios .block-strong {
         padding: 0px 5%;
         margin-top: 0px;
-    }
-
-    .button {
-        width: 165px !important;
-        height: 60px !important;
-        font-size: 20px !important;
-    }
-
-    .md .button,
-    .ios .button {
-        text-transform: uppercase;
-    }
-
-    .block .button {
-        margin: 0 auto;
     }
 
     .ios .page {
@@ -110,4 +88,5 @@ page-home {
             font-size: 18px !important;
         }
     }
+
 }

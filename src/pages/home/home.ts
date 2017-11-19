@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, LoadingController, Platform, AlertController } from 'ionic-angular';
+import {CollabPage} from '../collab/collab';
 
 @Component({
   selector: 'page-home',
@@ -18,5 +19,9 @@ export class HomePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
   } 
+
+  goToCollabPage() {
+    this.navCtrl.push(CollabPage)
+  }
 
 }
