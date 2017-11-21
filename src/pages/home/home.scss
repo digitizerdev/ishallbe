@@ -46,13 +46,16 @@ page-home {
         background-color: transparent;
     }
 
-    p.title {
+    .digitize {
         color: rgba(0, 0, 0, .90);
         line-height: 40px;
         font-weight: 400;
-        font-size: 28px;
-        padding: 10px 10px 30px 10px;
-        margin: 0;
+        font-size: 36px;
+        text-align: center;
+    }
+
+    .h4 {
+        color: rgba(0, 0, 0, .90);        
     }
 
     .md .block-strong,
