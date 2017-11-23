@@ -46,7 +46,7 @@ describe('Sean Component', () => {
         { provide: Facebook, useClass: FacebookMock },
         { provide: File, useClass: FileMock },
         { provide: Push, useClass: PushMock }                                        
-      ]
+      ],
     })
   }));
 
@@ -60,7 +60,11 @@ describe('Sean Component', () => {
   });
 
   it('should have two pages', () => {
-    expect(component.pages.length).toBe(2);
+    expect(component.pages.length).toBe(3);
+  });
+
+  it('should have home page', () => {
+    expect(component.pages[2].title).toBe('Home Page');
   });
 
 });

@@ -8,6 +8,7 @@ import { MediaCapture } from '@ionic-native/media-capture';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { IonicStorageModule } from '@ionic/storage';
+import { HomePage } from '../src/pages/home/home';
 
 export class PlatformMock {
   public ready(): Promise<string> {

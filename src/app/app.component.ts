@@ -12,7 +12,6 @@ import {CollabPage} from '../pages/collab/collab';
 import {ContactPage} from '../pages/contact/contact';
 import {AccountPage} from '../pages/account/account';
 import {ClientPage} from '../pages/client/client';
-import {CollaboratorPage} from '../pages/collaborator/collaborator';
 import {PartnerPage} from '../pages/partner/partner';
 import {TabsPage} from '../pages/tabs/tabs';
 import {TutorialPage} from '../pages/tutorial/tutorial'
@@ -76,8 +75,9 @@ export class Sean {
     this.listenToLoginEvents();
 
     this.pages = [
-      { title: 'Page One', component: LoginPage },
-      { title: 'Page Two', component: ContactPage }
+      { title: 'Login Page', component: LoginPage },
+      { title: 'Contact Page', component: ContactPage },
+      { title: 'Home Page', component: HomePage }      
     ];
   }
 
