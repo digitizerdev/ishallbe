@@ -13,6 +13,8 @@ import { File } from '@ionic-native/file';
 import { Storage } from '@ionic/storage';
 import {} from 'jasmine';
 
+import { TabsPage } from '../pages/tabs/tabs';
+
 import { Sean } from './app.component';
 import {
   PlatformMock,
@@ -62,5 +64,14 @@ describe('Sean Component', () => {
   it('should have 20 pages', () => {
     expect(component.pages.length).toBe(20);
   });
+
+  it('initialises with a root page of TabsPage', () => {
+    expect(component['rootPage']).toBe(TabsPage);
+  })
+
+  afterEach(() => {
+    fixture.destroy();
+    component = null;
+});
 
 });

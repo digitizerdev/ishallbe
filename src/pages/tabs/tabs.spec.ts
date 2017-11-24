@@ -34,5 +34,10 @@ describe('Tabs Component', () => {
     expect(component instanceof TabsPage).toBe(true);
   });
 
+  afterEach(() => {
+    fixture.destroy();
+    component = null;
+});
+
 
 });
