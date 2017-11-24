@@ -29,6 +29,7 @@ import {AccountPicPage} from '../pages/account-pic/account-pic';
 import {AccountEmailPage} from '../pages/account-email/account-email';
 import {AccountNamePage} from '../pages/account-name/account-name';
 import {AccountPasswordPage} from '../pages/account-password/account-password';
+import {SupportPage} from '../pages/support/support';
 import {ContractsPage} from '../pages/contracts/contracts';
 import {ProjectsPage} from '../pages/projects/projects';
 import {TabsPage} from '../pages/tabs/tabs';
@@ -57,7 +58,8 @@ import {ContentProvider} from '../providers/content/content';
     AccountPicPage,
     AccountEmailPage,    
     AccountNamePage,
-    AccountPasswordPage,    
+    AccountPasswordPage, 
+    SupportPage,   
     ContractsPage,
     ProjectsPage,
     TabsPage,
@@ -86,7 +88,8 @@ import {ContentProvider} from '../providers/content/content';
     AccountPicPage,
     AccountEmailPage,    
     AccountNamePage,
-    AccountPasswordPage,    
+    AccountPasswordPage,   
+    SupportPage, 
     ContractsPage,
     ProjectsPage,
     TabsPage

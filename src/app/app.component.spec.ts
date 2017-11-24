@@ -59,8 +59,8 @@ describe('Sean Component', () => {
     expect(component instanceof Sean).toBe(true);
   });
 
-  it('should have 18 pages', () => {
-    expect(component.pages.length).toBe(18);
+  it('should have 20 pages', () => {
+    expect(component.pages.length).toBe(20);
   });
 
 });

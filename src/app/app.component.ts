@@ -4,14 +4,25 @@ import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 
 // start import pages
-import {LoginPage} from '../pages/login/login';
-import {RegisterPage} from '../pages/register/register';
 import {HomePage} from '../pages/home/home';
-import {AboutPage} from '../pages/about/about';
 import {CollaboratePage} from '../pages/collaborate/collaborate';
+import {AboutPage} from '../pages/about/about';
+import {PortfolioPage} from '../pages/portfolio/portfolio';
+import {TeamPage} from '../pages/team/team';
+import {LoginPage} from '../pages/login/login';
 import {ContactPage} from '../pages/contact/contact';
+import {RegisterPage} from '../pages/register/register';
+import {PartnersPage} from '../pages/partners/partners';
+import {ExplorePage} from '../pages/explore/explore';
+import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
 import {AccountPage} from '../pages/account/account';
-
+import {AccountPicPage} from '../pages/account-pic/account-pic';
+import {AccountEmailPage} from '../pages/account-email/account-email';
+import {AccountNamePage} from '../pages/account-name/account-name';
+import {AccountPasswordPage} from '../pages/account-password/account-password';
+import {SupportPage} from '../pages/support/support';
+import {ContractsPage} from '../pages/contracts/contracts';
+import {ProjectsPage} from '../pages/projects/projects';
 import {TabsPage} from '../pages/tabs/tabs';
 // end import pages
 
@@ -73,9 +84,26 @@ export class Sean {
     this.listenToLoginEvents();
 
     this.pages = [
+      { title: 'Home Page', component: HomePage },
+      { title: 'Collaborate Page', component: ContactPage },
+      { title: 'About Page', component: AboutPage },
+      { title: 'Portfolio Page', component: PortfolioPage },
+      { title: 'Team Page', component: TeamPage },
       { title: 'Login Page', component: LoginPage },
       { title: 'Contact Page', component: ContactPage },
-      { title: 'Home Page', component: HomePage }      
+      { title: 'Register Page', component: RegisterPage },
+      { title: 'Forgot Password Page', component: ForgotPasswordPage },
+      { title: 'Partners Page', component: PartnersPage },
+      { title: 'Explore Page', component: ExplorePage },
+      { title: 'Account Page', component: AccountPage },
+      { title: 'Account Pic Page', component: AccountPicPage },
+      { title: 'Account Email Page', component: AccountEmailPage },
+      { title: 'Account Name', component: AccountNamePage },
+      { title: 'Account Password', component: AccountPasswordPage },
+      { title: 'Support Page', component: SupportPage },
+      { title: 'Contracts Page', component: ContractsPage },
+      { title: 'Projects Page', component: ProjectsPage },
+      { title: 'TabsPage Page', component: TabsPage }
     ];
   }
 
