@@ -37,7 +37,7 @@ describe('Tabs Component', () => {
   afterEach(() => {
     fixture.destroy();
     component = null;
-});
+  });
 
 
 });

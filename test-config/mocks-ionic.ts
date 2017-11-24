@@ -155,6 +155,9 @@ export class NavMock {
     return ;
   }
 
+  public unregisterChildNav(nav: any) {
+  }
+
 }
 
 export class DeepLinkerMock {
