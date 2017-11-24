@@ -3,20 +3,20 @@ import { IonicModule, NavController, NavParams, } from 'ionic-angular';
 
 import {} from 'jasmine';
 
-import { TabsPage } from './tabs';
+import { ExplorePage } from './explore';
 import {
   NavMock
 } from '../../../test-config/mocks-ionic';
 
-describe('Tabs Component', () => {
+describe('Explore Component', () => {
   let fixture;
   let component;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TabsPage],
+      declarations: [ExplorePage],
       imports: [
-        IonicModule.forRoot(TabsPage),
+        IonicModule.forRoot(ExplorePage),
       ],
       providers: [
         { provide: NavController, useClass: NavMock },
@@ -26,12 +26,12 @@ describe('Tabs Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TabsPage);
+    fixture = TestBed.createComponent(ExplorePage);
     component = fixture.componentInstance;
   });
 
   it('should be created', () => {
-    expect(component instanceof TabsPage).toBe(true);
+    expect(component instanceof ExplorePage).toBe(true);
   });
 
 

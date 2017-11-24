@@ -9,6 +9,8 @@ import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { IonicStorageModule } from '@ionic/storage';
 import { HomePage } from '../src/pages/home/home';
+import { NavController, NavParams, } from 'ionic-angular';
+
 
 export class PlatformMock {
   public ready(): Promise<string> {
@@ -158,3 +160,5 @@ export class NavMock {
 export class DeepLinkerMock {
 
 }
+
+
