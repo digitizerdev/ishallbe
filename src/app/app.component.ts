@@ -8,13 +8,11 @@ import {LoginPage} from '../pages/login/login';
 import {RegisterPage} from '../pages/register/register';
 import {HomePage} from '../pages/home/home';
 import {AboutPage} from '../pages/about/about';
-import {CollabPage} from '../pages/collab/collab';
+import {CollaboratePage} from '../pages/collaborate/collaborate';
 import {ContactPage} from '../pages/contact/contact';
 import {AccountPage} from '../pages/account/account';
-import {ClientPage} from '../pages/client/client';
-import {PartnerPage} from '../pages/partner/partner';
+
 import {TabsPage} from '../pages/tabs/tabs';
-import {TutorialPage} from '../pages/tutorial/tutorial'
 // end import pages
 
 // start plugins
@@ -43,7 +41,7 @@ export class Sean {
 
   appPages: PageInterface[] = [
     { title: 'Home', name: 'TabsPage', component: TabsPage, tabComponent: HomePage, icon: 'ios-home-outline' },
-    { title: 'Collaborate', name: 'TabsPage', component: TabsPage, tabComponent: CollabPage, index: 1, icon: 'ios-contract-outline' },
+    { title: 'Collaborate', name: 'TabsPage', component: TabsPage, tabComponent: CollaboratePage, index: 1, icon: 'ios-contract-outline' },
     { title: 'About', name: 'TabsPage', component: TabsPage, tabComponent: AboutPage, index: 2, icon: 'ios-information-circle-outline' }
   ];
   loggedInPages: PageInterface[] = [
@@ -99,10 +97,6 @@ export class Sean {
         //this.user.logout();
       }, 1000);
     }
-  }
-
-  openTutorial() {
-    this.nav.setRoot(TutorialPage);
   }
 
   listenToLoginEvents() {

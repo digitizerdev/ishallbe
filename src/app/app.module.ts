@@ -13,28 +13,25 @@ import { File } from '@ionic-native/file';
 import { IonicStorageModule } from '@ionic/storage';
 
 // start import pages
-import {LoginPage} from '../pages/login/login';
-import {RegisterPage} from '../pages/register/register';
-import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
 import {HomePage} from '../pages/home/home';
+import {CollaboratePage} from '../pages/collaborate/collaborate';
 import {AboutPage} from '../pages/about/about';
 import {PortfolioPage} from '../pages/portfolio/portfolio';
-import {ServicesPage} from '../pages/services/services';
+import {TeamPage} from '../pages/team/team';
+import {LoginPage} from '../pages/login/login';
 import {ContactPage} from '../pages/contact/contact';
+import {RegisterPage} from '../pages/register/register';
+import {PartnersPage} from '../pages/partners/partners';
+import {ExplorePage} from '../pages/explore/explore';
+import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
 import {AccountPage} from '../pages/account/account';
-import {AccountPhotoPage} from '../pages/account-photo/account-photo';
-import {AccountPasswordPage} from '../pages/account-password/account-password';
-import {AccountNamePage} from '../pages/account-name/account-name';
+import {AccountPicPage} from '../pages/account-pic/account-pic';
 import {AccountEmailPage} from '../pages/account-email/account-email';
-import {CaptureImagePage} from '../pages/capture-image/capture-image';
-import {SelectImagePage} from '../pages/select-image/select-image';
-import {CaptureVideoPage} from '../pages/capture-video/capture-video';
-import {ClientPage} from '../pages/client/client';
-import {ContractorPage} from '../pages/contractor/contractor';
-import {CollabPage} from '../pages/collab/collab';
-import {PartnerPage} from '../pages/partner/partner';
+import {AccountNamePage} from '../pages/account-name/account-name';
+import {AccountPasswordPage} from '../pages/account-password/account-password';
+import {ContractsPage} from '../pages/contracts/contracts';
+import {ProjectsPage} from '../pages/projects/projects';
 import {TabsPage} from '../pages/tabs/tabs';
-import {TutorialPage} from '../pages/tutorial/tutorial'
 // end import pages
 
 // start import providers
@@ -45,27 +42,25 @@ import {ContentProvider} from '../providers/content/content';
 @NgModule({
   declarations: [
     Sean,
-    LoginPage,
-    RegisterPage,
-    ForgotPasswordPage,
-    HomePage,
+    HomePage,    
+    CollaboratePage,    
     AboutPage,
     PortfolioPage,
-    ServicesPage,
-    ContactPage,
+    TeamPage,    
+    LoginPage,
+    ContactPage,    
+    RegisterPage,
+    ForgotPasswordPage,
+    PartnersPage,    
+    ExplorePage,
     AccountPage,
-    AccountPhotoPage,
-    AccountPasswordPage,
+    AccountPicPage,
+    AccountEmailPage,    
     AccountNamePage,
-    AccountEmailPage,
-    SelectImagePage,
-    CaptureVideoPage,
-    CollabPage,    
-    ClientPage,
-    ContractorPage,
-    PartnerPage,
+    AccountPasswordPage,    
+    ContractsPage,
+    ProjectsPage,
     TabsPage,
-    TutorialPage
   ],
   imports: [
     BrowserModule,
@@ -76,27 +71,25 @@ import {ContentProvider} from '../providers/content/content';
   bootstrap: [IonicApp],
   entryComponents: [
     Sean,
-    LoginPage,
-    RegisterPage,
-    ForgotPasswordPage,
-    HomePage,
+    HomePage,    
+    CollaboratePage,    
     AboutPage,
     PortfolioPage,
-    ServicesPage,
-    ContactPage,
+    TeamPage,    
+    LoginPage,
+    ContactPage,    
+    RegisterPage,
+    ForgotPasswordPage,
+    PartnersPage,    
+    ExplorePage,
     AccountPage,
-    AccountPhotoPage,
-    AccountPasswordPage,
+    AccountPicPage,
+    AccountEmailPage,    
     AccountNamePage,
-    AccountEmailPage,
-    SelectImagePage,
-    CaptureVideoPage,
-    CollabPage,
-    ClientPage,    
-    ContractorPage,
-    PartnerPage,
-    TabsPage,
-    TutorialPage
+    AccountPasswordPage,    
+    ContractsPage,
+    ProjectsPage,
+    TabsPage
   ],
   providers: [
     StatusBar,
