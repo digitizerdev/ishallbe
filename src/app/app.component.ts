@@ -30,7 +30,7 @@ import {TabsPage} from '../pages/tabs/tabs';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';// end plugins
 
 //start providers
-import {UserProvider} from '../providers/user/user';
+import {FirebaseProvider} from '../providers/firebase/firebase';
 
 export interface PageInterface {
   title: string;
@@ -67,12 +67,14 @@ export class Sean {
   ];
   rootPage: any;
   pages: Array<{ title: string, component: any }>;
+  providers: Array<{ title: string, component: any }>;
+  components: Array<{ title: string, component: any }>;  
   
   constructor(
     public platform: Platform, 
     public statusBar: StatusBar, 
     public splashScreen: SplashScreen,
-    public user: UserProvider,
+    public user: FirebaseProvider,
     public alertCtrl: AlertController,
     public menu: MenuController,
     public events: Events,
@@ -105,6 +107,10 @@ export class Sean {
       { title: 'Projects Page', component: ProjectsPage },
       { title: 'TabsPage Page', component: TabsPage }
     ];
+
+    this.providers = [
+      { title: 'Firebase Provider', component: FirebaseProvider },
+    ]
   }
 
   openPage(page: PageInterface) {

@@ -1,5 +1,4 @@
-import {UserProvider} from '../src/providers/user/user';
-import {ContentProvider} from '../src/providers/content/content';
+import { FirebaseProvider } from '../src/providers/firebase/firebase';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -77,13 +76,7 @@ export class PlatformMock {
   }
 }
 
-export class UserProviderMock extends UserProvider {
-  styleDefault() {
-    return;
-  }
-}
-
-export class ContentProviderMock extends ContentProvider {
+export class FirebaseProviderMock extends FirebaseProvider {
   styleDefault() {
     return;
   }

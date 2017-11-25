@@ -1,8 +1,7 @@
 import { async, TestBed } from '@angular/core/testing';
 import { IonicModule, Platform } from 'ionic-angular';
 
-import { UserProvider } from '../providers/user/user';
-import { ContentProvider } from '../providers/content/content';
+import { FirebaseProvider } from '../providers/firebase/firebase';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -20,12 +19,11 @@ import {
   PlatformMock,
   StatusBarMock,
   SplashScreenMock,
-  UserProviderMock,
-  ContentProviderMock,
   StorageMock,
   FacebookMock,
   FileMock,
-  PushMock
+  PushMock,
+  FirebaseProviderMock
 } from '../../test-config/mocks-ionic';
 
 describe('Sean Component', () => {
@@ -39,15 +37,14 @@ describe('Sean Component', () => {
         IonicModule.forRoot(Sean)
       ],
       providers: [
-        { provide: UserProvider, useClass: UserProviderMock },    
-        { provide: ContentProvider, useClass: ContentProviderMock },                
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
         { provide: Platform, useClass: PlatformMock },
         { provide: Storage, useClass: StorageMock },       
         { provide: Facebook, useClass: FacebookMock },
         { provide: File, useClass: FileMock },
-        { provide: Push, useClass: PushMock }                                        
+        { provide: Push, useClass: PushMock },
+        { provide: FirebaseProvider, useClass: FirebaseProviderMock }                                   
       ],
     })
   }));
@@ -63,6 +60,10 @@ describe('Sean Component', () => {
 
   it('should have 20 pages', () => {
     expect(component.pages.length).toBe(20);
+  });
+
+  it('should have 1 providers', () => {
+    expect(component.providers.length).toBe(1);
   });
 
   it('initialises with a root page of TabsPage', () => {

@@ -36,8 +36,7 @@ import {TabsPage} from '../pages/tabs/tabs';
 // end import pages
 
 // start import providers
-import {UserProvider} from '../providers/user/user';
-import {ContentProvider} from '../providers/content/content';
+import { FirebaseProvider } from '../providers/firebase/firebase';
 // end import providers
 
 @NgModule({
@@ -97,14 +96,13 @@ import {ContentProvider} from '../providers/content/content';
   providers: [
     StatusBar,
     SplashScreen,
-    UserProvider,
-    ContentProvider,  
     Push,
     File,
     Facebook,
     Camera,
     MediaCapture,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    FirebaseProvider
   ]
 })
 export class AppModule { }
