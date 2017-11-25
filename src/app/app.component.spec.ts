@@ -66,8 +66,8 @@ describe('Sean Component', () => {
     expect(component.providers.length).toBe(1);
   });
 
-  it('should have 13 components', () => {
-    expect(component.components.length).toBe(13);
+  it('should have 9 components', () => {
+    expect(component.components.length).toBe(9);
   });
 
   it('initialises with a root page of TabsPage', () => {

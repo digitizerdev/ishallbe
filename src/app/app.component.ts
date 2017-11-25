@@ -2,8 +2,8 @@ import {Component, ViewChild} from '@angular/core';
 import {Events, Nav, MenuController, Platform, AlertController} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
 
-// start import pages
 import {HomePage} from '../pages/home/home';
 import {CollaboratePage} from '../pages/collaborate/collaborate';
 import {AboutPage} from '../pages/about/about';
@@ -24,13 +24,19 @@ import {SupportPage} from '../pages/support/support';
 import {ContractsPage} from '../pages/contracts/contracts';
 import {ProjectsPage} from '../pages/projects/projects';
 import {TabsPage} from '../pages/tabs/tabs';
-// end import pages
 
-// start plugins
-import { Push, PushObject, PushOptions } from '@ionic-native/push';// end plugins
-
-//start providers
 import {FirebaseProvider} from '../providers/firebase/firebase';
+
+import { NgModule } from '@angular/core';
+import { EmailComponent } from '../components/email/email';
+import { FacebookComponent } from '../components/facebook/facebook';
+import { LinkedinComponent } from '../components/linkedin/linkedin';
+import { AccountComponent } from '../components/account/account';
+import { ProfileComponent } from '../components/profile/profile';
+import { ContentComponent } from '../components/content/content';
+import { PhotoComponent } from '../components/photo/photo';
+import { StorageComponent } from '../components/storage/storage';
+import { PostComponent } from '../components/post/post';
 
 export interface PageInterface {
   title: string;
@@ -110,6 +116,18 @@ export class Sean {
 
     this.providers = [
       { title: 'Firebase Provider', component: FirebaseProvider },
+    ]
+
+    this.components = [
+      { title: 'Email Component', component: EmailComponent },
+      { title: 'Facebook Component', component: FacebookComponent },
+      { title: 'LinkedIn Component', component: LinkedinComponent },
+      { title: 'Account Component', component: AccountComponent },
+      { title: 'Profile Component', component: ProfileComponent },
+      { title: 'Content Component', component: ContentComponent },
+      { title: 'Photo Component', component: PhotoComponent },
+      { title: 'Storage Component', component: StorageComponent },
+      { title: 'Post Component', component: PostComponent }
     ]
   }
 
