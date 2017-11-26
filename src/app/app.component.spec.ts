@@ -72,7 +72,7 @@ describe('Sean Component', () => {
 
   it('initialises with a root page of TabsPage', () => {
     expect(component['rootPage']).toBe(TabsPage);
-  })
+  });
 
   afterEach(() => {
     fixture.destroy();
