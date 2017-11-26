@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { RegisterPage } from '../register/register';
 import { CollaboratePage } from '../collaborate/collaborate';
 
 @IonicPage()
@@ -15,6 +16,14 @@ export class HomePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
+  }
+
+  goToRegisterPage() {
+
+  }
+
+  goToCollaboratePage() {
+    this.navCtrl.setRoot(CollaboratePage);
   }
 
 }

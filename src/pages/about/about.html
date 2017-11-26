@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-row no-padding no-margin>
+  <ion-row>
     <ion-col text-center>
       <img text-center src="assets/img/about.svg" class="map" style="display: round; width: 80%; height: auto; margin-left: auto; margin-right: auto;"
         alt="tdct">
@@ -25,18 +25,18 @@
       </ion-col>
     </ion-row>
   <ion-row>
-      <ion-col text-center col-12 col-sm>
+      <ion-col text-center col-12 col-sm padding>
           <button ion-button (click)="goToPortofolioPage()" color="dark" round large>
               Portoflio
           </button>
       </ion-col>
-      <ion-col text-center col-12 col-sm>
-          <button ion-button (click)="goToSignUpPage()" color="primary" round large>
-              Sign Up
+      <ion-col text-center col-12 col-sm padding>
+          <button ion-button (click)="goToRegisterPage()" color="primary" round large>
+              Register
           </button>
       </ion-col>
-      <ion-col text-center col-12 col-sm>
-          <button ion-button (click)="goToTeamPage()" color="dark" round large>
+      <ion-col text-center col-12 col-sm padding>
+          <button ion-button (click)="goToTeamPage()" color="primary" round large outline>
               Team
           </button>
       </ion-col>

@@ -7,7 +7,7 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce class="no-scroll">
+<ion-content no-bounce>
     <div class="main-banner center">
         <div class="banner-content">
             <p class="heading">Home</p>
@@ -28,13 +28,13 @@
     <h1 no-padding no-margin text-center class="digitize">Interested in Collaborating?</h1>
     <br>
     <ion-row>
-        <ion-col text-center col-12 col-sm>
-            <button ion-button (click)="goToSignUpPage()" round large>
-                Sign Up
+        <ion-col text-center col-12 col-sm padding>
+            <button ion-button (click)="goToRegisterPage()" round large>
+                Register
             </button>
         </ion-col>
-        <ion-col text-center col-12 col-sm offset-md-3>
-            <button ion-button (click)="goToCollabPage()" color="dark" round large>
+        <ion-col text-center col-12 col-sm offset-md-3 padding>
+            <button ion-button (click)="goToCollaboratePage()" color="dark" round large>
                 Learn More
             </button>
         </ion-col>

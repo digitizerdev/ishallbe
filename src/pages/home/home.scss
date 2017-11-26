@@ -1,96 +1,95 @@
 page-home {
-    
-        .fixed-content {
-            margin-top: 0px !important;
+
+    .fixed-content {
+        margin-top: 0px !important;
+    }
+
+    .main-banner {
+        background: url(../assets/img/home-bg.png) top center / cover no-repeat;
+        padding: 70px 0 50px 0;
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+    .heading {
+        font-size: 27px;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    .main-banner .heading {
+        color: rgba(255, 255, 255, 0.50);
+        margin: 0 0 20px 0;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .banner-content {
+        text-align: center;
+        width: 100%;
+    }
+
+    .img-responsive {
+        max-width: 100%;
+    }
+
+    .banner-content img {
+        max-width: 80%;
+        margin: 0 auto;
+        max-height: 250px;
+    }
+
+    .md .block-strong::before,
+    .ios .block-strong::before {
+        background-color: transparent;
+    }
+
+    .digitize {
+        color: color($colors, dark);  
+        line-height: 40px;
+        font-weight: 400;
+        font-size: 36px;
+        text-align: center;
+    }
+
+    .h4 {
+        color: color($colors, dark);  
+    }
+
+    .md .block-strong,
+    .ios .block-strong {
+        padding: 0px 5%;
+        margin-top: 0px;
+    }
+
+    .ios .page {
+        background: #ffffff;
+    }
+
+    .ios .block-strong,
+    .md .block-strong {
+        color: color($colors, dark);  
+    }
+
+    .ios .block-strong::after {
+        background-color: transparent;
+    }
+
+    @media(max-width:499px) {
+        p.title {
+            font-size: 26px;
+            line-height: 34px;
+            padding: 0px 10px 20px 10px;
         }
-    
-        .main-banner {
-            background: url(../assets/img/home-bg.png) top center / cover no-repeat;
-            padding: 70px 0 50px 0;
-            position: relative;
-            margin-bottom: 30px;
+        .md body,
+        .ios body {
+            font-size: 16px;
         }
-    
-        .heading {
-            font-size: 27px;
-            text-transform: uppercase;
-            font-weight: 700;
+        .button {
+            font-size: 18px !important;
         }
+    }
     
-        .main-banner .heading {
-            color: rgba(255, 255, 255, 0.50);
-            margin: 0 0 20px 0;
-        }
-    
-        .center {
-            text-align: center;
-        }
-    
-        .banner-content {
-            text-align: center;
-            width: 100%;
-        }
-    
-        .img-responsive {
-            max-width: 100%;
-        }
-    
-        .banner-content img {
-            max-width: 80%;
-            margin: 0 auto;
-            max-height: 250px;
-        }
-    
-        .md .block-strong::before,
-        .ios .block-strong::before {
-            background-color: transparent;
-        }
-    
-        .digitize {
-            color: rgba(0, 0, 0, .90);
-            line-height: 40px;
-            font-weight: 400;
-            font-size: 36px;
-            text-align: center;
-        }
-    
-        .h4 {
-            color: rgba(0, 0, 0, .90);        
-        }
-    
-        .md .block-strong,
-        .ios .block-strong {
-            padding: 0px 5%;
-            margin-top: 0px;
-        }
-    
-        .ios .page {
-            background: #ffffff;
-        }
-    
-        .ios .block-strong,
-        .md .block-strong {
-            color: rgba(0, 0, 0, 0.60);
-        }
-    
-        .ios .block-strong::after {
-            background-color: transparent;
-        }
-    
-        @media(max-width:499px) {
-            p.title {
-                font-size: 26px;
-                line-height: 34px;
-                padding: 0px 10px 20px 10px;
-            }
-            .md body,
-            .ios body {
-                font-size: 16px;
-            }
-            .button {
-                font-size: 18px !important;
-            }
-        }
-    
-}
-    
+}    

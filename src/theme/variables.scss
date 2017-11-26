@@ -10,7 +10,7 @@
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
-$text-color:        #000;
+$text-color:        #444;
 $background-color:  #fff;
 $borderColor:       #DDD;
 $textColor:         #666;
@@ -53,7 +53,7 @@ $colors: (
 
 @font-face {
   font-family: "Lato";
-  src: url('../assets/fonts/lato.woff') format('woff')
+  src: url('../assets/fonts/lato.woff') format('woff');
   }
  
   $font-family-md-base: "Lato";
