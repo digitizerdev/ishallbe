@@ -62,7 +62,7 @@ describe('Sean Component', () => {
     expect(component.pages.length).toBe(20);
   });
 
-  it('should have 1 providers', () => {
+  it('should have 1 provider', () => {
     expect(component.providers.length).toBe(1);
   });
 

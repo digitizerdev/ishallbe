@@ -1,18 +1,66 @@
-<!--
-  Generated template for the CollaboratePage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>collaborate</ion-title>
-  </ion-navbar>
-
+    <ion-navbar color="primary">
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>COLLABORATE</ion-title>
+    </ion-navbar>
 </ion-header>
 
-
 <ion-content padding>
-
+    <div text-center>
+        <img text-center src="assets/img/icon.png" class="logo" alt="logo">
+    </div>
+    <ion-row>
+        <ion-col text-center col-12 col-sm>
+            <h3>
+                <b>As a Client</b>
+            </h3>
+            <h4>Responsible for full engagement during the Think Phase and sign-off at the end of the Design, Collaboration,
+                and Transformation Phases</h4>
+        </ion-col>
+        <ion-col text-center col-12 col-sm>
+            <h3>
+                <b>As a Partner</b>
+            </h3>
+            <h4>Responsible for full engagement during the Think Phase, agreed interaction during the Design, Collaboration,
+                and Transformation Phases, and sign-off at the end of each phase</h4>
+        </ion-col>
+        <ion-col text-center col-12 col-sm>
+            <h3>
+                <b>As a Contractor</b>
+            </h3>
+            <h4>Responsible for delivering value at either the Design, Collaboration, or Transformation Phase</h4>
+        </ion-col>
+    </ion-row>
+    <h2 text-center>
+        <b>Delivery Management System</b>
+    </h2>
+    <ion-row no-padding no-margin>
+        <ion-col text-center col-12 col-sm>
+            <img text-center src="assets/img/think.svg" class="tdct" style="display: round; width: 80%; height: auto; margin-left: auto; margin-right: auto;"
+                alt="tdct">
+        </ion-col>
+        <ion-col text-center col-12 col-sm>
+            <img text-center src="assets/img/design.svg" class="tdct" style="display: round; width: 80%; height: auto; margin-left: auto; margin-right: auto;"
+                alt="tdct">
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col text-center col-12 col-sm>
+            <img text-center src="assets/img/collaborate.svg" class="tdct" style="display: round; width: 80%; height: auto; margin-left: auto; margin-right: auto;"
+                alt="tdct">
+        </ion-col>
+        <ion-col text-center col-12 col-sm>
+            <img text-center src="assets/img/transform.svg" class="tdct" style="display: round; width: 80%; height: auto; margin-left: auto; margin-right: auto;"
+                alt="tdct">
+        </ion-col>
+    </ion-row>
+    <ion-row responsive-sm class="">
+        <ion-col text-center>
+            <button ion-button (click)="goToSignupPage()" color="dark" round large>
+                SIGN UP
+            </button>
+        </ion-col>
+    </ion-row>
 </ion-content>
