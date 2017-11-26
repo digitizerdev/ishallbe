@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { RegisterPage } from '../register/register';
-import { CollaboratePage } from '../collaborate/collaborate';
+import { PortfolioPage } from '../portfolio/portfolio';
 
 @IonicPage()
 @Component({
@@ -19,11 +19,11 @@ export class HomePage {
   }
 
   goToRegisterPage() {
-
+    this.navCtrl.push(RegisterPage);
   }
 
-  goToCollaboratePage() {
-    this.navCtrl.setRoot(CollaboratePage);
+  goToPortfolioPage() {
+    this.navCtrl.push(PortfolioPage);
   }
 
 }

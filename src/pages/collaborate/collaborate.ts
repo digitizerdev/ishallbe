@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { RegisterPage } from '../register/register';
+
 @IonicPage()
 @Component({
   selector: 'page-collaborate',
@@ -13,6 +15,10 @@ export class CollaboratePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CollaboratePage');
+  }
+
+  goToRegisterPage() {
+    this.navCtrl.push(RegisterPage);
   }
 
 }
