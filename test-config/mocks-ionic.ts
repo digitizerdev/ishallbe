@@ -1,5 +1,4 @@
-import {UserProvider} from '../src/providers/user/user';
-import {ContentProvider} from '../src/providers/content/content';
+import { FirebaseProvider } from '../src/providers/firebase/firebase';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -9,6 +8,8 @@ import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { IonicStorageModule } from '@ionic/storage';
 import { HomePage } from '../src/pages/home/home';
+import { NavController, NavParams, } from 'ionic-angular';
+
 
 export class PlatformMock {
   public ready(): Promise<string> {
@@ -75,13 +76,7 @@ export class PlatformMock {
   }
 }
 
-export class UserProviderMock extends UserProvider {
-  styleDefault() {
-    return;
-  }
-}
-
-export class ContentProviderMock extends ContentProvider {
+export class FirebaseProviderMock extends FirebaseProvider {
   styleDefault() {
     return;
   }
@@ -153,8 +148,13 @@ export class NavMock {
     return ;
   }
 
+  public unregisterChildNav(nav: any) {
+  }
+
 }
 
 export class DeepLinkerMock {
 
 }
+
+

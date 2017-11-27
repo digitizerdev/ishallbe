@@ -1,10 +1,10 @@
-import {NgModule, ErrorHandler } from '@angular/core';
-import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
+import { NgModule, ErrorHandler } from '@angular/core';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { HttpModule } from '@angular/http';
-import {Sean} from './app.component';
-import {BrowserModule} from '@angular/platform-browser';
-import {StatusBar} from '@ionic-native/status-bar';
-import {SplashScreen} from '@ionic-native/splash-screen';
+import { Sean } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
 import { MediaCapture } from '@ionic-native/media-capture';
@@ -12,60 +12,52 @@ import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { IonicStorageModule } from '@ionic/storage';
 
-// start import pages
-import {LoginPage} from '../pages/login/login';
-import {RegisterPage} from '../pages/register/register';
-import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
-import {HomePage} from '../pages/home/home';
-import {AboutPage} from '../pages/about/about';
-import {PortfolioPage} from '../pages/portfolio/portfolio';
-import {ServicesPage} from '../pages/services/services';
-import {ContactPage} from '../pages/contact/contact';
-import {AccountPage} from '../pages/account/account';
-import {AccountPhotoPage} from '../pages/account-photo/account-photo';
-import {AccountPasswordPage} from '../pages/account-password/account-password';
-import {AccountNamePage} from '../pages/account-name/account-name';
-import {AccountEmailPage} from '../pages/account-email/account-email';
-import {CaptureImagePage} from '../pages/capture-image/capture-image';
-import {SelectImagePage} from '../pages/select-image/select-image';
-import {CaptureVideoPage} from '../pages/capture-video/capture-video';
-import {ClientPage} from '../pages/client/client';
-import {ContractorPage} from '../pages/contractor/contractor';
-import {CollabPage} from '../pages/collab/collab';
-import {PartnerPage} from '../pages/partner/partner';
-import {TabsPage} from '../pages/tabs/tabs';
-import {TutorialPage} from '../pages/tutorial/tutorial'
-// end import pages
+import { HomePage } from '../pages/home/home';
+import { CollaboratePage } from '../pages/collaborate/collaborate';
+import { AboutPage } from '../pages/about/about';
+import { PortfolioPage } from '../pages/portfolio/portfolio';
+import { TeamPage } from '../pages/team/team';
+import { LoginPage } from '../pages/login/login';
+import { ContactPage } from '../pages/contact/contact';
+import { RegisterPage } from '../pages/register/register';
+import { PartnersPage } from '../pages/partners/partners';
+import { ExplorePage } from '../pages/explore/explore';
+import { ForgotPasswordPage } from '../pages/forgot-password/forgot-password';
+import { AccountPage } from '../pages/account/account';
+import { AccountPicPage } from '../pages/account-pic/account-pic';
+import { AccountEmailPage } from '../pages/account-email/account-email';
+import { AccountNamePage } from '../pages/account-name/account-name';
+import { AccountPasswordPage } from '../pages/account-password/account-password';
+import { SupportPage } from '../pages/support/support';
+import { ContractsPage } from '../pages/contracts/contracts';
+import { ProjectsPage } from '../pages/projects/projects';
+import { TabsPage } from '../pages/tabs/tabs';
 
-// start import providers
-import {UserProvider} from '../providers/user/user';
-import {ContentProvider} from '../providers/content/content';
-// end import providers
+import { FirebaseProvider } from '../providers/firebase/firebase';
 
 @NgModule({
   declarations: [
     Sean,
-    LoginPage,
-    RegisterPage,
-    ForgotPasswordPage,
-    HomePage,
+    HomePage,    
+    CollaboratePage,    
     AboutPage,
     PortfolioPage,
-    ServicesPage,
-    ContactPage,
+    TeamPage,    
+    LoginPage,
+    ContactPage,    
+    RegisterPage,
+    ForgotPasswordPage,
+    PartnersPage,    
+    ExplorePage,
     AccountPage,
-    AccountPhotoPage,
-    AccountPasswordPage,
+    AccountPicPage,
+    AccountEmailPage,    
     AccountNamePage,
-    AccountEmailPage,
-    SelectImagePage,
-    CaptureVideoPage,
-    CollabPage,    
-    ClientPage,
-    ContractorPage,
-    PartnerPage,
+    AccountPasswordPage, 
+    SupportPage,   
+    ContractsPage,
+    ProjectsPage,
     TabsPage,
-    TutorialPage
   ],
   imports: [
     BrowserModule,
@@ -76,39 +68,37 @@ import {ContentProvider} from '../providers/content/content';
   bootstrap: [IonicApp],
   entryComponents: [
     Sean,
-    LoginPage,
-    RegisterPage,
-    ForgotPasswordPage,
-    HomePage,
+    HomePage,    
+    CollaboratePage,    
     AboutPage,
     PortfolioPage,
-    ServicesPage,
-    ContactPage,
+    TeamPage,    
+    LoginPage,
+    ContactPage,    
+    RegisterPage,
+    ForgotPasswordPage,
+    PartnersPage,    
+    ExplorePage,
     AccountPage,
-    AccountPhotoPage,
-    AccountPasswordPage,
+    AccountPicPage,
+    AccountEmailPage,    
     AccountNamePage,
-    AccountEmailPage,
-    SelectImagePage,
-    CaptureVideoPage,
-    CollabPage,
-    ClientPage,    
-    ContractorPage,
-    PartnerPage,
-    TabsPage,
-    TutorialPage
+    AccountPasswordPage,   
+    SupportPage, 
+    ContractsPage,
+    ProjectsPage,
+    TabsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    UserProvider,
-    ContentProvider,  
     Push,
     File,
     Facebook,
     Camera,
     MediaCapture,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    FirebaseProvider
   ]
 })
 export class AppModule { }

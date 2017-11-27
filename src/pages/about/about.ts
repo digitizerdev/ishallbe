@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the AboutPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+import { PortfolioPage } from '../portfolio/portfolio';
+import { RegisterPage } from '../register/register';
+import { TeamPage } from '../team/team';
 
+@IonicPage()
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html',
@@ -19,6 +17,18 @@ export class AboutPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AboutPage');
+  }
+
+  goToPortfolioPage() {
+    this.navCtrl.push(PortfolioPage);
+  }
+
+  goToRegisterPage() {
+    this.navCtrl.push(RegisterPage);
+  }
+
+  goToTeamPage() {
+    this.navCtrl.push(TeamPage);
   }
 
 }

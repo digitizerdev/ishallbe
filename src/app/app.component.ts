@@ -2,26 +2,41 @@ import {Component, ViewChild} from '@angular/core';
 import {Events, Nav, MenuController, Platform, AlertController} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
 
-// start import pages
-import {LoginPage} from '../pages/login/login';
-import {RegisterPage} from '../pages/register/register';
 import {HomePage} from '../pages/home/home';
+import {CollaboratePage} from '../pages/collaborate/collaborate';
 import {AboutPage} from '../pages/about/about';
-import {CollabPage} from '../pages/collab/collab';
+import {PortfolioPage} from '../pages/portfolio/portfolio';
+import {TeamPage} from '../pages/team/team';
+import {LoginPage} from '../pages/login/login';
 import {ContactPage} from '../pages/contact/contact';
+import {RegisterPage} from '../pages/register/register';
+import {PartnersPage} from '../pages/partners/partners';
+import {ExplorePage} from '../pages/explore/explore';
+import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
 import {AccountPage} from '../pages/account/account';
-import {ClientPage} from '../pages/client/client';
-import {PartnerPage} from '../pages/partner/partner';
+import {AccountPicPage} from '../pages/account-pic/account-pic';
+import {AccountEmailPage} from '../pages/account-email/account-email';
+import {AccountNamePage} from '../pages/account-name/account-name';
+import {AccountPasswordPage} from '../pages/account-password/account-password';
+import {SupportPage} from '../pages/support/support';
+import {ContractsPage} from '../pages/contracts/contracts';
+import {ProjectsPage} from '../pages/projects/projects';
 import {TabsPage} from '../pages/tabs/tabs';
-import {TutorialPage} from '../pages/tutorial/tutorial'
-// end import pages
 
-// start plugins
-import { Push, PushObject, PushOptions } from '@ionic-native/push';// end plugins
+import {FirebaseProvider} from '../providers/firebase/firebase';
 
-//start providers
-import {UserProvider} from '../providers/user/user';
+import { NgModule } from '@angular/core';
+import { EmailComponent } from '../components/email/email';
+import { FacebookComponent } from '../components/facebook/facebook';
+import { LinkedinComponent } from '../components/linkedin/linkedin';
+import { AccountComponent } from '../components/account/account';
+import { ProfileComponent } from '../components/profile/profile';
+import { ContentComponent } from '../components/content/content';
+import { PhotoComponent } from '../components/photo/photo';
+import { StorageComponent } from '../components/storage/storage';
+import { PostComponent } from '../components/post/post';
 
 export interface PageInterface {
   title: string;
@@ -43,7 +58,7 @@ export class Sean {
 
   appPages: PageInterface[] = [
     { title: 'Home', name: 'TabsPage', component: TabsPage, tabComponent: HomePage, icon: 'ios-home-outline' },
-    { title: 'Collaborate', name: 'TabsPage', component: TabsPage, tabComponent: CollabPage, index: 1, icon: 'ios-contract-outline' },
+    { title: 'Collaborate', name: 'TabsPage', component: TabsPage, tabComponent: CollaboratePage, index: 1, icon: 'ios-contract-outline' },
     { title: 'About', name: 'TabsPage', component: TabsPage, tabComponent: AboutPage, index: 2, icon: 'ios-information-circle-outline' }
   ];
   loggedInPages: PageInterface[] = [
@@ -58,12 +73,14 @@ export class Sean {
   ];
   rootPage: any;
   pages: Array<{ title: string, component: any }>;
+  providers: Array<{ title: string, component: any }>;
+  components: Array<{ title: string, component: any }>;  
   
   constructor(
     public platform: Platform, 
     public statusBar: StatusBar, 
     public splashScreen: SplashScreen,
-    public user: UserProvider,
+    public user: FirebaseProvider,
     public alertCtrl: AlertController,
     public menu: MenuController,
     public events: Events,
@@ -75,10 +92,43 @@ export class Sean {
     this.listenToLoginEvents();
 
     this.pages = [
+      { title: 'Home Page', component: HomePage },
+      { title: 'Collaborate Page', component: ContactPage },
+      { title: 'About Page', component: AboutPage },
+      { title: 'Portfolio Page', component: PortfolioPage },
+      { title: 'Team Page', component: TeamPage },
       { title: 'Login Page', component: LoginPage },
       { title: 'Contact Page', component: ContactPage },
-      { title: 'Home Page', component: HomePage }      
+      { title: 'Register Page', component: RegisterPage },
+      { title: 'Forgot Password Page', component: ForgotPasswordPage },
+      { title: 'Partners Page', component: PartnersPage },
+      { title: 'Explore Page', component: ExplorePage },
+      { title: 'Account Page', component: AccountPage },
+      { title: 'Account Pic Page', component: AccountPicPage },
+      { title: 'Account Email Page', component: AccountEmailPage },
+      { title: 'Account Name', component: AccountNamePage },
+      { title: 'Account Password', component: AccountPasswordPage },
+      { title: 'Support Page', component: SupportPage },
+      { title: 'Contracts Page', component: ContractsPage },
+      { title: 'Projects Page', component: ProjectsPage },
+      { title: 'TabsPage Page', component: TabsPage }
     ];
+
+    this.providers = [
+      { title: 'Firebase Provider', component: FirebaseProvider },
+    ]
+
+    this.components = [
+      { title: 'Email Component', component: EmailComponent },
+      { title: 'Facebook Component', component: FacebookComponent },
+      { title: 'LinkedIn Component', component: LinkedinComponent },
+      { title: 'Account Component', component: AccountComponent },
+      { title: 'Profile Component', component: ProfileComponent },
+      { title: 'Content Component', component: ContentComponent },
+      { title: 'Photo Component', component: PhotoComponent },
+      { title: 'Storage Component', component: StorageComponent },
+      { title: 'Post Component', component: PostComponent }
+    ]
   }
 
   openPage(page: PageInterface) {
@@ -99,10 +149,6 @@ export class Sean {
         //this.user.logout();
       }, 1000);
     }
-  }
-
-  openTutorial() {
-    this.nav.setRoot(TutorialPage);
   }
 
   listenToLoginEvents() {

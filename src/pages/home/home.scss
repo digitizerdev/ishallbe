@@ -47,7 +47,7 @@ page-home {
     }
 
     .digitize {
-        color: rgba(0, 0, 0, .90);
+        color: color($colors, dark);  
         line-height: 40px;
         font-weight: 400;
         font-size: 36px;
@@ -55,7 +55,7 @@ page-home {
     }
 
     .h4 {
-        color: rgba(0, 0, 0, .90);        
+        color: color($colors, dark);  
     }
 
     .md .block-strong,
@@ -70,7 +70,7 @@ page-home {
 
     .ios .block-strong,
     .md .block-strong {
-        color: rgba(0, 0, 0, 0.60);
+        color: color($colors, dark);  
     }
 
     .ios .block-strong::after {
@@ -91,5 +91,5 @@ page-home {
             font-size: 18px !important;
         }
     }
-
-}
+    
+}    

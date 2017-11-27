@@ -1,30 +1,25 @@
 import { Component } from '@angular/core';
-import { App, AlertController, LoadingController, MenuController, NavController, NavParams, Platform} from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/finally';
-import 'rxjs/add/operator/first';
+/**
+ * Generated class for the RegisterPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
 
+@IonicPage()
 @Component({
   selector: 'page-register',
-  templateUrl: 'register.html'
+  templateUrl: 'register.html',
 })
 export class RegisterPage {
-  signup: {username?: string, name?: string, email?: string, password?: string, confirmPassword?: string} = {};
 
-  public chat: any;
-
-  constructor(
-    public menu: MenuController,
-    public app: App,
-    public loading: LoadingController,
-    public alert: AlertController,
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public platform: Platform,    
-  ) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad RegisterPage');
+  }
+
 }
