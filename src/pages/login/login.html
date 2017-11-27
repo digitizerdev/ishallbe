@@ -1,18 +1,58 @@
-<!--
-  Generated template for the LoginPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>login</ion-title>
+<ion-header no-border>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title></ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
-<ion-content padding>
-
+<ion-content class="container" text-center>
+  <div class="main-banner center">
+    <div class="logo">
+      <img src="assets/img/logo-transparent.png" alt="transparent logo">
+    </div>
+  </div>
+  <form (ngSubmit)="logForm()" padding>
+    <ion-item class="logForm">
+      <ion-input clas="myItem" placeholder="email" [(ngModel)]="login.email" name="email" type="text" #email="ngModel" spellcheck="false"
+        autocapitalize="off" required>
+      </ion-input>
+    </ion-item>
+    <br>
+    <br>
+    <ion-item class="logForm">
+      <ion-input placeholder="password" [(ngModel)]="login.password" name="password" type="password" #password="ngModel" required>
+      </ion-input>
+    </ion-item>
+  </form>
+  <br>
+  <ion-row padding>
+    <ion-col text-center class="submit">
+      <button ion-button (click)="loginWithEmail()" color="submit" round block large>
+        <b>LOGIN</b>
+      </button>
+    </ion-col>
+  </ion-row>
+  <br>
+  <ion-row>
+    <ion-col text-center class="icons">
+      <ion-icon large name="logo-linkedin" (click)="loginWithLinkedin()"></ion-icon>
+    </ion-col>
+    <ion-col text-center class="icons">
+      <ion-icon large name="logo-facebook" (click)="loginWithFacebook()"></ion-icon>
+    </ion-col>
+    <ion-col text-center class="register">
+      <div class="right-inner" (click)="goToRegisterPage()">
+        <b>REGISTER</b>
+      </div>
+    </ion-col>
+  </ion-row>
+  <br>
+  <ion-row padding class="forgot">
+    <ion-col text-center>
+      <div (click)="goToForgotPasswordPage()">Forgot Password?</div>
+    </ion-col>
+  </ion-row>
+  <br>
 </ion-content>
