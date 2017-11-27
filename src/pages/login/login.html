@@ -1,7 +1,7 @@
 <ion-header no-border>
   <ion-navbar color="primary">
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon color="light" name="menu"></ion-icon>
     </button>
     <ion-title></ion-title>
   </ion-navbar>
@@ -13,6 +13,8 @@
       <img src="assets/img/logo-transparent.png" alt="transparent logo">
     </div>
   </div>
+  <br>
+  <br>
   <form (ngSubmit)="logForm()" padding>
     <ion-item class="logForm">
       <ion-input clas="myItem" placeholder="email" [(ngModel)]="login.email" name="email" type="text" #email="ngModel" spellcheck="false"

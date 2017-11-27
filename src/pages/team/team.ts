@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the TeamPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { HomePage } from '../home/home';
 
 @IonicPage()
 @Component({
@@ -20,6 +15,11 @@ export class TeamPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TeamPage');
+  }
+
+  goToHomePage() {
+    console.log("Go to home page clicked");
+    this.navCtrl.setRoot(HomePage);
   }
 
 }
