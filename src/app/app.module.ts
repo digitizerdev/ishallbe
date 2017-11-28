@@ -15,7 +15,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { HomePage } from '../pages/home/home';
 import { CollaboratePage } from '../pages/collaborate/collaborate';
 import { AboutPage } from '../pages/about/about';
-import { PortfolioPage } from '../pages/portfolio/portfolio';
+import { CollabsPage } from '../pages/collabs/collabs';
 import { TeamPage } from '../pages/team/team';
 import { LoginPage } from '../pages/login/login';
 import { ContactPage } from '../pages/contact/contact';
@@ -41,7 +41,7 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
     HomePage,    
     CollaboratePage,    
     AboutPage,
-    PortfolioPage,
+    CollabsPage,
     TeamPage,    
     LoginPage,
     ContactPage,    
@@ -71,7 +71,7 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
     HomePage,    
     CollaboratePage,    
     AboutPage,
-    PortfolioPage,
+    CollabsPage,
     TeamPage,    
     LoginPage,
     ContactPage,    

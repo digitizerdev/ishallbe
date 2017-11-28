@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { PortfolioPage } from '../portfolio/portfolio';
+import { CollabsPage } from '../collabs/collabs';
 import { RegisterPage } from '../register/register';
 import { TeamPage } from '../team/team';
 
@@ -19,12 +19,8 @@ export class AboutPage {
     console.log('ionViewDidLoad AboutPage');
   }
 
-  goToPortfolioPage() {
-    this.navCtrl.push(PortfolioPage);
-  }
-
-  goToRegisterPage() {
-    this.navCtrl.push(RegisterPage);
+  goToCollabsPage() {
+    this.navCtrl.push(CollabsPage);
   }
 
   goToTeamPage() {

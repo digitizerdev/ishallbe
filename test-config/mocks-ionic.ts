@@ -10,7 +10,6 @@ import { IonicStorageModule } from '@ionic/storage';
 import { HomePage } from '../src/pages/home/home';
 import { NavController, NavParams, } from 'ionic-angular';
 
-
 export class PlatformMock {
   public ready(): Promise<string> {
     return new Promise((resolve) => {

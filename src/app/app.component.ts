@@ -7,7 +7,7 @@ import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import {HomePage} from '../pages/home/home';
 import {CollaboratePage} from '../pages/collaborate/collaborate';
 import {AboutPage} from '../pages/about/about';
-import {PortfolioPage} from '../pages/portfolio/portfolio';
+import {CollabsPage} from '../pages/collabs/collabs';
 import {TeamPage} from '../pages/team/team';
 import {LoginPage} from '../pages/login/login';
 import {ContactPage} from '../pages/contact/contact';
@@ -95,7 +95,7 @@ export class Sean {
       { title: 'Home Page', component: HomePage },
       { title: 'Collaborate Page', component: ContactPage },
       { title: 'About Page', component: AboutPage },
-      { title: 'Portfolio Page', component: PortfolioPage },
+      { title: 'Collabs Page', component: CollabsPage },
       { title: 'Team Page', component: TeamPage },
       { title: 'Login Page', component: LoginPage },
       { title: 'Contact Page', component: ContactPage },

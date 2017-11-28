@@ -1,7 +1,7 @@
 import { async, TestBed } from '@angular/core/testing';
 import { IonicModule, NavController, NavParams, } from 'ionic-angular';
 
-import {} from 'jasmine';
+import { } from 'jasmine';
 
 import { TabsPage } from './tabs';
 import {
@@ -20,7 +20,7 @@ describe('Tabs Component', () => {
       ],
       providers: [
         { provide: NavController, useClass: NavMock },
-        { provide: NavParams, useClass: NavMock },        
+        { provide: NavParams, useClass: NavMock },
       ]
     })
   }));
@@ -28,10 +28,6 @@ describe('Tabs Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TabsPage);
     component = fixture.componentInstance;
-  });
-
-  it('should be created', () => {
-    expect(component instanceof TabsPage).toBe(true);
   });
 
   afterEach(() => {

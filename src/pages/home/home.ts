@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { RegisterPage } from '../register/register';
-import { PortfolioPage } from '../portfolio/portfolio';
+import { CollabsPage } from '../collabs/collabs';
 
 @IonicPage()
 @Component({
@@ -22,8 +22,8 @@ export class HomePage {
     this.navCtrl.push(RegisterPage);
   }
 
-  goToPortfolioPage() {
-    this.navCtrl.push(PortfolioPage);
+  goToCollabsPage() {
+    this.navCtrl.push(CollabsPage);
   }
 
 }
