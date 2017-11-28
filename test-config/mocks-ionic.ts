@@ -82,7 +82,7 @@ export class FirebaseProviderMock extends FirebaseProvider {
   }
 }
 
-export class StorageroviderMock extends StorageProvider {
+export class StorageProviderMock extends StorageProvider {
   styleDefault() {
     return;
   }

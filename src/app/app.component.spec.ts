@@ -2,6 +2,7 @@ import { async, TestBed } from '@angular/core/testing';
 import { IonicModule, Platform } from 'ionic-angular';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
+import { StorageProvider } from '../providers/storage/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -23,7 +24,8 @@ import {
   FacebookMock,
   FileMock,
   PushMock,
-  FirebaseProviderMock
+  FirebaseProviderMock,
+  StorageProviderMock
 } from '../../test-config/mocks-ionic';
 
 describe('Sean Component', () => {
@@ -44,7 +46,8 @@ describe('Sean Component', () => {
         { provide: Facebook, useClass: FacebookMock },
         { provide: File, useClass: FileMock },
         { provide: Push, useClass: PushMock },
-        { provide: FirebaseProvider, useClass: FirebaseProviderMock }                                   
+        { provide: FirebaseProvider, useClass: FirebaseProviderMock },
+        { provide: StorageProvider, useClass: StorageProviderMock }                                   
       ],
     })
   }));
@@ -75,6 +78,7 @@ describe('Sean Component', () => {
   });
 
   afterEach(() => {
+    
     fixture.destroy();
     component = null;
 });
