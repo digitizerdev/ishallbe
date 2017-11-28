@@ -1,4 +1,5 @@
 import { FirebaseProvider } from '../src/providers/firebase/firebase';
+import { StorageProvider } from '../src/providers/storage/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -81,6 +82,12 @@ export class FirebaseProviderMock extends FirebaseProvider {
   }
 }
 
+export class StorageroviderMock extends StorageProvider {
+  styleDefault() {
+    return;
+  }
+}
+
 export class StorageMock extends IonicStorageModule {
   styleDefault() {
     return;
@@ -118,19 +125,19 @@ export class PushMock extends Push {
 }
 
 export class NavMock {
- 
+
   public pop(): any {
-    return new Promise(function(resolve: Function): void {
+    return new Promise(function (resolve: Function): void {
       resolve();
     });
   }
- 
+
   public push(): any {
-    return new Promise(function(resolve: Function): void {
+    return new Promise(function (resolve: Function): void {
       resolve();
     });
   }
- 
+
   public getActive(): any {
     return {
       'instance': {
@@ -138,13 +145,13 @@ export class NavMock {
       },
     };
   }
- 
+
   public setRoot(): any {
     return true;
   }
 
   public registerChildNav(nav: any): void {
-    return ;
+    return;
   }
 
   public unregisterChildNav(nav: any) {

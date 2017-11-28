@@ -34,27 +34,28 @@ import { ProjectsPage } from '../pages/projects/projects';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
+import { StorageProvider } from '../providers/storage/storage';
 
 @NgModule({
   declarations: [
     Sean,
-    HomePage,    
-    CollaboratePage,    
+    HomePage,
+    CollaboratePage,
     AboutPage,
     CollabsPage,
-    TeamPage,    
+    TeamPage,
     LoginPage,
-    ContactPage,    
+    ContactPage,
     RegisterPage,
     ForgotPasswordPage,
-    PartnersPage,    
+    PartnersPage,
     ExplorePage,
     AccountPage,
     AccountPicPage,
-    AccountEmailPage,    
+    AccountEmailPage,
     AccountNamePage,
-    AccountPasswordPage, 
-    SupportPage,   
+    AccountPasswordPage,
+    SupportPage,
     ContractsPage,
     ProjectsPage,
     TabsPage,
@@ -63,28 +64,28 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
     BrowserModule,
     IonicModule.forRoot(Sean, {}, { links: [] }),
     IonicStorageModule.forRoot(),
-    HttpModule   
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     Sean,
-    HomePage,    
-    CollaboratePage,    
+    HomePage,
+    CollaboratePage,
     AboutPage,
     CollabsPage,
-    TeamPage,    
+    TeamPage,
     LoginPage,
-    ContactPage,    
+    ContactPage,
     RegisterPage,
     ForgotPasswordPage,
-    PartnersPage,    
+    PartnersPage,
     ExplorePage,
     AccountPage,
     AccountPicPage,
-    AccountEmailPage,    
+    AccountEmailPage,
     AccountNamePage,
-    AccountPasswordPage,   
-    SupportPage, 
+    AccountPasswordPage,
+    SupportPage,
     ContractsPage,
     ProjectsPage,
     TabsPage
@@ -98,7 +99,8 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
     Camera,
     MediaCapture,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    FirebaseProvider
+    FirebaseProvider,
+    StorageProvider
   ]
 })
 export class AppModule { }

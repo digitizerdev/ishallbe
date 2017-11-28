@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class FirebaseProvider {
+export class StorageProvider {
 
   constructor() {
-    console.log('Hello FirebaseProvider Provider');
+    console.log('Hello StorageProvider Provider');
   }
 
 }

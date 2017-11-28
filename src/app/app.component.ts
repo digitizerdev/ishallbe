@@ -1,31 +1,32 @@
-import {Component, ViewChild} from '@angular/core';
-import {Events, Nav, MenuController, Platform, AlertController} from 'ionic-angular';
-import {StatusBar} from '@ionic-native/status-bar';
-import {SplashScreen} from '@ionic-native/splash-screen';
+import { Component, ViewChild } from '@angular/core';
+import { Events, Nav, MenuController, Platform, AlertController } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
 
-import {HomePage} from '../pages/home/home';
-import {CollaboratePage} from '../pages/collaborate/collaborate';
-import {AboutPage} from '../pages/about/about';
-import {CollabsPage} from '../pages/collabs/collabs';
-import {TeamPage} from '../pages/team/team';
-import {LoginPage} from '../pages/login/login';
-import {ContactPage} from '../pages/contact/contact';
-import {RegisterPage} from '../pages/register/register';
-import {PartnersPage} from '../pages/partners/partners';
-import {ExplorePage} from '../pages/explore/explore';
-import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
-import {AccountPage} from '../pages/account/account';
-import {AccountPicPage} from '../pages/account-pic/account-pic';
-import {AccountEmailPage} from '../pages/account-email/account-email';
-import {AccountNamePage} from '../pages/account-name/account-name';
-import {AccountPasswordPage} from '../pages/account-password/account-password';
-import {SupportPage} from '../pages/support/support';
-import {ContractsPage} from '../pages/contracts/contracts';
-import {ProjectsPage} from '../pages/projects/projects';
-import {TabsPage} from '../pages/tabs/tabs';
+import { HomePage } from '../pages/home/home';
+import { CollaboratePage } from '../pages/collaborate/collaborate';
+import { AboutPage } from '../pages/about/about';
+import { CollabsPage } from '../pages/collabs/collabs';
+import { TeamPage } from '../pages/team/team';
+import { LoginPage } from '../pages/login/login';
+import { ContactPage } from '../pages/contact/contact';
+import { RegisterPage } from '../pages/register/register';
+import { PartnersPage } from '../pages/partners/partners';
+import { ExplorePage } from '../pages/explore/explore';
+import { ForgotPasswordPage } from '../pages/forgot-password/forgot-password';
+import { AccountPage } from '../pages/account/account';
+import { AccountPicPage } from '../pages/account-pic/account-pic';
+import { AccountEmailPage } from '../pages/account-email/account-email';
+import { AccountNamePage } from '../pages/account-name/account-name';
+import { AccountPasswordPage } from '../pages/account-password/account-password';
+import { SupportPage } from '../pages/support/support';
+import { ContractsPage } from '../pages/contracts/contracts';
+import { ProjectsPage } from '../pages/projects/projects';
+import { TabsPage } from '../pages/tabs/tabs';
 
-import {FirebaseProvider} from '../providers/firebase/firebase';
+import { FirebaseProvider } from '../providers/firebase/firebase';
+import { StorageProvider } from '../providers/storage/storage';
 
 import { NgModule } from '@angular/core';
 import { EmailComponent } from '../components/email/email';
@@ -74,11 +75,11 @@ export class Sean {
   rootPage: any;
   pages: Array<{ title: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
-  components: Array<{ title: string, component: any }>;  
-  
+  components: Array<{ title: string, component: any }>;
+
   constructor(
-    public platform: Platform, 
-    public statusBar: StatusBar, 
+    public platform: Platform,
+    public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public user: FirebaseProvider,
     public alertCtrl: AlertController,
@@ -116,6 +117,7 @@ export class Sean {
 
     this.providers = [
       { title: 'Firebase Provider', component: FirebaseProvider },
+      { title: 'Storage Provider', component: StorageProvider }
     ]
 
     this.components = [
@@ -174,7 +176,7 @@ export class Sean {
     // Call any initial plugins when ready
     this.platform.ready().then(() => {
       this.splashScreen.hide();
-      this.initPushNotification();   
+      this.initPushNotification();
     });
   }
 
@@ -195,33 +197,33 @@ export class Sean {
     return;
   }
 
-  initPushNotification(){
-  // to check if we have permission
-  this.push.hasPermission()
-  .then((res: any) => {
+  initPushNotification() {
+    // to check if we have permission
+    this.push.hasPermission()
+      .then((res: any) => {
 
-    if (res.isEnabled) {
-      console.log('We have permission to send push notifications');
-    } else {
-      console.log('We do not have permission to send push notifications');
-    }
+        if (res.isEnabled) {
+          console.log('We have permission to send push notifications');
+        } else {
+          console.log('We do not have permission to send push notifications');
+        }
 
-  });
+      });
 
-  // to initialize push notifications
+    // to initialize push notifications
 
-  const options: PushOptions = {
-  android: {},
-  ios: {
-      alert: 'true',
-      badge: true,
-      sound: 'false'
-  },
-  };
+    const options: PushOptions = {
+      android: {},
+      ios: {
+        alert: 'true',
+        badge: true,
+        sound: 'false'
+      },
+    };
 
-  const pushObject: PushObject = this.push.init(options);
-  } 
+    const pushObject: PushObject = this.push.init(options);
+  }
 
-  
+
 }
 
