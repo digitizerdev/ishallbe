@@ -1,3 +1,55 @@
 page-register {
+    
+    .logo {
+        text-align: center;
+    }
+    
+    .logo img {
+        width: 75%;
+        margin: 0 auto;
+        max-width: 750px;
+    }
 
+    .logForm {
+        background-color: #e9e9e9 !important;
+        border-radius: 60px;
+        height: 60px !important;
+        padding: 0 20px;
+        font-size: 25px !important;
+        color: color($colors, primary) !important;
+        border:1px solid transparent;
+        max-width: 500px;
+        margin: auto;
+        text-align: center;
+    }
+    
+    .item-inner, ion-item {
+        border-bottom-color: transparent !important;
+        box-shadow: none !important;
+      }
+
+    .submit {
+        color: color($colors, primary); 
+        max-width: 500px;
+        margin: auto;
+        text-align: center;
+    }
+
+    .icons {
+        font-size: 3em;
+        color: color($colors, primary);           
+    }
+
+    .register {
+        float: left;
+        background-color:color($colors, primary);
+        color: color($colors, white);                    
+        line-height: 25px;
+        min-width: 70px;
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+        padding: 15px 15px 15px 30px;
+        margin: auto;
+    }
 }
+

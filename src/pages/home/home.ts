@@ -19,7 +19,7 @@ export class HomePage {
   }
 
   goToRegisterPage() {
-    this.navCtrl.push(RegisterPage);
+    this.navCtrl.setRoot(RegisterPage);
   }
 
   goToCollabsPage() {

@@ -10,7 +10,10 @@ import { RegisterPage } from '../register/register';
   templateUrl: 'login.html',
 })
 export class LoginPage {
-  login: {email?: string, password?: string} = {};  
+  login: {
+    email?: string, 
+    password?: string
+  } = {};  
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -30,7 +33,7 @@ export class LoginPage {
 
   goToRegisterPage() {
     console.log("Go to register page clicked");
-    this.navCtrl.push(RegisterPage);
+    this.navCtrl.setRoot(RegisterPage);
   }
 
   loginWithFacebook() {

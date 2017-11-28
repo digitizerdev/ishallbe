@@ -35,5 +35,4 @@ describe('Tabs Component', () => {
     component = null;
   });
 
-
 });

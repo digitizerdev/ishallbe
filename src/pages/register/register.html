@@ -1,13 +1,67 @@
 <ion-header no-border>
-    <ion-navbar color="primary">
+    <ion-navbar color="white">
         <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
+            <ion-icon name="menu" color="primary"></ion-icon>
         </button>
         <ion-title></ion-title>
     </ion-navbar>
 </ion-header>
 
-
-<ion-content padding>
-
+<ion-content text-center>
+    <div class="main-banner center">
+        <div class="logo">
+            <img src="assets/img/icon.png" alt="transparent logo">
+        </div>
+    </div>
+    <br>
+    <br>
+    <form (ngSubmit)="logForm()" padding>
+        <ion-item class="logForm">
+            <ion-input class="myItem" placeholder="Username" [(ngModel)]="register.username" name="username" type="text" #username="ngModel"
+                spellcheck="false" autocapitalize="off" required>
+            </ion-input>
+        </ion-item>
+        <br>
+        <br>
+        <ion-item class="logForm">
+            <ion-input class="myItem" placeholder="E-mail" [(ngModel)]="register.email" name="email" type="text" #email="ngModel" spellcheck="false"
+                autocapitalize="off" required>
+            </ion-input>
+        </ion-item>
+        <br>
+        <br>
+        <ion-item class="logForm">
+            <ion-input placeholder="Password" [(ngModel)]="register.password" name="password" type="password" #password="ngModel" required>
+            </ion-input>
+        </ion-item>
+        <br>
+        <br>
+        <ion-item class="logForm">
+            <ion-input placeholder="Confirm Password" [(ngModel)]="register.password" name="password" type="password" #password="ngModel" required>
+            </ion-input>
+        </ion-item>
+    </form>
+    <br>
+    <ion-row padding>
+        <ion-col text-center class="submit">
+            <button ion-button (click)="registerWithEmail()" color="primary" round block large>
+                <b>REGISTER</b>
+            </button>
+        </ion-col>
+    </ion-row>
+    <br>
+    <ion-row>
+        <ion-col text-center class="register">
+            <div class="right-inner" (click)="goToLoginPage()">
+                <b>LOGIN</b>
+            </div>
+        </ion-col>
+        <ion-col text-center class="icons">
+            <ion-icon large name="logo-facebook" (click)="loginWithFacebook()"></ion-icon>
+        </ion-col>
+        <ion-col text-center class="icons">
+            <ion-icon large name="logo-linkedin" (click)="loginWithLinkedin()"></ion-icon>
+        </ion-col>
+    </ion-row>
+    <br>
 </ion-content>

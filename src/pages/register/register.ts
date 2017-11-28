@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the RegisterPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { LoginPage } from '../login/login';
 
 @IonicPage()
 @Component({
@@ -14,12 +9,34 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'register.html',
 })
 export class RegisterPage {
+  register: {
+    username?: string;
+    email?: string, 
+    password?: string,
+  } = {};    
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RegisterPage');
+  }
+
+  registerWithEmail() {
+    console.log("Register with email clicked");
+  }
+
+  goToLoginPage() {
+    console.log("Go to register page clicked");
+    this.navCtrl.setRoot(LoginPage);
+  }
+
+  loginWithFacebook() {
+    console.log("Login with Facebook clicked");
+  }
+  
+  loginWithLinkedin() {
+    console.log("Login with LinkedIn clicked");
   }
 
 }
