@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.troydcthompson.sean" version="2.0.0-alpha" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Sean</name>
-    <description>TDCT 2.0 - Sean</description>
+<widget id="com.troydcthompson.tdct" version="2.0.0-alpha" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>TDCT</name>
+    <description>Think ~ Design ~ Collaborate ~ Transform</description>
     <author email="troydcthompson@tdct.io" href="https://troydcthompson.com/">Troy DC Thompson</author>
     <content src="index.html" />
     <access origin="*" />

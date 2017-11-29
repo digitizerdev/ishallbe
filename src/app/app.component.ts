@@ -49,7 +49,7 @@ export interface PageInterface {
 @Component({
   templateUrl: 'app.component.html',
 })
-export class Sean {
+export class TDCT {
 
   @ViewChild(Nav) nav: Nav;
 

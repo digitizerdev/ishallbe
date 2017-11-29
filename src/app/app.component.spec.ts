@@ -15,7 +15,7 @@ import { } from 'jasmine';
 
 import { TabsPage } from '../pages/tabs/tabs';
 
-import { Sean } from './app.component';
+import { TDCT } from './app.component';
 import {
   PlatformMock,
   StatusBarMock,
@@ -28,15 +28,15 @@ import {
   StorageProviderMock
 } from '../../test-config/mocks-ionic';
 
-describe('Sean Component', () => {
+describe('TDCT Component', () => {
   let fixture;
   let component;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [Sean],
+      declarations: [TDCT],
       imports: [
-        IonicModule.forRoot(Sean)
+        IonicModule.forRoot(TDCT)
       ],
       providers: [
         { provide: StatusBar, useClass: StatusBarMock },
@@ -53,12 +53,12 @@ describe('Sean Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Sean);
+    fixture = TestBed.createComponent(TDCT);
     component = fixture.componentInstance;
   });
 
   it('should be created', () => {
-    expect(component instanceof Sean).toBe(true);
+    expect(component instanceof TDCT).toBe(true);
   });
 
   it('should have 20 pages', () => {

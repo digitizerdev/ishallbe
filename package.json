@@ -1,5 +1,5 @@
 {
-  "name": "Sean",
+  "name": "TDCT",
   "author": "Troy DC Thompson",
   "homepage": "https://troydcthompson.com",
   "private": true,
@@ -78,8 +78,8 @@
     "ts-node": "^3.0.2",
     "typescript": "2.3.4"
   },
-  "version": "0.0.5",
-  "description": "TDCT 2.0 - Sean",
+  "version": "2.0.0-alpha",
+  "description": "TDCT",
   "cordova": {
     "plugins": {
       "ionic-plugin-keyboard": {},
