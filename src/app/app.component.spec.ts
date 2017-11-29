@@ -11,7 +11,7 @@ import { MediaCapture } from '@ionic-native/media-capture';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { Storage } from '@ionic/storage';
-import {} from 'jasmine';
+import { } from 'jasmine';
 
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -42,12 +42,12 @@ describe('Sean Component', () => {
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
         { provide: Platform, useClass: PlatformMock },
-        { provide: Storage, useClass: StorageMock },       
+        { provide: Storage, useClass: StorageMock },
         { provide: Facebook, useClass: FacebookMock },
         { provide: File, useClass: FileMock },
         { provide: Push, useClass: PushMock },
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
-        { provide: StorageProvider, useClass: StorageProviderMock }                                   
+        { provide: StorageProvider, useClass: StorageProviderMock }
       ],
     })
   }));
@@ -69,8 +69,8 @@ describe('Sean Component', () => {
     expect(component.providers.length).toBe(2);
   });
 
-  it('should have 9 components', () => {
-    expect(component.components.length).toBe(9);
+  it('should have 5 components', () => {
+    expect(component.components.length).toBe(5);
   });
 
   it('initialises with a root page of TabsPage', () => {
@@ -78,9 +78,8 @@ describe('Sean Component', () => {
   });
 
   afterEach(() => {
-    
     fixture.destroy();
     component = null;
-});
+  });
 
 });

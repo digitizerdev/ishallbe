@@ -29,14 +29,10 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
 import { StorageProvider } from '../providers/storage/storage';
 
 import { NgModule } from '@angular/core';
-import { EmailComponent } from '../components/email/email';
 import { FacebookComponent } from '../components/facebook/facebook';
 import { LinkedinComponent } from '../components/linkedin/linkedin';
-import { AccountComponent } from '../components/account/account';
-import { ProfileComponent } from '../components/profile/profile';
 import { ContentComponent } from '../components/content/content';
-import { PhotoComponent } from '../components/photo/photo';
-import { StorageComponent } from '../components/storage/storage';
+import { MediaComponent } from '../components/media/media';
 import { PostComponent } from '../components/post/post';
 
 export interface PageInterface {
@@ -121,14 +117,10 @@ export class Sean {
     ]
 
     this.components = [
-      { title: 'Email Component', component: EmailComponent },
       { title: 'Facebook Component', component: FacebookComponent },
       { title: 'LinkedIn Component', component: LinkedinComponent },
-      { title: 'Account Component', component: AccountComponent },
-      { title: 'Profile Component', component: ProfileComponent },
       { title: 'Content Component', component: ContentComponent },
-      { title: 'Photo Component', component: PhotoComponent },
-      { title: 'Storage Component', component: StorageComponent },
+      { title: 'Media Component', component: MediaComponent },
       { title: 'Post Component', component: PostComponent }
     ]
   }

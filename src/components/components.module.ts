@@ -1,32 +1,22 @@
 import { NgModule } from '@angular/core';
-import { EmailComponent } from './email/email';
 import { FacebookComponent } from './facebook/facebook';
 import { LinkedinComponent } from './linkedin/linkedin';
-import { AccountComponent } from './account/account';
-import { ProfileComponent } from './profile/profile';
 import { ContentComponent } from './content/content';
-import { PhotoComponent } from './photo/photo';
-import { StorageComponent } from './storage/storage';
 import { PostComponent } from './post/post';
+import { MediaComponent } from './media/media';
 @NgModule({
-	declarations: [EmailComponent,
+	declarations: [
     FacebookComponent,
     LinkedinComponent,
-    AccountComponent,
-    ProfileComponent,
     ContentComponent,
-    PhotoComponent,
-    StorageComponent,
-    PostComponent],
+    PostComponent,
+    MediaComponent],
 	imports: [],
-	exports: [EmailComponent,
+	exports: [
     FacebookComponent,
     LinkedinComponent,
-    AccountComponent,
-    ProfileComponent,
     ContentComponent,
-    PhotoComponent,
-    StorageComponent,
-    PostComponent]
+    PostComponent,
+    MediaComponent]
 })
 export class ComponentsModule {}

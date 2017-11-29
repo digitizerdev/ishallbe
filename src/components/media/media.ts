@@ -1,21 +1,21 @@
 import { Component } from '@angular/core';
 
 /**
- * Generated class for the ProfileComponent component.
+ * Generated class for the MediaComponent component.
  *
  * See https://angular.io/api/core/Component for more info on Angular
  * Components.
  */
 @Component({
-  selector: 'profile',
-  templateUrl: 'profile.html'
+  selector: 'media',
+  templateUrl: 'media.html'
 })
-export class ProfileComponent {
+export class MediaComponent {
 
   text: string;
 
   constructor() {
-    console.log('Hello ProfileComponent Component');
+    console.log('Hello MediaComponent Component');
     this.text = 'Hello World';
   }
 
