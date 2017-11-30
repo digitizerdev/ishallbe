@@ -87,13 +87,6 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic": {
-        "APP_ID": "abddc926",
-        "CHANNEL_NAME": "Master",
-        "UPDATE_METHOD": "background",
-        "UPDATE_API": "https://api.ionicjs.com",
-        "MAX_STORE": "2"
-      },
       "cordova-plugin-file": {},
       "cordova-plugin-camera": {},
       "cordova-plugin-media-capture": {},
@@ -101,7 +94,14 @@
         "APP_ID": "1977260348954388",
         "APP_NAME": "TDCT"
       },
-      "phonegap-plugin-push": {}
+      "phonegap-plugin-push": {},
+      "cordova-plugin-ionic": {
+        "APP_ID": "abddc926",
+        "CHANNEL_NAME": "Production",
+        "UPDATE_METHOD": "background",
+        "UPDATE_API": "https://api.ionicjs.com",
+        "MAX_STORE": "2"
+      }
     },
     "platforms": [
       "ios"
