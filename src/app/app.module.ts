@@ -1,7 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { HttpModule } from '@angular/http';
-import { TDCT } from './app.component';
+import { iShallBe } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -38,7 +38,7 @@ import { StorageProvider } from '../providers/storage/storage';
 
 @NgModule({
   declarations: [
-    TDCT,
+    iShallBe,
     HomePage,
     CollaboratePage,
     AboutPage,
@@ -62,13 +62,13 @@ import { StorageProvider } from '../providers/storage/storage';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(TDCT, {}, { links: [] }),
+    IonicModule.forRoot(iShallBe, {}, { links: [] }),
     IonicStorageModule.forRoot(),
     HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    TDCT,
+    iShallBe,
     HomePage,
     CollaboratePage,
     AboutPage,

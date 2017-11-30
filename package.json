@@ -1,7 +1,7 @@
 {
-  "name": "TDCT",
-  "author": "Troy DC Thompson",
-  "homepage": "https://troydcthompson.com",
+  "name": "ishallbe",
+  "author": "Shelby Tinsley",
+  "homepage": "ishallbe.co",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
@@ -78,8 +78,8 @@
     "ts-node": "^3.0.2",
     "typescript": "2.3.4"
   },
-  "version": "2.0.0-alpha",
-  "description": "TDCT",
+  "version": "1.1.0",
+  "description": "If You Speak It, It Shall Be!",
   "cordova": {
     "plugins": {
       "ionic-plugin-keyboard": {},
@@ -91,8 +91,8 @@
       "cordova-plugin-camera": {},
       "cordova-plugin-media-capture": {},
       "cordova-plugin-facebook4": {
-        "APP_ID": "1977260348954388",
-        "APP_NAME": "TDCT"
+        "APP_ID": "1312020948874676",
+        "APP_NAME": "iShallBe"
       },
       "phonegap-plugin-push": {},
       "cordova-plugin-ionic": {

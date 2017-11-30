@@ -1,8 +1,8 @@
 {
-  "name": "tdct",
-  "app_id": "abddc926",
-  "type": "ionic-angular",
+  "name": "ishallbe",
+  "app_id": "e87a5e54",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "type": "ionic-angular"
 }
