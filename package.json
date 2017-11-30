@@ -88,7 +88,7 @@
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic": {
-        "APP_ID": "315f6ccb",
+        "APP_ID": "abddc926",
         "CHANNEL_NAME": "Master",
         "UPDATE_METHOD": "background",
         "UPDATE_API": "https://api.ionicjs.com",
