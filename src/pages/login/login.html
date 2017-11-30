@@ -15,6 +15,21 @@
   </div>
   <br>
   <br>
+  <ion-row>
+    <ion-col text-center class="icons">
+      <ion-icon large name="logo-linkedin" (click)="loginWithLinkedin()"></ion-icon>
+    </ion-col>
+    <ion-col text-center class="icons">
+      <ion-icon large name="logo-facebook" (click)="loginWithFacebook()"></ion-icon>
+    </ion-col>
+    <ion-col text-center class="register">
+      <div class="right-inner" (click)="goToRegisterPage()">
+        <b>REGISTER</b>
+      </div>
+    </ion-col>
+  </ion-row>
+  <br>
+  <br>
   <form (ngSubmit)="logForm()" padding>
     <ion-item class="logForm">
       <ion-input clas="myItem" placeholder="E-mail" [(ngModel)]="login.email" name="email" type="text" #email="ngModel" spellcheck="false"
@@ -34,20 +49,6 @@
       <button ion-button (click)="loginWithEmail()" color="submit" round block large>
         <b>LOGIN</b>
       </button>
-    </ion-col>
-  </ion-row>
-  <br>
-  <ion-row>
-    <ion-col text-center class="icons">
-      <ion-icon large name="logo-linkedin" (click)="loginWithLinkedin()"></ion-icon>
-    </ion-col>
-    <ion-col text-center class="icons">
-      <ion-icon large name="logo-facebook" (click)="loginWithFacebook()"></ion-icon>
-    </ion-col>
-    <ion-col text-center class="register">
-      <div class="right-inner" (click)="goToRegisterPage()">
-        <b>REGISTER</b>
-      </div>
     </ion-col>
   </ion-row>
   <br>

@@ -15,6 +15,21 @@
     </div>
     <br>
     <br>
+    <ion-row>
+        <ion-col text-center class="register">
+            <div class="right-inner" (click)="goToLoginPage()">
+                <b>LOGIN</b>
+            </div>
+        </ion-col>
+        <ion-col text-center class="icons">
+            <ion-icon large name="logo-facebook" (click)="loginWithFacebook()"></ion-icon>
+        </ion-col>
+        <ion-col text-center class="icons">
+            <ion-icon large name="logo-linkedin" (click)="loginWithLinkedin()"></ion-icon>
+        </ion-col>
+    </ion-row>
+    <br>
+    <br>
     <form (ngSubmit)="logForm()" padding>
         <ion-item class="logForm">
             <ion-input class="myItem" placeholder="Username" [(ngModel)]="register.username" name="username" type="text" #username="ngModel"
@@ -37,7 +52,8 @@
         <br>
         <br>
         <ion-item class="logForm">
-            <ion-input placeholder="Confirm Password" [(ngModel)]="register.password" name="password" type="password" #password="ngModel" required>
+            <ion-input placeholder="Confirm Password" [(ngModel)]="register.password" name="password" type="password" #password="ngModel"
+                required>
             </ion-input>
         </ion-item>
     </form>
@@ -47,20 +63,6 @@
             <button ion-button (click)="registerWithEmail()" color="primary" round block large>
                 <b>REGISTER</b>
             </button>
-        </ion-col>
-    </ion-row>
-    <br>
-    <ion-row>
-        <ion-col text-center class="register">
-            <div class="right-inner" (click)="goToLoginPage()">
-                <b>LOGIN</b>
-            </div>
-        </ion-col>
-        <ion-col text-center class="icons">
-            <ion-icon large name="logo-facebook" (click)="loginWithFacebook()"></ion-icon>
-        </ion-col>
-        <ion-col text-center class="icons">
-            <ion-icon large name="logo-linkedin" (click)="loginWithLinkedin()"></ion-icon>
         </ion-col>
     </ion-row>
     <br>
