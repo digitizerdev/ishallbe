@@ -8,7 +8,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class LoginPage {
   login: {email?: string, password?: string} = {};
-  
+  submitted = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }

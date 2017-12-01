@@ -43,4 +43,8 @@ describe('Login Component', () => {
     expect(component.login.password).toBe('password');       
   });
 
+  it('should initialize with submitted false', ()=> {
+    expect(component.submitted).toBe(false);
+  })
+
 });
