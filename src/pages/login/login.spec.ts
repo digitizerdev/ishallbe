@@ -34,5 +34,13 @@ describe('Login Component', () => {
     expect(component instanceof LoginPage).toBe(true);
   });
 
+  it('should have a null login form on load then not null when changed', () => {
+    expect(component.login.email).toBe(undefined);
+    expect(component.login.password).toBe(undefined); 
+    component.logForm('myEmail', 'password');
+    fixture.detectChanges();
+    expect(component.login.email).toBe('myEmail'); 
+    expect(component.login.password).toBe('password');       
+  })
 
 });

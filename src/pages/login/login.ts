@@ -17,4 +17,9 @@ export class LoginPage {
     console.log('ionViewDidLoad LoginPage');
   }
 
+  logForm( email, password) {
+    this.login.email = email;
+    this.login.password = password;
+  }
+
 }
