@@ -34,5 +34,12 @@ describe('Home Component', () => {
     expect(component instanceof HomePage).toBe(true);
   });
 
+  it('hello function should exist', () => {
+    expect(component.hello()).toBe(undefined);
+  });
+
+  it('hello 1 function should exist', () => {
+    expect(component.hello1()).toBe(undefined);
+  });
 
 });
