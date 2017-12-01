@@ -3,7 +3,6 @@ import { PinsComponent } from './pins/pins';
 import { PinComponent } from './pin/pin';
 import { PostsComponent } from './posts/posts';
 import { PostComponent } from './post/post';
-import { CommentComponent } from './comment/comment';
 import { MediaComponent } from './media/media';
 import { FacebookComponent } from './facebook/facebook';
 import { UsersComponent } from './users/users';
@@ -13,7 +12,6 @@ import { CommentsComponent } from './comments/comments';
     PinComponent,
     PostsComponent,
     PostComponent,
-    CommentComponent,
     MediaComponent,
     FacebookComponent,
     UsersComponent,
@@ -23,7 +21,6 @@ import { CommentsComponent } from './comments/comments';
     PinComponent,
     PostsComponent,
     PostComponent,
-    CommentComponent,
     MediaComponent,
     FacebookComponent,
     UsersComponent,
