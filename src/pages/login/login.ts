@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { HomePage } from '../home/home';
+
+import {}
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -9,6 +12,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class LoginPage {
   login: {email?: string, password?: string} = {};
   submitted = false;
+  loggedIn = false;  
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -20,6 +24,11 @@ export class LoginPage {
   logForm( email, password) {
     this.login.email = email;
     this.login.password = password;
+    this.submitted = true;
+    this.loggedIn = true;
+    this.navCtrl.setRoot(HomePage);
   }
+
+
 
 }

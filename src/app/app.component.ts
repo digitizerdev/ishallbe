@@ -64,6 +64,8 @@ export class iShallBe {
   ) {
     this.rootPage = LoginPage;
     platform.ready();
+    this.listenToLoginEvents();
+    
 
     this.pages = [
       { title: 'Home Page', component: HomePage },
@@ -115,7 +117,20 @@ export class iShallBe {
       { title: 'Account Page', component: AccountPage },      
       { title: 'Support Page', component: SupportPage },
     ]
+  }
 
+  listenToLoginEvents() {
+    this.events.subscribe('user:login', () => {
+      this.loggedIn = true;
+    });
+
+    this.events.subscribe('user:signup', () => {
+      this.loggedIn = true;
+    });
+
+    this.events.subscribe('user:logout', () => {
+      this.loggedIn = false;
+    });
   }
 
   openPage(page) {

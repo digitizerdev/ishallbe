@@ -12,6 +12,7 @@ import { Storage } from '@ionic/storage';
 
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
+import { HomePage } from '../pages/home/home';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { StorageProvider } from '../providers/storage/storage';
@@ -68,8 +69,8 @@ describe('iShallBe Component', () => {
     expect(component.pages.length).toBe(11);
   });
 
-  it('should have 8 components', () => {
-    expect(component.components.length).toBe(8);
+  it('should have 9 components', () => {
+    expect(component.components.length).toBe(9);
   });
 
   it('should have 2 providers', () => {

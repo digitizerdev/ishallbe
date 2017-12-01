@@ -7,6 +7,7 @@ import { MediaComponent } from './media/media';
 import { FacebookComponent } from './facebook/facebook';
 import { UsersComponent } from './users/users';
 import { CommentsComponent } from './comments/comments';
+import { HeaderComponent } from './header/header';
 @NgModule({
 	declarations: [PinsComponent,
     PinComponent,
@@ -15,7 +16,8 @@ import { CommentsComponent } from './comments/comments';
     MediaComponent,
     FacebookComponent,
     UsersComponent,
-    CommentsComponent],
+    CommentsComponent,
+    HeaderComponent],
 	imports: [],
 	exports: [PinsComponent,
     PinComponent,
@@ -24,6 +26,7 @@ import { CommentsComponent } from './comments/comments';
     MediaComponent,
     FacebookComponent,
     UsersComponent,
-    CommentsComponent]
+    CommentsComponent,
+    HeaderComponent]
 })
 export class ComponentsModule {}
