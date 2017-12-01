@@ -97,14 +97,7 @@ export class iShallBe {
   }
 
   openPage(page: PageInterface) {
-    if (page.index) {
-      this.nav.setRoot(page.component, { tabIndex: page.index });
-    } else {
-      this.nav.setRoot(page.component).catch(() => {
-        console.log("Didn't set nav root");
-      });
-    }
-
+    this.nav.setRoot(page.component);    
     if (page.logsOut === true) {
       setTimeout(() => {
       }, 1000);

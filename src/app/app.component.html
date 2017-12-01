@@ -1,86 +1,28 @@
-<ion-split-pane>
+<ion-menu [content]="content">
   
-    <!-- logged out menu -->
-    <ion-menu id="loggedOutMenu" [content]="content">
+    <ion-content class="menu-left">
+      <!-- User profile -->
+      <div text-center>
+        <a menuClose>
+          <br>
+          <br>
+          <br>
+          <img width="75%" src="assets/img/icon.png">
+          <br>
+          <br>
+          <br>
+        </a>
+      </div>
   
-      <ion-header>
-        <ion-toolbar color='primary'>
-          <ion-title>MENU</ion-title>
-        </ion-toolbar>
-      </ion-header>
+      <ion-list class="list-full-border" >
+        <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+          <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>
+          {{ p.title }}
+          <ion-badge color="danger" item-right *ngIf="p.count">{{ p.count }}</ion-badge>
+        </button>
+      </ion-list>
+    </ion-content>
   
-      <ion-content class="outer-content">
+  </ion-menu>
   
-        <ion-list class= "menu-list">
-          <ion-list-header class="block-title">
-            NAVIGATE
-          </ion-list-header>
-          <button class="menu-navs" ion-item menuClose *ngFor="let p of appPages" (click)="openPage(p)">
-            <ion-icon class="menu-icon" large item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
-            {{p.title}}
-            <ion-icon hideWhen="ios" class="menu-icon" small item-end name="ios-arrow-forward-outline" color="gray"></ion-icon>            
-          </button>
-        </ion-list>
-  
-        <ion-list>
-          <ion-list-header class="block-title">
-            ACCOUNT
-          </ion-list-header>
-          <button class="menu-navs" ion-item menuClose *ngFor="let p of loggedOutPages" (click)="openPage(p)">
-            <ion-icon large item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
-            {{p.title}}
-            <ion-icon hideWhen="ios" class="menu-icon" small item-end name="ios-arrow-forward-outline" color="gray"></ion-icon>                        
-          </button>
-        </ion-list>
-  
-      </ion-content>
-    </ion-menu>
-    <!-- logged in menu -->
-    <ion-menu id="loggedInMenu" [content]="content">
-  
-      <ion-header>
-        <ion-toolbar color='primary'>
-          <ion-title>Menu</ion-title>
-        </ion-toolbar>
-      </ion-header>
-  
-      <ion-content class="outer-content">
-  
-        <ion-list>
-          <ion-list-header>
-            Navigate
-          </ion-list-header>
-          <button ion-item menuClose *ngFor="let p of appPages" (click)="openPage(p)">
-            <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
-            {{p.title}}
-          </button>
-        </ion-list>
-  
-        <ion-list>
-          <ion-list-header>
-            Account
-          </ion-list-header>
-          <button ion-item menuClose *ngFor="let p of loggedInPages" (click)="openPage(p)">
-            <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon>
-            {{p.title}}
-          </button>
-        </ion-list>
-  
-        <ion-list>
-          <ion-list-header>
-            Tutorial
-          </ion-list-header>
-          <button ion-item menuClose (click)="openTutorial()">
-            <ion-icon item-start name="ios-book-outline"></ion-icon>
-            Show Tutorial
-          </button>
-        </ion-list>
-  
-      </ion-content>
-  
-    </ion-menu>
-  
-    <!-- main navigation -->
-    <ion-nav [root]="rootPage" #content swipeBackEnabled="false" main name="app" color='primary'></ion-nav>
-  
-  </ion-split-pane>
+  <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

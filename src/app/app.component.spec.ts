@@ -10,6 +10,8 @@ import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { Storage } from '@ionic/storage';
 
+import { LoginPage } from '../pages/login/login';
+
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { StorageProvider } from '../providers/storage/storage';
 
@@ -72,6 +74,10 @@ describe('iShallBe Component', () => {
   it('should have 2 providers', () => {
     expect(component.providers.length).toBe(2);
   });
+
+  it('initialises with a root page of LoginPage', () => {
+    expect(component['rootPage']).toBe(LoginPage);
+});
 
   afterEach(() => {
     fixture.destroy();
