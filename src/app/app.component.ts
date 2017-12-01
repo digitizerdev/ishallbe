@@ -24,6 +24,7 @@ import { UsersComponent } from '../components/users/users';
 import { CommentsComponent } from '../components/comments/comments';
 import { MediaComponent } from '../components/media/media';
 import { FacebookComponent } from '../components/facebook/facebook';
+import { HeaderComponent } from '../components/header/header';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { StorageProvider } from '../providers/storage/storage';
@@ -63,9 +64,7 @@ export class iShallBe {
     public push: Push
   ) {
     this.rootPage = LoginPage;
-    platform.ready();
-    this.listenToLoginEvents();
-    
+    platform.ready();    
 
     this.pages = [
       { title: 'Home Page', component: HomePage },
@@ -93,7 +92,8 @@ export class iShallBe {
       { title: 'Post Component', component: PostComponent },
       { title: 'Facebook Component', component: FacebookComponent },
       { title: 'Media Component', component: MediaComponent },
-      { title: 'Users Component', component: UsersComponent }
+      { title: 'Users Component', component: UsersComponent },
+      { title: 'Header Component', component: HeaderComponent }
     ]
 
     this.pages = [
@@ -117,20 +117,6 @@ export class iShallBe {
       { title: 'Account Page', component: AccountPage },      
       { title: 'Support Page', component: SupportPage },
     ]
-  }
-
-  listenToLoginEvents() {
-    this.events.subscribe('user:login', () => {
-      this.loggedIn = true;
-    });
-
-    this.events.subscribe('user:signup', () => {
-      this.loggedIn = true;
-    });
-
-    this.events.subscribe('user:logout', () => {
-      this.loggedIn = false;
-    });
   }
 
   openPage(page) {
