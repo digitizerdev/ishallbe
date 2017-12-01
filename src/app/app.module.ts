@@ -12,26 +12,26 @@ import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { IonicStorageModule } from '@ionic/storage';
 
-import { HomePage } from '../pages/home/home';
-import { CollaboratePage } from '../pages/collaborate/collaborate';
-import { AboutPage } from '../pages/about/about';
-import { CollabsPage } from '../pages/collabs/collabs';
-import { TeamPage } from '../pages/team/team';
 import { LoginPage } from '../pages/login/login';
-import { ContactPage } from '../pages/contact/contact';
 import { RegisterPage } from '../pages/register/register';
-import { PartnersPage } from '../pages/partners/partners';
-import { ExplorePage } from '../pages/explore/explore';
 import { ForgotPasswordPage } from '../pages/forgot-password/forgot-password';
+import { HomePage } from '../pages/home/home';
+import { AboutPage } from '../pages/about/about';;
 import { AccountPage } from '../pages/account/account';
-import { AccountPicPage } from '../pages/account-pic/account-pic';
-import { AccountEmailPage } from '../pages/account-email/account-email';
-import { AccountNamePage } from '../pages/account-name/account-name';
-import { AccountPasswordPage } from '../pages/account-password/account-password';
 import { SupportPage } from '../pages/support/support';
-import { ContractsPage } from '../pages/contracts/contracts';
-import { ProjectsPage } from '../pages/projects/projects';
-import { TabsPage } from '../pages/tabs/tabs';
+import { MediaPage } from '../pages/media/media';
+import { ProfilePage } from '../pages/profile/profile';
+import { ManagePage } from '../pages/manage/manage';
+import { ContentPage } from '../pages/content/content';
+
+import { PinsComponent } from '../components/pins/pins';
+import { PinComponent } from '../components/pin/pin';
+import { PostsComponent } from '../components/posts/posts';
+import { PostComponent } from '../components/post/post';
+import { UsersComponent } from '../components/users/users';
+import { CommentsComponent } from '../components/comments/comments';
+import { MediaComponent } from '../components/media/media';
+import { FacebookComponent } from '../components/facebook/facebook';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { StorageProvider } from '../providers/storage/storage';
@@ -40,25 +40,16 @@ import { StorageProvider } from '../providers/storage/storage';
   declarations: [
     iShallBe,
     HomePage,
-    CollaboratePage,
     AboutPage,
-    CollabsPage,
-    TeamPage,
     LoginPage,
-    ContactPage,
     RegisterPage,
     ForgotPasswordPage,
-    PartnersPage,
-    ExplorePage,
     AccountPage,
-    AccountPicPage,
-    AccountEmailPage,
-    AccountNamePage,
-    AccountPasswordPage,
     SupportPage,
-    ContractsPage,
-    ProjectsPage,
-    TabsPage,
+    ProfilePage,
+    ManagePage,
+    MediaPage,
+    ContentPage
   ],
   imports: [
     BrowserModule,
@@ -70,25 +61,16 @@ import { StorageProvider } from '../providers/storage/storage';
   entryComponents: [
     iShallBe,
     HomePage,
-    CollaboratePage,
     AboutPage,
-    CollabsPage,
-    TeamPage,
     LoginPage,
-    ContactPage,
     RegisterPage,
     ForgotPasswordPage,
-    PartnersPage,
-    ExplorePage,
     AccountPage,
-    AccountPicPage,
-    AccountEmailPage,
-    AccountNamePage,
-    AccountPasswordPage,
     SupportPage,
-    ContractsPage,
-    ProjectsPage,
-    TabsPage
+    ProfilePage,
+    ManagePage,
+    MediaPage,
+    ContentPage
   ],
   providers: [
     StatusBar,

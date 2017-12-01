@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { CollabsPage } from '../collabs/collabs';
-import { RegisterPage } from '../register/register';
-import { TeamPage } from '../team/team';
+/**
+ * Generated class for the AboutPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
 
 @IonicPage()
 @Component({
@@ -17,14 +20,6 @@ export class AboutPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AboutPage');
-  }
-
-  goToCollabsPage() {
-    this.navCtrl.push(CollabsPage);
-  }
-
-  goToTeamPage() {
-    this.navCtrl.push(TeamPage);
   }
 
 }

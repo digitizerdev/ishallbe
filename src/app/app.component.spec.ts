@@ -1,8 +1,6 @@
 import { async, TestBed } from '@angular/core/testing';
 import { IonicModule, Platform } from 'ionic-angular';
 
-import { FirebaseProvider } from '../providers/firebase/firebase';
-import { StorageProvider } from '../providers/storage/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -11,9 +9,11 @@ import { MediaCapture } from '@ionic-native/media-capture';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { Storage } from '@ionic/storage';
-import { } from 'jasmine';
 
-import { TabsPage } from '../pages/tabs/tabs';
+import { FirebaseProvider } from '../providers/firebase/firebase';
+import { StorageProvider } from '../providers/storage/storage';
+
+import { } from 'jasmine';
 
 import { iShallBe } from './app.component';
 import {
@@ -61,20 +61,16 @@ describe('iShallBe Component', () => {
     expect(component instanceof iShallBe).toBe(true);
   });
 
-  it('should have 20 pages', () => {
-    expect(component.pages.length).toBe(20);
+  it('should have 10 pages', () => {
+    expect(component.pages.length).toBe(10);
+  });
+
+  it('should have 8 components', () => {
+    expect(component.components.length).toBe(8);
   });
 
   it('should have 2 providers', () => {
     expect(component.providers.length).toBe(2);
-  });
-
-  it('should have 5 components', () => {
-    expect(component.components.length).toBe(5);
-  });
-
-  it('initialises with a root page of TabsPage', () => {
-    expect(component['rootPage']).toBe(TabsPage);
   });
 
   afterEach(() => {

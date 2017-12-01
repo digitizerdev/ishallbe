@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { RegisterPage } from '../register/register';
-import { CollabsPage } from '../collabs/collabs';
+/**
+ * Generated class for the HomePage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
 
 @IonicPage()
 @Component({
@@ -16,14 +20,6 @@ export class HomePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
-  }
-
-  goToRegisterPage() {
-    this.navCtrl.setRoot(RegisterPage);
-  }
-
-  goToCollabsPage() {
-    this.navCtrl.push(CollabsPage);
   }
 
 }

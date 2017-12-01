@@ -1,22 +1,32 @@
 import { NgModule } from '@angular/core';
-import { FacebookComponent } from './facebook/facebook';
-import { LinkedinComponent } from './linkedin/linkedin';
-import { ContentComponent } from './content/content';
+import { PinsComponent } from './pins/pins';
+import { PinComponent } from './pin/pin';
+import { PostsComponent } from './posts/posts';
 import { PostComponent } from './post/post';
+import { CommentComponent } from './comment/comment';
 import { MediaComponent } from './media/media';
+import { FacebookComponent } from './facebook/facebook';
+import { UsersComponent } from './users/users';
+import { CommentsComponent } from './comments/comments';
 @NgModule({
-	declarations: [
-    FacebookComponent,
-    LinkedinComponent,
-    ContentComponent,
+	declarations: [PinsComponent,
+    PinComponent,
+    PostsComponent,
     PostComponent,
-    MediaComponent],
+    CommentComponent,
+    MediaComponent,
+    FacebookComponent,
+    UsersComponent,
+    CommentsComponent],
 	imports: [],
-	exports: [
-    FacebookComponent,
-    LinkedinComponent,
-    ContentComponent,
+	exports: [PinsComponent,
+    PinComponent,
+    PostsComponent,
     PostComponent,
-    MediaComponent]
+    CommentComponent,
+    MediaComponent,
+    FacebookComponent,
+    UsersComponent,
+    CommentsComponent]
 })
 export class ComponentsModule {}
