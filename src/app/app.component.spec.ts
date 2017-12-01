@@ -11,6 +11,7 @@ import { File } from '@ionic-native/file';
 import { Storage } from '@ionic/storage';
 
 import { LoginPage } from '../pages/login/login';
+import { RegisterPage } from '../pages/register/register';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { StorageProvider } from '../providers/storage/storage';
@@ -63,8 +64,8 @@ describe('iShallBe Component', () => {
     expect(component instanceof iShallBe).toBe(true);
   });
 
-  it('should have 10 pages', () => {
-    expect(component.pages.length).toBe(10);
+  it('should have 11 pages', () => {
+    expect(component.pages.length).toBe(11);
   });
 
   it('should have 8 components', () => {
@@ -75,10 +76,14 @@ describe('iShallBe Component', () => {
     expect(component.providers.length).toBe(2);
   });
 
-  it('initialises with a root page of LoginPage', () => {
+  it('should initialises with a root page of LoginPage', () => {
     expect(component['rootPage']).toBe(LoginPage);
-});
+  });
 
+  it('should have 5 menu pages', ()=>{
+    expect(component.menuPages.length).toBe(5);
+  })
+  
   afterEach(() => {
     fixture.destroy();
     component = null;

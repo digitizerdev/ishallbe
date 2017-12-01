@@ -50,7 +50,8 @@ export class iShallBe {
   pages: Array<{ title: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
   components: Array<{ title: string, component: any }>;
-
+  menuPages: Array<{ title: string, component: any }>;
+  
   constructor(
     public platform: Platform,
     public statusBar: StatusBar,
@@ -63,8 +64,6 @@ export class iShallBe {
   ) {
     this.rootPage = LoginPage;
     platform.ready();
-
-    this.listenToLoginEvents();
 
     this.pages = [
       { title: 'Home Page', component: HomePage },
@@ -85,42 +84,42 @@ export class iShallBe {
     ]
 
     this.components = [
-      { title: 'Comments Component', component: CommentsComponent }, 
+      { title: 'Comments Component', component: CommentsComponent },
       { title: 'Pins Component', component: PinsComponent },
       { title: 'Pin Component', component: PinComponent },
-      { title: 'Posts Component', component: PostsComponent }, 
-      { title: 'Post Component', component: PostComponent },      
+      { title: 'Posts Component', component: PostsComponent },
+      { title: 'Post Component', component: PostComponent },
       { title: 'Facebook Component', component: FacebookComponent },
       { title: 'Media Component', component: MediaComponent },
       { title: 'Users Component', component: UsersComponent }
     ]
+
+    this.pages = [
+      { title: 'Login Page', component: LoginPage },
+      { title: 'Register Page', component: RegisterPage },
+      { title: 'Forgot Password Page', component: ForgotPasswordPage },
+      { title: 'Home Page', component: HomePage },
+      { title: 'About Page', component: AboutPage },
+      { title: 'Profile Page', component: ProfilePage },
+      { title: 'Account Page', component: AccountPage },      
+      { title: 'Support Page', component: SupportPage },
+      { title: 'Content Page', component: ContentPage },      
+      { title: 'Media Page', component: MediaPage },
+      { title: 'Manage Page', component: ManagePage },
+    ];
+
+    this.menuPages = [
+      { title: 'Home Page', component: HomePage },
+      { title: 'About Page', component: AboutPage },
+      { title: 'Profile Page', component: ProfilePage },
+      { title: 'Account Page', component: AccountPage },      
+      { title: 'Support Page', component: SupportPage },
+    ]
+
   }
 
-  openPage(page: PageInterface) {
-    this.nav.setRoot(page.component);    
-    if (page.logsOut === true) {
-      setTimeout(() => {
-      }, 1000);
-    }
-  }
-
-  listenToLoginEvents() {
-    this.events.subscribe('user:login', () => {
-      this.enableMenu(true);
-    });
-
-    this.events.subscribe('user:signup', () => {
-      this.enableMenu(true);
-    });
-
-    this.events.subscribe('user:logout', () => {
-      this.enableMenu(false);
-    });
-  }
-
-  enableMenu(loggedIn: boolean) {
-    this.menu.enable(loggedIn, 'loggedInMenu');
-    this.menu.enable(!loggedIn, 'loggedOutMenu');
+  openPage(page) {
+    this.nav.setRoot(page.component);
   }
 
   platformReady() {
@@ -128,21 +127,6 @@ export class iShallBe {
       this.splashScreen.hide();
       this.initPushNotification();
     });
-  }
-
-  isActive(page: PageInterface) {
-    let childNav = this.nav.getActiveChildNavs()[0];
-    if (childNav) {
-      if (childNav.getSelected() && childNav.getSelected().root === page.tabComponent) {
-        return 'primary';
-      }
-      return;
-    }
-
-    if (this.nav.getActive() && this.nav.getActive().name === page.name) {
-      return 'primary';
-    }
-    return;
   }
 
   initPushNotification() {

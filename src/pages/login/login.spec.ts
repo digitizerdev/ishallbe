@@ -41,6 +41,6 @@ describe('Login Component', () => {
     fixture.detectChanges();
     expect(component.login.email).toBe('myEmail'); 
     expect(component.login.password).toBe('password');       
-  })
+  });
 
 });
