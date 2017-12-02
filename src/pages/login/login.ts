@@ -11,9 +11,9 @@ import { RegisterPage } from '../register/register';
 })
 
 export class LoginPage {
-  login: {email?: string, password?: string} = {};
+  login: { email?: string, password?: string } = {};
   submitted = false;
-  loggedIn = false;  
+  loggedIn = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -22,7 +22,7 @@ export class LoginPage {
     console.log('ionViewDidLoad LoginPage');
   }
 
-  logForm( email, password) {
+  logForm(email, password) {
     this.login.email = email;
     this.login.password = password;
     this.submitted = true;

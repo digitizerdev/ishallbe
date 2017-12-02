@@ -17,11 +17,6 @@ describe('Home Component', () => {
   let fixture;
   let component;
   let header;
-  let headerComp;
-  let pins;
-  let pinsComp;
-  let posts;
-  let postsComp;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -39,28 +34,11 @@ describe('Home Component', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HomePage);
-    component = fixture.componentInstance;    
-    header = TestBed.createComponent(HeaderComponent);
-    headerComp = header.componentInstance;
-    pins = TestBed.createComponent(PinsComponent);
-    pinsComp = pins.componentInstance;
-    posts = TestBed.createComponent(PostsComponent);
-    postsComp = posts.componentInstance;
+    component = fixture.componentInstance;   
   });
 
   it('should be created', () => {
     expect(component instanceof HomePage).toBe(true);
   });
 
-  it('should have header component', () => {
-    expect(headerComp instanceof HeaderComponent).toBe(true);
-  });
-
-  it('should have pins component', () => {
-    expect(pinsComp instanceof PinsComponent).toBe(true);
-  })
-
-  it('should have posts component', () => {
-    expect(postsComp instanceof PostsComponent).toBe(true);
-  })
 });
