@@ -32,6 +32,7 @@ import { UsersComponent } from '../components/users/users';
 import { CommentsComponent } from '../components/comments/comments';
 import { MediaComponent } from '../components/media/media';
 import { FacebookComponent } from '../components/facebook/facebook';
+import { HeaderComponent } from '../components/header/header';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { StorageProvider } from '../providers/storage/storage';
@@ -49,7 +50,15 @@ import { StorageProvider } from '../providers/storage/storage';
     ProfilePage,
     ManagePage,
     MediaPage,
-    ContentPage
+    ContentPage,
+    PinComponent,
+    PostsComponent,
+    PostComponent,
+    MediaComponent,
+    FacebookComponent,
+    UsersComponent,
+    CommentsComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +79,15 @@ import { StorageProvider } from '../providers/storage/storage';
     ProfilePage,
     ManagePage,
     MediaPage,
-    ContentPage
+    ContentPage,
+    PinComponent,
+    PostsComponent,
+    PostComponent,
+    MediaComponent,
+    FacebookComponent,
+    UsersComponent,
+    CommentsComponent,
+    HeaderComponent
   ],
   providers: [
     StatusBar,
