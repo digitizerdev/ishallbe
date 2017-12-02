@@ -51,7 +51,7 @@ export class iShallBe {
   pages: Array<{ title: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
   components: Array<{ title: string, component: any }>;
-  menuPages: Array<{ title: string, component: any }>;
+  menuPages: Array<{ title: string, icon: string, component: any }>;
   
   constructor(
     public platform: Platform,
@@ -69,11 +69,12 @@ export class iShallBe {
     this.pages = [
       { title: 'Home Page', component: HomePage },
       { title: 'About Page', component: AboutPage },
+      { title: 'Profile Page', component: ProfilePage },
+      { title: 'Account Page', component: AccountPage },      
+      { title: 'Support Page', component: SupportPage },
       { title: 'Login Page', component: LoginPage },
       { title: 'Register Page', component: RegisterPage },
       { title: 'Forgot Password Page', component: ForgotPasswordPage },
-      { title: 'Account Page', component: AccountPage },
-      { title: 'Support Page', component: SupportPage },
       { title: 'Media Page', component: MediaPage },
       { title: 'Manage Page', component: ManagePage },
       { title: 'Content Page', component: ContentPage }
@@ -96,26 +97,27 @@ export class iShallBe {
       { title: 'Header Component', component: HeaderComponent }
     ]
 
-    this.pages = [
-      { title: 'Login Page', component: LoginPage },
-      { title: 'Register Page', component: RegisterPage },
-      { title: 'Forgot Password Page', component: ForgotPasswordPage },
-      { title: 'Home Page', component: HomePage },
-      { title: 'About Page', component: AboutPage },
-      { title: 'Profile Page', component: ProfilePage },
-      { title: 'Account Page', component: AccountPage },      
-      { title: 'Support Page', component: SupportPage },
-      { title: 'Content Page', component: ContentPage },      
-      { title: 'Media Page', component: MediaPage },
-      { title: 'Manage Page', component: ManagePage },
-    ];
-
     this.menuPages = [
-      { title: 'Home Page', component: HomePage },
-      { title: 'About Page', component: AboutPage },
-      { title: 'Profile Page', component: ProfilePage },
-      { title: 'Account Page', component: AccountPage },      
-      { title: 'Support Page', component: SupportPage },
+      { title: 'Home', 
+        icon: 'ios-home',
+        component: HomePage
+      },
+      { title: 'About', 
+        icon: 'ios-information-circle',
+        component: AboutPage 
+      },
+      { title: 'Profile', 
+        icon: 'ios-person',
+        component: ProfilePage 
+      },
+      { title: 'Account', 
+        icon: 'ios-contact',
+        component: AccountPage 
+      },      
+      { title: 'Support', 
+        icon: 'ios-mail',
+        component: SupportPage 
+      },
     ]
   }
 
