@@ -122,7 +122,7 @@ export class iShallBe {
     ]
   }
 
-  userInStorage() {
+  checkIfSessionExists() {
 
   }
 

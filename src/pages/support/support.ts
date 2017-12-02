@@ -8,7 +8,11 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class SupportPage {
   submitted = false;
-  email: { subject?: string, message?: string } = {};
+  form = { 
+    subject: null, 
+    message: null 
+  };
+  email: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -17,8 +21,13 @@ export class SupportPage {
     console.log('ionViewDidLoad SupportPage');
   }
 
-  logForm(subject, message) {
-    this.email.subject = subject;
-    this.email.message = message;
+  logForm() {
+    this.email = {
+      to: 'ishallbe17@gmail.com',
+      subject: this.form.subject,
+      body: this.form.message,
+      isHtml: true
+    };
   }
+
 }

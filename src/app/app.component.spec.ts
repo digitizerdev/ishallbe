@@ -98,6 +98,8 @@ describe('iShallBe Component', () => {
     fixture.detectChanges();
     expect(component['rootPage']).toBe(HomePage);
   });
+
+  
   
   afterEach(() => {
     fixture.destroy();

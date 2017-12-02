@@ -41,13 +41,17 @@ describe('Support Component', () => {
     expect(component.submitted).toBe(false);
   });
 
-  it('should populate email with subject and message on submission', () => {
-    expect(component.email.subject).toBe(undefined);
-    expect(component.email.message).toBe(undefined); 
-    component.logForm('My Subject', 'My Message');;
+  it('should populate email with correct details on submission', () => {
+    expect(component.form.subject).toBe(null);
+    expect(component.form.message).toBe(null); 
+    component.form.subject = 'My Subject';
+    component.form.message = 'My Message';
+    component.logForm();
     fixture.detectChanges();
+    expect(component.email.to).toBe('ishallbe17@gmail.com')
     expect(component.email.subject).toBe('My Subject');
-    expect(component.email.message).toBe('My Message');
+    expect(component.email.body).toBe('My Message');
+    expect(component.email.isHtml).toBe(true);
   }); 
 
 });
