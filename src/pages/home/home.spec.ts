@@ -13,7 +13,7 @@ import {
   NavMock
 } from '../../../test-config/mocks-ionic';
 
-describe('Home Component', () => {
+describe('Home Page', () => {
   let fixture;
   let component;
   let header;

@@ -34,7 +34,7 @@ import {
 import { } from 'jasmine';
 
 
-describe('iShallBe Component', () => {
+describe('iShallBe App Component', () => {
   let fixture;
   let component;
   let session: SessionProvider;
@@ -87,15 +87,19 @@ describe('iShallBe Component', () => {
     expect(component.menuPages.length).toBe(5);
   });
 
-  it('should have wake up function', () => {
-    expect(component.wakeUp()).toBeUndefined();
+  it('should initialize with login page as root page', () => {
+    expect(component['rootPage']).toBe(LoginPage);
+  });
+
+  it('should have platform ready function', () => {
+    expect(component.platformReady()).toBeUndefined();
   })
 
   it('should have session provider existence function that returns a value', () => {
     expect(session.exists()).toBeDefined();
   });
 
-  it('should have a choose root page function that does not return', () => {
+  it('should have choose root page function that does not return a value', () => {
     expect(component.chooseRootPage()).toBeUndefined();
   });
 
@@ -106,11 +110,15 @@ describe('iShallBe Component', () => {
     expect(session.exists).toHaveBeenCalledTimes(1);
   });
 
-  it('should choose home page as root if session found', () => {
+  it('should choose home page to be root page if session found', () => {
     component.chooseRootPage(true);
     fixture.detectChanges();
     expect(component['rootPage']).toBe(HomePage);
   });
+
+  it('should have a open page function', () => {
+    expect(component.openPage()).toBeUndefined();
+  })
 
   afterEach(() => {
     fixture.destroy();

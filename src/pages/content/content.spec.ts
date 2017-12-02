@@ -8,7 +8,7 @@ import {
   NavMock
 } from '../../../test-config/mocks-ionic';
 
-describe('Content Component', () => {
+describe('Content Page', () => {
   let fixture;
   let component;
 

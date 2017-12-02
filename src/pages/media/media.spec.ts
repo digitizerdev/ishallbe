@@ -8,7 +8,7 @@ import {
   NavMock
 } from '../../../test-config/mocks-ionic';
 
-describe('Media Component', () => {
+describe('Media Page', () => {
   let fixture;
   let component;
 

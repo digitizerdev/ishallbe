@@ -10,7 +10,7 @@ import {
 import {} from 'jasmine';
 
 
-describe('Support Component', () => {
+describe('Support Page', () => {
   let fixture;
   let component;
 

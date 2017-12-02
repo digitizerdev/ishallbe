@@ -1,8 +1,7 @@
 import { NgModule, Component, ViewChild } from '@angular/core';
-import { Events, Nav, MenuController, Platform, AlertController } from 'ionic-angular';
+import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Push, PushObject, PushOptions } from '@ionic-native/push';
 
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
@@ -30,15 +29,6 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
 import { SessionProvider } from '../providers/session/session';
 
 export interface PageInterface {
-  title: string;
-  name: string;
-  component: any;
-  icon: string;
-  logsOut?: boolean;
-  index?: number;
-  tabName?: string;
-  tabComponent?: any;
-  loggedIn: false;
 }
 
 @Component({
@@ -48,7 +38,6 @@ export class iShallBe {
 
   @ViewChild(Nav) nav: Nav;
 
-  sessionExists = false;
   rootPage: any;
   pages: Array<{ title: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
@@ -60,12 +49,9 @@ export class iShallBe {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public user: FirebaseProvider,
-    public alertCtrl: AlertController,
-    public menu: MenuController,
-    public events: Events,
-    public push: Push,
     public session: SessionProvider
   ) {
+    this.rootPage = LoginPage;    
     platform.ready();    
 
     this.pages = [
@@ -123,52 +109,22 @@ export class iShallBe {
     ]
   }
 
-  wakeUp() {
-    this.chooseRootPage(this.session.exists());
+  platformReady() {
+    this.platform.ready().then(() => {
+      this.chooseRootPage(this.session.exists());
+      this.splashScreen.hide();
+    });
   }
 
   chooseRootPage(session) {
     if (session) {
       this.rootPage = HomePage;
-    } else {
-      this.rootPage = LoginPage;
     }
   }
 
   openPage(page) {
     this.nav.setRoot(page.component);
   }
-
-  platformReady() {
-    this.platform.ready().then(() => {
-      this.chooseRootPage(this.session.exists());
-      this.splashScreen.hide();
-      this.initPushNotification();
-    });
-  }
-
-  initPushNotification() {
-    this.push.hasPermission()
-      .then((res: any) => {
-        if (res.isEnabled) {
-          console.log('We have permission to send push notifications');
-        } else {
-          console.log('We do not have permission to send push notifications');
-        }
-      });
-
-    const options: PushOptions = {
-      android: {},
-      ios: {
-        alert: 'true',
-        badge: true,
-        sound: 'false'
-      },
-    };
-
-    const pushObject: PushObject = this.push.init(options);
-  }
-
 
 }
 
