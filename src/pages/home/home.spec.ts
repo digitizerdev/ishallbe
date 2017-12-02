@@ -4,6 +4,8 @@ import { IonicModule, NavController, NavParams, } from 'ionic-angular';
 import {} from 'jasmine';
 
 import { HomePage } from './home';
+import { HeaderComponent } from '../../components/header/header';
+
 import {
   NavMock
 } from '../../../test-config/mocks-ionic';
@@ -33,5 +35,9 @@ describe('Home Component', () => {
   it('should be created', () => {
     expect(component instanceof HomePage).toBe(true);
   });
+
+  it('should contain header component', () => {
+    expect(component instanceof HeaderComponent )
+  }); 
 
 });
