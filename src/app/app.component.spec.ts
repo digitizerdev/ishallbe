@@ -58,7 +58,7 @@ describe('iShallBe Component', () => {
         { provide: SessionProvider, useClass: SessionProviderMock }
       ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -83,64 +83,44 @@ describe('iShallBe Component', () => {
     expect(component.providers.length).toBe(2);
   });
 
-  it('should have 5 menu pages', ()=>{
+  it('should have 5 menu pages', () => {
     expect(component.menuPages.length).toBe(5);
   })
 
-  it('should have session provider with an existence function', () => {
-    expect(session.exists()).toBeDefined();    
+  it('should have session provider with an existence function that returns a value', () => {
+    expect(session.exists()).toBeDefined();
   })
 
-
-
-  it('should have a choose root page function', () => {
-    expect(component.chooseRootPage()).toBeDefined();   
+  it('should have a choose root page function that does not return', () => {
+    expect(component.chooseRootPage()).toBeUndefined();
   })
 
-  /*   it('should initialises with a root page of Login if session not found', () => {
-    component.loggedIn = false;    
-    expect(component.loggedIn).toBe(false);
-    component.enablePortal(component.loggedIn);
-    fixture.detectChanges();
-    expect(component['rootPage']).toBe(LoginPage);
-  }); */
-
-/*   it('should initialises with a root page of Home if session found', () => {
-    component.loggedIn = true;
-    expect(component.loggedIn).toBe(true);
-    component.enablePortal(component.loggedIn);
-    fixture.detectChanges();
-    expect(component['rootPage']).toBe(HomePage);
-  }); */
-
-/*   it('should be able to check for user session existence through session provider')
-  {
-    expect(session.exists()).toBeDefined();    
+  it('should be able to check for user session existence through session provider', () => {
     spyOn(session, 'exists').and.returnValue;
-    component.checkIfSessionExists();
+    component.chooseRootPage();
     fixture.detectChanges();
     expect(session.exists).toHaveBeenCalledTimes(1);
-  } */
+  })
 
-/*   it('should choose root page if session found')
-    {
-    component.chooseRootPage(false);
-    fixture.detectChanges();
-    expect(component['rootPage']).toBe(LoginPage);
-  } */
-
-/*   it('should call the getUser method on checkIfSessionExists', ()  => {
-    expect(session.getUser()).toBeDefined();    
-    spyOn(session, 'getUser').and.returnValue;
-    component.checkIfSessionExists();
-    fixture.detectChanges();
-    expect(session.getUser).toHaveBeenCalledTimes(1);
-    expect(component.checkIfSessionExists()).toBe(false);
-  }); */
-  
   afterEach(() => {
     fixture.destroy();
     component = null;
   });
+
+  /*   it('should choose root page if session found')
+      {
+      component.chooseRootPage(false);
+      fixture.detectChanges();
+      expect(component['rootPage']).toBe(LoginPage);
+    } */
+
+  /*   it('should call the getUser method on checkIfSessionExists', ()  => {
+      expect(session.getUser()).toBeDefined();    
+      spyOn(session, 'getUser').and.returnValue;
+      component.checkIfSessionExists();
+      fixture.detectChanges();
+      expect(session.getUser).toHaveBeenCalledTimes(1);
+      expect(component.checkIfSessionExists()).toBe(false);
+    }); */
 
 });

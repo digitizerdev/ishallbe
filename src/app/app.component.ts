@@ -123,7 +123,7 @@ export class iShallBe {
     ]
   }
 
-  chooseRootPage() {
+  chooseRootPage(): void {
     if (this.session.exists()) {
       this.rootPage = HomePage;
     } else {
