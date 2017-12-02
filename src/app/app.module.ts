@@ -24,15 +24,7 @@ import { ProfilePage } from '../pages/profile/profile';
 import { ManagePage } from '../pages/manage/manage';
 import { ContentPage } from '../pages/content/content';
 
-import { PinsComponent } from '../components/pins/pins';
-import { PinComponent } from '../components/pin/pin';
-import { PostsComponent } from '../components/posts/posts';
-import { PostComponent } from '../components/post/post';
-import { UsersComponent } from '../components/users/users';
-import { CommentsComponent } from '../components/comments/comments';
-import { MediaComponent } from '../components/media/media';
-import { FacebookComponent } from '../components/facebook/facebook';
-import { HeaderComponent } from '../components/header/header';
+import { ComponentsModule } from '../components/components.module';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { StorageProvider } from '../providers/storage/storage';
@@ -51,21 +43,13 @@ import { StorageProvider } from '../providers/storage/storage';
     ManagePage,
     MediaPage,
     ContentPage,
-    PinsComponent,
-    PinComponent,
-    PostsComponent,
-    PostComponent,
-    MediaComponent,
-    FacebookComponent,
-    UsersComponent,
-    CommentsComponent,
-    HeaderComponent
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(iShallBe, {}, { links: [] }),
     IonicStorageModule.forRoot(),
-    HttpModule
+    HttpModule,
+    ComponentsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -81,15 +65,6 @@ import { StorageProvider } from '../providers/storage/storage';
     ManagePage,
     MediaPage,
     ContentPage,
-    PinsComponent,
-    PinComponent,
-    PostsComponent,
-    PostComponent,
-    MediaComponent,
-    FacebookComponent,
-    UsersComponent,
-    CommentsComponent,
-    HeaderComponent
   ],
   providers: [
     StatusBar,

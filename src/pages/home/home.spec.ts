@@ -7,6 +7,7 @@ import { HomePage } from './home';
 import { HeaderComponent } from '../../components/header/header';
 import { PinsComponent } from '../../components/pins/pins';
 import { PostsComponent } from '../../components/posts/posts';
+import { ComponentsModule } from '../../components/components.module';
 
 import {
   NavMock
@@ -15,12 +16,19 @@ import {
 describe('Home Component', () => {
   let fixture;
   let component;
+  let header;
+  let headerComp;
+  let pins;
+  let pinsComp;
+  let posts;
+  let postsComp;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [HomePage],
       imports: [
         IonicModule.forRoot(HomePage),
+        ComponentsModule,
       ],
       providers: [
         { provide: NavController, useClass: NavMock },
@@ -31,23 +39,28 @@ describe('Home Component', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HomePage);
-    component = fixture.componentInstance;
+    component = fixture.componentInstance;    
+    header = TestBed.createComponent(HeaderComponent);
+    headerComp = header.componentInstance;
+    pins = TestBed.createComponent(PinsComponent);
+    pinsComp = pins.componentInstance;
+    posts = TestBed.createComponent(PostsComponent);
+    postsComp = posts.componentInstance;
   });
 
   it('should be created', () => {
     expect(component instanceof HomePage).toBe(true);
   });
 
-  it('should contain header component', () => {
-    expect(component instanceof HeaderComponent).toBe(true);
-  }); 
+  it('should have header component', () => {
+    expect(headerComp instanceof HeaderComponent).toBe(true);
+  });
 
-  it('should contain pins component', () => {
-    expect(component instanceof PinsComponent).toBe(true);
-  }); 
+  it('should have pins component', () => {
+    expect(pinsComp instanceof PinsComponent).toBe(true);
+  })
 
-  it('should contain posts component', () => {
-    expect(component instanceof PostsComponent).toBe(true);
-  }); 
-
+  it('should have posts component', () => {
+    expect(postsComp instanceof PostsComponent).toBe(true);
+  })
 });
