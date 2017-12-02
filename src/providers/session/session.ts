@@ -7,7 +7,6 @@ export class SessionProvider {
   user = false;
 
   constructor() {
-    console.log('Hello SessionProvider Provider');
   }
 
   exists() {
@@ -15,6 +14,6 @@ export class SessionProvider {
   }
 
   another() {
-    
+
   }
 }

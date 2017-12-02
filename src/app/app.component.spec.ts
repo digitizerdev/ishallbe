@@ -106,12 +106,11 @@ describe('iShallBe Component', () => {
     expect(session.exists).toHaveBeenCalledTimes(1);
   });
 
-/*   it('should choose home page as root if session found', () => {
-      component.chooseRootPage(true);
-      fixture.detectChanges();
-      expect(component['rootPage']).toBe(HomePage);
+  it('should choose home page as root if session found', () => {
+    component.chooseRootPage(true);
+    fixture.detectChanges();
+    expect(component['rootPage']).toBe(HomePage);
   });
- */
 
   afterEach(() => {
     fixture.destroy();
