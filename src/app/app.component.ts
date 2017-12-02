@@ -48,6 +48,7 @@ export class iShallBe {
 
   @ViewChild(Nav) nav: Nav;
 
+  sessionExists = false;
   rootPage: any;
   pages: Array<{ title: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
@@ -62,9 +63,9 @@ export class iShallBe {
     public alertCtrl: AlertController,
     public menu: MenuController,
     public events: Events,
-    public push: Push
+    public push: Push,
+    public session: SessionProvider
   ) {
-    this.rootPage = LoginPage;
     platform.ready();    
 
     this.pages = [
@@ -122,8 +123,12 @@ export class iShallBe {
     ]
   }
 
-  checkIfSessionExists() {
-
+  chooseRootPage() {
+    if (this.session.exists()) {
+      this.rootPage = HomePage;
+    } else {
+      this.rootPage = LoginPage;
+    }
   }
 
   enablePortal(loggedIn: boolean) {
@@ -139,6 +144,7 @@ export class iShallBe {
 
   platformReady() {
     this.platform.ready().then(() => {
+      this.chooseRootPage();
       this.splashScreen.hide();
       this.initPushNotification();
     });
