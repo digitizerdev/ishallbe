@@ -5,6 +5,8 @@ import {} from 'jasmine';
 
 import { HomePage } from './home';
 import { HeaderComponent } from '../../components/header/header';
+import { PinsComponent } from '../../components/pins/pins';
+import { PostsComponent } from '../../components/posts/posts';
 
 import {
   NavMock
@@ -37,7 +39,15 @@ describe('Home Component', () => {
   });
 
   it('should contain header component', () => {
-    expect(component instanceof HeaderComponent )
+    expect(component instanceof HeaderComponent).toBe(true);
+  }); 
+
+  it('should contain pins component', () => {
+    expect(component instanceof PinsComponent).toBe(true);
+  }); 
+
+  it('should contain posts component', () => {
+    expect(component instanceof PostsComponent).toBe(true);
   }); 
 
 });
