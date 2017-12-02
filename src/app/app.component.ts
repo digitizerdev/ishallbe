@@ -123,18 +123,15 @@ export class iShallBe {
     ]
   }
 
-  chooseRootPage(): void {
-    if (this.session.exists()) {
+  wakeUp() {
+    this.chooseRootPage(this.session.exists());
+  }
+
+  chooseRootPage(session) {
+    if (session) {
       this.rootPage = HomePage;
     } else {
       this.rootPage = LoginPage;
-    }
-  }
-
-  enablePortal(loggedIn: boolean) {
-    console.log("Enable portal triggered");
-    if (loggedIn) {
-      this.rootPage = HomePage;
     }
   }
 
@@ -144,7 +141,7 @@ export class iShallBe {
 
   platformReady() {
     this.platform.ready().then(() => {
-      this.chooseRootPage();
+      this.chooseRootPage(this.session.exists());
       this.splashScreen.hide();
       this.initPushNotification();
     });

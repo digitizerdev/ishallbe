@@ -85,42 +85,37 @@ describe('iShallBe Component', () => {
 
   it('should have 5 menu pages', () => {
     expect(component.menuPages.length).toBe(5);
+  });
+
+  it('should have wake up function', () => {
+    expect(component.wakeUp()).toBeUndefined();
   })
 
-  it('should have session provider with an existence function that returns a value', () => {
+  it('should have session provider existence function that returns a value', () => {
     expect(session.exists()).toBeDefined();
-  })
+  });
 
   it('should have a choose root page function that does not return', () => {
     expect(component.chooseRootPage()).toBeUndefined();
-  })
+  });
 
-  it('should be able to check for user session existence through session provider', () => {
+  it('should get session from session provider existence function', () => {
     spyOn(session, 'exists').and.returnValue;
-    component.chooseRootPage();
+    component.wakeUp();
     fixture.detectChanges();
     expect(session.exists).toHaveBeenCalledTimes(1);
-  })
+  });
+
+/*   it('should choose home page as root if session found', () => {
+      component.chooseRootPage(true);
+      fixture.detectChanges();
+      expect(component['rootPage']).toBe(HomePage);
+  });
+ */
 
   afterEach(() => {
     fixture.destroy();
     component = null;
   });
-
-  /*   it('should choose root page if session found')
-      {
-      component.chooseRootPage(false);
-      fixture.detectChanges();
-      expect(component['rootPage']).toBe(LoginPage);
-    } */
-
-  /*   it('should call the getUser method on checkIfSessionExists', ()  => {
-      expect(session.getUser()).toBeDefined();    
-      spyOn(session, 'getUser').and.returnValue;
-      component.checkIfSessionExists();
-      fixture.detectChanges();
-      expect(session.getUser).toHaveBeenCalledTimes(1);
-      expect(component.checkIfSessionExists()).toBe(false);
-    }); */
 
 });
