@@ -8,6 +8,7 @@ import { FacebookComponent } from './facebook/facebook';
 import { UsersComponent } from './users/users';
 import { CommentsComponent } from './comments/comments';
 import { HeaderComponent } from './header/header';
+
 @NgModule({
 	declarations: [PinsComponent,
     PinComponent,
