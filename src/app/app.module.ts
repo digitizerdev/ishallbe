@@ -27,7 +27,7 @@ import { ContentPage } from '../pages/content/content';
 import { ComponentsModule } from '../components/components.module';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
-import { StorageProvider } from '../providers/storage/storage';
+import { SessionProvider } from '../providers/session/session';
 
 @NgModule({
   declarations: [
@@ -76,7 +76,7 @@ import { StorageProvider } from '../providers/storage/storage';
     MediaCapture,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     FirebaseProvider,
-    StorageProvider
+    SessionProvider
   ]
 })
 export class AppModule { }

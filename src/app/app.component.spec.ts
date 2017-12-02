@@ -15,7 +15,7 @@ import { RegisterPage } from '../pages/register/register';
 import { HomePage } from '../pages/home/home';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
-import { StorageProvider } from '../providers/storage/storage';
+import { SessionProvider } from '../providers/session/session';
 
 import { } from 'jasmine';
 
@@ -29,7 +29,7 @@ import {
   FileMock,
   PushMock,
   FirebaseProviderMock,
-  StorageProviderMock
+  SessionProviderMock
 } from '../../test-config/mocks-ionic';
 
 describe('iShallBe Component', () => {
@@ -51,7 +51,7 @@ describe('iShallBe Component', () => {
         { provide: File, useClass: FileMock },
         { provide: Push, useClass: PushMock },
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
-        { provide: StorageProvider, useClass: StorageProviderMock }
+        { provide: SessionProvider, useClass: SessionProviderMock }
       ],
     })
   }));

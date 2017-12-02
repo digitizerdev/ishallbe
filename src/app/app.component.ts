@@ -27,7 +27,7 @@ import { FacebookComponent } from '../components/facebook/facebook';
 import { HeaderComponent } from '../components/header/header';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
-import { StorageProvider } from '../providers/storage/storage';
+import { SessionProvider } from '../providers/session/session';
 
 export interface PageInterface {
   title: string;
@@ -82,7 +82,7 @@ export class iShallBe {
 
     this.providers = [
       { title: 'Firebase Provider', component: FirebaseProvider },
-      { title: 'Storage Provider', component: StorageProvider }
+      { title: 'SessionProvider', component: SessionProvider }
     ]
 
     this.components = [
@@ -119,6 +119,10 @@ export class iShallBe {
         component: SupportPage 
       },
     ]
+  }
+
+  userInStorage() {
+
   }
 
   openPage(page) {

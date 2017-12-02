@@ -1,5 +1,5 @@
 import { FirebaseProvider } from '../src/providers/firebase/firebase';
-import { StorageProvider } from '../src/providers/storage/storage';
+import { SessionProvider } from '../src/providers/session/session';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -82,7 +82,7 @@ export class FirebaseProviderMock extends FirebaseProvider {
   }
 }
 
-export class StorageProviderMock extends StorageProvider {
+export class SessionProviderMock extends SessionProvider {
   styleDefault() {
     return;
   }

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class StorageProvider {
+export class SessionProvider {
 
   constructor() {
-    console.log('Hello StorageProvider Provider');
+    console.log('Hello SessionProvider Provider');
   }
 
 }
