@@ -38,6 +38,7 @@ export interface PageInterface {
   index?: number;
   tabName?: string;
   tabComponent?: any;
+  loggedIn: false;
 }
 
 @Component({
@@ -123,6 +124,13 @@ export class iShallBe {
 
   userInStorage() {
 
+  }
+
+  enablePortal(loggedIn: boolean) {
+    console.log("Enable portal triggered");
+    if (loggedIn) {
+      this.rootPage = HomePage;
+    }
   }
 
   openPage(page) {

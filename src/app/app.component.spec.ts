@@ -17,9 +17,8 @@ import { HomePage } from '../pages/home/home';
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { SessionProvider } from '../providers/session/session';
 
-import { } from 'jasmine';
-
 import { iShallBe } from './app.component';
+
 import {
   PlatformMock,
   StatusBarMock,
@@ -31,6 +30,9 @@ import {
   FirebaseProviderMock,
   SessionProviderMock
 } from '../../test-config/mocks-ionic';
+
+import { } from 'jasmine';
+
 
 describe('iShallBe Component', () => {
   let fixture;
@@ -77,13 +79,25 @@ describe('iShallBe Component', () => {
     expect(component.providers.length).toBe(2);
   });
 
-  it('should initialises with a root page of LoginPage', () => {
-    expect(component['rootPage']).toBe(LoginPage);
-  });
-
   it('should have 5 menu pages', ()=>{
     expect(component.menuPages.length).toBe(5);
   })
+
+  it('should initialises with a root page of Login if session not found', () => {
+    component.loggedIn = false;    
+    expect(component.loggedIn).toBe(false);
+    component.enablePortal(component.loggedIn);
+    fixture.detectChanges();
+    expect(component['rootPage']).toBe(LoginPage);
+  });
+
+  it('should initialises with a root page of Home if session found', () => {
+    component.loggedIn = true;
+    expect(component.loggedIn).toBe(true);
+    component.enablePortal(component.loggedIn);
+    fixture.detectChanges();
+    expect(component['rootPage']).toBe(HomePage);
+  });
   
   afterEach(() => {
     fixture.destroy();
