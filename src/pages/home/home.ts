@@ -22,7 +22,6 @@ export class HomePage {
   }
 
   syncHome() {
-    console.log('Sync home triggered');
   }
 
 }

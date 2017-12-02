@@ -111,9 +111,13 @@ export class iShallBe {
 
   platformReady() {
     this.platform.ready().then(() => {
-      this.chooseRootPage(this.session.exists());
+      this.wakeUp();
       this.splashScreen.hide();
     });
+  }
+
+  wakeUp() {
+    this.chooseRootPage(this.session.exists());
   }
 
   chooseRootPage(session) {

@@ -93,6 +93,10 @@ describe('iShallBe App Component', () => {
 
   it('should have platform ready function', () => {
     expect(component.platformReady()).toBeUndefined();
+  });
+
+  it('should have wake up function', () => {
+    expect(component.wakeUp()).toBeUndefined();
   })
 
   it('should have session provider existence function that returns a value', () => {
@@ -103,7 +107,7 @@ describe('iShallBe App Component', () => {
     expect(component.chooseRootPage()).toBeUndefined();
   });
 
-  it('should get session from session provider existence function', () => {
+  it('should get session from session provider existence function at when choosing root page', () => {
     spyOn(session, 'exists').and.returnValue;
     component.wakeUp();
     fixture.detectChanges();
