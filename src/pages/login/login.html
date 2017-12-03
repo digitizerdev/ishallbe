@@ -1,9 +1,5 @@
 <ion-content center padding>
-  <div class="logo" text-center>
-    <br>
-    <img src="assets/img/icon.png" style="display: round; width: 80%; height: auto; margin-left: auto; margin-right: auto;" alt="iShallBe logo">
-  </div>
-  <br>
+  <header></header>
   <br>
   <br>
   <form #loginForm="ngForm" novalidate>
@@ -38,12 +34,12 @@
       <br>
     <ion-row responsive-sm>
       <ion-col text-center>
-        <button ion-button (click)="goToPasswordReset()" color="primary" round outline >Forgot Your Password?</button>
+        <button ion-button id="forgotPasswordButton" (click)="pushForgotPasswordPage()" color="primary" round outline >{{forgotPasswordButtonText}}</button>
       </ion-col>
     </ion-row>
     <ion-row responsive-sm>
       <ion-col text-center>
-        <button ion-button (click)="onSignup()" color="primary" round outline >Sign Up</button>
+        <button ion-button (click)="setRootRegisterPage()" color="primary" round outline >Sign Up</button>
       </ion-col>
     </ion-row>
   </ion-list>    

@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
-import { IonicStorageModule } from '@ionic/storage';
+import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class SessionProvider {
 
-  user = false;
+  user = true;
 
   constructor() {
   }
 
   exists() {
-    return false;
+    return this.user;
   }
 
-  another() {
-
-  }
 }

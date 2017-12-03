@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { HomePage } from '../home/home';
 import { RegisterPage } from '../register/register';
+import { ForgotPasswordPage } from '../forgot-password/forgot-password';
 
 @IonicPage()
 @Component({
@@ -11,22 +12,29 @@ import { RegisterPage } from '../register/register';
 })
 
 export class LoginPage {
-  login: { email?: string, password?: string } = {};
-  submitted = false;
-  loggedIn = false;
+  loginForm: { email?: string, password?: string } = {};
+  loginFormSubmitted = false;
+  forgotPasswordButtonText = 'Forgot Password?';
+  registerButtonText = 'Register';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams
+  ) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
   }
 
-  logForm(email, password) {
-    this.login.email = email;
-    this.login.password = password;
-    this.submitted = true;
-    this.loggedIn = true;
+  pushForgotPasswordPage() {
+    this.navCtrl.push(ForgotPasswordPage);
+  }
+
+  setRootRegisterPage() {
+    this.navCtrl.setRoot(RegisterPage);
+  }
+
+  submitLoginForm() {
     this.navCtrl.setRoot(HomePage);
   }
 

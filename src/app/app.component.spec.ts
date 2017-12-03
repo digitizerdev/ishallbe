@@ -32,11 +32,12 @@ import {
 
 import { } from 'jasmine';
 
+let fixture;
+let component;
+let session: SessionProvider;
+let sessionSpy;
+
 describe('iShallBe App Component', () => {
-  let fixture;
-  let component;
-  let session: SessionProvider;
-  let sessionSpy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -62,6 +63,13 @@ describe('iShallBe App Component', () => {
         session = fixture.componentRef.injector.get(SessionProvider);
       });
   }));
+
+  afterEach(() => {
+    fixture.destroy();
+    component = null;
+    session = null;
+    sessionSpy = null;
+  });
 
   it('should be created', () => {
     expect(component instanceof iShallBe).toBe(true);
@@ -118,11 +126,6 @@ describe('iShallBe App Component', () => {
 
   it('should have a open page function', () => {
     expect(component.openPage()).toBeUndefined();
-  });
-
-  afterEach(() => {
-    fixture.destroy();
-    component = null;
   });
 
 });
