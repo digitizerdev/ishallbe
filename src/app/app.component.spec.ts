@@ -11,7 +11,6 @@ import { File } from '@ionic-native/file';
 import { Storage } from '@ionic/storage';
 
 import { LoginPage } from '../pages/login/login';
-import { RegisterPage } from '../pages/register/register';
 import { HomePage } from '../pages/home/home';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
@@ -32,7 +31,6 @@ import {
 } from '../../test-config/mocks-ionic';
 
 import { } from 'jasmine';
-
 
 describe('iShallBe App Component', () => {
   let fixture;
@@ -58,14 +56,12 @@ describe('iShallBe App Component', () => {
         { provide: SessionProvider, useClass: SessionProviderMock }
       ],
     })
-      .compileComponents();
+      .compileComponents().then(()=>{
+        fixture = TestBed.createComponent(iShallBe);
+        component = fixture.componentInstance;
+        session = fixture.componentRef.injector.get(SessionProvider);
+      });
   }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(iShallBe);
-    component = fixture.componentInstance;
-    session = fixture.componentRef.injector.get(SessionProvider);
-  });
 
   it('should be created', () => {
     expect(component instanceof iShallBe).toBe(true);
@@ -122,7 +118,7 @@ describe('iShallBe App Component', () => {
 
   it('should have a open page function', () => {
     expect(component.openPage()).toBeUndefined();
-  })
+  });
 
   afterEach(() => {
     fixture.destroy();

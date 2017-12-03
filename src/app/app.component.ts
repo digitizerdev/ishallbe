@@ -127,7 +127,7 @@ export class iShallBe {
   }
 
   openPage(page) {
-    this.nav.setRoot(page.component);
+    this.nav.setRoot(page);
   }
 
 }
