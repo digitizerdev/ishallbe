@@ -12,8 +12,8 @@ import { PasswordResetPage } from '../password-reset/password-reset';
 })
 
 export class LoginPage {
-  form: { email?: string, password?: string } = {};
-  formSubmitted = false;
+  submission: { email?: string, password?: string } = {};
+  submitted = false;
   forgotPasswordButtonText = 'Forgot Password?';
   registerButtonText = 'REGISTER';
   loginButtonText = 'LOGIN';

@@ -27,7 +27,6 @@ import { PinManagerPage } from '../pages/pin-manager/pin-manager';
 import { MediaComponent } from '../components/media/media';
 import { FacebookComponent } from '../components/facebook/facebook';
 import { HeaderComponent } from '../components/header/header';
-import { FormComponent } from '../components/form/form';
 import { InteractionsComponent } from '../components/interactions/interactions';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
@@ -92,7 +91,6 @@ export class iShallBe {
       { title: 'Media Component', component: MediaComponent },      
       { title: 'Facebook Component', component: FacebookComponent },
       { title: 'Header Component', component: HeaderComponent },
-      { title: 'Form Component', component: FormComponent },
       { title: 'InteractionsComponent', component: InteractionsComponent }
     ]
 

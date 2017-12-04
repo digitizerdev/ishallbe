@@ -83,7 +83,7 @@ describe('iShallBe App Component', () => {
     expect(component.pages.length).toBe(20);
   });
 
-  it('should have 5 components', () => {
+  it('should have 4 components', () => {
     expect(component.components.length).toBe(5);
   });
 
