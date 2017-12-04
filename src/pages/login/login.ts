@@ -21,7 +21,6 @@ export class LoginPage {
   constructor(
     public navCtrl: NavController, 
   ) {
-    this.form.email = 'test@tdct.io';
   }
 
   ionViewDidLoad() {
