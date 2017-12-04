@@ -43,7 +43,8 @@ export class iShallBe {
   providers: Array<{ title: string, component: any }>;
   components: Array<{ title: string, component: any }>;
   menuPages: Array<{ title: string, icon: string, component: any }>;
-  
+  managerPages: Array<{ title: string, icon: string, component: any }>;
+
   constructor(
     public platform: Platform,
     public statusBar: StatusBar,
@@ -107,7 +108,22 @@ export class iShallBe {
         component: SupportPage 
       },
     ]
-  }
+
+  this.managerPages = [
+    { title: 'Manage Pins', 
+      icon: 'ios-albums',
+      component: HomePage
+    },
+    { title: 'Manage Posts', 
+      icon: 'ios-images',
+      component: AboutPage 
+    },
+    { title: 'Manager Users', 
+      icon: 'ios-people',
+      component: ProfilePage 
+    }
+  ]
+}
 
   platformReady() {
     this.platform.ready().then(() => {
@@ -117,7 +133,7 @@ export class iShallBe {
   }
 
   wakeUp() {
-    this.chooseRootPage(this.session.exists());
+    this.chooseRootPage(this.session.found());
   }
 
   chooseRootPage(session) {

@@ -4,12 +4,15 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class SessionProvider {
 
-  user = true;
+  user = {
+    'contributor': true,
+    'editor': false
+  }
 
   constructor() {
   }
 
-  exists() {
+  found() {
     return this.user;
   }
 

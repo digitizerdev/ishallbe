@@ -47,16 +47,13 @@ describe('Login Page', () => {
     expect(component instanceof LoginPage).toBe(true);
   });
 
-  it('should have header component', fakeAsync(() => {
-    fixture.detectChanges();
-    tick();
+  it('should display header component', () => {
     let de: DebugElement;
     let el: HTMLElement;
-    de = fixture.debugElement.query(By.css('img'));
-    el = de.nativeElement;
-    console.log(el);
-    expect(el).toBeDefined();
-  }));    
+    de = fixture.debugElement.query(By.css('header'));
+    el = de.nativeElement.src;
+    expect(el).toBeUndefined();
+  });  
 
   it('should have form array defined', () => {
     expect(component.form).toBeDefined();

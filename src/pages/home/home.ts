@@ -14,14 +14,10 @@ export class HomePage {
     public navCtrl: NavController, 
     public navParams: NavParams,
   ) {
-    this.syncHome();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
-  }
-
-  syncHome() {
   }
 
 }

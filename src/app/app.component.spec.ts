@@ -75,20 +75,20 @@ describe('iShallBe App Component', () => {
     expect(component instanceof iShallBe).toBe(true);
   });
 
-  it('should have 11 pages', () => {
-    expect(component.pages.length).toBe(11);
+  it('should have 5 menu pages', () => {
+    expect(component.menuPages.length).toBe(5);
+  })
+
+  it('should have 20 pages', () => {
+    expect(component.pages.length).toBe(20);
   });
 
-  it('should have 9 components', () => {
-    expect(component.components.length).toBe(9);
+  it('should have 5 components', () => {
+    expect(component.components.length).toBe(5);
   });
 
   it('should have 2 providers', () => {
     expect(component.providers.length).toBe(2);
-  });
-
-  it('should have 5 menu pages', () => {
-    expect(component.menuPages.length).toBe(5);
   });
 
   it('should initialize with login page as root page', () => {
@@ -104,18 +104,22 @@ describe('iShallBe App Component', () => {
   })
 
   it('should have session provider existence function that returns a value', () => {
-    expect(session.exists()).toBeDefined();
+    expect(session.found()).toBeDefined();
+  });
+
+  it('should have a open page function', () => {
+    expect(component.openPage()).toBeUndefined();
   });
 
   it('should have choose root page function that does not return a value', () => {
     expect(component.chooseRootPage()).toBeUndefined();
   });
 
-  it('should get session from session provider existence function at when choosing root page', () => {
-    spyOn(session, 'exists').and.returnValue;
+  it('should find session when choosing root page', () => {
+    spyOn(session, 'found').and.returnValue;
     component.wakeUp();
     fixture.detectChanges();
-    expect(session.exists).toHaveBeenCalledTimes(1);
+    expect(session.found).toHaveBeenCalledTimes(1);
   });
 
   it('should choose home page to be root page if session found', () => {
@@ -124,8 +128,16 @@ describe('iShallBe App Component', () => {
     expect(component['rootPage']).toBe(HomePage);
   });
 
-  it('should have a open page function', () => {
-    expect(component.openPage()).toBeUndefined();
+  it('should add manage page to menuPages if editor', () => {
+    let standardMenuPagesLength = component.menuPages.length;
+    let managerMenuPagesLength = component.managerPages.length + component.menuPages.length
+    session.user.editor = true;
+    component.wakeUp();
+    fixture.detectChanges();
+    let managerPagePosition = 0;
+    for (let pages = standardMenuPagesLength - 1; pages < component.menuPages.length; pages++) {
+      expect(component.menuPages.indexOf(component.managerPages[managerPagePosition])).toBe(pages)
+    }
   });
 
 });
