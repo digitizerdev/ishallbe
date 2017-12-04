@@ -56,19 +56,19 @@ export class iShallBe {
     public user: FirebaseProvider,
     public session: SessionProvider
   ) {
-    this.rootPage = LoginPage;    
-    platform.ready();    
+    this.rootPage = LoginPage;
+    platform.ready();
 
     this.pages = [
       { title: 'Login Page', component: LoginPage },
-      { title: 'Password Reset Page', component: PasswordResetPage},
+      { title: 'Password Reset Page', component: PasswordResetPage },
       { title: 'Register Page', component: RegisterPage },
       { title: 'Profile Page', component: ProfilePage },
       { title: 'Profile Manager Page', component: ProfileManagerPage },
       { title: 'Profile Photo Page', component: ProfilePhotoPage },
       { title: 'Statement Page', component: StatementPage },
       { title: 'Account Page', component: AccountPage },
-      { title: 'Account Password Page', component: AccountPasswordPage },      
+      { title: 'Account Password Page', component: AccountPasswordPage },
       { title: 'Support Page', component: SupportPage },
       { title: 'Home Page', component: HomePage },
       { title: 'Pin Page', component: PinPage },
@@ -88,50 +88,58 @@ export class iShallBe {
     ]
 
     this.components = [
-      { title: 'Media Component', component: MediaComponent },      
+      { title: 'Media Component', component: MediaComponent },
       { title: 'Facebook Component', component: FacebookComponent },
       { title: 'Header Component', component: HeaderComponent },
       { title: 'InteractionsComponent', component: InteractionsComponent }
     ]
 
     this.menuPages = [
-      { title: 'Home', 
+      {
+        title: 'Home',
         icon: 'ios-home',
         component: HomePage
       },
-      { title: 'About', 
+      {
+        title: 'About',
         icon: 'ios-information-circle',
-        component: AboutPage 
+        component: AboutPage
       },
-      { title: 'Profile', 
+      {
+        title: 'Profile',
         icon: 'ios-person',
-        component: ProfilePage 
+        component: ProfilePage
       },
-      { title: 'Account', 
+      {
+        title: 'Account',
         icon: 'ios-contact',
-        component: AccountPage 
-      },      
-      { title: 'Support', 
+        component: AccountPage
+      },
+      {
+        title: 'Support',
         icon: 'ios-mail',
-        component: SupportPage 
+        component: SupportPage
       },
     ]
 
-  this.managerPages = [
-    { title: 'Manage Pins', 
-      icon: 'ios-albums',
-      component: HomePage
-    },
-    { title: 'Manage Posts', 
-      icon: 'ios-images',
-      component: AboutPage 
-    },
-    { title: 'Manager Users', 
-      icon: 'ios-people',
-      component: ProfilePage 
-    }
-  ]
-}
+    this.managerPages = [
+      {
+        title: 'Manage Pins',
+        icon: 'ios-albums',
+        component: HomePage
+      },
+      {
+        title: 'Manage Posts',
+        icon: 'ios-images',
+        component: AboutPage
+      },
+      {
+        title: 'Manager Users',
+        icon: 'ios-people',
+        component: ProfilePage
+      }
+    ]
+  }
 
   platformReady() {
     this.platform.ready().then(() => {
@@ -142,7 +150,7 @@ export class iShallBe {
 
   wakeUp() {
     this.setRootHomePage(this.session.found());
-    this.setManagerMenu(this.session.editor());    
+    this.setManagerMenu(this.session.editor());
   }
 
   setRootHomePage(session) {
@@ -153,14 +161,14 @@ export class iShallBe {
 
   setManagerMenu(editor) {
     if (editor) {
-      this.managerPages.forEach((managerPage)=> {
+      this.managerPages.forEach((managerPage) => {
         this.menuPages.push(managerPage);
       })
     }
   }
 
   openPage(page) {
-    this.nav.setRoot(page);
+    this.nav.setRoot(page.component);
   }
 
 }
