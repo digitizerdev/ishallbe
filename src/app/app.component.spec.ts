@@ -99,20 +99,18 @@ describe('iShallBe App Component', () => {
     expect(component.platformReady()).toBeUndefined();
   });
 
+  it('should set home page to be root page if session found', () => {
+    component.setRootHomePage(true);
+    fixture.detectChanges();
+    expect(component['rootPage']).toBe(HomePage);
+  });
+
   it('should have wake up function', () => {
     expect(component.wakeUp()).toBeUndefined();
   })
 
   it('should have session provider existence function that returns a value', () => {
     expect(session.found()).toBeDefined();
-  });
-
-  it('should have a open page function', () => {
-    expect(component.openPage()).toBeUndefined();
-  });
-
-  it('should have choose root page function that does not return a value', () => {
-    expect(component.chooseRootPage()).toBeUndefined();
   });
 
   it('should find session when choosing root page', () => {
@@ -122,22 +120,29 @@ describe('iShallBe App Component', () => {
     expect(session.found).toHaveBeenCalledTimes(1);
   });
 
-  it('should choose home page to be root page if session found', () => {
-    component.chooseRootPage(true);
-    fixture.detectChanges();
-    expect(component['rootPage']).toBe(HomePage);
+  it('should have set Home Page as Root Page function that does not return a value', () => {
+    expect(component.setRootHomePage()).toBeUndefined();
   });
 
-  it('should add manage page to menuPages if editor', () => {
+  it('should add manager pages to menuPages in order if editor', () => {
     let standardMenuPagesLength = component.menuPages.length;
     let managerMenuPagesLength = component.managerPages.length + component.menuPages.length
     session.user.editor = true;
     component.wakeUp();
     fixture.detectChanges();
     let managerPagePosition = 0;
-    for (let pages = standardMenuPagesLength - 1; pages < component.menuPages.length; pages++) {
-      expect(component.menuPages.indexOf(component.managerPages[managerPagePosition])).toBe(pages)
+    for (let pages = standardMenuPagesLength; pages < component.menuPages.length; pages++) {
+      expect(component.menuPages.indexOf(component.managerPages[managerPagePosition])).toBe(pages);
+      managerPagePosition++;
     }
+  });
+
+  it('should have set manager menu function that does not return a value', () => {
+    expect(component.setManagerMenu()).toBeUndefined();
+  });
+
+  it('should have a open page function that does not return value', () => {
+    expect(component.openPage()).toBeUndefined();
   });
 
 });

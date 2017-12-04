@@ -26,7 +26,7 @@ export class LoginPage {
   ionViewDidLoad() {
   }
 
-  pushPasswordResetPagePage() {
+  pushPasswordResetPage() {
     this.navCtrl.push(PasswordResetPage);
   }
 

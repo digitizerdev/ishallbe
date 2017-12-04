@@ -75,7 +75,7 @@ describe('Login Page', () => {
     expect(component.registerButtonText).toBeDefined('REGISTER');
   });
 
-  it('should have push forgot password page function', () => {
+  it('should have push password reset page function', () => {
     expect(component.pushPasswordResetPage()).toBeUndefined();
   });
 

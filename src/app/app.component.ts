@@ -143,12 +143,21 @@ export class iShallBe {
   }
 
   wakeUp() {
-    this.chooseRootPage(this.session.found());
+    this.setRootHomePage(this.session.found());
+    this.setManagerMenu(this.session.editor());    
   }
 
-  chooseRootPage(session) {
+  setRootHomePage(session) {
     if (session) {
       this.rootPage = HomePage;
+    }
+  }
+
+  setManagerMenu(editor) {
+    if (editor) {
+      this.managerPages.forEach((managerPage)=> {
+        this.menuPages.push(managerPage);
+      })
     }
   }
 

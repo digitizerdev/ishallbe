@@ -15,5 +15,9 @@ export class SessionProvider {
   found() {
     return this.user;
   }
+  
+  editor() {
+    return this.user.editor;
+  }
 
 }
