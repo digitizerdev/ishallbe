@@ -1,5 +1,5 @@
 import { NgModule, Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Events, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -25,7 +25,7 @@ import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
 import { PinManagerPage } from '../pages/pin-manager/pin-manager';
 
 import { MediaComponent } from '../components/media/media';
-import { FacebookComponent } from '../components/facebook/facebook';
+import { SocialFacebookComponent } from '../components/social-facebook/social-facebook';
 import { HeaderComponent } from '../components/header/header';
 import { InteractionsComponent } from '../components/interactions/interactions';
 
@@ -53,8 +53,9 @@ export class iShallBe {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    public user: FirebaseProvider,
-    public session: SessionProvider
+    public firebase: FirebaseProvider,
+    public session: SessionProvider,
+    public events: Events
   ) {
     this.rootPage = LoginPage;
     platform.ready();
@@ -84,12 +85,12 @@ export class iShallBe {
 
     this.providers = [
       { title: 'Firebase Provider', component: FirebaseProvider },
-      { title: 'SessionProvider', component: SessionProvider }
+      { title: 'SessionProvigitder', component: SessionProvider }
     ]
 
     this.components = [
       { title: 'Media Component', component: MediaComponent },
-      { title: 'Facebook Component', component: FacebookComponent },
+      { title: 'Social Facebook Component', component: SocialFacebookComponent },
       { title: 'Header Component', component: HeaderComponent },
       { title: 'InteractionsComponent', component: InteractionsComponent }
     ]
@@ -171,5 +172,10 @@ export class iShallBe {
     this.nav.setRoot(page.component);
   }
 
+  listenToLoginEvents() {
+    this.events.subscribe('editor:login', () => {
+      this.setManagerMenu(true);
+    });
+  }
 }
 

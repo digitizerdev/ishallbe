@@ -1,7 +1,7 @@
-import { ComponentFixture, async, tick, TestBed, fakeAsync } from '@angular/core/testing';
-import { IonicModule, NavController, NavParams, } from 'ionic-angular';
+import { ComponentFixture, async, tick, TestBed, fakeAsync, } from '@angular/core/testing';
+import { IonicModule, Events, NavController, NavParams, } from 'ionic-angular';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { } from 'jasmine';
 
@@ -11,12 +11,19 @@ import { HomePage } from '../home/home';
 import { LoginPage } from './login';
 import { RegisterPage } from '../register/register';
 
+import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { SessionProvider } from '../../providers/session/session';
+
 import {
-  NavMock
+  NavMock,
+  FirebaseProviderMock,
+  SessionProviderMock
 } from '../../../test-config/mocks-ionic';
 
 let fixture;
 let component;
+let session: SessionProvider;
+let sessionSpy;
 
 describe('Login Page', () => {
 
@@ -29,6 +36,11 @@ describe('Login Page', () => {
       providers: [
         { provide: NavController, useClass: NavMock },
         { provide: NavParams, useClass: NavMock },
+        { provide: FirebaseProvider, useClass: FirebaseProviderMock },
+        { provide: SessionProvider, useClass: SessionProviderMock }
+      ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
       ]
     })
   }));
@@ -36,11 +48,14 @@ describe('Login Page', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginPage);
     component = fixture.componentInstance;
+    session = fixture.componentRef.injector.get(SessionProvider);    
   });
 
   afterEach(() => {
     fixture.destroy();
     component = null;
+    session = null;
+    sessionSpy = null;
   });
 
   it('should be created', () => {
@@ -55,36 +70,31 @@ describe('Login Page', () => {
     expect(el).toBeUndefined();
   });  
 
-  it('should have form array defined', () => {
-    expect(component.form).toBeDefined();
+  it('should have submission array defined', () => {
+    expect(component.submission).toBeDefined();
   });
 
-  it('should have emailFormSubmitted variable defined as false', () => {
-    expect(component.formSubmitted).toBe(false);
+  it('should have submitted variable defined as false', () => {
+    expect(component.submitted).toBe(false);
   });
 
-  it('should have forgotPasswordButtonText variable defined', () => {
-    expect(component.loginButtonText).toBe('LOGIN');
+  it('should trigger session editor login if user is editor on login', () => {
+    spyOn(session, 'loginEditor').and.returnValue;
+    let submission = {
+      email: 'test@tdct.io',
+      password: 'password'
+    }
+    component.submitLoginForm(submission);
+    fixture.detectChanges();
+    expect(session.loginEditor).toHaveBeenCalledTimes(1);
   });
 
-  it('should have forgotPasswordButtonText variable defined', () => {
-    expect(component.forgotPasswordButtonText).toBe('Forgot Password?');
-  });
-
-  it('should have registerButtonText variable defined', () => {
-    expect(component.registerButtonText).toBeDefined('REGISTER');
-  });
-
-  it('should have push password reset page function', () => {
-    expect(component.pushPasswordResetPage()).toBeUndefined();
-  });
-
-  it('should have set root to register page function', () => {
-    expect(component.setRootRegisterPage()).toBeUndefined();
-  });
-
-  it('should have submit login form function', () => {
-    expect(component.submitLoginForm()).toBeUndefined();
-  });
+  it('should display facebook component', () => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('social-facebook'));
+    el = de.nativeElement.src;
+    expect(el).toBeUndefined();
+  });  
 
 });

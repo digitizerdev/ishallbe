@@ -28,20 +28,16 @@
       <button ion-button (click)="submitLoginForm(submission)" type="submit" round >Login with Email</button>
     </ion-col>
   </ion-row>
-  <ion-row responsive-sm>
-    <ion-col text-center>
-      <button ion-button (click)="loginFacebook()" color="facebook" round>Login with Facebook</button>
-    </ion-col>
-  </ion-row>
+  <social-facebook></social-facebook>  
   <br>
   <ion-row responsive-sm>
     <ion-col text-center>
-      <button ion-button id="forgotPasswordButton" (click)="pushForgotPasswordPage()" color="primary" round outline>{{forgotPasswordButtonText}}</button>
+      <button ion-button id="forgotPasswordButton" (click)="pushForgotPasswordPage()" color="primary" round outline>Forgot Password?</button>
     </ion-col>
   </ion-row>
   <ion-row responsive-sm>
     <ion-col text-center>
-      <button ion-button (click)="setRootRegisterPage()" color="primary" round outline>Sign Up</button>
+      <button ion-button (click)="setRootRegisterPage()" color="primary" round outline>Register</button>
     </ion-col>
   </ion-row>
   <div text-center>

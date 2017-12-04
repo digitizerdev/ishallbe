@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { Events } from 'ionic-angular';
 
 @Injectable()
 export class SessionProvider {
@@ -9,7 +10,9 @@ export class SessionProvider {
     'editor': false
   }
 
-  constructor() {
+  constructor(
+    public events: Events
+  ) {
   }
 
   found() {
@@ -18,6 +21,10 @@ export class SessionProvider {
   
   editor() {
     return this.user.editor;
+  }
+
+  loginEditor() {
+    this.events.publish('editor:login')
   }
 
 }

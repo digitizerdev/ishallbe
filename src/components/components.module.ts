@@ -1,20 +1,23 @@
 import { NgModule } from '@angular/core';
+import { IonicModule } from 'ionic-angular';
 import { MediaComponent } from './media/media';
-import { FacebookComponent } from './facebook/facebook';
 import { HeaderComponent } from './header/header';
 import { InteractionsComponent } from './interactions/interactions';
+import { SocialFacebookComponent } from './social-facebook/social-facebook';
 
 @NgModule({
 	declarations: [
     MediaComponent,
-    FacebookComponent,
     HeaderComponent,
-    InteractionsComponent],
-	imports: [],
+    InteractionsComponent,
+    SocialFacebookComponent],
+	imports: [
+        IonicModule
+    ],
 	exports: [
     MediaComponent,
-    FacebookComponent,
     HeaderComponent,
-    InteractionsComponent]
+    InteractionsComponent,
+    SocialFacebookComponent]
 })
 export class ComponentsModule {}

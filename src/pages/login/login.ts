@@ -5,6 +5,8 @@ import { HomePage } from '../home/home';
 import { RegisterPage } from '../register/register';
 import { PasswordResetPage } from '../password-reset/password-reset';
 
+import { SessionProvider } from '../../providers/session/session';
+
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -14,17 +16,11 @@ import { PasswordResetPage } from '../password-reset/password-reset';
 export class LoginPage {
   submission: { email?: string, password?: string } = {};
   submitted = false;
-  forgotPasswordButtonText = 'Forgot Password?';
-  registerButtonText = 'REGISTER';
-  loginButtonText = 'LOGIN';
 
   constructor(
-    public navCtrl: NavController, 
-  ) {
-  }
-
-  ionViewDidLoad() {
-  }
+    public navCtrl: NavController,
+    public session: SessionProvider
+  ) { }
 
   pushPasswordResetPage() {
     this.navCtrl.push(PasswordResetPage);
@@ -35,9 +31,8 @@ export class LoginPage {
   }
 
   submitLoginForm() {
+    this.session.loginEditor();
     this.navCtrl.setRoot(HomePage);
   }
-
-
 
 }

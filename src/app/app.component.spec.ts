@@ -84,7 +84,7 @@ describe('iShallBe App Component', () => {
   });
 
   it('should have 4 components', () => {
-    expect(component.components.length).toBe(5);
+    expect(component.components.length).toBe(4);
   });
 
   it('should have 2 providers', () => {
@@ -93,10 +93,6 @@ describe('iShallBe App Component', () => {
 
   it('should initialize with login page as root page', () => {
     expect(component['rootPage']).toBe(LoginPage);
-  });
-
-  it('should have platform ready function', () => {
-    expect(component.platformReady()).toBeUndefined();
   });
 
   it('should set home page to be root page if session found', () => {
@@ -120,10 +116,6 @@ describe('iShallBe App Component', () => {
     expect(session.found).toHaveBeenCalledTimes(1);
   });
 
-  it('should have set Home Page as Root Page function that does not return a value', () => {
-    expect(component.setRootHomePage()).toBeUndefined();
-  });
-
   it('should add manager pages to menuPages in order if editor', () => {
     let standardMenuPagesLength = component.menuPages.length;
     let managerMenuPagesLength = component.managerPages.length + component.menuPages.length
@@ -137,12 +129,8 @@ describe('iShallBe App Component', () => {
     }
   });
 
-  it('should have set manager menu function that does not return a value', () => {
+  it('should have setManagerMenu function that does not return a value', () => {
     expect(component.setManagerMenu()).toBeUndefined();
-  });
-
-  it('should have a open page function that does not return value', () => {
-    expect(component.openPage()).toBeUndefined();
   });
 
 });
