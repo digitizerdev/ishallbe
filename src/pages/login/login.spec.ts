@@ -76,7 +76,7 @@ describe('Login Page', () => {
   });
 
   it('should have push forgot password page function', () => {
-    expect(component.pushForgotPasswordPage()).toBeUndefined();
+    expect(component.pushPasswordResetPage()).toBeUndefined();
   });
 
   it('should have set root to register page function', () => {

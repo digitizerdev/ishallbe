@@ -3,7 +3,7 @@ import { IonicPage, NavController } from 'ionic-angular';
 
 import { HomePage } from '../home/home';
 import { RegisterPage } from '../register/register';
-import { ForgotPasswordPage } from '../forgot-password/forgot-password';
+import { PasswordResetPage } from '../password-reset/password-reset';
 
 @IonicPage()
 @Component({
@@ -26,8 +26,8 @@ export class LoginPage {
   ionViewDidLoad() {
   }
 
-  pushForgotPasswordPage() {
-    this.navCtrl.push(ForgotPasswordPage);
+  pushPasswordResetPagePage() {
+    this.navCtrl.push(PasswordResetPage);
   }
 
   setRootRegisterPage() {

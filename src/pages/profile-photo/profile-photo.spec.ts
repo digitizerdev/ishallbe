@@ -3,7 +3,7 @@ import { IonicModule, NavController, NavParams, } from 'ionic-angular';
 
 import {} from 'jasmine';
 
-import { HomePage } from './home';
+import { ProfilePhotoPage } from './profile-photo';
 import { HeaderComponent } from '../../components/header/header';
 import { ComponentsModule } from '../../components/components.module';
 
@@ -11,16 +11,16 @@ import {
   NavMock
 } from '../../../test-config/mocks-ionic';
 
-describe('Home Page', () => {
+describe('ProfilePhoto Page', () => {
   let fixture;
   let component;
   let header;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [HomePage],
+      declarations: [ProfilePhotoPage],
       imports: [
-        IonicModule.forRoot(HomePage),
+        IonicModule.forRoot(ProfilePhotoPage),
         ComponentsModule,
       ],
       providers: [
@@ -31,12 +31,12 @@ describe('Home Page', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HomePage);
+    fixture = TestBed.createComponent(ProfilePhotoPage);
     component = fixture.componentInstance;   
   });
 
   it('should be created', () => {
-    expect(component instanceof HomePage).toBe(true);
+    expect(component instanceof ProfilePhotoPage).toBe(true);
   });
 
 });

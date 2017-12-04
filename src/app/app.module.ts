@@ -13,16 +13,25 @@ import { File } from '@ionic-native/file';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { LoginPage } from '../pages/login/login';
+import { PasswordResetPage } from '../pages/password-reset/password-reset';
 import { RegisterPage } from '../pages/register/register';
-import { ForgotPasswordPage } from '../pages/forgot-password/forgot-password';
-import { HomePage } from '../pages/home/home';
-import { AboutPage } from '../pages/about/about';;
-import { AccountPage } from '../pages/account/account';
-import { SupportPage } from '../pages/support/support';
-import { MediaPage } from '../pages/media/media';
 import { ProfilePage } from '../pages/profile/profile';
-import { ManagePage } from '../pages/manage/manage';
-import { ContentPage } from '../pages/content/content';
+import { ProfileManagerPage } from '../pages/profile-manager/profile-manager';
+import { ProfilePhotoPage } from '../pages/profile-photo/profile-photo';
+import { StatementPage } from '../pages/statement/statement';
+import { AccountPage } from '../pages/account/account';
+import { AccountPasswordPage } from '../pages/account-password/account-password';
+import { SupportPage } from '../pages/support/support';
+import { HomePage } from '../pages/home/home';
+import { PinPage } from '../pages/pin/pin';
+import { PostPage } from '../pages/post/post';
+import { AboutPage } from '../pages/about/about';
+import { UsersManagerPage } from '../pages/users-manager/users-manager';
+import { UserManagerPage } from '../pages/user-manager/user-manager';
+import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
+import { PostManagerPage } from '../pages/post-manager/post-manager';
+import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
+import { PinManagerPage } from '../pages/pin-manager/pin-manager';
 
 import { ComponentsModule } from '../components/components.module';
 
@@ -32,17 +41,26 @@ import { SessionProvider } from '../providers/session/session';
 @NgModule({
   declarations: [
     iShallBe,
-    HomePage,
-    AboutPage,
     LoginPage,
+    PasswordResetPage,  
     RegisterPage,
-    ForgotPasswordPage,
-    AccountPage,
-    SupportPage,
     ProfilePage,
-    ManagePage,
-    MediaPage,
-    ContentPage,
+    ProfilePhotoPage,
+    ProfileManagerPage,
+    StatementPage,  
+    AccountPage,
+    AccountPasswordPage,
+    SupportPage,
+    HomePage,
+    PinPage,
+    PostPage,
+    AboutPage,
+    UsersManagerPage,
+    UserManagerPage,
+    PinsManagerPage,
+    PinManagerPage,
+    PostsManagerPage,
+    PostManagerPage
   ],
   imports: [
     BrowserModule,
@@ -54,17 +72,26 @@ import { SessionProvider } from '../providers/session/session';
   bootstrap: [IonicApp],
   entryComponents: [
     iShallBe,
-    HomePage,
-    AboutPage,
     LoginPage,
+    PasswordResetPage,  
     RegisterPage,
-    ForgotPasswordPage,
-    AccountPage,
-    SupportPage,
     ProfilePage,
-    ManagePage,
-    MediaPage,
-    ContentPage,
+    ProfilePhotoPage,
+    ProfileManagerPage,
+    StatementPage,  
+    AccountPage,
+    AccountPasswordPage,
+    SupportPage,
+    HomePage,
+    PinPage,
+    PostPage,
+    AboutPage,
+    UsersManagerPage,
+    UserManagerPage,
+    PinsManagerPage,
+    PinManagerPage,
+    PostsManagerPage,
+    PostManagerPage
   ],
   providers: [
     StatusBar,

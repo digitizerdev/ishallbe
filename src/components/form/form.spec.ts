@@ -5,20 +5,20 @@ import { DebugElement } from '@angular/core';
 
 import {} from 'jasmine';
 
-import { MediaComponent } from './media';
+import { FormComponent } from './form';
 import {
   NavMock
 } from '../../../test-config/mocks-ionic';
 
-describe('Media Component', () => {
+describe('Form Component', () => {
   let fixture;
   let component;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MediaComponent],
+      declarations: [FormComponent],
       imports: [
-        IonicModule.forRoot(MediaComponent),
+        IonicModule.forRoot(FormComponent),
       ],
       providers: [
         { provide: NavController, useClass: NavMock },
@@ -28,12 +28,12 @@ describe('Media Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MediaComponent);
+    fixture = TestBed.createComponent(FormComponent);
     component = fixture.componentInstance;
   });
 
   it('should be created', () => {
-    expect(component instanceof MediaComponent).toBe(true);
+    expect(component instanceof FormComponent).toBe(true);
   });
 
 

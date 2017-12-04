@@ -4,26 +4,31 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { LoginPage } from '../pages/login/login';
+import { PasswordResetPage } from '../pages/password-reset/password-reset';
 import { RegisterPage } from '../pages/register/register';
-import { ForgotPasswordPage } from '../pages/forgot-password/forgot-password';
-import { HomePage } from '../pages/home/home';
-import { AboutPage } from '../pages/about/about';;
-import { AccountPage } from '../pages/account/account';
-import { SupportPage } from '../pages/support/support';
-import { MediaPage } from '../pages/media/media';
 import { ProfilePage } from '../pages/profile/profile';
-import { ManagePage } from '../pages/manage/manage';
-import { ContentPage } from '../pages/content/content';
+import { ProfileManagerPage } from '../pages/profile-manager/profile-manager';
+import { ProfilePhotoPage } from '../pages/profile-photo/profile-photo';
+import { StatementPage } from '../pages/statement/statement';
+import { AccountPage } from '../pages/account/account';
+import { AccountPasswordPage } from '../pages/account-password/account-password';
+import { SupportPage } from '../pages/support/support';
+import { HomePage } from '../pages/home/home';
+import { PinPage } from '../pages/pin/pin';
+import { PostPage } from '../pages/post/post';
+import { AboutPage } from '../pages/about/about';
+import { UsersManagerPage } from '../pages/users-manager/users-manager';
+import { UserManagerPage } from '../pages/user-manager/user-manager';
+import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
+import { PostManagerPage } from '../pages/post-manager/post-manager';
+import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
+import { PinManagerPage } from '../pages/pin-manager/pin-manager';
 
-import { PinsComponent } from '../components/pins/pins';
-import { PinComponent } from '../components/pin/pin';
-import { PostsComponent } from '../components/posts/posts';
-import { PostComponent } from '../components/post/post';
-import { UsersComponent } from '../components/users/users';
-import { CommentsComponent } from '../components/comments/comments';
 import { MediaComponent } from '../components/media/media';
 import { FacebookComponent } from '../components/facebook/facebook';
 import { HeaderComponent } from '../components/header/header';
+import { FormComponent } from '../components/form/form';
+import { InteractionsComponent } from '../components/interactions/interactions';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { SessionProvider } from '../providers/session/session';
@@ -56,17 +61,26 @@ export class iShallBe {
     platform.ready();    
 
     this.pages = [
-      { title: 'Home Page', component: HomePage },
-      { title: 'About Page', component: AboutPage },
-      { title: 'Profile Page', component: ProfilePage },
-      { title: 'Account Page', component: AccountPage },      
-      { title: 'Support Page', component: SupportPage },
       { title: 'Login Page', component: LoginPage },
+      { title: 'Password Reset Page', component: PasswordResetPage},
       { title: 'Register Page', component: RegisterPage },
-      { title: 'Forgot Password Page', component: ForgotPasswordPage },
-      { title: 'Media Page', component: MediaPage },
-      { title: 'Manage Page', component: ManagePage },
-      { title: 'Content Page', component: ContentPage }
+      { title: 'Profile Page', component: ProfilePage },
+      { title: 'Profile Manager Page', component: ProfileManagerPage },
+      { title: 'Profile Photo Page', component: ProfilePhotoPage },
+      { title: 'Statement Page', component: StatementPage },
+      { title: 'Account Page', component: AccountPage },
+      { title: 'Account Password Page', component: AccountPasswordPage },      
+      { title: 'Support Page', component: SupportPage },
+      { title: 'Home Page', component: HomePage },
+      { title: 'Pin Page', component: PinPage },
+      { title: 'Post Page', component: PostPage },
+      { title: 'About Page', component: AboutPage },
+      { title: 'Users Manager Page', component: UsersManagerPage },
+      { title: 'User Manager Page', component: UserManagerPage },
+      { title: 'Posts Manager Page', component: PostsManagerPage },
+      { title: 'Post Manager Page', component: PostManagerPage },
+      { title: 'Pins Manager Page', component: PinsManagerPage },
+      { title: 'Pin Manager Page', component: PinManagerPage }
     ];
 
     this.providers = [
@@ -75,15 +89,11 @@ export class iShallBe {
     ]
 
     this.components = [
-      { title: 'Comments Component', component: CommentsComponent },
-      { title: 'Pins Component', component: PinsComponent },
-      { title: 'Pin Component', component: PinComponent },
-      { title: 'Posts Component', component: PostsComponent },
-      { title: 'Post Component', component: PostComponent },
+      { title: 'Media Component', component: MediaComponent },      
       { title: 'Facebook Component', component: FacebookComponent },
-      { title: 'Media Component', component: MediaComponent },
-      { title: 'Users Component', component: UsersComponent },
-      { title: 'Header Component', component: HeaderComponent }
+      { title: 'Header Component', component: HeaderComponent },
+      { title: 'Form Component', component: FormComponent },
+      { title: 'InteractionsComponent', component: InteractionsComponent }
     ]
 
     this.menuPages = [
