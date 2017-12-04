@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
 import { HomePage } from '../home/home';
 import { RegisterPage } from '../register/register';
@@ -12,15 +12,16 @@ import { ForgotPasswordPage } from '../forgot-password/forgot-password';
 })
 
 export class LoginPage {
-  loginForm: { email?: string, password?: string } = {};
-  loginFormSubmitted = false;
+  form: { email?: string, password?: string } = {};
+  formSubmitted = false;
   forgotPasswordButtonText = 'Forgot Password?';
-  registerButtonText = 'Register';
+  registerButtonText = 'REGISTER';
+  loginButtonText = 'LOGIN';
 
   constructor(
     public navCtrl: NavController, 
-    public navParams: NavParams
   ) {
+    this.form.email = 'test@tdct.io';
   }
 
   ionViewDidLoad() {

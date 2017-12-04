@@ -5,11 +5,8 @@ import { Component } from '@angular/core';
   templateUrl: 'header.html'
 })
 export class HeaderComponent {
-
-  text: string;
-
+  
   constructor() {
-    this.text = 'Hello World';
   }
 
 }

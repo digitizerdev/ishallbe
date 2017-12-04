@@ -1,9 +1,9 @@
-import { ComponentFixture, async, TestBed } from '@angular/core/testing';
+import { ComponentFixture, async, tick, TestBed, fakeAsync } from '@angular/core/testing';
 import { IonicModule, NavController, NavParams, } from 'ionic-angular';
 import { By } from '@angular/platform-browser';
-import { DebugElement }    from '@angular/core';
+import { DebugElement } from '@angular/core';
 
-import {} from 'jasmine';
+import { } from 'jasmine';
 
 import { HeaderComponent } from '../../components/header/header';
 
@@ -17,11 +17,9 @@ import {
 
 let fixture;
 let component;
-let de: DebugElement;
-let el: HTMLElement;
 
 describe('Login Page', () => {
- 
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LoginPage],
@@ -30,7 +28,7 @@ describe('Login Page', () => {
       ],
       providers: [
         { provide: NavController, useClass: NavMock },
-        { provide: NavParams, useClass: NavMock },        
+        { provide: NavParams, useClass: NavMock },
       ]
     })
   }));
@@ -43,16 +41,41 @@ describe('Login Page', () => {
   afterEach(() => {
     fixture.destroy();
     component = null;
-    de = null;
-    el = null;
   });
 
   it('should be created', () => {
     expect(component instanceof LoginPage).toBe(true);
   });
 
-  it('should have title variable defined', () => {
-    expect(component.title).toBeDefined();
+  it('should have header component', fakeAsync(() => {
+    fixture.detectChanges();
+    tick();
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('img'));
+    el = de.nativeElement;
+    console.log(el);
+    expect(el).toBeDefined();
+  }));    
+
+  it('should have form array defined', () => {
+    expect(component.form).toBeDefined();
+  });
+
+  it('should have emailFormSubmitted variable defined as false', () => {
+    expect(component.formSubmitted).toBe(false);
+  });
+
+  it('should have forgotPasswordButtonText variable defined', () => {
+    expect(component.loginButtonText).toBe('LOGIN');
+  });
+
+  it('should have forgotPasswordButtonText variable defined', () => {
+    expect(component.forgotPasswordButtonText).toBe('Forgot Password?');
+  });
+
+  it('should have registerButtonText variable defined', () => {
+    expect(component.registerButtonText).toBeDefined('REGISTER');
   });
 
   it('should have push forgot password page function', () => {
@@ -65,10 +88,6 @@ describe('Login Page', () => {
 
   it('should have submit login form function', () => {
     expect(component.submitLoginForm()).toBeUndefined();
-  });
-
-  it('should initialize with submitted false', () => {
-    expect(component.submitted).toBe(false);
   });
 
 });
