@@ -4,8 +4,6 @@ import { IonicModule, NavController, NavParams, } from 'ionic-angular';
 import {} from 'jasmine';
 
 import { AccountPasswordPage } from './account-password';
-import { HeaderComponent } from '../../components/header/header';
-import { ComponentsModule } from '../../components/components.module';
 
 import {
   NavMock
@@ -14,14 +12,12 @@ import {
 describe('AccountPassword Page', () => {
   let fixture;
   let component;
-  let header;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AccountPasswordPage],
       imports: [
         IonicModule.forRoot(AccountPasswordPage),
-        ComponentsModule,
       ],
       providers: [
         { provide: NavController, useClass: NavMock },

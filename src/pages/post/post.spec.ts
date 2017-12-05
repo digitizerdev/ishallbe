@@ -4,8 +4,6 @@ import { IonicModule, NavController, NavParams, } from 'ionic-angular';
 import {} from 'jasmine';
 
 import { PostPage } from './post';
-import { HeaderComponent } from '../../components/header/header';
-import { ComponentsModule } from '../../components/components.module';
 
 import {
   NavMock
@@ -21,7 +19,6 @@ describe('Post Page', () => {
       declarations: [PostPage],
       imports: [
         IonicModule.forRoot(PostPage),
-        ComponentsModule,
       ],
       providers: [
         { provide: NavController, useClass: NavMock },

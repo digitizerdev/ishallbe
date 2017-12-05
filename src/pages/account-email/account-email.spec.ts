@@ -1,24 +1,24 @@
-import { async, TestBed, ComponentFixture} from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { IonicModule, NavController, NavParams, } from 'ionic-angular';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
 import {} from 'jasmine';
 
-import { MediaComponent } from './media';
+import { AccountEmailPage } from './account-email';
+
 import {
   NavMock
 } from '../../../test-config/mocks-ionic';
 
-describe('Media Component', () => {
+describe('Home Page', () => {
   let fixture;
   let component;
+  let header;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MediaComponent],
+      declarations: [AccountEmailPage],
       imports: [
-        IonicModule.forRoot(MediaComponent),
+        IonicModule.forRoot(AccountEmailPage),
       ],
       providers: [
         { provide: NavController, useClass: NavMock },
@@ -28,13 +28,12 @@ describe('Media Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MediaComponent);
-    component = fixture.componentInstance;
+    fixture = TestBed.createComponent(AccountEmailPage);
+    component = fixture.componentInstance;   
   });
 
   it('should be created', () => {
-    expect(component instanceof MediaComponent).toBe(true);
+    expect(component instanceof AccountEmailPage).toBe(true);
   });
-
 
 });

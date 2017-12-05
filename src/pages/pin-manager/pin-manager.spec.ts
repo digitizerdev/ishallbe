@@ -4,8 +4,6 @@ import { IonicModule, NavController, NavParams, } from 'ionic-angular';
 import {} from 'jasmine';
 
 import { PinManagerPage } from './pin-manager';
-import { HeaderComponent } from '../../components/header/header';
-import { ComponentsModule } from '../../components/components.module';
 
 import {
   NavMock
@@ -21,7 +19,6 @@ describe('PinManager Page', () => {
       declarations: [PinManagerPage],
       imports: [
         IonicModule.forRoot(PinManagerPage),
-        ComponentsModule,
       ],
       providers: [
         { provide: NavController, useClass: NavMock },

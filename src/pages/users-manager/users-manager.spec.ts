@@ -4,8 +4,6 @@ import { IonicModule, NavController, NavParams, } from 'ionic-angular';
 import {} from 'jasmine';
 
 import { UsersManagerPage } from './users-manager';
-import { HeaderComponent } from '../../components/header/header';
-import { ComponentsModule } from '../../components/components.module';
 
 import {
   NavMock
@@ -21,7 +19,6 @@ describe('UsersManager Page', () => {
       declarations: [UsersManagerPage],
       imports: [
         IonicModule.forRoot(UsersManagerPage),
-        ComponentsModule,
       ],
       providers: [
         { provide: NavController, useClass: NavMock },

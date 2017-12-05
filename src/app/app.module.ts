@@ -20,6 +20,7 @@ import { ProfileManagerPage } from '../pages/profile-manager/profile-manager';
 import { ProfilePhotoPage } from '../pages/profile-photo/profile-photo';
 import { StatementPage } from '../pages/statement/statement';
 import { AccountPage } from '../pages/account/account';
+import { AccountEmailPage } from '../pages/account-email/account-email';
 import { AccountPasswordPage } from '../pages/account-password/account-password';
 import { SupportPage } from '../pages/support/support';
 import { HomePage } from '../pages/home/home';
@@ -32,8 +33,6 @@ import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
 import { PinManagerPage } from '../pages/pin-manager/pin-manager';
-
-import { ComponentsModule } from '../components/components.module';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { SessionProvider } from '../providers/session/session';
@@ -49,6 +48,7 @@ import { SessionProvider } from '../providers/session/session';
     ProfileManagerPage,
     StatementPage,  
     AccountPage,
+    AccountEmailPage,
     AccountPasswordPage,
     SupportPage,
     HomePage,
@@ -67,7 +67,6 @@ import { SessionProvider } from '../providers/session/session';
     IonicModule.forRoot(iShallBe, {}, { links: [] }),
     IonicStorageModule.forRoot(),
     HttpModule,
-    ComponentsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -80,6 +79,7 @@ import { SessionProvider } from '../providers/session/session';
     ProfileManagerPage,
     StatementPage,  
     AccountPage,
+    AccountEmailPage,
     AccountPasswordPage,
     SupportPage,
     HomePage,

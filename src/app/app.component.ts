@@ -11,6 +11,7 @@ import { ProfileManagerPage } from '../pages/profile-manager/profile-manager';
 import { ProfilePhotoPage } from '../pages/profile-photo/profile-photo';
 import { StatementPage } from '../pages/statement/statement';
 import { AccountPage } from '../pages/account/account';
+import { AccountEmailPage } from '../pages/account-email/account-email';
 import { AccountPasswordPage } from '../pages/account-password/account-password';
 import { SupportPage } from '../pages/support/support';
 import { HomePage } from '../pages/home/home';
@@ -64,6 +65,7 @@ export class iShallBe {
       { title: 'Profile Photo Page', component: ProfilePhotoPage },
       { title: 'Statement Page', component: StatementPage },
       { title: 'Account Page', component: AccountPage },
+      { title: 'Account Email Page', component: AccountEmailPage },
       { title: 'Account Password Page', component: AccountPasswordPage },
       { title: 'Support Page', component: SupportPage },
       { title: 'Home Page', component: HomePage },

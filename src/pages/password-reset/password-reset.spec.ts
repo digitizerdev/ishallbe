@@ -4,8 +4,6 @@ import { IonicModule, NavController, NavParams, } from 'ionic-angular';
 import {} from 'jasmine';
 
 import { PasswordResetPage } from './password-reset';
-import { HeaderComponent } from '../../components/header/header';
-import { ComponentsModule } from '../../components/components.module';
 
 import {
   NavMock
@@ -21,7 +19,6 @@ describe('PasswordReset Page', () => {
       declarations: [PasswordResetPage],
       imports: [
         IonicModule.forRoot(PasswordResetPage),
-        ComponentsModule,
       ],
       providers: [
         { provide: NavController, useClass: NavMock },

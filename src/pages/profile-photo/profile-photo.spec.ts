@@ -4,8 +4,7 @@ import { IonicModule, NavController, NavParams, } from 'ionic-angular';
 import {} from 'jasmine';
 
 import { ProfilePhotoPage } from './profile-photo';
-import { HeaderComponent } from '../../components/header/header';
-import { ComponentsModule } from '../../components/components.module';
+
 
 import {
   NavMock
@@ -21,7 +20,6 @@ describe('ProfilePhoto Page', () => {
       declarations: [ProfilePhotoPage],
       imports: [
         IonicModule.forRoot(ProfilePhotoPage),
-        ComponentsModule,
       ],
       providers: [
         { provide: NavController, useClass: NavMock },

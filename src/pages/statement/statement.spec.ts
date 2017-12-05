@@ -5,9 +5,6 @@ import {} from 'jasmine';
 
 import { StatementPage } from './statement';
 
-import { HeaderComponent } from '../../components/header/header';
-import { ComponentsModule } from '../../components/components.module';
-
 import {
   NavMock
 } from '../../../test-config/mocks-ionic';
@@ -22,7 +19,6 @@ describe('Statement Page', () => {
       declarations: [StatementPage],
       imports: [
         IonicModule.forRoot(StatementPage),
-        ComponentsModule,
       ],
       providers: [
         { provide: NavController, useClass: NavMock },
