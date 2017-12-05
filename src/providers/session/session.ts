@@ -11,7 +11,8 @@ export class SessionProvider {
   }
 
   constructor(
-    public events: Events
+    public events: Events,
+    public storage: Storage,    
   ) {
   }
 
@@ -25,6 +26,10 @@ export class SessionProvider {
 
   loginEditor() {
     this.events.publish('editor:login')
+  }
+
+  storeUser(user) {
+    
   }
 
 }

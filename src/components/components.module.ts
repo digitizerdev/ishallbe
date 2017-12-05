@@ -4,6 +4,7 @@ import { MediaComponent } from './media/media';
 import { HeaderComponent } from './header/header';
 import { InteractionsComponent } from './interactions/interactions';
 import { SocialFacebookComponent } from './social-facebook/social-facebook';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
 	declarations: [
@@ -12,7 +13,8 @@ import { SocialFacebookComponent } from './social-facebook/social-facebook';
     InteractionsComponent,
     SocialFacebookComponent],
 	imports: [
-        IonicModule
+        IonicModule,
+        IonicStorageModule.forRoot()
     ],
 	exports: [
     MediaComponent,
