@@ -28,8 +28,9 @@ export class SessionProvider {
     this.events.publish('editor:login')
   }
 
-  storeUser(user) {
-    
+  storeUser(profile) {
+    this.storage.set('profile', profile);
+    return profile;
   }
 
 }

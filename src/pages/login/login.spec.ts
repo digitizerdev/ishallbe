@@ -116,6 +116,7 @@ describe('Login Page', () => {
     }
     component.submitLoginForm(submission);
     fixture.detectChanges();
+    expect(session.storeUser).toBe(submission);
   });
 
 });

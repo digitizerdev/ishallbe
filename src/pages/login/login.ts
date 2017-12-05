@@ -32,6 +32,11 @@ export class LoginPage {
 
   submitLoginForm() {
     this.session.loginEditor();
+    let user = {
+      contributor: true,
+      editor: false      
+    }
+    this.session.storeUser(user);
     this.navCtrl.setRoot(HomePage);
   }
 
