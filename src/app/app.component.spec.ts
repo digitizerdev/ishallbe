@@ -75,16 +75,16 @@ describe('iShallBe App Component', () => {
     expect(component instanceof iShallBe).toBe(true);
   });
 
-  it('should have 5 menu pages', () => {
+  it('should have 2 providers', () => {
+    expect(component.providers.length).toBe(2);
+  });
+
+  it('should initialize with 5 menu pages', () => {
     expect(component.menuPages.length).toBe(5);
   })
 
   it('should have 21 pages', () => {
     expect(component.pages.length).toBe(21);
-  });
-
-  it('should have 2 providers', () => {
-    expect(component.providers.length).toBe(2);
   });
 
   it('should initialize with login page as root page', () => {
@@ -127,6 +127,10 @@ describe('iShallBe App Component', () => {
 
   it('should have setManagerMenu function that does not return a value', () => {
     expect(component.setManagerMenu()).toBeUndefined();
+  });
+
+  it('shoud have 23 components', () => {
+    expect(component.components.length).toBe(23);
   });
 
 });
