@@ -34,7 +34,7 @@ export class LoginPage {
     this.session.loginEditor();
     let user = {
       contributor: true,
-      editor: false      
+      editor: true      
     }
     this.session.storeUser(user);
     this.navCtrl.setRoot(HomePage);

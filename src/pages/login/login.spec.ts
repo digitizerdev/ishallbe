@@ -12,9 +12,6 @@ import 'rxjs/add/operator/first';
 
 import { } from 'jasmine';
 
-import { HeaderComponent } from '../../components/header/header';
-import { SocialFacebookComponent } from '../../components/social-facebook/social-facebook';
-
 import { HomePage } from '../home/home';
 import { LoginPage } from './login';
 import { RegisterPage } from '../register/register';
@@ -81,25 +78,6 @@ describe('Login Page', () => {
     expect(el).toBeUndefined();
   });  
 
-  it('should have submission array defined', () => {
-    expect(component.submission).toBeDefined();
-  });
-
-  it('should have submitted variable defined as false', () => {
-    expect(component.submitted).toBe(false);
-  });
-
-  it('should trigger session editor login if user is editor on login', () => {
-    spyOn(session, 'loginEditor').and.returnValue;
-    let submission = {
-      email: 'test@tdct.io',
-      password: 'password'
-    }
-    component.submitLoginForm(submission);
-    fixture.detectChanges();
-    expect(session.loginEditor).toHaveBeenCalledTimes(1);
-  });
-
   it('should display facebook component', () => {
     let de: DebugElement;
     let el: HTMLElement;
@@ -108,15 +86,5 @@ describe('Login Page', () => {
     expect(el).toBeUndefined();
   });
 
-  it('should store user in session provider after login', () => {
-    spyOn(session, 'storeUser').and.returnValue;
-    let submission = {
-      email: 'test@tdct.io',
-      password: 'password'
-    }
-    component.submitLoginForm(submission);
-    fixture.detectChanges();
-    expect(session.storeUser).toBe(submission);
-  });
 
 });

@@ -29,8 +29,7 @@ export class SessionProvider {
   }
 
   storeUser(profile) {
-    this.storage.set('profile', profile);
-    return profile;
+    this.storage.set('profile', '');
   }
 
 }

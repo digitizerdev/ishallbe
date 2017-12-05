@@ -8,15 +8,15 @@ import { HomePage } from '../../pages/home/home';
 
 import {} from 'jasmine';
 
-import { SocialFacebookComponent } from './social-facebook';
+import { AccountLoginFacebookComponent } from './account-login-facebook';
 
-import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import {
   NavMock,
-  FirebaseProviderMock,
   SessionProviderMock,
+  FirebaseProviderMock,  
   StorageMock
 } from '../../../test-config/mocks-ionic';
 
@@ -25,12 +25,14 @@ describe('SocialFacebook Component', () => {
   let component;
   let session: SessionProvider;
   let sessionSpy;
+  let firebase: FirebaseProvider;
+  let firebaseSpy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SocialFacebookComponent],
+      declarations: [AccountLoginFacebookComponent],
       imports: [
-        IonicModule.forRoot(SocialFacebookComponent),
+        IonicModule.forRoot(AccountLoginFacebookComponent),
         IonicStorageModule.forRoot()
       ],
       providers: [
@@ -44,9 +46,10 @@ describe('SocialFacebook Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SocialFacebookComponent);
+    fixture = TestBed.createComponent(AccountLoginFacebookComponent);
     component = fixture.componentInstance;
-    session = fixture.componentRef.injector.get(SessionProvider); 
+    session = fixture.componentRef.injector.get(SessionProvider);
+    firebase = fixture.componentRef.injector.get(FirebaseProvider);     
   });
 
   afterEach(() => {
@@ -54,17 +57,12 @@ describe('SocialFacebook Component', () => {
     component = null;
     session = null;
     sessionSpy = null;
+    firebase = null;
+    firebaseSpy = null;
   });
 
   it('should be created', () => {
-    expect(component instanceof SocialFacebookComponent).toBe(true);
+    expect(component instanceof AccountLoginFacebookComponent).toBe(true);
   });
-
-  it('should populate session object with facebook browser session', fakeAsync(() => {
-    component.loginWithFacebook();
-    fixture.detectChanges();
-    tick();
-    expect(component.session).toBeTruthy();
-  }));
 
 });

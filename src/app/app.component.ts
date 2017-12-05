@@ -24,11 +24,6 @@ import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
 import { PinManagerPage } from '../pages/pin-manager/pin-manager';
 
-import { MediaComponent } from '../components/media/media';
-import { SocialFacebookComponent } from '../components/social-facebook/social-facebook';
-import { HeaderComponent } from '../components/header/header';
-import { InteractionsComponent } from '../components/interactions/interactions';
-
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { SessionProvider } from '../providers/session/session';
 
@@ -86,13 +81,6 @@ export class iShallBe {
     this.providers = [
       { title: 'Firebase Provider', component: FirebaseProvider },
       { title: 'SessionProvigitder', component: SessionProvider }
-    ]
-
-    this.components = [
-      { title: 'Media Component', component: MediaComponent },
-      { title: 'Social Facebook Component', component: SocialFacebookComponent },
-      { title: 'Header Component', component: HeaderComponent },
-      { title: 'InteractionsComponent', component: InteractionsComponent }
     ]
 
     this.menuPages = [
