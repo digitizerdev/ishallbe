@@ -22,7 +22,7 @@ export class LoginPage {
     this.navCtrl.push(PasswordResetPage);
   }
 
-  setRootRegisterPage() {
+  pushRegisterPage() {
     this.navCtrl.setRoot(RegisterPage);
   }
 

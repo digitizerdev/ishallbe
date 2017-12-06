@@ -104,18 +104,18 @@ describe('iShallBe App Component', () => {
   });
 
   it('should ask session provider for user if woken up', () => {
-    spyOn(session, 'retrieveUser')
+    spyOn(session, 'current')
     component.wakeUp();
     fixture.detectChanges();
-    expect(session.retrieveUser).toHaveBeenCalled();
+    expect(session.current).toHaveBeenCalled();
   });
 
   it('should not ask session provider for user if not woken up', () => {
     spyOn(component, 'wakeUp');
-    spyOn(session, 'retrieveUser');
+    spyOn(session, 'current');
     fixture.detectChanges();
     expect(component.wakeUp).toHaveBeenCalledTimes(0);
-    expect(session.retrieveUser).toHaveBeenCalledTimes(0);
+    expect(session.current).toHaveBeenCalledTimes(0);
   })
 
   it('should add manager pages to menuPages in order if editor true', () => {

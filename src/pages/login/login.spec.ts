@@ -98,7 +98,7 @@ describe('LoginPage', () => {
   it('should display terms-of-service component', () => {
     let de: DebugElement;
     let el: HTMLElement;
-    de = fixture.debugElement.query(By.css('login-form'));
+    de = fixture.debugElement.query(By.css('terms-of-service'));
     el = de.nativeElement.src;
     expect(el).toBeUndefined();
   });

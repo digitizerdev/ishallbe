@@ -192,8 +192,8 @@ export class iShallBe {
   }
 
   wakeUp() {
-    this.setRootHomePage(this.session.retrieveUser());
-    this.setManagerMenu(this.session.editor());
+    this.setRootHomePage(this.session.current());
+    this.setManagerMenu(this.session.currentEditor());
     this.user = this.loadUser();
   }
 
@@ -212,17 +212,18 @@ export class iShallBe {
   }
 
   loadUser() {
-    return this.session.retrieveUser();
+    return this.session.current();
   }
 
   openPage(page) {
     this.nav.setRoot(page.component);
   }
 
-  listenToLoginEvents() {
-    this.events.subscribe('editor:login', () => {
-      this.setManagerMenu(true);
+  endSession() {
+    this.events.subscribe('user:loggedOut', () => {
+      this.nav.setRoot(LoginPage);      
     });
   }
+
 }
 

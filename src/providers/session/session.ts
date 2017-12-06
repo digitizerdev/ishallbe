@@ -25,46 +25,51 @@ export class SessionProvider {
   ) {
   }
 
-  storeUser(user) {
+  start(user) {
     return Observable.create((observer: any) => {
       return this.storage.ready().then(() => {
         this.storage.set('user', user);
-        this.events.publish('user:loggedIn');
       }).catch(console.log);
     });
   }
 
-  retrieveUser() {
+  current() {
     return Observable.create((observer: any) => {
       return this.storage.ready().then(() => {
-      this.storage.get('user').then((user) => {
-        if (user) {
-          this.user = user;
-          observer.next(user);
-        } else {
-          observer.next(false);
-        }
-      });
+        this.storage.get('user').then((user) => {
+          if (user) {
+            this.user = user;
+            observer.next(user);
+          } else {
+            observer.next(false);
+          }
+        });
       });
     });
   }
 
-  editor() {
+  end() {
     return Observable.create((observer: any) => {
       return this.storage.ready().then(() => {
-      this.storage.get('user').then((user) => {
-        if (user.editor) {
-          observer.next(user);
-        } else {
-          observer.next(false);
-        }
-      });
+        this.storage.remove('user').then((user) => {
+          this.events.publish('user:loggedOut');
+        });
       });
     });
   }
 
-  loginEditor() {
-    this.events.publish('editor:login')
+  currentEditor() {
+    return Observable.create((observer: any) => {
+      return this.storage.ready().then(() => {
+        this.storage.get('user').then((user) => {
+          if (user.editor) {
+            observer.next(true);
+          } else {
+            observer.next(false);
+          }
+        });
+      });
+    });
   }
 
 }
