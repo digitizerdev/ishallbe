@@ -1,33 +1,7 @@
 <ion-content center padding>
   <header></header>
-  <br>
-  <br>
-  <form #loginForm="ngForm" novalidate>
-    <ion-list no-lines>
-      <ion-item>
-        <ion-label stacked color="primary">Email</ion-label>
-        <ion-input [(ngModel)]="submission.email" name="email" type="text" #email="ngModel" spellcheck="false" autocapitalize="off"
-          required>
-        </ion-input>
-      </ion-item>
-      <p ion-text [hidden]="email.valid || submitted == false" color="danger" padding-left>
-        Email is required
-      </p>
-      <ion-item>
-        <ion-label stacked color="primary">Password</ion-label>
-        <ion-input [(ngModel)]="submission.password" name="password" type="password" #password="ngModel" required>
-        </ion-input>
-      </ion-item>
-      <p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>
-        Password is required
-      </p>
-    </ion-list>
-  </form>
-  <ion-row responsive-sm>
-    <ion-col text-center>
-      <button ion-button (click)="submitLoginForm(submission)" type="submit" round >Login with Email</button>
-    </ion-col>
-  </ion-row>
+  <login-form></login-form>
+  <login-facebook></login-facebook>
   <br>
   <ion-row responsive-sm>
     <ion-col text-center>
@@ -39,9 +13,5 @@
       <button ion-button (click)="setRootRegisterPage()" color="primary" round outline>Register</button>
     </ion-col>
   </ion-row>
-  <div text-center>
-    <a href="https://ishallbe.co/wp-content/uploads/2017/10/End-User-License-Agreement.pdf">
-      <p>Terms of Service</p>
-    </a>
-  </div>
+  <terms-of-service></terms-of-service>
 </ion-content>

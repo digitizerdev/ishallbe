@@ -1,6 +1,6 @@
-import { async, TestBed, ComponentFixture, tick, fakeAsync } from '@angular/core/testing';
+import { async, TestBed, ComponentFixture } from '@angular/core/testing';
 import { NgModule, Component, ViewChild } from '@angular/core';
-import { IonicModule, Platform, } from 'ionic-angular';
+import { IonicModule, Platform } from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -19,13 +19,9 @@ import { SessionProvider } from '../providers/session/session';
 
 import { iShallBe } from './app.component';
 
-import { Observable } from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/finally';
-
 import {
+  FirebaseProviderMock,
+  SessionProviderMock,
   PlatformMock,
   StatusBarMock,
   SplashScreenMock,
@@ -33,8 +29,6 @@ import {
   FacebookMock,
   FileMock,
   PushMock,
-  FirebaseProviderMock,
-  SessionProviderMock
 } from '../../test-config/mocks-ionic';
 
 import { } from 'jasmine';
@@ -43,7 +37,8 @@ let fixture;
 let component;
 let session: SessionProvider;
 let sessionSpy;
-let object;
+let firebase: SessionProvider;
+let firebaseSpy: FirebaseProvider;
 
 describe('iShallBe App Component', () => {
 
@@ -54,6 +49,8 @@ describe('iShallBe App Component', () => {
         IonicModule.forRoot(iShallBe),
       ],
       providers: [
+        { provide: FirebaseProvider, useClass: FirebaseProviderMock },
+        { provide: SessionProvider, useClass: SessionProviderMock },
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
         { provide: Platform, useClass: PlatformMock },
@@ -61,14 +58,13 @@ describe('iShallBe App Component', () => {
         { provide: Facebook, useClass: FacebookMock },
         { provide: File, useClass: FileMock },
         { provide: Push, useClass: PushMock },
-        { provide: FirebaseProvider, useClass: FirebaseProviderMock },
-        { provide: SessionProvider, useClass: SessionProviderMock }
       ]
     })
       .compileComponents().then(()=>{
         fixture = TestBed.createComponent(iShallBe);
         component = fixture.componentInstance;
         session = fixture.componentRef.injector.get(SessionProvider);
+        firebase = fixture.componentRef.injector.get(FirebaseProvider);
       });
   }));
 
@@ -77,6 +73,8 @@ describe('iShallBe App Component', () => {
     component = null;
     session = null;
     sessionSpy = null;
+    firebase = null;
+    firebaseSpy = null;
   });
 
   it('should be created', () => {
@@ -105,7 +103,7 @@ describe('iShallBe App Component', () => {
     expect(component['rootPage']).toBe(HomePage);
   });
 
-  it('should ask session provider for user when this component wakes up', () => {
+  it('should ask session provider for user if woken up', () => {
     spyOn(session, 'retrieveUser')
     component.wakeUp();
     fixture.detectChanges();
