@@ -5,7 +5,6 @@ import { HomePage } from '../home/home';
 import { RegisterPage } from '../register/register';
 import { PasswordResetPage } from '../password-reset/password-reset';
 
-import { SessionProvider } from '../../providers/session/session';
 
 @IonicPage()
 @Component({
@@ -14,12 +13,9 @@ import { SessionProvider } from '../../providers/session/session';
 })
 
 export class LoginPage {
-  submission: { email?: string, password?: string } = {};
-  submitted = false;
 
   constructor(
     public navCtrl: NavController,
-    public session: SessionProvider
   ) { }
 
   pushPasswordResetPage() {
@@ -28,15 +24,6 @@ export class LoginPage {
 
   setRootRegisterPage() {
     this.navCtrl.setRoot(RegisterPage);
-  }
-
-  submitLoginForm() {
-    this.session.loginEditor();
-    let user = {
-      contributor: true,
-      editor: true      
-    }
-    this.navCtrl.setRoot(HomePage);
   }
 
 }

@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
-/**
- * Generated class for the PasswordResetPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { LoginPage } from '../login/login';
 
 @IonicPage()
 @Component({
@@ -15,11 +10,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class PasswordResetPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController
+  ) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PasswordResetPage');
+  pushLoginPage() {
+    this.navCtrl.push(LoginPage);
   }
 
 }

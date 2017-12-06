@@ -1,5 +1,5 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
-import { IonicModule, Events, NavController } from 'ionic-angular';
+import { IonicModule, Events, NavController, NavParams } from 'ionic-angular';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { IonicStorageModule, Storage } from '@ionic/storage';
@@ -30,7 +30,7 @@ let sessionSpy;
 let firebase: FirebaseProvider;
 let firebaseSpy;
 
-describe('Login Page', () => {
+describe('LoginPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -42,7 +42,8 @@ describe('Login Page', () => {
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
         { provide: SessionProvider, useClass: SessionProviderMock },
         { provide: Storage, useClass: StorageMock },
-        { provide: NavController, useClass: NavMock },        
+        { provide: NavController, useClass: NavMock },
+        { provide: NavParams, useClass: NavMock }        
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA
