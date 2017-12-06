@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { IonicModule } from 'ionic-angular';
+import { IonicStorageModule } from '@ionic/storage';
 import { LoginFormComponent } from './login-form/login-form';
 import { LoginFacebookComponent } from './login-facebook/login-facebook';
 import { ResetPasswordFormComponent } from './reset-password-form/reset-password-form';
@@ -47,7 +49,10 @@ import { MediaComponent } from './media/media';
         PinsComponent,
         InteractionsComponent,
         MediaComponent],
-    imports: [],
+    imports: [
+        IonicModule,
+        IonicStorageModule.forRoot(),
+    ],
     exports: [LoginFormComponent,
         LoginFacebookComponent,
         ResetPasswordFormComponent,

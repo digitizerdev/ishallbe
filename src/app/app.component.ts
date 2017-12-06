@@ -25,6 +25,7 @@ import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
 import { PinManagerPage } from '../pages/pin-manager/pin-manager';
 
+import { ComponentsModule } from '../components/components.module';
 import { LoginFormComponent } from '../components/login-form/login-form';
 import { LoginFacebookComponent } from '../components/login-facebook/login-facebook';
 import { ResetPasswordFormComponent } from '../components/reset-password-form/reset-password-form';
@@ -62,6 +63,7 @@ export class iShallBe {
 
   @ViewChild(Nav) nav: Nav;
 
+  user: any;
   rootPage: any;
   pages: Array<{ title: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
@@ -190,8 +192,9 @@ export class iShallBe {
   }
 
   wakeUp() {
-    this.setRootHomePage(this.session.found());
+    this.setRootHomePage(this.session.retrieveUser());
     this.setManagerMenu(this.session.editor());
+    this.user = this.loadUser();
   }
 
   setRootHomePage(session) {
@@ -206,6 +209,10 @@ export class iShallBe {
         this.menuPages.push(managerPage);
       })
     }
+  }
+
+  loadUser() {
+    return this.session.retrieveUser();
   }
 
   openPage(page) {

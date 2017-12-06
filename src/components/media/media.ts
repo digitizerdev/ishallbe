@@ -1,22 +1,26 @@
 import { Component } from '@angular/core';
 
-/**
- * Generated class for the MediaComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
+import { Observable } from 'rxjs/Rx';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/finally';
+
+import { SessionProvider } from '../../providers/session/session';
+
+
 @Component({
   selector: 'media',
   templateUrl: 'media.html'
 })
 export class MediaComponent {
 
-  text: string;
+  user: any;
 
-  constructor() {
-    console.log('Hello MediaComponent Component');
-    this.text = 'Hello World';
+  constructor(
+    public session: SessionProvider
+  ) {
+    this.user = this.session.retrieveUser();
   }
 
 }

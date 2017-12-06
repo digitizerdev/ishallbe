@@ -23,7 +23,7 @@ describe('Home Page', () => {
         { provide: NavController, useClass: NavMock },
         { provide: NavParams, useClass: NavMock },        
       ]
-    })
+    }).compileComponents();
   }));
 
   beforeEach(() => {

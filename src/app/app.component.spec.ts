@@ -1,5 +1,6 @@
-import { async, TestBed } from '@angular/core/testing';
-import { IonicModule, Platform } from 'ionic-angular';
+import { async, TestBed, ComponentFixture, tick, fakeAsync } from '@angular/core/testing';
+import { NgModule, Component, ViewChild } from '@angular/core';
+import { IonicModule, Platform, } from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -17,6 +18,12 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
 import { SessionProvider } from '../providers/session/session';
 
 import { iShallBe } from './app.component';
+
+import { Observable } from 'rxjs/Rx';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/finally';
 
 import {
   PlatformMock,
@@ -36,6 +43,7 @@ let fixture;
 let component;
 let session: SessionProvider;
 let sessionSpy;
+let object;
 
 describe('iShallBe App Component', () => {
 
@@ -43,7 +51,7 @@ describe('iShallBe App Component', () => {
     TestBed.configureTestingModule({
       declarations: [iShallBe],
       imports: [
-        IonicModule.forRoot(iShallBe)
+        IonicModule.forRoot(iShallBe),
       ],
       providers: [
         { provide: StatusBar, useClass: StatusBarMock },
@@ -55,7 +63,7 @@ describe('iShallBe App Component', () => {
         { provide: Push, useClass: PushMock },
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
         { provide: SessionProvider, useClass: SessionProviderMock }
-      ],
+      ]
     })
       .compileComponents().then(()=>{
         fixture = TestBed.createComponent(iShallBe);
@@ -91,45 +99,48 @@ describe('iShallBe App Component', () => {
     expect(component['rootPage']).toBe(LoginPage);
   });
 
-  it('should set home page to be root page if session found', () => {
+  it('should set home page to be root page if user is in session', () => {
     component.setRootHomePage(true);
     fixture.detectChanges();
     expect(component['rootPage']).toBe(HomePage);
   });
 
-  it('should have wake up function', () => {
-    expect(component.wakeUp()).toBeUndefined();
+  it('should ask session provider for user when this component wakes up', () => {
+    spyOn(session, 'retrieveUser')
+    component.wakeUp();
+    fixture.detectChanges();
+    expect(session.retrieveUser).toHaveBeenCalled();
+  });
+
+  it('should not ask session provider for user if not woken up', () => {
+    spyOn(component, 'wakeUp');
+    spyOn(session, 'retrieveUser');
+    fixture.detectChanges();
+    expect(component.wakeUp).toHaveBeenCalledTimes(0);
+    expect(session.retrieveUser).toHaveBeenCalledTimes(0);
   })
 
-  it('should have session provider existence function that returns a value', () => {
-    expect(session.found()).toBeDefined();
-  });
-
-  it('should find session when choosing root page', () => {
-    spyOn(session, 'found').and.returnValue;
-    component.wakeUp();
-    fixture.detectChanges();
-    expect(session.found).toHaveBeenCalledTimes(1);
-  });
-
-  it('should add manager pages to menuPages in order if editor', () => {
+  it('should add manager pages to menuPages in order if editor true', () => {
     let standardMenuPagesLength = component.menuPages.length;
     let managerMenuPagesLength = component.managerPages.length + component.menuPages.length
-    session.user.editor = true;
-    component.wakeUp();
-    fixture.detectChanges();
+    component.setManagerMenu(true);  
+    fixture.detectChanges();   
     let managerPagePosition = 0;
     for (let pages = standardMenuPagesLength; pages < component.menuPages.length; pages++) {
       expect(component.menuPages.indexOf(component.managerPages[managerPagePosition])).toBe(pages);
       managerPagePosition++;
     }
+    expect(component.menuPages.length).toBe(managerMenuPagesLength);
   });
 
-  it('should have setManagerMenu function that does not return a value', () => {
-    expect(component.setManagerMenu()).toBeUndefined();
-  });
+  it('should not add manager pages to menuPages in order if editor false', () => {
+    let standardMenuPagesLength = component.menuPages.length;
+    component.setManagerMenu(false); 
+    fixture.detectChanges();       
+    expect(component.menuPages.length).toBe(standardMenuPagesLength);
+  })
 
-  it('shoud have 23 components', () => {
+  it('should have 23 components', () => {
     expect(component.components.length).toBe(23);
   });
 

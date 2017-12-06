@@ -36,7 +36,6 @@ export class LoginPage {
       contributor: true,
       editor: true      
     }
-    this.session.storeUser(user);
     this.navCtrl.setRoot(HomePage);
   }
 

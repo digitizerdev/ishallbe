@@ -37,6 +37,8 @@ import { PinManagerPage } from '../pages/pin-manager/pin-manager';
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { SessionProvider } from '../providers/session/session';
 
+import { ComponentsModule } from '../components/components.module';
+
 @NgModule({
   declarations: [
     iShallBe,
@@ -67,6 +69,7 @@ import { SessionProvider } from '../providers/session/session';
     IonicModule.forRoot(iShallBe, {}, { links: [] }),
     IonicStorageModule.forRoot(),
     HttpModule,
+    ComponentsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

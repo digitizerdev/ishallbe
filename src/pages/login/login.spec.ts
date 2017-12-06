@@ -14,7 +14,6 @@ import { } from 'jasmine';
 
 import { HomePage } from '../home/home';
 import { LoginPage } from './login';
-import { RegisterPage } from '../register/register';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
@@ -35,7 +34,7 @@ describe('Login Page', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LoginPage],
+      declarations: [LoginPage], 
       imports: [
         IonicModule.forRoot(LoginPage),
         IonicStorageModule.forRoot()
@@ -50,7 +49,7 @@ describe('Login Page', () => {
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA
       ]
-    })
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -69,22 +68,5 @@ describe('Login Page', () => {
   it('should be created', () => {
     expect(component instanceof LoginPage).toBe(true);
   });
-
-  it('should display header component', () => {
-    let de: DebugElement;
-    let el: HTMLElement;
-    de = fixture.debugElement.query(By.css('header'));
-    el = de.nativeElement.src;
-    expect(el).toBeUndefined();
-  });  
-
-  it('should display facebook component', () => {
-    let de: DebugElement;
-    let el: HTMLElement;
-    de = fixture.debugElement.query(By.css('social-facebook'));
-    el = de.nativeElement.src;
-    expect(el).toBeUndefined();
-  });
-
 
 });
