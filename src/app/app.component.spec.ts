@@ -1,6 +1,10 @@
 import { async, TestBed, ComponentFixture } from '@angular/core/testing';
 import { NgModule, Component, ViewChild } from '@angular/core';
 import { IonicModule, Platform } from 'ionic-angular';
+import { AngularFireModule, FirebaseApp } from 'angularfire2';
+import { environment } from '../environments/environment';
+import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -29,6 +33,9 @@ import {
   FacebookMock,
   FileMock,
   PushMock,
+  AngularFireDatabaseMock,
+  AngularFireAuthMock,
+  FirebaseAppMock
 } from '../../test-config/mocks-ionic';
 
 import { } from 'jasmine';
@@ -58,6 +65,9 @@ describe('iShallBe App Component', () => {
         { provide: Facebook, useClass: FacebookMock },
         { provide: File, useClass: FileMock },
         { provide: Push, useClass: PushMock },
+        { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
+        { provide: AngularFireAuth, useClass: AngularFireAuthMock },
+        { provide: FirebaseApp, useClass: FirebaseAppMock }
       ]
     })
       .compileComponents().then(()=>{
@@ -77,8 +87,10 @@ describe('iShallBe App Component', () => {
     firebaseSpy = null;
   });
 
-  it('should be created', () => {
+  it('should be created', (done) => {
     expect(component instanceof iShallBe).toBe(true);
+    const promise = new Promise((res, rej) => res());
+    promise.then(done).catch(done.fail);
   });
 
   it('should have 2 providers', () => {

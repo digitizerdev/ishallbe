@@ -1,11 +1,17 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
-import { IonicModule, Events, NavController } from 'ionic-angular';
+import { IonicModule, Events, NavController, NavParams } from 'ionic-angular';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { IonicStorageModule, Storage } from '@ionic/storage';
+import { AngularFireModule } from 'angularfire2';
+import { environment } from '../../environments/environment';
+import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 
 import { HeaderComponent } from '../../components/header/header';
-import { ResetPasswordFormComponent } from '../../components/reset-password-form/reset-password-form';
+import { LoginFormComponent } from '../../components/login-form/login-form';
+import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
+import { TermsOfServiceComponent } from '../../components/terms-of-service/terms-of-service';
 
 import { PasswordResetPage } from './password-reset';
 
@@ -18,7 +24,9 @@ import {
   FirebaseProviderMock,
   SessionProviderMock,
   NavMock,
-  StorageMock  
+  StorageMock,
+  AngularFireDatabaseMock,
+  AngularFireAuthMock
 } from '../../../test-config/mocks-ionic';
 
 let fixture;
@@ -40,7 +48,10 @@ describe('PasswordResetPage', () => {
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
         { provide: SessionProvider, useClass: SessionProviderMock },
         { provide: Storage, useClass: StorageMock },
-        { provide: NavController, useClass: NavMock },        
+        { provide: NavController, useClass: NavMock },
+        { provide: NavParams, useClass: NavMock },
+        { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
+        { provide: AngularFireAuth, useClass: AngularFireAuthMock },       
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA

@@ -7,8 +7,12 @@ import { Camera } from '@ionic-native/camera';
 import { MediaCapture } from '@ionic-native/media-capture';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
-import { IonicStorageModule } from '@ionic/storage';
+import { IonicStorageModule,} from '@ionic/storage';
 import { NavController, NavParams, } from 'ionic-angular';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
 
 export class PlatformMock {
   public ready(): Promise<string> {
@@ -158,8 +162,24 @@ export class NavMock {
 
 }
 
-export class DeepLinkerMock {
+  export class DeepLinkerMock {
 
-}
+  }
 
+  export class AngularFireDatabaseMock extends AngularFireDatabaseModule {
+    hide() {
+      return;
+    }
+  }
 
+  export class AngularFireAuthMock extends AngularFireAuthModule {
+    hide() {
+      return;
+    }
+  }
+
+  export class FirebaseAppMock extends AngularFireModule {
+    hide() {
+      return;
+    }
+  }

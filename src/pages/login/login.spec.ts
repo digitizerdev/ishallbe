@@ -3,6 +3,10 @@ import { IonicModule, Events, NavController, NavParams } from 'ionic-angular';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { IonicStorageModule, Storage } from '@ionic/storage';
+import { AngularFireModule } from 'angularfire2';
+import { environment } from '../../environments/environment';
+import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 
 import { HeaderComponent } from '../../components/header/header';
 import { LoginFormComponent } from '../../components/login-form/login-form';
@@ -20,7 +24,9 @@ import {
   FirebaseProviderMock,
   SessionProviderMock,
   NavMock,
-  StorageMock  
+  StorageMock,
+  AngularFireDatabaseMock,
+  AngularFireAuthMock
 } from '../../../test-config/mocks-ionic';
 
 let fixture;
@@ -37,13 +43,16 @@ describe('LoginPage', () => {
       declarations: [LoginPage], 
       imports: [
         IonicModule.forRoot(LoginPage),
+        AngularFireModule.initializeApp(environment.firebase)                        
       ],
       providers: [
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
         { provide: SessionProvider, useClass: SessionProviderMock },
         { provide: Storage, useClass: StorageMock },
         { provide: NavController, useClass: NavMock },
-        { provide: NavParams, useClass: NavMock }        
+        { provide: NavParams, useClass: NavMock },
+        { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
+        { provide: AngularFireAuth, useClass: AngularFireAuthMock },       
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA
@@ -71,29 +80,29 @@ describe('LoginPage', () => {
     expect(component instanceof LoginPage).toBe(true);
   });
 
-  it('should display header component', () => {
+  it('should display header component', async(() => {
     let de: DebugElement;
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('header'));
     el = de.nativeElement.src;
     expect(el).toBeUndefined();
-  });
+  }));
 
-  it('should display login-form component', () => {
+  it('should display login-form component', async(() => {
     let de: DebugElement;
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('login-form'));
     el = de.nativeElement.src;
     expect(el).toBeUndefined();
-  });
+  }));
 
-  it('should display login-facebook component', () => {
+  it('should display login-facebook component', async(() => {
     let de: DebugElement;
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('login-facebook'));
     el = de.nativeElement.src;
     expect(el).toBeUndefined();
-  });
+  }));
 
   it('should display terms-of-service component', () => {
     let de: DebugElement;

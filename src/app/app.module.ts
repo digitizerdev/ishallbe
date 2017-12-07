@@ -11,6 +11,11 @@ import { MediaCapture } from '@ionic-native/media-capture';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { IonicStorageModule } from '@ionic/storage';
+import { AngularFireModule, FirebaseApp } from 'angularfire2';
+import { environment } from '../environments/environment';
+import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
 
 import { LoginPage } from '../pages/login/login';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
@@ -69,7 +74,10 @@ import { ComponentsModule } from '../components/components.module';
     IonicModule.forRoot(iShallBe, {}, { links: [] }),
     IonicStorageModule.forRoot(),
     HttpModule,
-    ComponentsModule
+    ComponentsModule,
+    AngularFireModule.initializeApp(environment.firebase), 
+    AngularFireAuthModule,
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -106,7 +114,7 @@ import { ComponentsModule } from '../components/components.module';
     MediaCapture,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     FirebaseProvider,
-    SessionProvider
+    SessionProvider,
   ]
 })
 export class AppModule { }
