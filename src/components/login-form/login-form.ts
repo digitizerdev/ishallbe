@@ -1,22 +1,29 @@
 import { Component } from '@angular/core';
 
-/**
- * Generated class for the LoginFormComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
   selector: 'login-form',
   templateUrl: 'login-form.html'
 })
 export class LoginFormComponent {
 
-  text: string;
+  submission: { 
+    email?: string, 
+    password?: string 
+  } = {};
+  submitted = false;
+  error: any;
 
   constructor() {
-    console.log('Hello LoginFormComponent Component');
-    this.text = 'Hello World';
   }
+
+  submit(submission) {
+    this.submission = submission;
+    this.submitted = true;
+  }
+
+  submissionError(error) {
+    this.error = error;
+  }
+
 
 }
