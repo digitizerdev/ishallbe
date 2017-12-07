@@ -225,5 +225,11 @@ export class iShallBe {
     });
   }
 
+  startEditor() {
+    this.events.subscribe('editor:loggedIn', () => {
+      this.setManagerMenu(true);    
+    });
+  }
+
 }
 

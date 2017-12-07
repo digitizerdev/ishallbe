@@ -1,5 +1,5 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
-import { IonicModule, Events, NavController, NavParams } from 'ionic-angular';
+import { IonicModule, Events, NavController, AlertController, LoadingController, NavParams } from 'ionic-angular';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { IonicStorageModule, Storage } from '@ionic/storage';
@@ -21,7 +21,9 @@ import {
     NavMock,
     StorageMock,
     AngularFireDatabaseMock,
-    AngularFireAuthMock
+    AngularFireAuthMock,
+    LoadingControllerMock,
+    AlertControllerMock,
 } from '../../../test-config/mocks-ionic';
 
 let fixture;
@@ -48,6 +50,8 @@ describe('LoginFormComponent', () => {
                 { provide: NavParams, useClass: NavMock },
                 { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
                 { provide: AngularFireAuth, useClass: AngularFireAuthMock },
+                { provide: AlertController, useClass: AlertControllerMock },
+                { provide: LoadingController, useClass: LoadingControllerMock }                
             ],
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
@@ -76,6 +80,7 @@ describe('LoginFormComponent', () => {
     });
 
     it('should submit form input', () => {
+        spyOn(component, 'auth');        
         let submission = {
             "email": 'testFormEmail',
             "password": 'testFormPassword'
@@ -83,9 +88,12 @@ describe('LoginFormComponent', () => {
         component.submit(submission);
         fixture.detectChanges();
         expect(component.submission).toBe(submission);
+        expect(component.auth).toHaveBeenCalled();
+        
     });
 
     it('should toggle form submission flag on submission', () => {
+        spyOn(component, 'auth');                
         expect(component.submitted).toBeFalsy();
         let submission = {
             "email": 'testFormEmail',
@@ -94,26 +102,63 @@ describe('LoginFormComponent', () => {
         component.submit(submission);
         fixture.detectChanges();
         expect(component.submitted).toBeTruthy();
+        expect(component.auth).toHaveBeenCalled();        
     });
 
-    it('should log error message on submission error', () => {
-        expect(component.submitted).toBeFalsy();
-        let error = {
-            "code": "invalid",
-            "message": "Test Error"
-        }
-        component.submissionError(error)
-        expect(component.error).toBe(error);
-    });
-
-    it('should ask Firebase to authenticate via email', () => {
-        spyOn(firebase, 'emailAuth');
+    it('should authenticate via email', () => {
+        spyOn(component, 'auth')
         let submission = {
             "email": 'testFormEmail',
             "password": 'testFormPassword'
         }
-        component.submit(submission);
+        component.auth(submission.email, submission.password);
         fixture.detectChanges();
-        expect(firebase.emailAuth).toHaveBeenCalled();
+        expect(component.auth).toHaveBeenCalled();
+    });
+
+    it('should welcome user', () => {
+        spyOn(session, 'start');
+        let user = {
+            "loggedIn": true,
+            "editor": false,
+            "uid": "test"
+          }
+        component.welcome(user);
+        fixture.detectChanges();
+        expect(session.start).toHaveBeenCalled();
+    });
+
+    it('should welcome editor user', () => {
+        spyOn(session, 'startEditor');
+        let user = {
+            "loggedIn": true,
+            "editor": true,
+            "uid": "test"
+          }
+        component.welcomeEditor(user);
+        fixture.detectChanges();
+        expect(session.startEditor).toHaveBeenCalled();
+    })
+
+    it('should set root to home page on welcome', () => {
+        spyOn(component, 'setRootHomePage');
+        let user = {
+            "loggedIn": true,
+            "editor": false,
+            "uid": "test"
+          }
+        component.welcome(user);
+        fixture.detectChanges();
+        expect(component.setRootHomePage).toHaveBeenCalled();
+    });
+
+    it('should log error message on error', () => {
+        expect(component.error).toBeUndefined();
+        let error = {
+            "code": "invalid",
+            "message": "Test Error"
+        }
+        component.errorHandler(error);
+        expect(component.error).toBe(error);
     });
 });

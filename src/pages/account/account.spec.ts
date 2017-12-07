@@ -85,4 +85,10 @@ describe('AccountPage', () => {
     expect(el).toBeUndefined();
   });
 
+  it('should be able to logout of session', () => {
+    spyOn(session, 'end');
+    component.logout();
+    expect(session.end).toHaveBeenCalled();
+  })
+
 });

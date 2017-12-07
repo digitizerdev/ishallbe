@@ -25,14 +25,6 @@ export class SessionProvider {
   ) {
   }
 
-  start(user) {
-    return Observable.create((observer: any) => {
-      return this.storage.ready().then(() => {
-        this.storage.set('user', user);
-      }).catch(console.log);
-    });
-  }
-
   current() {
     return Observable.create((observer: any) => {
       return this.storage.ready().then(() => {
@@ -45,6 +37,14 @@ export class SessionProvider {
           }
         });
       });
+    });
+  }
+
+  start(user) {
+    return Observable.create((observer: any) => {
+      return this.storage.ready().then(() => {
+        this.storage.set('user', user);
+      }).catch(console.log);
     });
   }
 
@@ -70,6 +70,10 @@ export class SessionProvider {
         });
       });
     });
+  }
+
+  startEditor() {
+    this.events.publish('editor:loggedIn');
   }
 
 }
