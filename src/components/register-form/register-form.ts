@@ -1,22 +1,30 @@
 import { Component } from '@angular/core';
 
-/**
- * Generated class for the RegisterFormComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
   selector: 'register-form',
   templateUrl: 'register-form.html'
 })
 export class RegisterFormComponent {
 
-  text: string;
+  submission: { 
+    name?: string,
+    email?: string, 
+    password?: string 
+  } = {};
+  submitted = false;
+  error: any;
 
   constructor() {
-    console.log('Hello RegisterFormComponent Component');
-    this.text = 'Hello World';
+    
   }
 
+  submit(submission) {
+    this.submission = submission;
+    this.submitted = true;
+    this.auth(this.submission.name, this.submission.email, this.submission.password);
+  }
+
+  auth(name, email, password) {
+
+  }
 }

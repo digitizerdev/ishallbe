@@ -87,8 +87,10 @@ describe('AccountPage', () => {
 
   it('should be able to logout of session', () => {
     spyOn(session, 'end');
+    spyOn(component, 'setRootLoginPage')
     component.logout();
     expect(session.end).toHaveBeenCalled();
-  })
+    expect(component.setRootLoginPage).toHaveBeenCalled();
+  });
 
 });

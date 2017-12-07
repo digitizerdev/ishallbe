@@ -89,7 +89,6 @@ describe('LoginFormComponent', () => {
         fixture.detectChanges();
         expect(component.submission).toBe(submission);
         expect(component.auth).toHaveBeenCalled();
-        
     });
 
     it('should toggle form submission flag on submission', () => {

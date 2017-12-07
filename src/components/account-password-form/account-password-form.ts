@@ -1,22 +1,23 @@
 import { Component } from '@angular/core';
 
-/**
- * Generated class for the AccountPasswordFormComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
   selector: 'account-password-form',
   templateUrl: 'account-password-form.html'
 })
 export class AccountPasswordFormComponent {
 
-  text: string;
+  submission: { 
+    email?: string, 
+  } = {};
+  submitted = false;
+  error: any;
 
   constructor() {
-    console.log('Hello AccountPasswordFormComponent Component');
-    this.text = 'Hello World';
+  }
+
+  submit(submission) {
+    this.submission = submission;
+    this.submitted = true;
   }
 
 }

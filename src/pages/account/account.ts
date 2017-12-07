@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { LoginPage } from '../login/login';
+
 import { SessionProvider } from '../../providers/session/session';
 
 @IonicPage()
@@ -19,6 +21,11 @@ export class AccountPage {
 
   logout() {
     this.session.end();
+    this.setRootLoginPage();
+  }
+
+  setRootLoginPage() {
+    this.navCtrl.setRoot(LoginPage);
   }
 
 }

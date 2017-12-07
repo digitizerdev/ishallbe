@@ -17,10 +17,10 @@
     <p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>
       Password is required
     </p>
+    <ion-row>
+      <ion-col text-center>
+          <button ion-button (click)="submit(submission)" type="submit" round large >Login with Email</button>                        
+      </ion-col>
+    </ion-row>
   </ion-list>
 </form>
-<ion-row responsive-sm>
-  <ion-col text-center>
-    <button ion-button (click)="submit(submission)" type="submit" round >Login with Email</button>
-  </ion-col>
-</ion-row>
