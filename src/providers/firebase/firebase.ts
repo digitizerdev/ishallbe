@@ -12,7 +12,7 @@ import 'rxjs/add/operator/first';
 @Injectable()
 export class FirebaseProvider {
 
-  user: Observable<any[]>;
+  user: any;
 
   constructor
     (
@@ -21,12 +21,12 @@ export class FirebaseProvider {
     ) {
   }
 
-  current() {
+  account() {
     return this.afa.auth.currentUser;
   }
 
   updateAccountEmail(email) {
-    return this.current().updateEmail(email).then(function () {
+    return this.account().updateEmail(email).then(function () {
         return true;
        }).catch(function (error) {
         return error;
@@ -34,10 +34,19 @@ export class FirebaseProvider {
   }
 
   updateAccountPassword(password) {
-    return this.current().updatePassword(password).then(function () {
+    return this.account().updatePassword(password).then(function () {
       return true;  
       }).catch(function (error) {
         return error;
     });
   }
+
+  profile(uid) {
+    return this.afdb.object('/users/' + uid);
+  }
+
+  createProfile(profile) {
+    this.profile(profile.uid).set(profile);
+  }
+
 }

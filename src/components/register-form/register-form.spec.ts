@@ -104,12 +104,34 @@ describe('RegisterFormComponent', () => {
         expect(component.createAccount).toHaveBeenCalled();        
     });
 
-    it('should welcome user', () => {
+    it('should ask firebase to create profile', () => {
+        spyOn(firebase, 'createProfile');
+        component.createProfile('testUID');
+        fixture.detectChanges();
+        expect(firebase.createProfile).toHaveBeenCalled();
+    });
+
+    it('should should create then welcome user', () => {
+        spyOn(component, 'welcome');
+        let profile = {
+            uid: 'testUID',
+            name: 'testName',
+            email: 'testEmail',
+            photo: 'testPhoto',
+            blocked: false,
+            role: "contributor"
+          }
+        component.createUser(profile);
+        fixture.detectChanges();
+        expect(component.welcome).toHaveBeenCalled();
+    });
+
+    it('should start session with user', () => {
         spyOn(session, 'start');
         let user = {
             "loggedIn": true,
             "editor": false,
-            "uid": "test"
+            "uid": 'testUID'
           }
         component.welcome(user);
         fixture.detectChanges();
@@ -118,12 +140,7 @@ describe('RegisterFormComponent', () => {
 
     it('should set root to home page on welcome', () => {
         spyOn(component, 'setRootHomePage');
-        let user = {
-            "loggedIn": true,
-            "editor": false,
-            "uid": "test"
-          }
-        component.welcome(user);
+        component.welcome();
         fixture.detectChanges();
         expect(component.setRootHomePage).toHaveBeenCalled();
     });

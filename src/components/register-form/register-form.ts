@@ -44,8 +44,30 @@ export class RegisterFormComponent {
 
   createAccount(email, password) {
     this.firebase.afa.auth.createUserWithEmailAndPassword(email, password).then((token) => {
-      this.welcome(token);
+      this.createProfile(token.uid);
     });
+  }
+
+  createProfile(uid) {
+    let profile = {
+      uid: uid,
+      name: this.submission.name,
+      email: this.submission.email,
+      photo: "https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png",
+      blocked: false,
+      role: "contributor"
+    }
+    this.firebase.createProfile(profile); 
+    this.createUser(profile);
+  }
+
+  createUser(profile) {
+    let user = {
+      "loggedIn": true,
+      "editor": false,
+      "uid": profile.uid
+    }
+    this.welcome(user);
   }
 
   welcome(user) {
