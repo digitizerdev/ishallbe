@@ -8,12 +8,12 @@ import { environment } from '../../environments/environment';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 
+import { AccountPasswordFormComponent } from './account-password-form';
+
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
 
 import { } from 'jasmine';
-
-import { ResetPasswordFormComponent } from './reset-password-form';
 
 import {
   FirebaseProviderMock,
@@ -26,19 +26,21 @@ import {
   AlertControllerMock,
 } from '../../../test-config/mocks-ionic';
 
-describe('ResetPasswordFormComponent', () => {
-  let fixture;
-  let component;
-  let session: SessionProvider;
-  let sessionSpy;
-  let firebase: FirebaseProvider;
-  let firebaseSpy;
+let fixture;
+let component;
+let session: SessionProvider;
+let sessionSpy;
+let firebase: FirebaseProvider;
+let firebaseSpy;
+
+describe('AccountPasswordFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ResetPasswordFormComponent],
+      declarations: [AccountPasswordFormComponent],
       imports: [
-        IonicModule.forRoot(ResetPasswordFormComponent),
+        IonicModule.forRoot(AccountPasswordFormComponent),
+        AngularFireModule.initializeApp(environment.firebase)
       ],
       providers: [
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
@@ -58,7 +60,7 @@ describe('ResetPasswordFormComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ResetPasswordFormComponent);
+    fixture = TestBed.createComponent(AccountPasswordFormComponent);
     component = fixture.componentInstance;
     session = fixture.componentRef.injector.get(SessionProvider);
     firebase = fixture.componentRef.injector.get(FirebaseProvider);
@@ -74,54 +76,46 @@ describe('ResetPasswordFormComponent', () => {
   });
 
   it('should be created', () => {
-    expect(component instanceof ResetPasswordFormComponent).toBe(true);
+    expect(component instanceof AccountPasswordFormComponent).toBe(true);
   });
 
   it('should submit form input', () => {
-    spyOn(component, 'send');
     let submission = {
-      "email": 'testFormEmail',
+      "passowrd": 'testFormPassword',
     }
     component.submit(submission);
     fixture.detectChanges();
     expect(component.submission).toBe(submission);
-    expect(component.send).toHaveBeenCalled();
   });
 
   it('should toggle form submission flag on submission', () => {
-    spyOn(component, 'send');
     expect(component.submitted).toBeFalsy();
     let submission = {
-      "email": 'testFormEmail',
+      "email": 'testFormPassword',
     }
     component.submit(submission);
     fixture.detectChanges();
     expect(component.submitted).toBeTruthy();
-    expect(component.send).toHaveBeenCalled();
   });
 
-  it('Should send submission', () => {
-    spyOn(component, 'send');
+  it('should send submission', () => {
+    spyOn(component, 'send')
     let submission = {
-      "email": 'testFormEmail',
+      "email": 'testFormPassword',
     }
     component.submit(submission);
     fixture.detectChanges();
     expect(component.send).toHaveBeenCalled();
   });
 
-  it('Should display confirmation alert after confirmation', () => {
-    spyOn(component, 'confirmAlert');
-    component.confirm()
+  it('should set root to home page on update user', () => {
+    spyOn(component, 'setRootHomePage');
+    let submission = {
+      "email": 'testFormPassword',
+    }
+    component.submit(submission);
     fixture.detectChanges();
-    expect(component.confirmAlert).toHaveBeenCalled();
-  })
-
-  it('should set root to login page after confirmation', () => {
-    spyOn(component, 'setRootLoginPage');
-    component.confirm();  
-    fixture.detectChanges();
-    expect(component.setRootLoginPage).toHaveBeenCalled();
+    expect(component.setRootHomePage).toHaveBeenCalled();
   });
 
   it('should log error message on error', () => {
@@ -133,5 +127,4 @@ describe('ResetPasswordFormComponent', () => {
     component.errorHandler(error);
     expect(component.error).toBe(error);
   });
-
 });

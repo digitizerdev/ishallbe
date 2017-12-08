@@ -11,6 +11,21 @@
   <header></header>
   <ion-row responsive-sm>
     <ion-col text-center>
+      <button ion-button (click)="pushAccountEmailPage()" color="primary" round outline>Change Email</button>
+    </ion-col>
+  </ion-row>
+  <ion-row responsive-sm>
+    <ion-col text-center>
+      <button ion-button (click)="pushAccountPasswordPage()" color="secondary" round outline>Change Password</button>
+    </ion-col>
+  </ion-row>
+  <ion-row responsive-sm>
+    <ion-col text-center>
+      <button ion-button (click)="pushProfilePage()" color="secondary" round outline>View Profile</button>
+    </ion-col>
+  </ion-row>
+  <ion-row responsive-sm>
+    <ion-col text-center>
       <button ion-button (click)="logout()" color="primary" round outline>logout</button>
     </ion-col>
   </ion-row>

@@ -15,10 +15,33 @@ export class FirebaseProvider {
   user: Observable<any[]>;
 
   constructor
-  (
+    (
     public afdb: AngularFireDatabase,
     public afa: AngularFireAuth
-  ) {
-    
+    ) {
+  }
+
+  current() {
+    return this.afa.auth.currentUser;
+  }
+
+  changeAccountEmail(email) {
+    return Observable.create((observer: any) => {
+      return this.current().updateEmail(email).then((complete) => {
+        observer.next(true);
+      }).catch((error) => {
+        observer.next(error);
+      });
+    });
+  }
+
+  changeAccountPassword(password) {
+    return Observable.create((observer: any) => {
+      return this.current().updatePassword(password).then((complete) => {
+        observer.next(true);
+      }).catch((error) => {
+        observer.next(error);
+      });
+    });
   }
 }

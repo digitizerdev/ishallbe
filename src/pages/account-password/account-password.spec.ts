@@ -9,8 +9,11 @@ import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/dat
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 
 import { HeaderComponent } from '../../components/header/header';
+import { LoginFormComponent } from '../../components/login-form/login-form';
+import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
+import { TermsOfServiceComponent } from '../../components/terms-of-service/terms-of-service';
 
-import { AccountPage } from './account';
+import { AccountPasswordPage } from './account-password';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
@@ -33,13 +36,13 @@ let sessionSpy;
 let firebase: FirebaseProvider;
 let firebaseSpy;
 
-describe('AccountPage', () => {
+describe('AccountPasswordPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AccountPage], 
+      declarations: [AccountPasswordPage], 
       imports: [
-        IonicModule.forRoot(AccountPage),
+        IonicModule.forRoot(AccountPasswordPage),
         AngularFireModule.initializeApp(environment.firebase)                        
       ],
       providers: [
@@ -58,7 +61,7 @@ describe('AccountPage', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountPage);
+    fixture = TestBed.createComponent(AccountPasswordPage);
     component = fixture.componentInstance;
     session = fixture.componentRef.injector.get(SessionProvider);    
     firebase = fixture.componentRef.injector.get(FirebaseProvider);
@@ -74,27 +77,27 @@ describe('AccountPage', () => {
   });
 
   it('should be created', () => {
-    expect(component instanceof AccountPage).toBe(true);
+    expect(component instanceof AccountPasswordPage).toBe(true);
   });
 
-  it('should have title called Account', () => {
-    expect(component.title).toBe('Account');
+  it('should have title called Update Email', () => {
+    expect(component.title).toBe('Update Password');
   })
 
-  it('should display header component', () => {
+  it('should display header component', async(() => {
     let de: DebugElement;
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('header'));
     el = de.nativeElement.src;
     expect(el).toBeUndefined();
-  });
+  }));
 
-  it('should be able to logout of session', () => {
-    spyOn(session, 'end');
-    spyOn(component, 'setRootLoginPage')
-    component.logout();
-    expect(session.end).toHaveBeenCalled();
-    expect(component.setRootLoginPage).toHaveBeenCalled();
-  });
+  it('should display account-password-form component', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('account-password-form'));
+    el = de.nativeElement.src;
+    expect(el).toBeUndefined();
+  }));
 
 });
