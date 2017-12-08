@@ -41,12 +41,25 @@ export class FirebaseProvider {
     });
   }
 
-  profile(uid) {
-    return this.afdb.object('/users/' + uid);
+  object(path) {
+    return this.afdb.object(path);
+  }
+
+  list(path) {
+    return this.afdb.list(path);
   }
 
   createProfile(profile) {
-    this.profile(profile.uid).set(profile);
+    this.object('/users/' + profile.uid).set(profile);
+  }
+
+  profile(uid) {
+    return Observable.create((observer: any) => {      
+      let user = this.object('/users/' + uid);
+      return user.valueChanges().subscribe((profile)=> {
+        observer.next(user);
+      });
+    });
   }
 
 }

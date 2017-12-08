@@ -104,16 +104,53 @@ describe('LoginFormComponent', () => {
         expect(component.auth).toHaveBeenCalled();        
     });
 
-    it('should welcome user', () => {
+    it('should ask firebase for profile object', () => {
+        spyOn(firebase, 'profile').and.returnValue({ subscribe: () => {} })
+        component.retrieveProfile('testUID');
+        fixture.detectChanges();
+        expect(firebase.profile).toHaveBeenCalled();
+    });
+
+    it('should should choose session as user if not editor', () => {
+        spyOn(component, 'welcome');
+        let profile = {
+            uid: 'testUID',
+            name: 'testName',
+            email: 'testEmail',
+            photo: 'testPhoto',
+            blocked: false,
+            role: "contributor"
+          }
+        component.chooseSession(profile);
+        fixture.detectChanges();
+        expect(component.welcome).toHaveBeenCalled();
+    });
+
+    it('should start session with user', () => {
         spyOn(session, 'start');
         let user = {
             "loggedIn": true,
             "editor": false,
-            "uid": "test"
+            "uid": 'testUID'
           }
         component.welcome(user);
         fixture.detectChanges();
         expect(session.start).toHaveBeenCalled();
+    });
+
+    it('should should choose session as user if editor', () => {
+        spyOn(component, 'welcomeEditor');
+        let profile = {
+            uid: 'testUID',
+            name: 'testName',
+            email: 'testEmail',
+            photo: 'testPhoto',
+            blocked: false,
+            role: "editor"
+          }
+        component.chooseSession(profile);
+        fixture.detectChanges();
+        expect(component.welcomeEditor).toHaveBeenCalled();
     });
 
     it('should welcome editor user', () => {

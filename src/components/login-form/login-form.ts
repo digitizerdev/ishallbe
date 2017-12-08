@@ -42,14 +42,34 @@ export class LoginFormComponent {
 
   auth(email, password) {
     this.firebase.afa.auth.signInWithEmailAndPassword(email, password).then((token) => {
-      if (token.editor) {
-        this.welcomeEditor(token);
-      } else {
-        this.welcome(token);
-      }
+      this.retrieveProfile(token.uid);
     }).catch((error) => {
         this.errorHandler(error);
       });
+  }
+
+  retrieveProfile(uid) {
+    this.firebase.profile(uid).subscribe((profile)=> {
+      this.chooseSession(profile);
+    })
+  }
+
+  chooseSession(profile) {
+    if (profile.role == 'editor') {
+      let user = {
+        "loggedIn": true,
+        "editor": true,
+        "uid": profile.uid
+      }
+      this.welcomeEditor(user);
+    } else {
+      let user = {
+        "loggedIn": true,
+        "editor": false,
+        "uid": profile.uid
+      }
+      this.welcome(user);
+    }
   }
   
   welcome(user) {
