@@ -3,33 +3,12 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>Support</ion-title>
+    <ion-title color='primary'>{{title}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <header></header>
   <br>
-  <form (ngSubmit)="logForm()">
-    <ion-item no-lines>
-      <ion-label>Subject:</ion-label>
-      <ion-input type="text" [(ngModel)]="form.subject" name="title" ></ion-input>
-    </ion-item>
-    <br>
-    <ion-item no-lines>
-      <ion-label>Message:</ion-label>
-      <ion-textarea [(ngModel)]="form.message" name="description" ></ion-textarea>
-    </ion-item>
-    <br>
-    <div text-center>
-    <br>
-    <ion-row>
-      <ion-col text-center>
-        <button round ion-button type="submit" block>Send Message</button>
-      </ion-col>
-    </ion-row>
-    <br>
-    <h5 text-center> Email us directly at info@ishallbe.co</h5>
-  </div>
-  </form>
+  <support-form></support-form>
 </ion-content>

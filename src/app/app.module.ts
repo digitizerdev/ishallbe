@@ -8,6 +8,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
 import { MediaCapture } from '@ionic-native/media-capture';
+import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { IonicStorageModule } from '@ionic/storage';
@@ -107,6 +108,7 @@ import { ComponentsModule } from '../components/components.module';
   providers: [
     StatusBar,
     SplashScreen,
+    EmailComposer,
     Push,
     File,
     Facebook,

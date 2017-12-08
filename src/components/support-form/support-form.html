@@ -1,17 +1,20 @@
 <form #supportForm="ngForm" novalidate>
   <ion-list no-lines>
     <ion-item>
-      <ion-label stacked color="primary">Email</ion-label>
-      <ion-input [(ngModel)]="submission.email" name="email" type="text" #email="ngModel" spellcheck="false" autocapitalize="off"
+      <ion-label stacked color="primary">Subject</ion-label>
+      <ion-input [(ngModel)]="submission.subject" name="subject" type="text" #subject="ngModel" spellcheck="false" autocapitalize="off"
         required>
       </ion-input>
     </ion-item>
-    <p ion-text [hidden]="email.valid || submitted == false" color="danger" padding-left>
-      Email is required
-    </p>
+    <ion-item>
+        <ion-label stacked color="primary">Body</ion-label>
+        <ion-input [(ngModel)]="submission.body" name="body" type="text" #body="ngModel" spellcheck="false" autocapitalize="off"
+          required>
+        </ion-input>
+      </ion-item>
     <ion-row>
       <ion-col text-center>
-        <button ion-button (click)="submit(submission)" type="submit" round large>Change Email</button>
+        <button ion-button (click)="submit(submission)" type="submit" round large>Send Email</button>
       </ion-col>
     </ion-row>
   </ion-list>
