@@ -39,10 +39,10 @@ export class ResetPasswordFormComponent {
   }
 
   send(email) {
-    this.firebase.afa.auth.sendPasswordResetEmail(email).then(()=>{
-      this.confirm();
-    })
-      .catch((error) => {
+    this.firebase.afa.auth
+      .sendPasswordResetEmail(email).then(()=>{
+        this.confirm();
+      }).catch((error) => {
         this.errorHandler(error);
       });
   }

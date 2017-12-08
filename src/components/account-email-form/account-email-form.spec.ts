@@ -80,21 +80,25 @@ describe('AccountEmailFormComponent', () => {
   });
 
   it('should submit form input', () => {
+    spyOn(component, 'send');    
     let submission = {
       "email": 'testFormEmail',
     }
     component.submit(submission);
     fixture.detectChanges();
+    expect(component.send).toHaveBeenCalled();    
     expect(component.submission).toBe(submission);
   });
 
   it('should toggle form submission flag on submission', () => {
+    spyOn(component, 'send');        
     expect(component.submitted).toBeFalsy();
     let submission = {
       "email": 'testFormEmail',
     }
     component.submit(submission);
     fixture.detectChanges();
+    expect(component.send).toHaveBeenCalled();        
     expect(component.submitted).toBeTruthy();
   });
 
@@ -108,16 +112,20 @@ describe('AccountEmailFormComponent', () => {
     expect(component.send).toHaveBeenCalled();
   });
 
-  it('should set root to home page on submission', () => {
+  it('Should display confirmation alert after confirmation', () => {
+    spyOn(component, 'confirmAlert');
+    component.confirm()
+    fixture.detectChanges();
+    expect(component.confirmAlert).toHaveBeenCalled();
+  })
+
+  it('should set root to home page after confirmation', () => {
     spyOn(component, 'setRootHomePage');
-    let submission = {
-      "email": 'testFormEmail',
-    }
-    component.submit(submission);
+    component.confirm();  
     fixture.detectChanges();
     expect(component.setRootHomePage).toHaveBeenCalled();
   });
-
+  
   it('should log error message on error', () => {
     expect(component.error).toBeUndefined();
     let error = {

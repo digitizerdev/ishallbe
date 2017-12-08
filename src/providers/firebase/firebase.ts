@@ -25,23 +25,19 @@ export class FirebaseProvider {
     return this.afa.auth.currentUser;
   }
 
-  changeAccountEmail(email) {
-    return Observable.create((observer: any) => {
-      return this.current().updateEmail(email).then((complete) => {
-        observer.next(true);
-      }).catch((error) => {
-        observer.next(error);
-      });
+  updateAccountEmail(email) {
+    return this.current().updateEmail(email).then(function () {
+        return true;
+       }).catch(function (error) {
+        return error;
     });
   }
 
-  changeAccountPassword(password) {
-    return Observable.create((observer: any) => {
-      return this.current().updatePassword(password).then((complete) => {
-        observer.next(true);
-      }).catch((error) => {
-        observer.next(error);
-      });
+  updateAccountPassword(password) {
+    return this.current().updatePassword(password).then(function () {
+      return true;  
+      }).catch(function (error) {
+        return error;
     });
   }
 }

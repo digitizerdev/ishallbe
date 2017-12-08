@@ -4,6 +4,7 @@ import { NavController, AlertController } from 'ionic-angular';
 import { HomePage } from '../../pages/home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'account-email-form',
@@ -32,10 +33,26 @@ export class AccountEmailFormComponent {
   }
 
   send(email) {
-   this.firebase.changeAccountEmail(email)
-    .catch((error)=> {
+   this.firebase.updateAccountEmail(email).then(()=> {
+     this.confirm();
+   })
+    .catch(function (error) {
       this.errorHandler(error);
     });
+  }
+
+  confirm() {
+    this.confirmAlert();
+    this.setRootHomePage();      
+  }
+
+  confirmAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'Success',
+      subTitle: 'You successfully updated your email',
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
   setRootHomePage() {
