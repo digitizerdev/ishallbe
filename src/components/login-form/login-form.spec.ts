@@ -104,17 +104,6 @@ describe('LoginFormComponent', () => {
         expect(component.auth).toHaveBeenCalled();        
     });
 
-    it('should authenticate via email', () => {
-        spyOn(component, 'auth')
-        let submission = {
-            "email": 'testFormEmail',
-            "password": 'testFormPassword'
-        }
-        component.auth(submission.email, submission.password);
-        fixture.detectChanges();
-        expect(component.auth).toHaveBeenCalled();
-    });
-
     it('should welcome user', () => {
         spyOn(session, 'start');
         let user = {

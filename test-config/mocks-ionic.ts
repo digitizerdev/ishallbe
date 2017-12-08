@@ -13,8 +13,10 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+import { Observable } from 'rxjs/Observable'; 
 
 export class PlatformMock {
+
   public ready(): Promise<string> {
     return new Promise((resolve) => {
       resolve('READY');
@@ -176,22 +178,8 @@ export class AngularFireAuthMock extends AngularFireAuthModule {
   }
   public auth(): any {
     return {
-      signInWithEmailAndPassword(email, password): any {
-        if (email = "editor@tdct.io") {
-          let editor = {
-            "loggedIn": true,
-            "editor": true,
-            "uid": "contributorTest"
-          }
-          return editor;
-        } else {
-          let contributor = {
-            "loggedIn": true,
-            "editor": false,
-            "uid": "contributorTest"
-          }
-          return contributor
-        }
+      signInWithEmailAndPassword(email, password) {
+        return;
       }
     }
   }
