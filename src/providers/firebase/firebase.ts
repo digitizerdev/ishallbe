@@ -3,11 +3,6 @@ import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/dat
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/finally';
-import 'rxjs/add/operator/first';
 
 @Injectable()
 export class FirebaseProvider {
@@ -26,18 +21,22 @@ export class FirebaseProvider {
   }
 
   updateAccountEmail(email) {
-    return this.account().updateEmail(email).then(function () {
-        return true;
-       }).catch(function (error) {
-        return error;
+    return Observable.create((observer: any) => {
+      return this.account().updateEmail(email).then(function () {
+        observer.complete(true);
+      }, function (error) {
+        observer.throw(error);
+      });
     });
   }
 
   updateAccountPassword(password) {
-    return this.account().updatePassword(password).then(function () {
-      return true;  
-      }).catch(function (error) {
-        return error;
+    return Observable.create((observer: any) => {
+      return this.account().updatePassword(password).then(function () {
+        observer.complete(true);
+      }, function (error) {
+        observer.throw(error);
+      });
     });
   }
 
@@ -47,19 +46,6 @@ export class FirebaseProvider {
 
   list(path) {
     return this.afdb.list(path);
-  }
-
-  createProfile(profile) {
-    this.object('/users/' + profile.uid).set(profile);
-  }
-
-  profile(uid) {
-    return Observable.create((observer: any) => {      
-      let user = this.object('/users/' + uid);
-      return user.valueChanges().subscribe((profile)=> {
-        observer.next(user);
-      });
-    });
   }
 
 }

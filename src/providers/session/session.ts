@@ -5,10 +5,6 @@ import { Events } from 'ionic-angular';
 import { ComponentsModule } from '../../components/components.module';
 
 import { Observable } from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/finally';
 
 @Injectable()
 export class SessionProvider {

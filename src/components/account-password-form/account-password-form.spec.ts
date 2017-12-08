@@ -79,40 +79,26 @@ describe('AccountPasswordFormComponent', () => {
     expect(component instanceof AccountPasswordFormComponent).toBe(true);
   });
 
-  it('should submit form input', () => {
-    spyOn(component, 'send');
-    let submission = {
-      "passowrd": 'testFormPassword',
+  it('should submit form', () => {
+    expect(component.submitted).toBeFalsy();    
+    spyOn(component, 'request');
+    let form = {
+      "password": 'testFormPassword',
     }
-    component.submit(submission);
+    component.submit(form);
     fixture.detectChanges();
-    expect(component.send).toHaveBeenCalled();        
-    expect(component.submission).toBe(submission);
+    expect(component.request).toHaveBeenCalled();
+    expect(component.submitted).toBeTruthy();          
   });
 
-  it('should toggle form submission flag on submission', () => {
-    spyOn(component, 'send');    
-    expect(component.submitted).toBeFalsy();
-    let submission = {
-      "email": 'testFormPassword',
-    }
-    component.submit(submission);
+  it('should request firebase to update account password', () => {
+    spyOn(firebase, 'updateAccountPassword').and.returnValue({ subscribe: () => {} })
+    component.request('testPassword');
     fixture.detectChanges();
-    expect(component.send).toHaveBeenCalled();        
-    expect(component.submitted).toBeTruthy();
+    expect(firebase.updateAccountPassword).toHaveBeenCalled();
   });
 
-  it('should send submission', () => {
-    spyOn(component, 'send')
-    let submission = {
-      "email": 'testFormPassword',
-    }
-    component.submit(submission);
-    fixture.detectChanges();
-    expect(component.send).toHaveBeenCalled();
-  });
-
-  it('Should display confirmation alert after confirmation', () => {
+  it('Should display alert after confirmation', () => {
     spyOn(component, 'confirmAlert');
     component.confirm()
     fixture.detectChanges();

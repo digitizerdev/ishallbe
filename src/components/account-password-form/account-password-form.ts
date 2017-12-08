@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class AccountPasswordFormComponent {
 
-  submission: {
+  form: {
     password?: string,
   } = {};
   submitted = false;
@@ -25,18 +25,18 @@ export class AccountPasswordFormComponent {
   ) {
   }
 
-  submit(submission) {
-    this.submission = submission;
+  submit(form) {
+    this.form = form;
     this.submitted = true;
-    this.send(submission.password);
+    this.request(form.password);
     this.setRootHomePage();
   }
 
-  send(password) {
+  request(password) {
     this.firebase.updateAccountPassword(password)
-      .then(() => {
+      .subscribe(() => {
         this.confirm();
-      }).catch(function (error)  {
+      }, function (error) {
         this.errorHandler(error);
       });
   }
