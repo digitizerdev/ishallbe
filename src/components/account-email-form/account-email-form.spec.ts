@@ -79,40 +79,26 @@ describe('AccountEmailFormComponent', () => {
     expect(component instanceof AccountEmailFormComponent).toBe(true);
   });
 
-  it('should submit form input', () => {
-    spyOn(component, 'send');    
-    let submission = {
+  it('should submit form', () => {
+    expect(component.submitted).toBeFalsy();    
+    spyOn(component, 'request');
+    let form = {
       "email": 'testFormEmail',
     }
-    component.submit(submission);
+    component.submit(form);
     fixture.detectChanges();
-    expect(component.send).toHaveBeenCalled();    
-    expect(component.submission).toBe(submission);
+    expect(component.request).toHaveBeenCalled();
+    expect(component.submitted).toBeTruthy();          
   });
 
-  it('should toggle form submission flag on submission', () => {
-    spyOn(component, 'send');        
-    expect(component.submitted).toBeFalsy();
-    let submission = {
-      "email": 'testFormEmail',
-    }
-    component.submit(submission);
+  it('should request firebase to update account email', () => {
+    spyOn(firebase, 'updateAccountEmail').and.returnValue({ subscribe: () => {} })
+    component.request('testEmail');
     fixture.detectChanges();
-    expect(component.send).toHaveBeenCalled();        
-    expect(component.submitted).toBeTruthy();
+    expect(firebase.updateAccountEmail).toHaveBeenCalled();
   });
 
-  it('should send submission', () => {
-    spyOn(component, 'send')
-    let submission = {
-      "email": 'testFormEmail',
-    }
-    component.submit(submission);
-    fixture.detectChanges();
-    expect(component.send).toHaveBeenCalled();
-  });
-
-  it('Should display confirmation alert after confirmation', () => {
+  it('Should display alert after confirmation', () => {
     spyOn(component, 'confirmAlert');
     component.confirm()
     fixture.detectChanges();
@@ -125,7 +111,7 @@ describe('AccountEmailFormComponent', () => {
     fixture.detectChanges();
     expect(component.setRootHomePage).toHaveBeenCalled();
   });
-  
+
   it('should log error message on error', () => {
     expect(component.error).toBeUndefined();
     let error = {

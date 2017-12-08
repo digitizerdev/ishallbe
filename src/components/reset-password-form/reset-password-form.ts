@@ -1,55 +1,49 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 
-import { LoginPage } from '../../pages/login/login';
+import { HomePage } from '../../pages/home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-import { SessionProvider } from '../../providers/session/session';
-
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/finally';
-import 'rxjs/add/operator/first';
+
 @Component({
   selector: 'reset-password-form',
   templateUrl: 'reset-password-form.html'
 })
 export class ResetPasswordFormComponent {
 
-  submission: { 
-    email?: string, 
+  form: {
+    email?: string,
   } = {};
   submitted = false;
   error: any;
 
   constructor(
-    public firebase: FirebaseProvider,
-    public session: SessionProvider,
+    public alertCtrl: AlertController,
     public navCtrl: NavController,
-    public alertCtrl: AlertController
+    public firebase: FirebaseProvider,
   ) {
   }
 
-  submit(submission) {
-    this.submission = submission;
+  submit(form) {
+    this.form = form;
     this.submitted = true;
-    this.send(submission.email);
+    this.request(form.email);
+    this.setRootHomePage();
   }
 
-  send(email) {
-    this.firebase.afa.auth
-      .sendPasswordResetEmail(email).then(()=>{
+  request(email) {
+    this.firebase.afa.auth.sendPasswordResetEmail(email)
+      .then(() => {
         this.confirm();
-      }).catch((error) => {
+      }, function (error) {
         this.errorHandler(error);
       });
   }
 
   confirm() {
     this.confirmAlert();
-    this.setRootLoginPage();      
+    this.setRootHomePage();
   }
 
   confirmAlert() {
@@ -61,8 +55,8 @@ export class ResetPasswordFormComponent {
     alert.present();
   }
 
-  setRootLoginPage() {
-    this.navCtrl.setRoot(LoginPage);
+  setRootHomePage() {
+    this.navCtrl.setRoot(HomePage);
   }
 
   errorHandler(error) {

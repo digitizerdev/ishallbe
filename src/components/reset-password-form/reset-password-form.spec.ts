@@ -8,12 +8,12 @@ import { environment } from '../../environments/environment';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 
+import { ResetPasswordFormComponent } from './reset-password-form';
+
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
 
 import { } from 'jasmine';
-
-import { ResetPasswordFormComponent } from './reset-password-form';
 
 import {
   FirebaseProviderMock,
@@ -26,19 +26,21 @@ import {
   AlertControllerMock,
 } from '../../../test-config/mocks-ionic';
 
+let fixture;
+let component;
+let session: SessionProvider;
+let sessionSpy;
+let firebase: FirebaseProvider;
+let firebaseSpy;
+
 describe('ResetPasswordFormComponent', () => {
-  let fixture;
-  let component;
-  let session: SessionProvider;
-  let sessionSpy;
-  let firebase: FirebaseProvider;
-  let firebaseSpy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ResetPasswordFormComponent],
       imports: [
         IonicModule.forRoot(ResetPasswordFormComponent),
+        AngularFireModule.initializeApp(environment.firebase)
       ],
       providers: [
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
@@ -77,51 +79,30 @@ describe('ResetPasswordFormComponent', () => {
     expect(component instanceof ResetPasswordFormComponent).toBe(true);
   });
 
-  it('should submit form input', () => {
-    spyOn(component, 'send');
-    let submission = {
-      "email": 'testFormEmail',
+  it('should submit form', () => {
+    expect(component.submitted).toBeFalsy();    
+    spyOn(component, 'request');
+    let form = {
+      "reset": 'testFormEmail',
     }
-    component.submit(submission);
+    component.submit(form);
     fixture.detectChanges();
-    expect(component.submission).toBe(submission);
-    expect(component.send).toHaveBeenCalled();
+    expect(component.request).toHaveBeenCalled();
+    expect(component.submitted).toBeTruthy();          
   });
 
-  it('should toggle form submission flag on submission', () => {
-    spyOn(component, 'send');
-    expect(component.submitted).toBeFalsy();
-    let submission = {
-      "email": 'testFormEmail',
-    }
-    component.submit(submission);
-    fixture.detectChanges();
-    expect(component.submitted).toBeTruthy();
-    expect(component.send).toHaveBeenCalled();
-  });
-
-  it('Should send submission', () => {
-    spyOn(component, 'send');
-    let submission = {
-      "email": 'testFormEmail',
-    }
-    component.submit(submission);
-    fixture.detectChanges();
-    expect(component.send).toHaveBeenCalled();
-  });
-
-  it('Should display confirmation alert after confirmation', () => {
+  it('Should display alert after confirmation', () => {
     spyOn(component, 'confirmAlert');
     component.confirm()
     fixture.detectChanges();
     expect(component.confirmAlert).toHaveBeenCalled();
   })
 
-  it('should set root to login page after confirmation', () => {
-    spyOn(component, 'setRootLoginPage');
+  it('should set root to home page after confirmation', () => {
+    spyOn(component, 'setRootHomePage');
     component.confirm();  
     fixture.detectChanges();
-    expect(component.setRootLoginPage).toHaveBeenCalled();
+    expect(component.setRootHomePage).toHaveBeenCalled();
   });
 
   it('should log error message on error', () => {
@@ -133,5 +114,4 @@ describe('ResetPasswordFormComponent', () => {
     component.errorHandler(error);
     expect(component.error).toBe(error);
   });
-
 });

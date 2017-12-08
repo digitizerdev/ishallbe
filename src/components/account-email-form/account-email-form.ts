@@ -12,8 +12,8 @@ import { Observable } from 'rxjs/Observable';
 })
 export class AccountEmailFormComponent {
 
-  submission: { 
-    email?: string, 
+  form: {
+    email?: string,
   } = {};
   submitted = false;
   error: any;
@@ -25,25 +25,25 @@ export class AccountEmailFormComponent {
   ) {
   }
 
-  submit(submission) {
-    this.submission = submission;
+  submit(form) {
+    this.form = form;
     this.submitted = true;
-    this.send(submission.email);
-    this.setRootHomePage();    
+    this.request(form.email);
+    this.setRootHomePage();
   }
 
-  send(email) {
-   this.firebase.updateAccountEmail(email).then(()=> {
-     this.confirm();
-   })
-    .catch(function (error) {
-      this.errorHandler(error);
-    });
+  request(email) {
+    this.firebase.updateAccountEmail(email)
+      .subscribe(() => {
+        this.confirm();
+      }, function (error) {
+        this.errorHandler(error);
+      });
   }
 
   confirm() {
     this.confirmAlert();
-    this.setRootHomePage();      
+    this.setRootHomePage();
   }
 
   confirmAlert() {
