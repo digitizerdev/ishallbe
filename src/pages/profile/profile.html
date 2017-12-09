@@ -3,10 +3,21 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>Profile</ion-title>
+    <ion-title color='primary'>{{title}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <header></header>
+  <profile-avatar></profile-avatar>
+  <ion-row responsive-sm>
+    <ion-col text-center>
+      <button ion-button (click)="pushStatementPage()" color="primary" round outline>Create Statement</button>
+    </ion-col>
+  </ion-row>
+  <ion-row responsive-sm>
+    <ion-col text-center>
+      <button ion-button (click)="pushProfileManagerPage()" color="secondary" round outline>Edit Profile</button>
+    </ion-col>
+  </ion-row>
+  <profile-posts></profile-posts>
 </ion-content>

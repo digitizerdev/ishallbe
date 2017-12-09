@@ -15,6 +15,8 @@ import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { Storage } from '@ionic/storage';
 
+import { Observable } from 'rxjs/Rx';
+
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 
@@ -70,7 +72,7 @@ describe('iShallBe App Component', () => {
         { provide: FirebaseApp, useClass: FirebaseAppMock }
       ]
     })
-      .compileComponents().then(()=>{
+      .compileComponents().then(() => {
         fixture = TestBed.createComponent(iShallBe);
         component = fixture.componentInstance;
         session = fixture.componentRef.injector.get(SessionProvider);
@@ -115,39 +117,19 @@ describe('iShallBe App Component', () => {
     expect(component['rootPage']).toBe(HomePage);
   });
 
-  it('should ask session provider for user if woken up', () => {
-    spyOn(session, 'current')
+  it('should retrieve current user from session', () => {
+    spyOn(session, 'loggedIn').and.returnValue({ subscribe: () => {} })
     component.wakeUp();
     fixture.detectChanges();
-    expect(session.current).toHaveBeenCalled();
+    expect(session.loggedIn).toHaveBeenCalled();
   });
 
   it('should not ask session provider for user if not woken up', () => {
     spyOn(component, 'wakeUp');
-    spyOn(session, 'current');
+    spyOn(session, 'loggedIn');
     fixture.detectChanges();
     expect(component.wakeUp).toHaveBeenCalledTimes(0);
-    expect(session.current).toHaveBeenCalledTimes(0);
-  })
-
-  it('should add manager pages to menuPages in order if editor true', () => {
-    let standardMenuPagesLength = component.menuPages.length;
-    let managerMenuPagesLength = component.managerPages.length + component.menuPages.length
-    component.setManagerMenu(true);  
-    fixture.detectChanges();   
-    let managerPagePosition = 0;
-    for (let pages = standardMenuPagesLength; pages < component.menuPages.length; pages++) {
-      expect(component.menuPages.indexOf(component.managerPages[managerPagePosition])).toBe(pages);
-      managerPagePosition++;
-    }
-    expect(component.menuPages.length).toBe(managerMenuPagesLength);
-  });
-
-  it('should not add manager pages to menuPages in order if editor false', () => {
-    let standardMenuPagesLength = component.menuPages.length;
-    component.setManagerMenu(false); 
-    fixture.detectChanges();       
-    expect(component.menuPages.length).toBe(standardMenuPagesLength);
+    expect(session.loggedIn).toHaveBeenCalledTimes(0);
   })
 
   it('should have 23 components', () => {

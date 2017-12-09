@@ -1,4 +1,4 @@
-import { Injectable, NgModule } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
 
@@ -9,67 +9,48 @@ import { Observable } from 'rxjs/Rx';
 @Injectable()
 export class SessionProvider {
 
-  user = {
-    'loggedIn': false,
-    'editor': false,
-    'uid': ''
-  }
-
   constructor(
     public events: Events,
     public storage: Storage,
   ) {
   }
 
-  current() {
-    return Observable.create((observer: any) => {
-      return this.storage.ready().then(() => {
-        this.storage.get('user').then((user) => {
-          if (user) {
-            this.user = user;
-            observer.next(user);
-          } else {
-            observer.next(false);
-          }
-        });
+  uid() {
+    return Observable.create((observer: any) => {            
+      return this.storage.get('uid').then(function(value) {
+        observer.complete(value);
       });
+    });
+  };
+
+  loggedIn() {
+    return Observable.create((observer: any) => {                  
+      return this.storage.get('loggedIn').then(function(value) {
+        observer.complete(value);
+      });
+    });
+  }
+
+  role(): Promise <string>  {
+    return this.storage.get('role').then(function(value) {
+      return value;
     });
   }
 
   start(user) {
-    return Observable.create((observer: any) => {
-      return this.storage.ready().then(() => {
-        this.storage.set('user', user);
-      }).catch(console.log);
+    return Observable.create((observer: any) => {      
+      this.storage.set('loggedIn', user.loggedIn);
+      this.storage.set('role', user.role);
+      this.storage.set('uid', user.uid)
+      observer.complete(true);
     });
   }
 
   end() {
-    return Observable.create((observer: any) => {
-      return this.storage.ready().then(() => {
-        this.storage.remove('user').then((user) => {
-          this.events.publish('user:loggedOut');
-        });
-      });
-    });
+    return Observable.create((observer:any) => {
+      this.storage.remove('user')
+      this.events.publish('user:loggedOut');
+      observer.complete(true);
+    })
   }
-
-  currentEditor() {
-    return Observable.create((observer: any) => {
-      return this.storage.ready().then(() => {
-        this.storage.get('user').then((user) => {
-          if (user.editor) {
-            observer.next(true);
-          } else {
-            observer.next(false);
-          }
-        });
-      });
-    });
-  }
-
-  startEditor() {
-    this.events.publish('editor:loggedIn');
-  }
-
 }

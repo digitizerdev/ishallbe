@@ -2,6 +2,9 @@ import { NgModule, Component, ViewChild } from '@angular/core';
 import { Events, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Storage } from '@ionic/storage';
+
+import { Observable } from 'rxjs/Rx';
 
 import { LoginPage } from '../pages/login/login';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
@@ -139,24 +142,6 @@ export class iShallBe {
       },
     ]
 
-    this.managerPages = [
-      {
-        title: 'Manage Pins',
-        icon: 'ios-albums',
-        component: HomePage
-      },
-      {
-        title: 'Manage Posts',
-        icon: 'ios-images',
-        component: AboutPage
-      },
-      {
-        title: 'Manager Users',
-        icon: 'ios-people',
-        component: ProfilePage
-      }
-    ]
-
     this.components = [
       { title: 'Login Form', component: LoginFormComponent },
       { title: 'Login Facebook Component', component: LoginFacebookComponent },
@@ -186,37 +171,27 @@ export class iShallBe {
 
   platformReady() {
     this.platform.ready().then(() => {
+      console.log("Platform ready");
       this.wakeUp();
       this.splashScreen.hide();
     });
   }
 
   wakeUp() {
-    this.setRootHomePage(this.session.current());
-    this.setManagerMenu(this.session.currentEditor());
-    this.user = this.loadUser();
+    console.log("Waking up")
+    this.session.loggedIn().subscribe((user)=>{
+      console.log("Got user");
+      console.log(user);
+      if (user) {
+        this.setRootHomePage();
+      } else {
+        console.log("Didn't get user");
+      }
+    })
   }
 
-  setRootHomePage(session) {
-    if (session) {
-      this.rootPage = HomePage;
-    }
-  }
-
-  setManagerMenu(editor) {
-    if (editor) {
-      this.managerPages.forEach((managerPage) => {
-        this.menuPages.push(managerPage);
-      })
-    }
-  }
-
-  loadUser() {
-    return this.session.current();
-  }
-
-  openPage(page) {
-    this.nav.setRoot(page.component);
+  setRootHomePage() {
+    this.rootPage = HomePage;
   }
 
   endSession() {
@@ -225,10 +200,8 @@ export class iShallBe {
     });
   }
 
-  startEditor() {
-    this.events.subscribe('editor:loggedIn', () => {
-      this.setManagerMenu(true);    
-    });
+  openPage(page) {
+    this.nav.setRoot(page.component);
   }
 
 }

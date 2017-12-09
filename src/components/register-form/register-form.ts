@@ -65,7 +65,7 @@ export class RegisterFormComponent {
   createUser(profile) {
     let user = {
       "loggedIn": true,
-      "editor": false,
+      "role": 'contributor',
       "uid": profile.uid
     }
     this.welcome(user);

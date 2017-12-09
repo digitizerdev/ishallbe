@@ -7,11 +7,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/finally';
-import 'rxjs/add/operator/first';
+
 
 @Component({
   selector: 'login-form',
@@ -51,36 +47,17 @@ export class LoginFormComponent {
   requestProfile(uid) {
     let path = '/users/' + uid;
     let request = this.firebase.object(path).subscribe((profile)=>{
-      this.chooseSession(profile);
+      this.welcome(profile)
     })
   }
-
-  chooseSession(profile) {
-    if (profile.role == 'editor') {
-      let user = {
-        "loggedIn": true,
-        "editor": true,
-        "uid": profile.uid
-      }
-      this.welcomeEditor(user);
-    } else {
-      let user = {
-        "loggedIn": true,
-        "editor": false,
-        "uid": profile.uid
-      }
-      this.welcome(user);
-    }
-  }
   
-  welcome(user) {
+  welcome(profile) {
+    let user = {
+      loggedIn: true,
+      role: profile.role,
+      uid: profile. uid
+    }
     this.session.start(user);
-    this.setRootHomePage();
-  }
-
-  welcomeEditor(user) {
-    this.session.start(user);
-    this.session.startEditor();
     this.setRootHomePage();
   }
 

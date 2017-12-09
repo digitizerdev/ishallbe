@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
-/**
- * Generated class for the ProfilePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { ProfileManagerPage } from '../profile-manager/profile-manager';
+import { StatementPage } from '../statement/statement';
+
+import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { SessionProvider } from '../../providers/session/session';
+import { ProfileManagerComponent } from '../../components/profile-manager/profile-manager';
 
 @IonicPage()
 @Component({
@@ -15,11 +16,20 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ProfilePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  title = 'Profile';
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams
+  ) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfilePage');
+  pushStatementPage() {
+    this.navCtrl.push(StatementPage);
+  }
+
+  pushProfileManagerPage() {
+    this.navCtrl.push(ProfileManagerPage);
   }
 
 }

@@ -118,7 +118,7 @@ describe('RegisterFormComponent', () => {
         spyOn(session, 'start');
         let user = {
             "loggedIn": true,
-            "editor": false,
+            "role": 'contributor',
             "uid": 'testUID'
           }
         component.welcome(user);

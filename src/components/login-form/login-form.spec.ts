@@ -99,70 +99,18 @@ describe('LoginFormComponent', () => {
         expect(firebase.object).toHaveBeenCalled();
     });
 
-    it('should should choose session as user if not editor', () => {
-        spyOn(component, 'welcome');
-        let profile = {
-            uid: 'testUID',
-            name: 'testName',
-            email: 'testEmail',
-            photo: 'testPhoto',
-            blocked: false,
-            role: "contributor"
-          }
-        component.chooseSession(profile);
-        fixture.detectChanges();
-        expect(component.welcome).toHaveBeenCalled();
-    });
-
     it('should start session with user', () => {
         spyOn(session, 'start');
+        spyOn(component, 'setRootHomePage');        
         let user = {
             "loggedIn": true,
-            "editor": false,
+            "role": 'editor',
             "uid": 'testUID'
           }
         component.welcome(user);
         fixture.detectChanges();
         expect(session.start).toHaveBeenCalled();
-    });
-
-    it('should should choose session as user if editor', () => {
-        spyOn(component, 'welcomeEditor');
-        let profile = {
-            uid: 'testUID',
-            name: 'testName',
-            email: 'testEmail',
-            photo: 'testPhoto',
-            blocked: false,
-            role: "editor"
-          }
-        component.chooseSession(profile);
-        fixture.detectChanges();
-        expect(component.welcomeEditor).toHaveBeenCalled();
-    });
-
-    it('should welcome editor user', () => {
-        spyOn(session, 'startEditor');
-        let user = {
-            "loggedIn": true,
-            "editor": true,
-            "uid": "test"
-          }
-        component.welcomeEditor(user);
-        fixture.detectChanges();
-        expect(session.startEditor).toHaveBeenCalled();
-    })
-
-    it('should set root to home page on welcome', () => {
-        spyOn(component, 'setRootHomePage');
-        let user = {
-            "loggedIn": true,
-            "editor": false,
-            "uid": "test"
-          }
-        component.welcome(user);
-        fixture.detectChanges();
-        expect(component.setRootHomePage).toHaveBeenCalled();
+        expect(component.setRootHomePage).toHaveBeenCalled();        
     });
 
     it('should log error message on error', () => {

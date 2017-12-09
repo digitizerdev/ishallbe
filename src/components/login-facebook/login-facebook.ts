@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, Platform } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
 import * as firebase from 'firebase/app';
+import { Storage } from '@ionic/storage';
 
 import { HomePage } from '../../pages/home/home';
 
@@ -9,11 +10,6 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/finally';
-import 'rxjs/add/operator/first';
 
 @Component({
   selector: 'login-facebook',
@@ -22,18 +18,22 @@ import 'rxjs/add/operator/first';
 export class LoginFacebookComponent {
 
   error: any;
+  token: any;
+  photoURL: any;
 
   constructor(
     public firebase: FirebaseProvider,
     public session: SessionProvider,
     public navCtrl: NavController,
     public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
     public platform: Platform,
-    public facebook: Facebook
+    public facebook: Facebook,
+    public storage: Storage
   ) {
   }
 
-  loginFacebook() {
+  authenticate() {
     this.viaCordova(this.platform.is('cordova'))
   }
 
@@ -46,30 +46,75 @@ export class LoginFacebookComponent {
   }
 
   cordova() {
-    this.facebook.login(['email', 'public_profile']).then((token) => {
-      this.welcome(token);
+    this.facebook.login(['email', 'public_profile']).then((accessToken) => {
+      this.unpackageCordovaToken(accessToken);  
     });
   }
 
   browser() {
-    this.firebase.afa.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((token)=> 
-    {
-      this.welcome(token);      
+    this.firebase.afa.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((token)=> {
+      let photoURL = "https://graph.facebook.com/" + token.user.providerData[0].uid + "/picture?type=large";      
+      let account = {
+        "uid": token.user.uid,
+        "name": token.user.displayName,
+        "email": token.user.email,
+        "photo": photoURL,   
+      }
+      this.checkForExistingProfile(account);
+    });
+  }
+
+  unpackageCordovaToken(provider) {
+    this.firebase.afa.auth.signInWithCredential(provider).then((token) => {  
+      let photoURL = "https://graph.facebook.com/" + token.success.providerData[0].uid + "/picture?type=large";
+      let account = {
+        "uid": token.uid,
+        "name": token.displayName,
+        "email": token.email,
+        "photo": photoURL,   
+      }
+      this.checkForExistingProfile(account);
+    });
+  }
+
+  checkForExistingProfile(account) {
+    this.requestProfile(account.uid).subscribe((profile)=> {
+      if (profile) {
+        this.welcome(profile);
+      } else {
+        this.createProfile(account);
+      }
     })
   }
 
-  auth(token) {
+  requestProfile(uid) {
+    let path = '/users/' + uid;
+    return this.firebase.object(path)
+  }
 
+  createProfile(account) {
+    let path = '/users/' + account.uid;
+    let profile = {
+      "uid": account.uid,
+      "name": account.name,
+      "email": account.email,
+      "photo": account.photo,
+      "role": "contributor",
+      "blocked": false
+    }
+    this.firebase.setObject(path, profile).subscribe(()=>{
+      this.welcome(profile);
+    })
   }
   
-  welcome(user) {
+  welcome(profile) {
+    let user = {
+      loggedIn: true,
+      role: profile.role,
+      uid: profile.uid
+    }
+    this.storage.set
     this.session.start(user);
-    this.setRootHomePage();
-  }
-
-  welcomeEditor(user) {
-    this.session.start(user);
-    this.session.startEditor();
     this.setRootHomePage();
   }
 
@@ -86,5 +131,4 @@ export class LoginFacebookComponent {
     });
     alert.present();
   }
-
 }

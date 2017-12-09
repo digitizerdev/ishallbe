@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
+import { FirebaseListObservable, FirebaseObjectObservable, AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 
 import { Observable } from 'rxjs/Observable';
@@ -40,11 +40,11 @@ export class FirebaseProvider {
     });
   }
 
-  object(path) {
+  object(path): FirebaseObjectObservable<any> {
     return this.afdb.object(path);
   }
 
-  list(path) {
+  list(path): FirebaseListObservable<any> {
     return this.afdb.list(path);
   }
 
