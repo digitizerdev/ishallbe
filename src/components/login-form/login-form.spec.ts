@@ -79,36 +79,24 @@ describe('LoginFormComponent', () => {
         expect(component instanceof LoginFormComponent).toBe(true);
     });
 
-    it('should submit form input', () => {
-        spyOn(component, 'auth');        
-        let submission = {
+    it('should submit form', () => {
+        expect(component.submitted).toBeFalsy();    
+        spyOn(component, 'authenticate');        
+        let form = {
             "email": 'testFormEmail',
             "password": 'testFormPassword'
         }
-        component.submit(submission);
-        fixture.detectChanges();
-        expect(component.submission).toBe(submission);
-        expect(component.auth).toHaveBeenCalled();
-    });
-
-    it('should toggle form submission flag on submission', () => {
-        spyOn(component, 'auth');                
-        expect(component.submitted).toBeFalsy();
-        let submission = {
-            "email": 'testFormEmail',
-            "password": 'testFormPassword'
-        }
-        component.submit(submission);
+        component.submit(form);
         fixture.detectChanges();
         expect(component.submitted).toBeTruthy();
-        expect(component.auth).toHaveBeenCalled();        
+        expect(component.authenticate).toHaveBeenCalled();
     });
 
-    it('should ask firebase for profile object', () => {
-        spyOn(firebase, 'profile').and.returnValue({ subscribe: () => {} })
-        component.retrieveProfile('testUID');
+    it('should request firebase for profile object', () => {
+        spyOn(firebase, 'object').and.returnValue({ subscribe: () => {} })
+        component.requestProfile('testUID');
         fixture.detectChanges();
-        expect(firebase.profile).toHaveBeenCalled();
+        expect(firebase.object).toHaveBeenCalled();
     });
 
     it('should should choose session as user if not editor', () => {

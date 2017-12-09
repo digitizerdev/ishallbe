@@ -48,4 +48,33 @@ export class FirebaseProvider {
     return this.afdb.list(path);
   }
 
+  setObject(path, obj) {
+    return Observable.create((observer: any) => {
+      return this.object(path).set(obj).then(function () {
+        observer.complete(true);
+      }, function (error) {
+        observer.throw(error);
+      });
+    });
+  }
+
+  updateObject(path, obj) {
+    return Observable.create((observer: any) => {
+      return this.object(path).update(obj).then(function () {
+        observer.complete(true);
+      }, function (error) {
+        observer.throw(error);
+      });
+    });
+  }
+
+  removeObject(path, obj) {
+    return Observable.create((observer: any) => {
+      return this.object(path).remove().then(function () {
+        observer.complete(true);
+      }, function (error) {
+        observer.throw(error);
+      });
+    });
+  }
 }

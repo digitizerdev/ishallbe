@@ -42,16 +42,18 @@ export class LoginFormComponent {
 
   auth(email, password) {
     this.firebase.afa.auth.signInWithEmailAndPassword(email, password).then((token) => {
-      this.retrieveProfile(token.uid);
+      this.requestProfile(token.uid);
     }).catch((error) => {
         this.errorHandler(error);
       });
   }
 
-  retrieveProfile(uid) {
-    this.firebase.profile(uid).subscribe((profile)=> {
-      this.chooseSession(profile);
-    })
+  requestProfile(uid) {
+    let path = '/users/' + uid;
+    let request = this.firebase.object(path);
+    request.valueChanges().subscribe((profile)=> {
+      this.chooseSession(profile)
+    });
   }
 
   chooseSession(profile) {

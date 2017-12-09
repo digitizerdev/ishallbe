@@ -19,7 +19,7 @@ import 'rxjs/add/operator/first';
 })
 export class RegisterFormComponent {
 
-  submission: { 
+  form: { 
     name?: string,
     email?: string, 
     password?: string 
@@ -36,10 +36,10 @@ export class RegisterFormComponent {
     
   }
 
-  submit(submission) {
-    this.submission = submission;
+  submit(form) {
+    this.form = form;
     this.submitted = true;
-    this.createAccount(this.submission.email, this.submission.password);
+    this.createAccount(this.form.email, this.form.password);
   }
 
   createAccount(email, password) {
@@ -51,13 +51,14 @@ export class RegisterFormComponent {
   createProfile(uid) {
     let profile = {
       uid: uid,
-      name: this.submission.name,
-      email: this.submission.email,
+      name: this.form.name,
+      email: this.form.email,
       photo: "https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png",
       blocked: false,
       role: "contributor"
     }
-    this.firebase.createProfile(profile); 
+    let path = '/users/' + uid
+    this.firebase.setObject(path, profile); 
     this.createUser(profile);
   }
 

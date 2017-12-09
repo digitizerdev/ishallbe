@@ -34,7 +34,7 @@
     "@ionic-native/splash-screen": "4.4.2",
     "@ionic-native/status-bar": "4.4.2",
     "@ionic/storage": "2.0.1",
-    "angularfire2": "^5.0.0-rc.4",
+    "angularfire2": "4.0.0-rc.2",
     "babel-minify": "^0.2.0",
     "cordova-ios": "4.5.4",
     "cordova-plugin-add-swift-support": "^1.7.0",

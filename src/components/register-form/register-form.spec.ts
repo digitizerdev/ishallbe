@@ -79,36 +79,24 @@ describe('RegisterFormComponent', () => {
         expect(component instanceof RegisterFormComponent).toBe(true);
     });
 
-    it('should submit form input', () => {
+    it('should submit form', () => {
+        expect(component.submitted).toBeFalsy();        
         spyOn(component, 'createAccount');        
-        let submission = {
+        let form = {
             "email": 'testFormEmail',
             "password": 'testFormPassword'
         }
-        component.submit(submission);
+        component.submit(form);
         fixture.detectChanges();
-        expect(component.submission).toBe(submission);
+        expect(component.form).toBe(form);
         expect(component.createAccount).toHaveBeenCalled();
     });
 
-    it('should toggle form submission flag on submission', () => {
-        spyOn(component, 'createAccount');                
-        expect(component.submitted).toBeFalsy();
-        let submission = {
-            "email": 'testFormEmail',
-            "password": 'testFormPassword'
-        }
-        component.submit(submission);
-        fixture.detectChanges();
-        expect(component.submitted).toBeTruthy();
-        expect(component.createAccount).toHaveBeenCalled();        
-    });
-
-    it('should ask firebase to create profile', () => {
-        spyOn(firebase, 'createProfile');
+    it('should request firebase to create profile object', () => {
+        spyOn(firebase, 'setObject').and.returnValue({ subscribe: () => {} });
         component.createProfile('testUID');
         fixture.detectChanges();
-        expect(firebase.createProfile).toHaveBeenCalled();
+        expect(firebase.setObject).toHaveBeenCalled();
     });
 
     it('should should create then welcome user', () => {
