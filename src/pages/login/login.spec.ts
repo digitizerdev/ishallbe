@@ -104,6 +104,23 @@ describe('LoginPage', () => {
     expect(el).toBeUndefined();
   }));
 
+  it('should display ( go to ) register ( page ) button', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('#LoginRegisterButton'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('Register');
+  }));
+
+  it('should display forgot password button', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('#LoginForgotPasswordButton'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('Forgot Password?');
+  }));
+
+
   it('should display terms-of-service component', () => {
     let de: DebugElement;
     let el: HTMLElement;

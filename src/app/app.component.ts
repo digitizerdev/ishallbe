@@ -183,11 +183,15 @@ export class iShallBe {
       console.log("Got user");
       console.log(user);
       if (user) {
-        this.setRootHomePage();
+        this.sessionFound();
       } else {
         console.log("Didn't get user");
       }
     })
+  }
+
+  sessionFound() {
+    this.setRootHomePage();
   }
 
   setRootHomePage() {

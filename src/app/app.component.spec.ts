@@ -99,7 +99,7 @@ describe('iShallBe App Component', () => {
     expect(component.providers.length).toBe(2);
   });
 
-  it('should initialize with 5 menu pages', () => {
+  it('should have 5 menu pages', () => {
     expect(component.menuPages.length).toBe(5);
   })
 
@@ -107,33 +107,26 @@ describe('iShallBe App Component', () => {
     expect(component.pages.length).toBe(21);
   });
 
+  it('should have 23 components', () => {
+    expect(component.components.length).toBe(23);
+  });
+
   it('should initialize with login page as root page', () => {
     expect(component['rootPage']).toBe(LoginPage);
   });
 
-  it('should set home page to be root page if user is in session', () => {
-    component.setRootHomePage(true);
-    fixture.detectChanges();
-    expect(component['rootPage']).toBe(HomePage);
-  });
-
-  it('should retrieve current user from session', () => {
+  it('should request authentication state from Session Provider when awoken', () => {
     spyOn(session, 'loggedIn').and.returnValue({ subscribe: () => {} })
     component.wakeUp();
     fixture.detectChanges();
     expect(session.loggedIn).toHaveBeenCalled();
   });
 
-  it('should not ask session provider for user if not woken up', () => {
-    spyOn(component, 'wakeUp');
-    spyOn(session, 'loggedIn');
+  it('should set root page to home page if authenticated session found', () => {
+    spyOn(component, 'setRootHomePage');
+    component.sessionFound();
     fixture.detectChanges();
-    expect(component.wakeUp).toHaveBeenCalledTimes(0);
-    expect(session.loggedIn).toHaveBeenCalledTimes(0);
-  })
-
-  it('should have 23 components', () => {
-    expect(component.components.length).toBe(23);
+    expect(component.setRootHomePage).toHaveBeenCalled
   });
-
+  
 });
