@@ -37,10 +37,10 @@ export class LoginFormComponent {
   submit(submission) {
     this.submission = submission;
     this.submitted = true;
-    this.auth(this.submission.email, this.submission.password);
+    this.authenticate(this.submission.email, this.submission.password);
   }
 
-  auth(email, password) {
+  authenticate(email, password) {
     this.firebase.afa.auth.signInWithEmailAndPassword(email, password).then((token) => {
       this.requestProfile(token.uid);
     }).catch((error) => {
@@ -50,10 +50,9 @@ export class LoginFormComponent {
 
   requestProfile(uid) {
     let path = '/users/' + uid;
-    let request = this.firebase.object(path);
-    request.valueChanges().subscribe((profile)=> {
-      this.chooseSession(profile)
-    });
+    let request = this.firebase.object(path).subscribe((profile)=>{
+      this.chooseSession(profile);
+    })
   }
 
   chooseSession(profile) {
