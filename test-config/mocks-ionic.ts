@@ -82,23 +82,7 @@ export class PlatformMock {
   }
 }
 
-export class FirebaseProviderMock extends FirebaseProvider {
-  styleDefault() {
-    return;
-  }
-}
 
-export class SessionProviderMock extends SessionProvider {
-  styleDefault() {
-    return;
-  }
-}
-
-export class StorageMock extends IonicStorageModule {
-  styleDefault() {
-    return;
-  }
-}
 
 export class StatusBarMock extends StatusBar {
   styleDefault() {
@@ -175,6 +159,36 @@ export class DeepLinkerMock {
 
 }
 
+export class AlertControllerMock {
+  _getPortal(): any { return {} };
+  create(options?: any) { 
+      return new AlertMock()
+  };
+}
+
+class AlertMock {
+  present() { };
+}
+
+export class LoadingControllerMock {
+  _getPortal(): any { return {} };
+  create(options?: any) { 
+      return new LoadingMock()
+  };
+}
+
+class LoadingMock {
+  present() { };
+  dismiss() { };
+  dismissAll() { };
+}
+
+export class FirebaseProviderMock extends FirebaseProvider {
+  styleDefault() {
+    return;
+  }
+}
+
 export class AngularFireDatabaseMock extends AngularFireDatabaseModule {
   public
 }
@@ -198,26 +212,20 @@ export class FirebaseAppMock extends AngularFireModule {
   }
 }
 
-export class AlertControllerMock {
-  _getPortal(): any { return {} };
-  create(options?: any) { 
-      return new AlertMock()
-  };
+export class SessionProviderMock extends SessionProvider {
+
 }
 
-class AlertMock {
-  present() { };
-}
+export class StorageMock extends IonicStorageModule {
+  public get(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
 
-export class LoadingControllerMock {
-  _getPortal(): any { return {} };
-  create(options?: any) { 
-      return new LoadingMock()
-  };
-}
-
-class LoadingMock {
-  present() { };
-  dismiss() { };
-  dismissAll() { };
+  public set(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
 }

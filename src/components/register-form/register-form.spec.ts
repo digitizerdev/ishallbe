@@ -115,6 +115,7 @@ describe('RegisterFormComponent', () => {
     });
 
     it('should start session with user', () => {
+        spyOn(component, 'setRootHomePage');        
         spyOn(session, 'start');
         let user = {
             "loggedIn": true,
@@ -124,13 +125,7 @@ describe('RegisterFormComponent', () => {
         component.welcome(user);
         fixture.detectChanges();
         expect(session.start).toHaveBeenCalled();
-    });
-
-    it('should set root to home page on welcome', () => {
-        spyOn(component, 'setRootHomePage');
-        component.welcome();
-        fixture.detectChanges();
-        expect(component.setRootHomePage).toHaveBeenCalled();
+        expect(component.setRootHomePage).toHaveBeenCalled();        
     });
 
     it('should log error message on error', () => {

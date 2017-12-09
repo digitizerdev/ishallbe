@@ -42,7 +42,7 @@ describe('ProfileAvatarComponent', () => {
             declarations: [ProfileAvatarComponent],
             imports: [
                 IonicModule.forRoot(ProfileAvatarComponent),
-                AngularFireModule.initializeApp(environment.firebase)                
+                AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
@@ -53,7 +53,7 @@ describe('ProfileAvatarComponent', () => {
                 { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
                 { provide: AngularFireAuth, useClass: AngularFireAuthMock },
                 { provide: AlertController, useClass: AlertControllerMock },
-                { provide: LoadingController, useClass: LoadingControllerMock }                
+                { provide: LoadingController, useClass: LoadingControllerMock }
             ],
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
@@ -86,6 +86,6 @@ describe('ProfileAvatarComponent', () => {
         component.wakeUp();
         fixture.detectChanges();
         expect(session.uid).toHaveBeenCalled();
-      });
+    });
 
 });
