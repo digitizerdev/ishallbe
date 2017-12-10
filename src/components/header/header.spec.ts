@@ -1,7 +1,9 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
 import { IonicModule } from 'ionic-angular';
 
-import {} from 'jasmine';
+import { } from 'jasmine';
 
 import { HeaderComponent } from './header';
 
@@ -18,7 +20,7 @@ describe('HeaderComponent', () => {
       imports: [
         IonicModule.forRoot(HeaderComponent),
       ],
-      providers: [     
+      providers: [
       ]
     })
   }));
@@ -32,4 +34,12 @@ describe('HeaderComponent', () => {
     expect(component instanceof HeaderComponent).toBe(true);
   });
 
- });
+  it('should display icon png', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('img'));
+    el = de.nativeElement.src
+    expect(el).toContain('/assets/img/icon.png');
+  }));
+
+});
