@@ -40,7 +40,7 @@ describe('PasswordResetPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PasswordResetPage], 
+      declarations: [PasswordResetPage],
       imports: [
         IonicModule.forRoot(PasswordResetPage),
       ],
@@ -51,7 +51,7 @@ describe('PasswordResetPage', () => {
         { provide: NavController, useClass: NavMock },
         { provide: NavParams, useClass: NavMock },
         { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
-        { provide: AngularFireAuth, useClass: AngularFireAuthMock },       
+        { provide: AngularFireAuth, useClass: AngularFireAuthMock },
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA
@@ -62,7 +62,7 @@ describe('PasswordResetPage', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PasswordResetPage);
     component = fixture.componentInstance;
-    session = fixture.componentRef.injector.get(SessionProvider);    
+    session = fixture.componentRef.injector.get(SessionProvider);
     firebase = fixture.componentRef.injector.get(FirebaseProvider);
   });
 
@@ -94,5 +94,13 @@ describe('PasswordResetPage', () => {
     el = de.nativeElement.src;
     expect(el).toBeUndefined();
   });
+
+  it('should display login button', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('#ForgotPasswordLoginButton'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('Login');
+  }));
 
 });

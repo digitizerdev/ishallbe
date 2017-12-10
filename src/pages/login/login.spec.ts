@@ -40,10 +40,10 @@ describe('LoginPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LoginPage], 
+      declarations: [LoginPage],
       imports: [
         IonicModule.forRoot(LoginPage),
-        AngularFireModule.initializeApp(environment.firebase)                        
+        AngularFireModule.initializeApp(environment.firebase)
       ],
       providers: [
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
@@ -52,7 +52,7 @@ describe('LoginPage', () => {
         { provide: NavController, useClass: NavMock },
         { provide: NavParams, useClass: NavMock },
         { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
-        { provide: AngularFireAuth, useClass: AngularFireAuthMock },       
+        { provide: AngularFireAuth, useClass: AngularFireAuthMock },
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA
@@ -63,7 +63,7 @@ describe('LoginPage', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginPage);
     component = fixture.componentInstance;
-    session = fixture.componentRef.injector.get(SessionProvider);    
+    session = fixture.componentRef.injector.get(SessionProvider);
     firebase = fixture.componentRef.injector.get(FirebaseProvider);
   });
 
@@ -104,7 +104,7 @@ describe('LoginPage', () => {
     expect(el).toBeUndefined();
   }));
 
-  it('should display ( go to ) register ( page ) button', async(() => {
+  it('should display register button', async(() => {
     let de: DebugElement;
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('#LoginRegisterButton'));
@@ -119,7 +119,6 @@ describe('LoginPage', () => {
     el = de.nativeElement.innerHTML
     expect(el).toContain('Forgot Password?');
   }));
-
 
   it('should display terms-of-service component', () => {
     let de: DebugElement;
