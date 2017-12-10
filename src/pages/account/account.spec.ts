@@ -94,7 +94,7 @@ describe('AccountPage', () => {
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('#AccountViewProfileButton'));
     el = de.nativeElement.innerHTML
-    expect(el).toContain('View Profile');
+    expect(el).toContain('VIEW PROFILE');
   }));
 
   it('should display update password button', async(() => {
@@ -102,7 +102,7 @@ describe('AccountPage', () => {
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('#AccountUpdatePasswordButton'));
     el = de.nativeElement.innerHTML
-    expect(el).toContain('Update Password');
+    expect(el).toContain('UPDATE PASSWORD');
   }));
 
   it('should display update email button', async(() => {
@@ -110,7 +110,7 @@ describe('AccountPage', () => {
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('#AccountUpdateEmailButton'));
     el = de.nativeElement.innerHTML
-    expect(el).toContain('Update Email');
+    expect(el).toContain('UPDATE EMAIL');
   }));
 
   it('should display logout button', async(() => {
@@ -118,7 +118,7 @@ describe('AccountPage', () => {
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('#AccountLogoutButton'));
     el = de.nativeElement.innerHTML
-    expect(el).toContain('Logout');
+    expect(el).toContain('LOGOUT');
   }));
 
   it('should request role from session provider', () => {
