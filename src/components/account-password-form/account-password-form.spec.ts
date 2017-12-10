@@ -79,6 +79,18 @@ describe('AccountPasswordFormComponent', () => {
     expect(component instanceof AccountPasswordFormComponent).toBe(true);
   });
 
+  it('should be triggered by Update Password Button', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('#AccountUpdatePasswordButton'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('Update Password');
+  }));
+
+  it('should have form with email and password fields', () => {
+    expect(component.form.password).toBeUndefined();
+  });
+
   it('should submit form', () => {
     expect(component.submitted).toBeFalsy();    
     spyOn(component, 'request');

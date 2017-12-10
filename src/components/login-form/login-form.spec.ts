@@ -79,6 +79,19 @@ describe('LoginFormComponent', () => {
         expect(component instanceof LoginFormComponent).toBe(true);
     });
 
+    it('should be triggered by Login with Email Button', async(() => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#LoginWithEmailButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Login with Email');
+    }));
+
+    it('should have form with email and password fields', () => {
+        expect(component.form.email).toBeUndefined();
+        expect(component.form.password).toBeUndefined();
+    })
+
     it('should submit form', () => {
         expect(component.submitted).toBeFalsy();    
         spyOn(component, 'authenticate');        

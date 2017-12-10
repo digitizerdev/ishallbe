@@ -79,8 +79,20 @@ describe('ResetPasswordFormComponent', () => {
     expect(component instanceof ResetPasswordFormComponent).toBe(true);
   });
 
+  it('should be triggered by Reset Password Button', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('#ResetPasswordButton'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('Reset Password');
+  }));
+
+  it('should have form with email and password fields', () => {
+    expect(component.form.email).toBeUndefined();
+  });
+
   it('should submit form', () => {
-    expect(component.submitted).toBeFalsy();    
+    expect(component.submitted).toBeFalsy();
     spyOn(component, 'request');
     let form = {
       "reset": 'testFormEmail',
@@ -88,7 +100,7 @@ describe('ResetPasswordFormComponent', () => {
     component.submit(form);
     fixture.detectChanges();
     expect(component.request).toHaveBeenCalled();
-    expect(component.submitted).toBeTruthy();          
+    expect(component.submitted).toBeTruthy();
   });
 
   it('Should display alert after confirmation', () => {
@@ -100,7 +112,7 @@ describe('ResetPasswordFormComponent', () => {
 
   it('should set root to home page after confirmation', () => {
     spyOn(component, 'setRootHomePage');
-    component.confirm();  
+    component.confirm();
     fixture.detectChanges();
     expect(component.setRootHomePage).toHaveBeenCalled();
   });

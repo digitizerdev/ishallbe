@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class LoginFormComponent {
 
-  submission: { 
+  form: { 
     email?: string, 
     password?: string 
   } = {};
@@ -30,10 +30,10 @@ export class LoginFormComponent {
   ) {
   }
 
-  submit(submission) {
-    this.submission = submission;
+  submit(form) {
+    this.form = form;
     this.submitted = true;
-    this.authenticate(this.submission.email, this.submission.password);
+    this.authenticate(this.form.email, this.form.password);
   }
 
   authenticate(email, password) {

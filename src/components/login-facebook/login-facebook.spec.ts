@@ -42,7 +42,7 @@ describe('LoginFacebookComponent', () => {
             declarations: [LoginFacebookComponent],
             imports: [
                 IonicModule.forRoot(LoginFacebookComponent),
-                AngularFireModule.initializeApp(environment.firebase)                
+                AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
@@ -54,7 +54,7 @@ describe('LoginFacebookComponent', () => {
                 { provide: AngularFireAuth, useClass: AngularFireAuthMock },
                 { provide: Facebook, useClass: FacebookMock },
                 { provide: AlertController, useClass: AlertControllerMock },
-                { provide: LoadingController, useClass: LoadingControllerMock }                
+                { provide: LoadingController, useClass: LoadingControllerMock }
             ],
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
@@ -82,47 +82,47 @@ describe('LoginFacebookComponent', () => {
         expect(component instanceof LoginFacebookComponent).toBe(true);
     });
 
-    it('should be triggered by Login With Facebook Button', async(() => {
+    it('should be triggered by Login with Facebook Button', async(() => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#LoginWithFacebookButton'));
         el = de.nativeElement.innerHTML
         expect(el).toContain('Login with Facebook');
-      }));
+    }));
 
     it('should determine whether cordova or not before authentication', () => {
-        spyOn(component, 'viaCordova');        
+        spyOn(component, 'viaCordova');
         component.authenticate();
         fixture.detectChanges();
         expect(component.viaCordova).toHaveBeenCalled();
     });
 
     it('should authenticate via cordova if platform is not browser', () => {
-      spyOn(component, 'cordova');
-      component.viaCordova(true);
-      fixture.detectChanges();
-      expect(component.cordova).toHaveBeenCalled();
+        spyOn(component, 'cordova');
+        component.viaCordova(true);
+        fixture.detectChanges();
+        expect(component.cordova).toHaveBeenCalled();
     });
 
     it('should authenticate via browser if browser', () => {
-      spyOn(component, 'browser');
-      component.viaCordova(false);
-      fixture.detectChanges();
-      expect(component.browser).toHaveBeenCalled();
+        spyOn(component, 'browser');
+        component.viaCordova(false);
+        fixture.detectChanges();
+        expect(component.browser).toHaveBeenCalled();
     });
 
     it('should start session with user', () => {
         spyOn(session, 'start');
-        spyOn(component, 'setRootHomePage');        
+        spyOn(component, 'setRootHomePage');
         let user = {
             "loggedIn": true,
             "role": 'editor',
             "uid": 'testUID'
-          }
+        }
         component.welcome(user);
         fixture.detectChanges();
         expect(session.start).toHaveBeenCalled();
-        expect(component.setRootHomePage).toHaveBeenCalled();        
+        expect(component.setRootHomePage).toHaveBeenCalled();
     });
 
     it('should log error message on error', () => {

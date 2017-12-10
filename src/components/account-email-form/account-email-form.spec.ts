@@ -79,8 +79,20 @@ describe('AccountEmailFormComponent', () => {
     expect(component instanceof AccountEmailFormComponent).toBe(true);
   });
 
+  it('should be triggered by Update Email Button', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('#AccountUpdateEmailButton'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('Update Email');
+  }));
+
+  it('should have form with email and password fields', () => {
+    expect(component.form.email).toBeUndefined();
+  });
+
   it('should submit form', () => {
-    expect(component.submitted).toBeFalsy();    
+    expect(component.submitted).toBeFalsy();
     spyOn(component, 'request');
     let form = {
       "email": 'testFormEmail',
@@ -88,11 +100,11 @@ describe('AccountEmailFormComponent', () => {
     component.submit(form);
     fixture.detectChanges();
     expect(component.request).toHaveBeenCalled();
-    expect(component.submitted).toBeTruthy();          
+    expect(component.submitted).toBeTruthy();
   });
 
   it('should request firebase to update account email', () => {
-    spyOn(firebase, 'updateAccountEmail').and.returnValue({ subscribe: () => {} })
+    spyOn(firebase, 'updateAccountEmail').and.returnValue({ subscribe: () => { } })
     component.request('testEmail');
     fixture.detectChanges();
     expect(firebase.updateAccountEmail).toHaveBeenCalled();
@@ -107,7 +119,7 @@ describe('AccountEmailFormComponent', () => {
 
   it('should set root to home page after confirmation', () => {
     spyOn(component, 'setRootHomePage');
-    component.confirm();  
+    component.confirm();
     fixture.detectChanges();
     expect(component.setRootHomePage).toHaveBeenCalled();
   });
