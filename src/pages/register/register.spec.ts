@@ -88,6 +88,14 @@ describe('RegisterPage', () => {
     expect(el).toBeUndefined();
   });
 
+  it('should display login-facebook component', () => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('login-facebook'));
+    el = de.nativeElement.src;
+    expect(el).toBeUndefined();
+  });
+
   it('should display register-form component', () => {
     let de: DebugElement;
     let el: HTMLElement;
@@ -96,13 +104,13 @@ describe('RegisterPage', () => {
     expect(el).toBeUndefined();
   });
 
-  it('should display login-facebook component', () => {
+  it('should display login button', async(() => {
     let de: DebugElement;
     let el: HTMLElement;
-    de = fixture.debugElement.query(By.css('login-facebook'));
-    el = de.nativeElement.src;
-    expect(el).toBeUndefined();
-  });
+    de = fixture.debugElement.query(By.css('#RegisterLoginButton'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('Login');
+  }));
 
   it('should display terms-of-service component', () => {
     let de: DebugElement;
