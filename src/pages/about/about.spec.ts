@@ -84,4 +84,36 @@ describe('AboutPage', () => {
     expect(component.title).toBe('About');
   });
 
+  it('should display Shelby Tinsley Headshot', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('img'));
+    el = de.nativeElement.src
+    expect(el).toContain('/assets/img/headshot.png');
+  }));
+
+  it('should display If You Speak It, It Shall Be', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('h2'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('If You Speak It, It Shall Be!');
+  }));
+
+  it('should display welcome video', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('source'));
+    el = de.nativeElement.src
+    expect(el).toContain('https://ishallbe.co/wp-content/uploads/2017/06/iShallbe-Promo.m4v');
+  }));
+
+  it('should display about information', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('p'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('iShallBe is your daily boost');
+  }));
+
 });

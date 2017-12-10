@@ -90,7 +90,7 @@ describe('LoginFormComponent', () => {
     it('should have form with email and password fields', () => {
         expect(component.form.email).toBeUndefined();
         expect(component.form.password).toBeUndefined();
-    })
+    });
 
     it('should submit form', () => {
         expect(component.submitted).toBeFalsy();    
