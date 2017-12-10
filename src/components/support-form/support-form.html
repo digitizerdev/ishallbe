@@ -2,19 +2,19 @@
   <ion-list no-lines>
     <ion-item>
       <ion-label stacked color="primary">Subject</ion-label>
-      <ion-input [(ngModel)]="submission.subject" name="subject" type="text" #subject="ngModel" spellcheck="false" autocapitalize="off"
+      <ion-input [(ngModel)]="form.subject" name="subject" type="text" #subject="ngModel" spellcheck="false" autocapitalize="off"
         required>
       </ion-input>
     </ion-item>
     <ion-item>
         <ion-label stacked color="primary">Body</ion-label>
-        <ion-input [(ngModel)]="submission.body" name="body" type="text" #body="ngModel" spellcheck="false" autocapitalize="off"
+        <ion-input [(ngModel)]="form.body" name="body" type="text" #body="ngModel" spellcheck="false" autocapitalize="off"
           required>
         </ion-input>
       </ion-item>
     <ion-row>
       <ion-col text-center>
-        <button ion-button (click)="submit(submission)" type="submit" round large>Send Email</button>
+        <button id="SendSupportEmailButton" ion-button (click)="submit(form)" type="submit" round large>Send Email</button>
       </ion-col>
     </ion-row>
   </ion-list>

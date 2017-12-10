@@ -46,7 +46,7 @@ describe('ResetPasswordFormComponent', () => {
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
         { provide: SessionProvider, useClass: SessionProviderMock },
         { provide: Storage, useClass: StorageMock },
-        { provide: EmailComposer, useClass: EmailComposerMock },        
+        { provide: EmailComposer, useClass: EmailComposerMock },
         { provide: NavController, useClass: NavMock },
         { provide: NavParams, useClass: NavMock },
         { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
@@ -80,34 +80,47 @@ describe('ResetPasswordFormComponent', () => {
     expect(component instanceof SupportFormComponent).toBe(true);
   });
 
-  it('should submit form input', () => {
-    let submission = {
-      "subject": "testSubject",
-      "body": "testMessage"
-    }
-    component.submit(submission);
-    fixture.detectChanges();
-    expect(component.submission).toBe(submission);
+  it('should be triggered by Send Email Button', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('#SendSupportEmailButton'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('Send Email');
+  }));
+
+  it('should have form with subject and body fields', () => {
+    expect(component.form.subject).toBeUndefined();
+    expect(component.form.body).toBeUndefined();
   });
 
-  it('should toggle form submission flag on submission', () => {
-    expect(component.submitted).toBeFalsy();
-    let submission = {
+  it('should submit form input', () => {
+    let form = {
       "subject": "testSubject",
       "body": "testMessage"
     }
-    component.submit(submission);
+    component.submit(form);
+    fixture.detectChanges();
+    expect(component.form).toBe(form);
+  });
+
+  it('should toggle form form flag on form', () => {
+    expect(component.submitted).toBeFalsy();
+    let form = {
+      "subject": "testSubject",
+      "body": "testMessage"
+    }
+    component.submit(form);
     fixture.detectChanges();
     expect(component.submitted).toBeTruthy();
   });
 
-  it('Should send submission to via Ionic Native Email Composer', () => {
+  it('Should send form to via Ionic Native Email Composer', () => {
     spyOn(component, 'send');
-    let submission = {
+    let form = {
       "subject": "testSubject",
       "body": "testMessage"
     }
-    component.submit(submission);
+    component.submit(form);
     fixture.detectChanges();
     expect(component.send).toHaveBeenCalled();
   });
@@ -115,14 +128,14 @@ describe('ResetPasswordFormComponent', () => {
   it('should set root to home page after send', () => {
     spyOn(component, 'setRootHomePage');
     spyOn(component, 'send');
-    let submission = {
+    let form = {
       "subject": "testSubject",
       "body": "testMessage"
     }
-    component.submit(submission);
+    component.submit(form);
     fixture.detectChanges();
     expect(component.setRootHomePage).toHaveBeenCalled();
-    expect(component.send).toHaveBeenCalled();    
+    expect(component.send).toHaveBeenCalled();
   });
 
   it('should log error message on error', () => {

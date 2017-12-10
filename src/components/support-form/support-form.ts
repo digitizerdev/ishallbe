@@ -10,7 +10,7 @@ import { HomePage } from '../../pages/home/home';
 })
 export class SupportFormComponent {
 
-  submission: { 
+  form: { 
     subject?: string, 
     body?: string
   } = {};
@@ -24,8 +24,8 @@ export class SupportFormComponent {
   ) {
   }
 
-  submit(submission) {
-    this.submission = submission;
+  submit(form) {
+    this.form = form;
     this.submitted = true;
     this.send();
     this.setRootHomePage();    
@@ -34,8 +34,8 @@ export class SupportFormComponent {
   send() {
     let email = {
       to: 'iShallBe17@gmail.com',
-      subject: this.submission.subject,
-      body: this.submission.body,
+      subject: this.form.subject,
+      body: this.form.body,
       isHtml: true
     };
 
