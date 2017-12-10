@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
 
-import { ComponentsModule } from '../../components/components.module';
-
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
@@ -14,10 +12,8 @@ export class SessionProvider {
     public storage: Storage,
   ) {
   }
-  
+
   start(user) {
-    console.log("start triggered");
-    console.log(user);
     let role = user.role;
     let uid = user.uid
     this.storage.set('loggedIn', true);
@@ -26,15 +22,18 @@ export class SessionProvider {
   }
 
   end() {
-    this.storage.remove('user')
+    this.storage.remove('loggedIn');
+    this.storage.remove('role');
+    this.storage.remove('uid');
     this.events.publish('user:loggedOut');
   }
 
   uid() {
     return Observable.create((observer: any) => {
       return this.storage.get('uid').then((uid) => {
+        console.log("UID: " + uid);        
         if (uid) {
-          observer.complete(uid);
+          observer.next(uid);
         } else {
           observer.complete(false);
         }
@@ -45,8 +44,9 @@ export class SessionProvider {
   loggedIn() {
     return Observable.create((observer: any) => {
       return this.storage.get('loggedIn').then((loggedIn) => {
+        console.log("Logged In: " + loggedIn);
         if (loggedIn) {
-          observer.complete(loggedIn);
+          observer.next(loggedIn);
         } else {
           observer.complete(false);
         }
@@ -57,8 +57,9 @@ export class SessionProvider {
   role() {
     return Observable.create((observer: any) => {
       return this.storage.get('role').then((role) => {
+        console.log("Role: " + role);        
         if (role) {
-          observer.complete(role);
+          observer.next(role);
         } else {
           observer.complete(false);
         }

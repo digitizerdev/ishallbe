@@ -111,6 +111,13 @@ describe('LoginFacebookComponent', () => {
         expect(component.browser).toHaveBeenCalled();
     });
 
+    it('should request profile when checking for existing account', () => {
+        spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {} })
+        component.checkForExistingProfile('testUID');
+        fixture.detectChanges();
+        expect(component.requestProfile).toHaveBeenCalled();
+    })
+
     it('should start session with user', () => {
         spyOn(session, 'start');
         spyOn(component, 'setRootHomePage');

@@ -9,25 +9,29 @@
 
 <ion-content padding>
   <header></header>
-  <ion-row responsive-sm>
+  <div text-center padding>
+      <h3>{{name}}</h3>
+      <h4>{{email}}</h4>
+  </div>
+  <ion-row responsive-sm padding>
     <ion-col text-center>
-      <button ion-button (click)="pushAccountEmailPage()" color="primary" round outline>Change Email</button>
+      <button ion-button id="AccountViewProfileButton" (click)="pushProfilePage()" color="primary" round>VIEW PROFILE</button>
     </ion-col>
   </ion-row>
-  <ion-row responsive-sm>
+  <ion-row responsive-sm padding>
     <ion-col text-center>
-      <button ion-button (click)="pushAccountPasswordPage()" color="secondary" round outline>Change Password</button>
+      <button ion-button id="AccountUpdateEmailButton" (click)="pushAccountEmailPage()" color="secondary" round outline small>UPDATE EMAIL</button>
+    </ion-col>
+    <ion-col text-center>
+      <button ion-button id="AccountUpdatePasswordButton" (click)="pushAccountPasswordPage()" color="secondary" round outline small>UPDATE PASSWORD</button>
     </ion-col>
   </ion-row>
-  <ion-row responsive-sm>
+  <ion-row responsive-sm padding>
+      <ion-col text-center>
+          <terms-of-service></terms-of-service>        
+      </ion-col>
     <ion-col text-center>
-      <button ion-button (click)="pushProfilePage()" color="secondary" round outline>View Profile</button>
+      <button ion-button id="AccountLogoutButton" (click)="logout()" color="primary" round outline small>LOGOUT</button>
     </ion-col>
   </ion-row>
-  <ion-row responsive-sm>
-    <ion-col text-center>
-      <button ion-button (click)="logout()" color="primary" round outline>logout</button>
-    </ion-col>
-  </ion-row>
-  <terms-of-service></terms-of-service>
 </ion-content>

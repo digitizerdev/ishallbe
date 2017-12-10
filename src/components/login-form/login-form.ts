@@ -6,9 +6,6 @@ import { HomePage } from '../../pages/home/home';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
 
-import { Observable } from 'rxjs/Observable';
-
-
 @Component({
   selector: 'login-form',
   templateUrl: 'login-form.html'

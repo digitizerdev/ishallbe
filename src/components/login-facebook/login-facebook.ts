@@ -113,8 +113,6 @@ export class LoginFacebookComponent {
       role: profile.role,
       uid: profile.uid
     }
-    console.log("About to store this user");
-    console.log(user);
     this.session.start(user);
     this.setRootHomePage();
   }

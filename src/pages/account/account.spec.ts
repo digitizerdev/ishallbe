@@ -79,7 +79,7 @@ describe('AccountPage', () => {
 
   it('should have title called Account', () => {
     expect(component.title).toBe('Account');
-  })
+  });
 
   it('should display header component', () => {
     let de: DebugElement;
@@ -89,12 +89,80 @@ describe('AccountPage', () => {
     expect(el).toBeUndefined();
   });
 
+  it('should display view profile button', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('#AccountViewProfileButton'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('View Profile');
+  }));
+
+  it('should display update password button', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('#AccountUpdatePasswordButton'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('Update Password');
+  }));
+
+  it('should display update email button', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('#AccountUpdateEmailButton'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('Update Email');
+  }));
+
+  it('should display logout button', async(() => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('#AccountLogoutButton'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('Logout');
+  }));
+
+  it('should request role from session provider', () => {
+    spyOn(session, 'role').and.returnValue({ subscribe: () => {} })
+    component.requestRole();
+    fixture.detectChanges();
+    expect(session.role).toHaveBeenCalled();
+  });
+
+  it('should request uid from session provider', () => {
+    spyOn(session, 'uid').and.returnValue({ subscribe: () => {} })
+    component.requestUID();
+    fixture.detectChanges();
+    expect(session.uid).toHaveBeenCalled();
+  });
+
+  it('should load profile by requesting it', () => {
+    spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {} })
+    component.loadProfile('testUID');
+    fixture.detectChanges();
+    expect(component.requestProfile).toHaveBeenCalled
+  });
+
+  it('should request profile from firebase provider', () => {
+    spyOn(firebase, 'object').and.returnValue;
+    component.requestProfile('testUID');
+    fixture.detectChanges();
+    expect(firebase.object).toHaveBeenCalled();
+  });
+
   it('should be able to logout of session', () => {
     spyOn(session, 'end');
     spyOn(component, 'setRootLoginPage')
     component.logout();
     expect(session.end).toHaveBeenCalled();
     expect(component.setRootLoginPage).toHaveBeenCalled();
+  });
+
+  it('should display terms of service component', () => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('terms-of-service'));
+    el = de.nativeElement.src;
+    expect(el).toBeUndefined();
   });
 
 });
