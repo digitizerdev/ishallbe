@@ -82,6 +82,14 @@ describe('LoginFacebookComponent', () => {
         expect(component instanceof LoginFacebookComponent).toBe(true);
     });
 
+    it('should be triggered by Login With Facebook Button', async(() => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#LoginWithFacebookButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Login with Facebook');
+      }));
+
     it('should determine whether cordova or not before authentication', () => {
         spyOn(component, 'viaCordova');        
         component.authenticate();

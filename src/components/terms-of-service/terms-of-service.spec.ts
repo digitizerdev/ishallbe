@@ -45,5 +45,4 @@ describe('TermsOfServiceComponent', () => {
     expect(linkText).toContain('Terms of Service');    
   }));
   
-
  });
