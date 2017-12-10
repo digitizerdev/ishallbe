@@ -22,20 +22,24 @@ export class FirebaseProvider {
 
   updateAccountEmail(email) {
     return Observable.create((observer: any) => {
-      return this.account().updateEmail(email).then(function () {
-        observer.complete(true);
+      return this.account().updateEmail(email).then(() => {
+        observer.next(true);
       }, function (error) {
-        observer.throw(error);
+        console.log("Firebase provider logged error");
+        console.log(error);
+        observer.error(error);
       });
     });
   }
 
   updateAccountPassword(password) {
     return Observable.create((observer: any) => {
-      return this.account().updatePassword(password).then(function () {
-        observer.complete(true);
+      return this.account().updatePassword(password).then(() => {
+        observer.next(true);
       }, function (error) {
-        observer.throw(error);
+        console.log("Firebase provider logged error");
+        console.log(error);
+        observer.error(error);
       });
     });
   }
@@ -50,19 +54,19 @@ export class FirebaseProvider {
 
   setObject(path, obj) {
     return Observable.create((observer: any) => {
-      return this.object(path).set(obj).then(function () {
-        observer.complete(true);
+      return this.object(path).set(obj).then(() => {
+        observer.next(true);
       }, function (error) {
-        observer.throw(error);
+        observer.error(error);
       });
     });
   }
 
   updateObject(path, obj) {
     return Observable.create((observer: any) => {
-      return this.object(path).update(obj).then(function () {
-        observer.complete(true);
-      }, function (error) {
+      return this.object(path).update(obj).then(() => {
+        observer.next(true);
+      }).catch(function(error) {
         observer.throw(error);
       });
     });
@@ -70,8 +74,8 @@ export class FirebaseProvider {
 
   removeObject(path, obj) {
     return Observable.create((observer: any) => {
-      return this.object(path).remove().then(function () {
-        observer.complete(true);
+      return this.object(path).remove().then(() => {
+        observer.next(true);
       }, function (error) {
         observer.throw(error);
       });

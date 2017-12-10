@@ -91,6 +91,27 @@ describe('AccountEmailFormComponent', () => {
     expect(component.form.email).toBeUndefined();
   });
 
+  it('should request uid from session provider', () => {
+    spyOn(session, 'uid').and.returnValue({ subscribe: () => {} })
+    component.requestUID();
+    fixture.detectChanges();
+    expect(session.uid).toHaveBeenCalled();
+  });
+
+  it('should load profile by requesting it', () => {
+    spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {} })
+    component.loadProfile('testUID');
+    fixture.detectChanges();
+    expect(component.requestProfile).toHaveBeenCalled
+  });
+
+  it('should request profile from firebase provider', () => {
+    spyOn(firebase, 'object').and.returnValue;
+    component.requestProfile('testUID');
+    fixture.detectChanges();
+    expect(firebase.object).toHaveBeenCalled();
+  });
+
   it('should submit form', () => {
     expect(component.submitted).toBeFalsy();
     spyOn(component, 'request');
@@ -110,19 +131,27 @@ describe('AccountEmailFormComponent', () => {
     expect(firebase.updateAccountEmail).toHaveBeenCalled();
   });
 
+  it('should request firebase to update profile email', () => {
+    spyOn(firebase, 'updateObject').and.returnValue({ subscribe: () => { } })
+    let profile = {
+      uid: "testUID",
+      email: "testEmail",
+      blocked: "testBlocked",
+      name: "testName",
+      role: "testRole",
+      photo: "testPhoto"
+    }
+    component.updateProfile(profile);
+    fixture.detectChanges();
+    expect(firebase.updateObject).toHaveBeenCalled();
+  });
+
   it('Should display alert after confirmation', () => {
     spyOn(component, 'confirmAlert');
     component.confirm()
     fixture.detectChanges();
     expect(component.confirmAlert).toHaveBeenCalled();
   })
-
-  it('should set root to home page after confirmation', () => {
-    spyOn(component, 'setRootHomePage');
-    component.confirm();
-    fixture.detectChanges();
-    expect(component.setRootHomePage).toHaveBeenCalled();
-  });
 
   it('should log error message on error', () => {
     expect(component.error).toBeUndefined();

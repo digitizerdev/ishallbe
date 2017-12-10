@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 
-import { HomePage } from '../../pages/home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { Observable } from 'rxjs/Observable';
@@ -29,21 +28,19 @@ export class AccountPasswordFormComponent {
     this.form = form;
     this.submitted = true;
     this.request(form.password);
-    this.setRootHomePage();
   }
 
   request(password) {
     this.firebase.updateAccountPassword(password)
       .subscribe(() => {
         this.confirm();
-      }, function (error) {
+      }, (error) => {
         this.errorHandler(error);
       });
   }
 
   confirm() {
     this.confirmAlert();
-    this.setRootHomePage();
   }
 
   confirmAlert() {
@@ -53,10 +50,6 @@ export class AccountPasswordFormComponent {
       buttons: ['OK']
     });
     alert.present();
-  }
-
-  setRootHomePage() {
-    this.navCtrl.setRoot(HomePage);
   }
 
   errorHandler(error) {

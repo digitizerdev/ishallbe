@@ -117,13 +117,6 @@ describe('AccountPasswordFormComponent', () => {
     expect(component.confirmAlert).toHaveBeenCalled();
   })
 
-  it('should set root to home page after confirmation', () => {
-    spyOn(component, 'setRootHomePage');
-    component.confirm();  
-    fixture.detectChanges();
-    expect(component.setRootHomePage).toHaveBeenCalled();
-  });
-
   it('should log error message on error', () => {
     expect(component.error).toBeUndefined();
     let error = {

@@ -16,8 +16,4 @@ export class AccountEmailPage {
   ) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AccountEmailPage');
-  }
-
 }
