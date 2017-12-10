@@ -77,8 +77,12 @@ describe('ProfilePage', () => {
     expect(component instanceof ProfilePage).toBe(true);
   });
 
-  it('should have title called Profile', () => {
-    expect(component.title).toBe('Profile');
+  it('should initialize with undefined title', () => {
+    expect(component.title).toBeUndefined();
+  })
+
+  it('should initialize with owner false', () => {
+    expect(component.owner).toBeFalsy();
   })
 
   it('should display profile-avatar component', () => {
@@ -88,6 +92,26 @@ describe('ProfilePage', () => {
     el = de.nativeElement.src;
     expect(el).toBeUndefined();
   });
+
+  it('should display create statement button if owner', async(() => {
+    component.owner = true;
+    fixture.detectChanges();
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('#ProfileCreateStatementButton'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('CREATE STATEMENT');
+  }));
+
+  it('should display edit profile button if owner', async(() => {
+    component.owner = true;
+    fixture.detectChanges();
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('#ProfileEditProfileButton'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('EDIT PROFILE');
+  }));
 
   it('should display profile-posts component', () => {
     let de: DebugElement;

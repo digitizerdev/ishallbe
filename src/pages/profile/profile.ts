@@ -16,7 +16,8 @@ import { ProfileManagerComponent } from '../../components/profile-manager/profil
 })
 export class ProfilePage {
 
-  title = 'Profile';
+  title: any;
+  owner = false;
 
   constructor(
     public navCtrl: NavController, 
