@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController } from 'ionic-angular';
 
+import { AccountPage } from '../../pages/account/account';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
 
 @Component({
   selector: 'account-email-form',
@@ -16,7 +16,7 @@ export class AccountEmailFormComponent {
     email?: string,
   } = {};
   submitted = false;
-  error: any;
+  loader: any;
   profile: {
     email?: string,
     uid?: string,
@@ -27,69 +27,98 @@ export class AccountEmailFormComponent {
   }
 
   constructor(
+    public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public navCtrl: NavController,
     public firebase: FirebaseProvider,
     public session: SessionProvider
   ) {
-    this.requestUID();
+    this.loadProfile();
   }
 
-  submit(form) {
-    this.form = form;
-    this.submitted = true;
-    this.request(form.email);
+  loadProfile() {
+    return this.requestUID().subscribe((uid) => {
+      return this.requestProfile(uid).subscribe((profile) => {
+        this.profile = profile;
+      });
+    });
   }
 
   requestUID() {
-    this.session.uid().subscribe((uid) => {
-      this.loadProfile(uid);
-    });
-  }
-
-  loadProfile(uid) {
-    this.requestProfile(uid).subscribe((profile) => {
-      this.profile = profile;
-    });
+    return this.session.uid();
   }
 
   requestProfile(uid) {
-    let path = '/users/' + uid;
-    return this.firebase.object(path)
+    return this.firebase.profile(uid);
   }
 
-  request(email) {
-    this.firebase.updateAccountEmail(email)
-      .subscribe(() => {
-        this.profile.email = email;
-        this.updateProfile(this.profile);
-      }, (error) => {
-        this.errorHandler(error);
-      })
+  submit(form) {
+    this.prepareRequest(form)
+    this.makeRequests(form).then(() => {
+      this.confirmDelivery();
+    }).catch((error) => {
+      this.errorHandler(error);
+    });
   }
 
-  updateProfile(profile) {
+  prepareRequest(form) {
+    this.buildData(form);
+    this.startLoader();
+  }
+
+  buildData(form) {
+    this.form = form;
+    this.submitted = true;
+    this.profile.email = form.email;
+  }
+
+  startLoader() {
+    this.loader = this.loadingCtrl.create({
+      content: 'Please Wait..'
+    });
+  }
+
+  makeRequests(form) {
+    return this.requestAccountEmailUpdate(form.email).then(() => {
+      return this.requestProfileEmailUpdate(this.profile).then(() => {
+      }, (error) => { throw error });
+    }, (error) => { throw error });
+  }
+
+  requestAccountEmailUpdate(email) {
+    return this.firebase.updateAccountEmail(email);
+  }
+
+  requestProfileEmailUpdate(profile) {
     let path = '/users/' + profile.uid;
-    this.firebase.updateObject(path, profile).subscribe(() => {
-      this.confirm();
-    })
+    return this.firebase.setObject(path, profile);
   }
 
-  confirm() {
-    this.confirmAlert();
+  confirmDelivery() {
+    this.endLoader();
+    this.presentConfirmationAlert();
+    this.setRootAccountPage();
   }
 
-  confirmAlert() {
+
+  endLoader() {
+    this.loader.dismiss();
+  }
+
+  presentConfirmationAlert() {
     let alert = this.alertCtrl.create({
       title: 'Success',
-      subTitle: 'You successfully updated your email',
+      subTitle: 'Your email has been updated',
       buttons: ['OK']
     });
     alert.present();
   }
 
+  setRootAccountPage() {
+    this.navCtrl.setRoot(AccountPage);
+  }
+
   errorHandler(error) {
-    this.error = error;
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,

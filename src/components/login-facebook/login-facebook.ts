@@ -102,7 +102,7 @@ export class LoginFacebookComponent {
       "role": "contributor",
       "blocked": false
     }
-    this.firebase.setObject(path, profile).subscribe(()=>{
+    this.firebase.setObject(path, profile).then(()=>{
       this.welcome(profile);
     })
   }

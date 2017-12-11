@@ -77,40 +77,26 @@ describe('ProfilePage', () => {
     expect(component instanceof ProfilePage).toBe(true);
   });
 
-  it('should initialize with undefined title', () => {
-    expect(component.title).toBeUndefined();
+  it('should initialize with undefined profile', () => {
+    expect(component.profile).toBeUndefined();
   })
 
-  it('should initialize with owner false', () => {
-    expect(component.owner).toBeFalsy();
-  })
-
-  it('should display profile-avatar component', () => {
-    let de: DebugElement;
-    let el: HTMLElement;
-    de = fixture.debugElement.query(By.css('profile-avatar'));
-    el = de.nativeElement.src;
-    expect(el).toBeUndefined();
-  });
-
-  it('should display create statement button if owner', async(() => {
-    component.owner = true;
+  it('should display create statement button', async(() => {
     fixture.detectChanges();
     let de: DebugElement;
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('#ProfileCreateStatementButton'));
     el = de.nativeElement.innerHTML
-    expect(el).toContain('CREATE STATEMENT');
+    expect(el).toContain('Create Statement');
   }));
 
-  it('should display edit profile button if owner', async(() => {
-    component.owner = true;
+  it('should display edit profile button', async(() => {
     fixture.detectChanges();
     let de: DebugElement;
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('#ProfileEditProfileButton'));
     el = de.nativeElement.innerHTML
-    expect(el).toContain('EDIT PROFILE');
+    expect(el).toContain('Edit Profile');
   }));
 
   it('should display profile-posts component', () => {
@@ -119,6 +105,43 @@ describe('ProfilePage', () => {
     de = fixture.debugElement.query(By.css('profile-posts'));
     el = de.nativeElement.src;
     expect(el).toBeUndefined();
+  });
+
+  it('should request uid from session provider', () => {
+    spyOn(session, 'uid').and.returnValue({ subscribe: () => {} })
+    component.requestUID();
+    fixture.detectChanges();
+    expect(session.uid).toHaveBeenCalled();
+  });
+
+  it('should load profile by requesting it', () => {
+    spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {} })
+    component.loadProfile('testUID');
+    fixture.detectChanges();
+    expect(component.requestProfile).toHaveBeenCalled
+  });
+
+  it('should request profile from firebase provider', () => {
+    spyOn(firebase, 'object').and.returnValue;
+    component.requestProfile('testUID');
+    fixture.detectChanges();
+    expect(firebase.object).toHaveBeenCalled();
+  });
+
+  it('should add standard bio to profile if bio not found', () => {
+    spyOn(firebase, 'setObject').and.returnValue;
+    let profile = {
+        uid: 'testUID',
+        name: 'testName',
+        email: 'testEmail',
+        photo: "https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png",
+        blocked: false,
+        role: "testRole",
+        bio: 'Improving Every Day'
+      }
+    component.addStandardBio(profile);
+    fixture.detectChanges();
+    expect(firebase.setObject).toHaveBeenCalled();
   });
 
 });

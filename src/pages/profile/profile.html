@@ -3,18 +3,29 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>{{title}}</ion-title>
+    <ion-title color='primary'>{{ profile?.name }}</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="setRootHomePage()">
+          <ion-icon name="ios-home"></ion-icon>
+        </button>
+      </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <profile-avatar></profile-avatar>
-  <ion-row *ngIf="owner" responsive-sm>
+    <div text-center>
+        <img src="{{ profile?.photo }}">
+        <br>
+        <h4>{{ profile?.bio}} </h4>
+      </div>
+  <ion-row responsive-sm>
     <ion-col text-center>
-      <button ion-button id="ProfileCreateStatementButton" (click)="pushStatementPage()" color="primary" round outline>CREATE STATEMENT</button>
+      <button ion-button id="ProfileCreateStatementButton" (click)="pushStatementPage()" color="primary" round>Create Statement</button>
     </ion-col>
+  </ion-row>
+  <ion-row responsive-sm>      
     <ion-col text-center>
-      <button ion-button id="ProfileEditProfileButton" (click)="pushProfileManagerPage()" color="secondary" round outline>EDIT PROFILE</button>
+      <button ion-button id="ProfileEditProfileButton" (click)="pushProfileManagerPage()" color="secondary" round>Edit Profile</button>
     </ion-col>
   </ion-row>
   <profile-posts></profile-posts>

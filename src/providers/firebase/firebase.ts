@@ -20,26 +20,21 @@ export class FirebaseProvider {
     return this.afa.auth.currentUser;
   }
 
+  profile(uid) {
+    let path = '/users/' + uid;
+    return this.object(path)
+  }
+
   updateAccountEmail(email) {
-    return Observable.create((observer: any) => {
-      return this.account().updateEmail(email).then(() => {
-        observer.next(true);
-      }, function (error) {
-        console.log("Firebase provider logged error");
-        console.log(error);
-        observer.error(error);
-      });
-    });
+    return this.account().updateEmail(email);
   }
 
   updateAccountPassword(password) {
     return Observable.create((observer: any) => {
       return this.account().updatePassword(password).then(() => {
         observer.next(true);
-      }, function (error) {
-        console.log("Firebase provider logged error");
-        console.log(error);
-        observer.error(error);
+      }, (error) =>  {
+        observer.throw(error);
       });
     });
   }
@@ -53,32 +48,14 @@ export class FirebaseProvider {
   }
 
   setObject(path, obj) {
-    return Observable.create((observer: any) => {
-      return this.object(path).set(obj).then(() => {
-        observer.next(true);
-      }, function (error) {
-        observer.error(error);
-      });
-    });
+    return this.object(path).set(obj);
   }
 
   updateObject(path, obj) {
-    return Observable.create((observer: any) => {
-      return this.object(path).update(obj).then(() => {
-        observer.next(true);
-      }).catch(function(error) {
-        observer.throw(error);
-      });
-    });
+    return this.object(path).update(obj)
   }
 
   removeObject(path, obj) {
-    return Observable.create((observer: any) => {
-      return this.object(path).remove().then(() => {
-        observer.next(true);
-      }, function (error) {
-        observer.throw(error);
-      });
-    });
+    return this.object(path).remove()
   }
 }

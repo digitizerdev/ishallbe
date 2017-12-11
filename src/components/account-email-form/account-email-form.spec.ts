@@ -29,9 +29,7 @@ import {
 let fixture;
 let component;
 let session: SessionProvider;
-let sessionSpy;
 let firebase: FirebaseProvider;
-let firebaseSpy;
 
 describe('AccountEmailFormComponent', () => {
 
@@ -70,16 +68,35 @@ describe('AccountEmailFormComponent', () => {
     fixture.destroy();
     component = null;
     session = null;
-    sessionSpy = null;
     firebase = null;
-    firebaseSpy = null;
   });
 
   it('should be created', () => {
     expect(component instanceof AccountEmailFormComponent).toBe(true);
   });
 
-  it('should be triggered by Update Email Button', async(() => {
+  it('should be initialized', () => {
+    expect(component.submitted).toBeFalsy();
+    expect(component.loader).toBeUndefined();
+    expect(component.profile).toBeUndefined();
+    expect(component.form.email).toBeUndefined();
+  });
+
+  it('should ask for uid from Session Provider', () => {
+    spyOn(session, 'uid').and.returnValue({ subscribe: () => { } });
+    component.requestUID();
+    fixture.detectChanges();
+    expect(session.uid).toHaveBeenCalled();
+  });
+
+  it('should use uid to ask for profile from Firebase Provider', () => {
+    spyOn(firebase, 'profile').and.returnValue({ subscribe: () => { } })
+    component.requestProfile('testUID');
+    fixture.detectChanges();
+    expect(firebase.profile).toHaveBeenCalled();
+  });
+
+  it('should submit via Update Email Button', async(() => {
     let de: DebugElement;
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('#AccountUpdateEmailButton'));
@@ -87,79 +104,49 @@ describe('AccountEmailFormComponent', () => {
     expect(el).toContain('Update Email');
   }));
 
-  it('should have form with email and password fields', () => {
-    expect(component.form.email).toBeUndefined();
-  });
-
-  it('should request uid from session provider', () => {
-    spyOn(session, 'uid').and.returnValue({ subscribe: () => {} })
-    component.requestUID();
-    fixture.detectChanges();
-    expect(session.uid).toHaveBeenCalled();
-  });
-
-  it('should load profile by requesting it', () => {
-    spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {} })
-    component.loadProfile('testUID');
-    fixture.detectChanges();
-    expect(component.requestProfile).toHaveBeenCalled
-  });
-
-  it('should request profile from firebase provider', () => {
-    spyOn(firebase, 'object').and.returnValue;
-    component.requestProfile('testUID');
-    fixture.detectChanges();
-    expect(firebase.object).toHaveBeenCalled();
-  });
-
-  it('should submit form', () => {
-    expect(component.submitted).toBeFalsy();
-    spyOn(component, 'request');
+  it('should prepare request by building data and starting loader', () => {
+    spyOn(component, 'buildData');
+    spyOn(component, 'startLoader');
     let form = {
       "email": 'testFormEmail',
     }
-    component.submit(form);
+    component.prepareRequest(form);
     fixture.detectChanges();
-    expect(component.request).toHaveBeenCalled();
-    expect(component.submitted).toBeTruthy();
+    expect(component.buildData).toHaveBeenCalled();
+    expect(component.startLoader).toHaveBeenCalled();
   });
 
-  it('should request firebase to update account email', () => {
-    spyOn(firebase, 'updateAccountEmail').and.returnValue({ subscribe: () => { } })
-    component.request('testEmail');
+  it('should request Firebase Provider to update account email', () => {
+    spyOn(firebase, 'updateAccountEmail').and.returnValue({ subscribe: () => { } });
+    component.requestAccountEmailUpdate('testEmail');
     fixture.detectChanges();
     expect(firebase.updateAccountEmail).toHaveBeenCalled();
   });
 
-  it('should request firebase to update profile email', () => {
-    spyOn(firebase, 'updateObject').and.returnValue({ subscribe: () => { } })
+  it('should request Firebase Provider to update profile email', () => {
+    spyOn(firebase, 'setObject').and.returnValue({ subscribe: () => { } });
     let profile = {
-      uid: "testUID",
       email: "testEmail",
-      blocked: "testBlocked",
+      uid: "testUID",
+      blocked: false,
       name: "testName",
       role: "testRole",
       photo: "testPhoto"
     }
-    component.updateProfile(profile);
+    component.requestProfileEmailUpdate(profile);
     fixture.detectChanges();
-    expect(firebase.updateObject).toHaveBeenCalled();
+    expect(firebase.setObject).toHaveBeenCalled();
   });
 
-  it('Should display alert after confirmation', () => {
-    spyOn(component, 'confirmAlert');
-    component.confirm()
+  it('should confirm delivery by displaying alert', () => {
+    spyOn(component, 'endLoader');
+    spyOn(component, 'presentConfirmationAlert');
+    spyOn(component, 'setRootAccountPage');
+    component.confirmDelivery();
     fixture.detectChanges();
-    expect(component.confirmAlert).toHaveBeenCalled();
-  })
-
-  it('should log error message on error', () => {
-    expect(component.error).toBeUndefined();
-    let error = {
-      "code": "invalid",
-      "message": "Test Error"
-    }
-    component.errorHandler(error);
-    expect(component.error).toBe(error);
+    expect(component.endLoader).toHaveBeenCalled();
+    expect(component.presentConfirmationAlert).toHaveBeenCalled();
+    expect(component.setRootAccountPage).toHaveBeenCalled();
   });
+
 });

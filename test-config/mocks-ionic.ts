@@ -161,6 +161,7 @@ export class DeepLinkerMock {
 
 export class AlertControllerMock {
   _getPortal(): any { return {} };
+
   create(options?: any) { 
       return new AlertMock()
   };
@@ -175,6 +176,7 @@ export class LoadingControllerMock {
   create(options?: any) { 
       return new LoadingMock()
   };
+
 }
 
 class LoadingMock {
@@ -190,7 +192,13 @@ export class FirebaseProviderMock extends FirebaseProvider {
 }
 
 export class AngularFireDatabaseMock extends AngularFireDatabaseModule {
-  public
+  public profile(): any {
+    return {
+      update(object) {
+        return;
+      }
+    }
+  }
 }
 
 export class AngularFireAuthMock extends AngularFireAuthModule {
@@ -201,6 +209,14 @@ export class AngularFireAuthMock extends AngularFireAuthModule {
     return {
       signInWithEmailAndPassword(email, password) {
         return;
+      },
+
+      currentUser(): any {
+        return {
+          updateEmail(email): any {
+            return;
+          }
+        }
       }
     }
   }

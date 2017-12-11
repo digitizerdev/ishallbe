@@ -11,19 +11,12 @@ import { Observable } from 'rxjs/Observable';
 })
 export class ProfileAvatarComponent {
 
-  uid: any;
+  profile: any;
 
   constructor(
     public firebase: FirebaseProvider,
     public session: SessionProvider,
   ) {
-    this.wakeUp();
-  }
-
-  wakeUp() {
-    this.session.uid().subscribe((uid)=>{
-      this.uid = uid;
-    })
   }
 
 }

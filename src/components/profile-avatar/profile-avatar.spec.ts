@@ -81,11 +81,5 @@ describe('ProfileAvatarComponent', () => {
         expect(component instanceof ProfileAvatarComponent).toBe(true);
     });
 
-    it('should retrieve current user uid from session', () => {
-        spyOn(session, 'uid').and.callThrough();
-        component.wakeUp();
-        fixture.detectChanges();
-        expect(session.uid).toHaveBeenCalled();
-    });
 
 });
