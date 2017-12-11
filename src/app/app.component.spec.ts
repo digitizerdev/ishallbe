@@ -95,8 +95,8 @@ describe('iShallBe App Component', () => {
     promise.then(done).catch(done.fail);
   });
 
-  it('should have 2 providers', () => {
-    expect(component.providers.length).toBe(2);
+  it('should have 3 providers', () => {
+    expect(component.providers.length).toBe(3);
   });
 
   it('should have 5 menu pages', () => {
@@ -107,8 +107,8 @@ describe('iShallBe App Component', () => {
     expect(component.pages.length).toBe(21);
   });
 
-  it('should have 23 components', () => {
-    expect(component.components.length).toBe(23);
+  it('should have 9 components', () => {
+    expect(component.components.length).toBe(9);
   });
 
   it('should initialize with login page as root page', () => {

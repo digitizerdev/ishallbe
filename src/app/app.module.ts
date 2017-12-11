@@ -44,6 +44,7 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
 import { SessionProvider } from '../providers/session/session';
 
 import { ComponentsModule } from '../components/components.module';
+import { MediaProvider } from '../providers/media/media';
 
 @NgModule({
   declarations: [
@@ -117,6 +118,7 @@ import { ComponentsModule } from '../components/components.module';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     FirebaseProvider,
     SessionProvider,
+    MediaProvider,
   ]
 })
 export class AppModule { }

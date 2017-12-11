@@ -29,32 +29,19 @@ import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
 import { PinManagerPage } from '../pages/pin-manager/pin-manager';
 
 import { ComponentsModule } from '../components/components.module';
+import { HeaderComponent } from '../components/header/header';
+import { TermsOfServiceComponent } from '../components/terms-of-service/terms-of-service';
 import { LoginFormComponent } from '../components/login-form/login-form';
-import { LoginFacebookComponent } from '../components/login-facebook/login-facebook';
 import { ResetPasswordFormComponent } from '../components/reset-password-form/reset-password-form';
 import { RegisterFormComponent } from '../components/register-form/register-form';
-import { TermsOfServiceComponent } from '../components/terms-of-service/terms-of-service';
-import { ProfileAvatarComponent } from '../components/profile-avatar/profile-avatar';
-import { ProfilePostsComponent } from '../components/profile-posts/profile-posts';
-import { ProfileManagerComponent } from '../components/profile-manager/profile-manager';
-import { CreateStatementFormComponent } from '../components/create-statement-form/create-statement-form';
 import { AccountEmailFormComponent } from '../components/account-email-form/account-email-form';
 import { AccountPasswordFormComponent } from '../components/account-password-form/account-password-form';
 import { SupportFormComponent } from '../components/support-form/support-form';
-import { UserManagerComponent } from '../components/user-manager/user-manager';
-import { PostManagerComponent } from '../components/post-manager/post-manager';
-import { PinManagerComponent } from '../components/pin-manager/pin-manager';
-import { SearchComponent } from '../components/search/search';
-import { HeaderComponent } from '../components/header/header';
-import { PostComponent } from '../components/post/post';
-import { PostsComponent } from '../components/posts/posts';
-import { PinComponent } from '../components/pin/pin';
-import { PinsComponent } from '../components/pins/pins';
-import { InteractionsComponent } from '../components/interactions/interactions';
-import { MediaComponent } from '../components/media/media';
+import { LoginFacebookComponent } from '../components/login-facebook/login-facebook';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { SessionProvider } from '../providers/session/session';
+import { MediaProvider } from '../providers/media/media';
 
 export interface PageInterface {
 }
@@ -111,7 +98,8 @@ export class iShallBe {
 
     this.providers = [
       { title: 'Firebase Provider', component: FirebaseProvider },
-      { title: 'Session Provider', component: SessionProvider }
+      { title: 'Session Provider', component: SessionProvider },
+      { title: 'Media Provider', component: MediaProvider }
     ]
 
     this.menuPages = [
@@ -143,29 +131,15 @@ export class iShallBe {
     ]
 
     this.components = [
+      { title: 'Header Component', component: HeaderComponent },      
       { title: 'Login Form', component: LoginFormComponent },
-      { title: 'Login Facebook Component', component: LoginFacebookComponent },
       { title: 'Reset Password Form Component', component: ResetPasswordFormComponent },
       { title: 'Register Form Component', component: RegisterFormComponent },
       { title: 'Terms of Service Component', component: TermsOfServiceComponent },
-      { title: 'Profile Avatar Component', component: ProfileAvatarComponent },
-      { title: 'Profile Posts Component', component: ProfilePostsComponent },
-      { title: 'Profile Manager Component', component: ProfileManagerComponent },
-      { title: 'Create Statement Form Component', component: CreateStatementFormComponent },
       { title: 'Account Email Form Component', component: AccountEmailFormComponent },
       { title: 'Account Password Form Component', component: AccountPasswordFormComponent },
       { title: 'Support Form Component', component: SupportFormComponent },
-      { title: 'User Manager Form Component', component: UserManagerComponent },
-      { title: 'Post Manager Form Component', component: PostManagerComponent },
-      { title: 'Pin Manager Form Component', component: PinManagerComponent },
-      { title: 'Search Component', component: SearchComponent },
-      { title: 'Header Component', component: HeaderComponent },
-      { title: 'Post Component', component: PostComponent },
-      { title: 'Posts Component', component: PostsComponent },
-      { title: 'Pin Component', component: PinComponent },
-      { title: 'Pins Component', component: PinsComponent },
-      { title: 'Interactions Component', component: InteractionsComponent },
-      { title: 'Media Component', component: MediaComponent }
+      { title: 'Login Facebook Component', component: LoginFacebookComponent },      
     ]
   }
 

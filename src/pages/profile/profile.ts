@@ -8,7 +8,6 @@ import { StatementPage } from '../statement/statement';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
-import { ProfileManagerComponent } from '../../components/profile-manager/profile-manager';
 
 @IonicPage()
 @Component({

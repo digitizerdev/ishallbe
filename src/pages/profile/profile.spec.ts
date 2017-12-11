@@ -99,14 +99,6 @@ describe('ProfilePage', () => {
     expect(el).toContain('Edit Profile');
   }));
 
-  it('should display profile-posts component', () => {
-    let de: DebugElement;
-    let el: HTMLElement;
-    de = fixture.debugElement.query(By.css('profile-posts'));
-    el = de.nativeElement.src;
-    expect(el).toBeUndefined();
-  });
-
   it('should request uid from session provider', () => {
     spyOn(session, 'uid').and.returnValue({ subscribe: () => {} })
     component.requestUID();
