@@ -40,7 +40,7 @@ describe('RegisterFormComponent', () => {
             declarations: [RegisterFormComponent],
             imports: [
                 IonicModule.forRoot(RegisterFormComponent),
-                AngularFireModule.initializeApp(environment.firebase)                
+                AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
@@ -51,7 +51,7 @@ describe('RegisterFormComponent', () => {
                 { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
                 { provide: AngularFireAuth, useClass: AngularFireAuthMock },
                 { provide: AlertController, useClass: AlertControllerMock },
-                { provide: LoadingController, useClass: LoadingControllerMock }                
+                { provide: LoadingController, useClass: LoadingControllerMock }
             ],
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
@@ -79,62 +79,75 @@ describe('RegisterFormComponent', () => {
         expect(component instanceof RegisterFormComponent).toBe(true);
     });
 
-    it('should submit form', () => {
-        expect(component.submitted).toBeFalsy();        
-        spyOn(component, 'createAccount');        
-        let form = {
-            "email": 'testFormEmail',
-            "password": 'testFormPassword'
-        }
-        component.submit(form);
-        fixture.detectChanges();
-        expect(component.form).toBe(form);
-        expect(component.createAccount).toHaveBeenCalled();
+    it('should be initialized', () => {
+        expect(component.submitted).toBeFalsy();
+        expect(component.loader).toBeUndefined();
+        expect(component.form.name).toBeUndefined();
+        expect(component.form.email).toBeUndefined();
+        expect(component.form.password).toBeUndefined();
+        expect(component.profile).toBeUndefined();
     });
 
-    it('should request firebase to create profile object', () => {
-        spyOn(firebase, 'setObject').and.returnValue({ subscribe: () => {} });
-        component.createProfile('testUID');
+    it('should submit via Register Button', async(() => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#RegisterButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Register');
+    }));
+
+    it('should prepare request by building data and starting loader', () => {
+        spyOn(component, 'buildData');
+        spyOn(component, 'startLoader');
+        let form = {
+            "name": "testFormName",
+            "email": "testFormEmail",
+            "password": "testFormPassword"
+        }
+        component.prepareRequest(form);
+        fixture.detectChanges();
+        expect(component.buildData).toHaveBeenCalled();
+        expect(component.startLoader).toHaveBeenCalled();
+    });
+
+    it('should request Firebase Provider to create account', () => {
+        spyOn(firebase, 'createAccount').and.returnValue({ subscribe: () => { } });
+        let form = {
+            "name": "testFormName",
+            "email": "testFormEmail",
+            "password": "testFormPassword"
+        }
+        component.requestAccountCreation(form);
+        fixture.detectChanges();
+        expect(firebase.createAccount).toHaveBeenCalled();
+    });
+
+    it('should request Firebase Provider to create profile', () => {
+        spyOn(firebase, 'setObject').and.returnValue({ subscribe: () => { } });
+        component.profile = {
+            email: "testEmail",
+            uid: "testUID",
+            blocked: false,
+            name: "testName",
+            role: "testRole",
+            photo: "testPhoto"
+        }
+        component.requestProfileCreation()
         fixture.detectChanges();
         expect(firebase.setObject).toHaveBeenCalled();
     });
 
-    it('should should create then welcome user', () => {
-        spyOn(component, 'welcome');
-        let profile = {
-            uid: 'testUID',
-            name: 'testName',
-            email: 'testEmail',
-            photo: 'testPhoto',
-            blocked: false,
-            role: "contributor"
-          }
-        component.createUser(profile);
+    it('should confirm delivery by displaying alert', () => {
+        spyOn(component, 'endLoader');
+        spyOn(component, 'presentConfirmationAlert');
+        spyOn(component, 'startSession');
+        spyOn(component, 'setRootHomePage');
+        component.confirmDelivery();
         fixture.detectChanges();
-        expect(component.welcome).toHaveBeenCalled();
+        expect(component.endLoader).toHaveBeenCalled();
+        expect(component.presentConfirmationAlert).toHaveBeenCalled();
+        expect(component.startSession).toHaveBeenCalled();
+        expect(component.setRootHomePage).toHaveBeenCalled();
     });
 
-    it('should start session with user', () => {
-        spyOn(component, 'setRootHomePage');        
-        spyOn(session, 'start');
-        let user = {
-            "loggedIn": true,
-            "role": 'contributor',
-            "uid": 'testUID'
-          }
-        component.welcome(user);
-        fixture.detectChanges();
-        expect(session.start).toHaveBeenCalled();
-        expect(component.setRootHomePage).toHaveBeenCalled();        
-    });
-
-    it('should log error message on error', () => {
-        expect(component.error).toBeUndefined();
-        let error = {
-            "code": "invalid",
-            "message": "Test Error"
-        }
-        component.errorHandler(error);
-        expect(component.error).toBe(error);
-    });
 });

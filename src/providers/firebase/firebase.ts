@@ -2,12 +2,8 @@ import { Injectable } from '@angular/core';
 import { FirebaseListObservable, FirebaseObjectObservable, AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 
-import { Observable } from 'rxjs/Observable';
-
 @Injectable()
 export class FirebaseProvider {
-
-  user: any;
 
   constructor
     (
@@ -16,13 +12,17 @@ export class FirebaseProvider {
     ) {
   }
 
+  profile(uid) {
+    let path = '/users/' + uid;
+    return this.object(path)
+  }
+
   account() {
     return this.afa.auth.currentUser;
   }
 
-  profile(uid) {
-    let path = '/users/' + uid;
-    return this.object(path)
+  createAccount(email, password) {
+    return this.afa.auth.createUserWithEmailAndPassword(email, password);
   }
 
   updateAccountEmail(email) {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController } from 'ionic-angular';
 
 import { HomePage } from '../../pages/home/home';
 
@@ -25,53 +25,97 @@ export class RegisterFormComponent {
     password?: string 
   } = {};
   submitted = false;
-  error: any;
+  loader: any;
+  profile: {
+    email?: string,
+    uid?: string,
+    blocked?: boolean,
+    name?: string,
+    role?: string,
+    photo?: string
+  }
 
   constructor(
-    public firebase: FirebaseProvider,
-    public session: SessionProvider,
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
     public navCtrl: NavController,
-    public alertCtrl: AlertController
-  ) {
-    
-  }
+    public firebase: FirebaseProvider,
+    public session: SessionProvider
+  ) { }
 
   submit(form) {
-    this.form = form;
-    this.submitted = true;
-    this.createAccount(this.form.email, this.form.password);
-  }
-
-  createAccount(email, password) {
-    this.firebase.afa.auth.createUserWithEmailAndPassword(email, password).then((token) => {
-      this.createProfile(token.uid);
+    this.prepareRequest(form)
+    this.makeRequests(form).then(() => {
+      this.confirmDelivery();
+    }).catch((error) => {
+      this.errorHandler(error);
     });
   }
 
-  createProfile(uid) {
-    let profile = {
-      uid: uid,
-      name: this.form.name,
-      email: this.form.email,
-      photo: "https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png",
-      blocked: false,
-      role: "contributor"
-    }
-    let path = '/users/' + uid
-    this.firebase.setObject(path, profile); 
-    this.createUser(profile);
+  prepareRequest(form) {
+    this.buildData(form);
+    this.startLoader();
   }
 
-  createUser(profile) {
+  buildData(form) {
+    this.form = form;
+    this.profile.name = form.name;
+    this.profile.email = form.email;
+    this.profile.photo = "https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png"
+    this.profile.blocked = false;
+    this.profile.role = 'contributor';
+    this.submitted = true;
+  }
+
+  startLoader() {
+    this.loader = this.loadingCtrl.create({
+      content: 'Please Wait..'
+    });
+  }
+
+  makeRequests(form) {
+    return this.requestAccountCreation(form).then((token) => {
+      this.profile.uid = token.uid
+      return this.requestProfileCreation().then(() => {
+      }, (error) => { throw error });
+    }, (error) => { throw error });
+  }
+
+  requestAccountCreation(form) {
+    return this.firebase.createAccount(form.email, form.password);
+  }
+
+  requestProfileCreation() {
+    let path = '/users/' + this.profile.uid;
+    return this.firebase.setObject(path, this.profile);    
+  }
+
+  confirmDelivery() {
+    this.endLoader();
+    this.presentConfirmationAlert();
+    this.startSession();        
+    this.setRootHomePage();
+  }
+
+  endLoader() {
+    this.loader.dismiss();
+  }
+
+  presentConfirmationAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'Success',
+      subTitle: 'Your registration is complete',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  startSession() {
     let user = {
       "loggedIn": true,
       "role": 'contributor',
-      "uid": profile.uid
+      "uid": this.profile.uid
     }
-    this.welcome(user);
-  }
-
-  welcome(user) {
     this.session.start(user);
     this.setRootHomePage();
   }
@@ -81,7 +125,6 @@ export class RegisterFormComponent {
   }
 
   errorHandler(error) {
-    this.error = error;
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,
@@ -89,5 +132,5 @@ export class RegisterFormComponent {
     });
     alert.present();
   }
-  
+
 }
