@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { EmailComposer } from '@ionic-native/email-composer';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController } from 'ionic-angular';
 
 import { HomePage } from '../../pages/home/home';
+
+import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { SessionProvider } from '../../providers/session/session';
+import { NativeProvider } from '../../providers/native/native';
 
 @Component({
   selector: 'support-form',
@@ -15,34 +18,76 @@ export class SupportFormComponent {
     body?: string
   } = {};
   submitted = false;
-  error: any;
+  loader: any;
 
   constructor(
-    public navCtrl: NavController,
+    public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
-    public emailComposer: EmailComposer
+    public navCtrl: NavController,
+    public firebase: FirebaseProvider,
+    public session: SessionProvider,
+    public native: NativeProvider
   ) {
   }
 
   submit(form) {
-    this.form = form;
-    this.submitted = true;
-    this.send();
-    this.setRootHomePage();    
+    this.prepareRequest(form)
+    this.makeRequest(form).then(() => {
+      this.confirmDelivery();
+    }).catch((error) => {
+      this.errorHandler(error);
+    }); 
   }
 
-  send() {
+  prepareRequest(form) {
+    this.buildData(form);
+    this.startLoader();
+  }
+
+  buildData(form) {
+    this.form = form;
+    this.submitted = true;
+  }
+
+  startLoader() {
+    this.loader = this.loadingCtrl.create({
+      content: 'Please Wait..'
+    });
+  }
+
+  makeRequest(form) {
     let email = {
       to: 'iShallBe17@gmail.com',
-      subject: this.form.subject,
-      body: this.form.body,
+      subject: form.subject,
+      body: form.body,
       isHtml: true
     };
 
-    this.emailComposer.open(email)
-    .catch((error)=>{
-      this.errorHandler(error);
+    return this.requestEmailComposerToSendEmail(email).then((token) => {
+    }, (error) => { throw error });
+  }
+
+  requestEmailComposerToSendEmail(email) {
+    return this.native.composeEmail(email);
+  }
+
+  confirmDelivery() {
+    this.endLoader();
+    this.presentConfirmationAlert();
+    this.setRootHomePage();
+  }
+
+  endLoader() {
+    this.loader.dismiss();
+  }
+
+  presentConfirmationAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'Success',
+      subTitle: 'Sent Email',
+      buttons: ['OK']
     });
+    alert.present();
   }
 
   setRootHomePage() {
@@ -50,7 +95,6 @@ export class SupportFormComponent {
   }
 
   errorHandler(error) {
-    this.error = error;
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,
@@ -58,5 +102,4 @@ export class SupportFormComponent {
     });
     alert.present();
   }
-
 }

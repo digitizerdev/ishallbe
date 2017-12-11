@@ -40,11 +40,12 @@ import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
 import { PinManagerPage } from '../pages/pin-manager/pin-manager';
 
+import { ComponentsModule } from '../components/components.module';
+
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { SessionProvider } from '../providers/session/session';
-
-import { ComponentsModule } from '../components/components.module';
-import { MediaProvider } from '../providers/media/media';
+import { NativeProvider } from '../providers/native/native';
+import { UploadProvider } from '../providers/upload/upload';
 
 @NgModule({
   declarations: [
@@ -118,7 +119,9 @@ import { MediaProvider } from '../providers/media/media';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     FirebaseProvider,
     SessionProvider,
-    MediaProvider,
+    NativeProvider,
+    NativeProvider,
+    UploadProvider,
   ]
 })
 export class AppModule { }

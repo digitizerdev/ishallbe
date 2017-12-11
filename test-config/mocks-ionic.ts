@@ -1,6 +1,7 @@
 import { FirebaseProvider } from '../src/providers/firebase/firebase';
 import { SessionProvider } from '../src/providers/session/session';
-import { MediaProvider } from '../src/providers/media/media';
+import { NativeProvider } from '../src/providers/native/native';
+import { UploadProvider } from '../src/providers/upload/upload';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -110,8 +111,11 @@ export class FileMock extends File {
 }
 
 export class EmailComposerMock extends EmailComposer {
-  hide() {
-    return;
+
+  public open(email): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
   }
 }
 
@@ -235,7 +239,13 @@ export class SessionProviderMock extends SessionProvider {
   }
 }
 
-export class MediaProviderMock extends MediaProvider {
+export class NativeProviderMock extends NativeProvider {
+  hide() {
+    return;
+  }
+}
+
+export class UploadProviderMock extends UploadProvider {
   hide() {
     return;
   }

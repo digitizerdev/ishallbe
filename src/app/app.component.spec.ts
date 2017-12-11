@@ -95,8 +95,8 @@ describe('iShallBe App Component', () => {
     promise.then(done).catch(done.fail);
   });
   
-  it('should have 3 providers', () => {
-    expect(component.providers.length).toBe(3);
+  it('should have 4 providers', () => {
+    expect(component.providers.length).toBe(4);
   });
 
   it('should have 5 menu pages', () => {

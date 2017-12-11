@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FirebaseListObservable, FirebaseObjectObservable, AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
+import { UploadProvider } from '../upload/upload';
 
 @Injectable()
 export class FirebaseProvider {
@@ -8,7 +9,7 @@ export class FirebaseProvider {
   constructor
     (
     public afdb: AngularFireDatabase,
-    public afa: AngularFireAuth
+    public afa: AngularFireAuth,
     ) {
   }
 
