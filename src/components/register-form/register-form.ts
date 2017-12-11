@@ -6,13 +6,6 @@ import { HomePage } from '../../pages/home/home';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/finally';
-import 'rxjs/add/operator/first';
-
 @Component({
   selector: 'register-form',
   templateUrl: 'register-form.html'
@@ -44,6 +37,7 @@ export class RegisterFormComponent {
   ) { }
 
   submit(form) {
+
     this.prepareRequest(form)
     this.makeRequests(form).then(() => {
       this.confirmDelivery();
@@ -59,11 +53,14 @@ export class RegisterFormComponent {
 
   buildData(form) {
     this.form = form;
-    this.profile.name = form.name;
-    this.profile.email = form.email;
-    this.profile.photo = "https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png"
-    this.profile.blocked = false;
-    this.profile.role = 'contributor';
+    this.profile = {
+      name: form.name,
+      email: form.email,
+      photo: "https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png",
+      role: 'contributor',
+      blocked: false,
+      uid: "default"
+    }
     this.submitted = true;
   }
 
@@ -74,7 +71,11 @@ export class RegisterFormComponent {
   }
 
   makeRequests(form) {
+    console.log("About to request account createion");
+    console.log(form);
     return this.requestAccountCreation(form).then((token) => {
+      console.log("Got token");
+      console.log(token);
       this.profile.uid = token.uid
       return this.requestProfileCreation().then(() => {
       }, (error) => { throw error });
@@ -104,7 +105,7 @@ export class RegisterFormComponent {
   presentConfirmationAlert() {
     let alert = this.alertCtrl.create({
       title: 'Success',
-      subTitle: 'Your registration is complete',
+      subTitle: 'Registration Complete',
       buttons: ['OK']
     });
     alert.present();

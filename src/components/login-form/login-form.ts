@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController } from 'ionic-angular';
 
 import { HomePage } from '../../pages/home/home';
 
@@ -17,42 +17,91 @@ export class LoginFormComponent {
     password?: string 
   } = {};
   submitted = false;
-  error: any;
+  loader: any;
+  profile: {
+    email?: string,
+    uid?: string,
+    blocked?: boolean,
+    name?: string,
+    role?: string,
+    photo?: string
+  }
 
   constructor(
-    public firebase: FirebaseProvider,
-    public session: SessionProvider,
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
     public navCtrl: NavController,
-    public alertCtrl: AlertController
-  ) {
-  }
+    public firebase: FirebaseProvider,
+    public session: SessionProvider
+  ) { }
 
   submit(form) {
-    this.form = form;
-    this.submitted = true;
-    this.authenticate(this.form.email, this.form.password);
+    this.prepareRequest(form)
+    this.makeRequests(form).then((profile) => {
+      this.profile = profile;
+      this.confirmDelivery();
+    }).catch((error) => {
+      this.errorHandler(error);
+    });
   }
 
-  authenticate(email, password) {
-    this.firebase.afa.auth.signInWithEmailAndPassword(email, password).then((token) => {
-      this.requestProfile(token.uid);
-    }).catch((error) => {
-        this.errorHandler(error);
-      });
+  prepareRequest(form) {
+    this.buildData(form);
+    this.startLoader();
+  }
+
+  buildData(form) {
+    this.form = form;
+    this.submitted = true;
+  }
+
+  startLoader() {
+    this.loader = this.loadingCtrl.create({
+      content: 'Please Wait..'
+    });
+  }
+
+  makeRequests(form) {
+    return this.requestAuthentication(form).then((token) => {
+      return this.requestProfile(token.uid).subscribe((profile) => {
+        return profile
+      }, (error) => { throw error });
+    }, (error) => { throw error });
+  }
+
+  requestAuthentication(form) {
+    return this.firebase.afa.auth.signInWithEmailAndPassword(form.email, form.password);
   }
 
   requestProfile(uid) {
-    let path = '/users/' + uid;
-    let request = this.firebase.object(path).subscribe((profile)=>{
-      this.welcome(profile)
-    })
+    return this.firebase.profile(uid);
   }
-  
-  welcome(profile) {
+
+  confirmDelivery() {
+    this.endLoader();
+    this.presentConfirmationAlert();
+    this.startSession();        
+    this.setRootHomePage();
+  }
+
+  endLoader() {
+    this.loader.dismiss();
+  }
+
+  presentConfirmationAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'Success',
+      subTitle: 'Authenticated',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  startSession() {
     let user = {
-      loggedIn: true,
-      role: profile.role,
-      uid: profile. uid
+      "loggedIn": true,
+      "role": this.profile.role,
+      "uid": this.profile.uid
     }
     this.session.start(user);
     this.setRootHomePage();
@@ -63,7 +112,6 @@ export class LoginFormComponent {
   }
 
   errorHandler(error) {
-    this.error = error;
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,

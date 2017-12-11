@@ -79,7 +79,13 @@ describe('ResetPasswordFormComponent', () => {
     expect(component instanceof ResetPasswordFormComponent).toBe(true);
   });
 
-  it('should be triggered by Reset Password Button', async(() => {
+  it('should be initialized', () => {
+    expect(component.submitted).toBeFalsy();
+    expect(component.loader).toBeUndefined();
+    expect(component.form.email).toBeUndefined();
+  });
+
+  it('should submit via Reset Password Button', async(() => {
     let de: DebugElement;
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('#ResetPasswordButton'));
@@ -87,43 +93,34 @@ describe('ResetPasswordFormComponent', () => {
     expect(el).toContain('Reset Password');
   }));
 
-  it('should have form with email and password fields', () => {
-    expect(component.form.email).toBeUndefined();
-  });
-
-  it('should submit form', () => {
-    expect(component.submitted).toBeFalsy();
-    spyOn(component, 'request');
+  it('should prepare request by building data and starting loader', () => {
+    spyOn(component, 'buildData');
+    spyOn(component, 'startLoader');
     let form = {
-      "reset": 'testFormEmail',
+      "email": "testFormEmail",
     }
-    component.submit(form);
+    component.prepareRequest(form);
     fixture.detectChanges();
-    expect(component.request).toHaveBeenCalled();
-    expect(component.submitted).toBeTruthy();
+    expect(component.buildData).toHaveBeenCalled();
+    expect(component.startLoader).toHaveBeenCalled();
   });
 
-  it('Should display alert after confirmation', () => {
-    spyOn(component, 'confirmAlert');
-    component.confirm()
+  it('should request Firebase Provider to reset password', () => {
+    spyOn(firebase, 'resetPassword').and.returnValue({ subscribe: () => { } })
+    component.requestPasswordResetEmail('testEmail');
     fixture.detectChanges();
-    expect(component.confirmAlert).toHaveBeenCalled();
-  })
-
-  it('should set root to home page after confirmation', () => {
-    spyOn(component, 'setRootHomePage');
-    component.confirm();
-    fixture.detectChanges();
-    expect(component.setRootHomePage).toHaveBeenCalled();
+    expect(firebase.resetPassword).toHaveBeenCalled();
   });
 
-  it('should log error message on error', () => {
-    expect(component.error).toBeUndefined();
-    let error = {
-      "code": "invalid",
-      "message": "Test Error"
-    }
-    component.errorHandler(error);
-    expect(component.error).toBe(error);
+  it('should confirm delivery by displaying alert', () => {
+    spyOn(component, 'endLoader');
+    spyOn(component, 'presentConfirmationAlert');
+    spyOn(component, 'popNav');
+    component.confirmDelivery();
+    fixture.detectChanges();
+    expect(component.endLoader).toHaveBeenCalled();
+    expect(component.presentConfirmationAlert).toHaveBeenCalled();
+    expect(component.popNav).toHaveBeenCalled();
   });
+
 });

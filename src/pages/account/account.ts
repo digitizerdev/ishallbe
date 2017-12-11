@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 
 import { LoginPage } from '../login/login';
+import { HomePage } from '../home/home';
+
 import { AccountEmailPage } from '../account-email/account-email';
 import { AccountPasswordPage } from '../account-password/account-password';;
 import { ProfilePage } from '../profile/profile';
@@ -77,6 +79,10 @@ export class AccountPage {
 
   setRootLoginPage() {
     this.navCtrl.setRoot(LoginPage);
+  }
+
+  setRootHomePage() {
+    this.navCtrl.setRoot(HomePage);
   }
 
 }

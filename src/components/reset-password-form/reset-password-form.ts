@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
-
-import { HomePage } from '../../pages/home/home';
+import { NavController, LoadingController, AlertController } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'reset-password-form',
@@ -16,51 +13,73 @@ export class ResetPasswordFormComponent {
     email?: string,
   } = {};
   submitted = false;
-  error: any;
+  loader: any;
 
   constructor(
+    public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public navCtrl: NavController,
     public firebase: FirebaseProvider,
-  ) {
-  }
+  ) { }
 
   submit(form) {
+    this.prepareRequest(form)
+    this.makeRequest(form).then((profile) => {
+      this.confirmDelivery();
+    }).catch((error) => {
+      this.errorHandler(error);
+    });
+  }
+
+  prepareRequest(form) {
+    this.buildData(form);
+    this.startLoader();
+  }
+
+  buildData(form) {
     this.form = form;
     this.submitted = true;
-    this.request(form.email);
-    this.setRootHomePage();
   }
 
-  request(email) {
-    this.firebase.afa.auth.sendPasswordResetEmail(email)
-      .then(() => {
-        this.confirm();
-      }, function (error) {
-        this.errorHandler(error);
-      });
+  startLoader() {
+    this.loader = this.loadingCtrl.create({
+      content: 'Please Wait..'
+    });
   }
 
-  confirm() {
-    this.confirmAlert();
-    this.setRootHomePage();
+  makeRequest(form) {
+    return this.requestPasswordResetEmail(form.email).then((token) => {
+    }, (error) => { throw error });
   }
 
-  confirmAlert() {
+  requestPasswordResetEmail(email) {
+    return this.firebase.resetPassword(email);
+  }
+
+  confirmDelivery() {
+    this.endLoader();
+    this.presentConfirmationAlert();
+    this.popNav();
+  }
+
+  endLoader() {
+    this.loader.dismiss();
+  }
+
+  presentConfirmationAlert() {
     let alert = this.alertCtrl.create({
       title: 'Success',
-      subTitle: 'You will receive an email to reset your password shortly',
+      subTitle: 'You will receive an email to update your email shortly',
       buttons: ['OK']
     });
     alert.present();
   }
 
-  setRootHomePage() {
-    this.navCtrl.setRoot(HomePage);
+  popNav() {
+    this.navCtrl.pop();
   }
 
   errorHandler(error) {
-    this.error = error;
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,
