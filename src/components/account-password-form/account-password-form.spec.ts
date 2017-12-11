@@ -79,7 +79,14 @@ describe('AccountPasswordFormComponent', () => {
     expect(component instanceof AccountPasswordFormComponent).toBe(true);
   });
 
-  it('should be triggered by Update Password Button', async(() => {
+  it('should be initialized', () => {
+    expect(component.submitted).toBeFalsy();
+    expect(component.loader).toBeUndefined();
+    expect(component.profile).toBeUndefined();
+    expect(component.form.password).toBeUndefined();
+  });
+
+  it('should submit via Update Password Button', async(() => {
     let de: DebugElement;
     let el: HTMLElement;
     de = fixture.debugElement.query(By.css('#AccountUpdatePasswordButton'));
@@ -87,43 +94,34 @@ describe('AccountPasswordFormComponent', () => {
     expect(el).toContain('Update Password');
   }));
 
-  it('should have form with email and password fields', () => {
-    expect(component.form.password).toBeUndefined();
-  });
-
-  it('should submit form', () => {
-    expect(component.submitted).toBeFalsy();    
-    spyOn(component, 'request');
+  it('should prepare request by building data and starting loader', () => {
+    spyOn(component, 'buildData');
+    spyOn(component, 'startLoader');
     let form = {
       "password": 'testFormPassword',
     }
-    component.submit(form);
+    component.prepareRequest(form);
     fixture.detectChanges();
-    expect(component.request).toHaveBeenCalled();
-    expect(component.submitted).toBeTruthy();          
+    expect(component.buildData).toHaveBeenCalled();
+    expect(component.startLoader).toHaveBeenCalled();
   });
 
-  it('should request firebase to update account password', () => {
-    spyOn(firebase, 'updateAccountPassword').and.returnValue({ subscribe: () => {} })
-    component.request('testPassword');
+  it('should request Firebase Provider to update account password', () => {
+    spyOn(firebase, 'updateAccountPassword').and.returnValue({ subscribe: () => { } });
+    component.requestAccountPasswordUpdate('testPassword');
     fixture.detectChanges();
     expect(firebase.updateAccountPassword).toHaveBeenCalled();
   });
 
-  it('Should display alert after confirmation', () => {
-    spyOn(component, 'confirmAlert');
-    component.confirm()
+  it('should confirm delivery by displaying alert', () => {
+    spyOn(component, 'endLoader');
+    spyOn(component, 'presentConfirmationAlert');
+    spyOn(component, 'setRootAccountPage');
+    component.confirmDelivery();
     fixture.detectChanges();
-    expect(component.confirmAlert).toHaveBeenCalled();
-  })
-
-  it('should log error message on error', () => {
-    expect(component.error).toBeUndefined();
-    let error = {
-      "code": "invalid",
-      "message": "Test Error"
-    }
-    component.errorHandler(error);
-    expect(component.error).toBe(error);
+    expect(component.endLoader).toHaveBeenCalled();
+    expect(component.presentConfirmationAlert).toHaveBeenCalled();
+    expect(component.setRootAccountPage).toHaveBeenCalled();
   });
+
 });

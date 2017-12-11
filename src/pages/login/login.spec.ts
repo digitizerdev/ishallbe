@@ -128,4 +128,11 @@ describe('LoginPage', () => {
     expect(el).toBeUndefined();
   });
 
+  it('should request authentication state from Session Provider when awoken', () => {
+    spyOn(session, 'loggedIn').and.returnValue({ subscribe: () => {} })
+    component.wakeUp();
+    fixture.detectChanges();
+    expect(session.loggedIn).toHaveBeenCalled();
+  });
+
 });

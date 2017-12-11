@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController } from 'ionic-angular';
 
-
+import { AccountPage } from '../../pages/account/account';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { Observable } from 'rxjs/Observable';
 
@@ -14,10 +14,11 @@ export class AccountPasswordFormComponent {
   form: {
     password?: string,
   } = {};
+  loader: any;
   submitted = false;
-  error: any;
 
   constructor(
+    public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public navCtrl: NavController,
     public firebase: FirebaseProvider,
@@ -25,35 +26,62 @@ export class AccountPasswordFormComponent {
   }
 
   submit(form) {
+    this.prepareRequest(form);
+    this.makeRequest(form).then(() => {
+      this.confirmDelivery();
+    }).catch((error)=> {
+      this.errorHandler(error);
+    })
+  }
+
+  prepareRequest(form) {
+    this.buildData(form);
+    this.startLoader();
+  }
+
+  buildData(form) {
     this.form = form;
     this.submitted = true;
-    this.request(form.password);
   }
 
-  request(password) {
-    this.firebase.updateAccountPassword(password)
-      .subscribe(() => {
-        this.confirm();
-      }, (error) => {
-        this.errorHandler(error);
-      });
+  startLoader() {
+    this.loader = this.loadingCtrl.create({
+      content: 'Please Wait..'
+    });
   }
 
-  confirm() {
-    this.confirmAlert();
+  makeRequest(form) {
+    return this.requestAccountPasswordUpdate(form.password);
   }
 
-  confirmAlert() {
+  requestAccountPasswordUpdate(password) {
+    return this.firebase.updateAccountPassword(password);    
+  }
+
+  confirmDelivery() {
+    this.endLoader();
+    this.presentConfirmationAlert();
+    this.setRootAccountPage();
+  }
+
+  endLoader() {
+    this.loader.dismiss();
+  }
+
+  presentConfirmationAlert() {
     let alert = this.alertCtrl.create({
       title: 'Success',
-      subTitle: 'You successfully updated your password',
+      subTitle: 'Your password has been updated',
       buttons: ['OK']
     });
     alert.present();
   }
 
+  setRootAccountPage() {
+    this.navCtrl.setRoot(AccountPage);
+  }
+
   errorHandler(error) {
-    this.error = error;
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,

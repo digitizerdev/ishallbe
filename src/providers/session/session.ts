@@ -25,7 +25,6 @@ export class SessionProvider {
     this.storage.remove('loggedIn');
     this.storage.remove('role');
     this.storage.remove('uid');
-    this.events.publish('user:loggedOut');
   }
 
   uid() {

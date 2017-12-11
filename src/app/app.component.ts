@@ -1,5 +1,5 @@
 import { NgModule, Component, ViewChild } from '@angular/core';
-import { Events, Nav, Platform } from 'ionic-angular';
+import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
@@ -53,7 +53,6 @@ export class iShallBe {
 
   @ViewChild(Nav) nav: Nav;
 
-  user: any;
   rootPage: any;
   pages: Array<{ title: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
@@ -67,7 +66,6 @@ export class iShallBe {
     public splashScreen: SplashScreen,
     public firebase: FirebaseProvider,
     public session: SessionProvider,
-    public events: Events
   ) {
     this.rootPage = LoginPage;
     platform.ready();
@@ -165,17 +163,7 @@ export class iShallBe {
   }
 
   sessionFound() {
-    this.setRootHomePage();
-  }
-
-  setRootHomePage() {
-    this.rootPage = HomePage;
-  }
-
-  endSession() {
-    this.events.subscribe('user:loggedOut', () => {
-      this.nav.setRoot(LoginPage);      
-    });
+    this.nav.setRoot(HomePage);
   }
 
   openPage(page) {

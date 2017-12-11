@@ -30,13 +30,7 @@ export class FirebaseProvider {
   }
 
   updateAccountPassword(password) {
-    return Observable.create((observer: any) => {
-      return this.account().updatePassword(password).then(() => {
-        observer.next(true);
-      }, (error) =>  {
-        observer.throw(error);
-      });
-    });
+    return this.account().updatePassword(password);
   }
 
   object(path): FirebaseObjectObservable<any> {

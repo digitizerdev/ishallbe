@@ -94,7 +94,7 @@ describe('iShallBe App Component', () => {
     const promise = new Promise((res, rej) => res());
     promise.then(done).catch(done.fail);
   });
-
+  
   it('should have 3 providers', () => {
     expect(component.providers.length).toBe(3);
   });
@@ -120,13 +120,6 @@ describe('iShallBe App Component', () => {
     component.wakeUp();
     fixture.detectChanges();
     expect(session.loggedIn).toHaveBeenCalled();
-  });
-
-  it('should set root page to home page if authenticated session found', () => {
-    spyOn(component, 'setRootHomePage');
-    component.sessionFound();
-    fixture.detectChanges();
-    expect(component.setRootHomePage).toHaveBeenCalled
   });
   
 });

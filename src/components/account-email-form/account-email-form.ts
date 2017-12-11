@@ -100,7 +100,6 @@ export class AccountEmailFormComponent {
     this.setRootAccountPage();
   }
 
-
   endLoader() {
     this.loader.dismiss();
   }

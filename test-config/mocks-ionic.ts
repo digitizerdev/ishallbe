@@ -1,5 +1,6 @@
 import { FirebaseProvider } from '../src/providers/firebase/firebase';
 import { SessionProvider } from '../src/providers/session/session';
+import { MediaProvider } from '../src/providers/media/media';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -229,7 +230,15 @@ export class FirebaseAppMock extends AngularFireModule {
 }
 
 export class SessionProviderMock extends SessionProvider {
+  hide() {
+    return;
+  }
+}
 
+export class MediaProviderMock extends MediaProvider {
+  hide() {
+    return;
+  }
 }
 
 export class StorageMock extends IonicStorageModule {
