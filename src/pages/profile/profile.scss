@@ -1,5 +1,6 @@
 page-profile {
-    img {
+
+    .avatar {
         display: round;
         width: 100%;
         height: 80%;
@@ -8,5 +9,9 @@ page-profile {
         max-width: 170px;
         border-radius: 50%;
         text-align: center;
+    }
+
+    .posts {
+        border-top: thick solid color($colors, primary);
     }
 }

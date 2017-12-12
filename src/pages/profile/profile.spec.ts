@@ -77,9 +77,10 @@ describe('ProfilePage', () => {
     expect(component instanceof ProfilePage).toBe(true);
   });
 
-  it('should initialize with undefined profile', () => {
+  it('should be initialized', () => {
     expect(component.profile).toBeUndefined();
-  })
+    expect(component.posts).toBeUndefined();
+  });
 
   it('should display create statement button', async(() => {
     fixture.detectChanges();
@@ -99,25 +100,27 @@ describe('ProfilePage', () => {
     expect(el).toContain('Edit Profile');
   }));
 
-  it('should request uid from session provider', () => {
-    spyOn(session, 'uid').and.returnValue({ subscribe: () => {} })
+  it('should say No Posts if user has no published posts', () => {
+    fixture.detectChanges();
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('h3'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('No Posts');
+  });
+
+  it('should ask for uid from Session Provider', () => {
+    spyOn(session, 'uid').and.returnValue({ subscribe: () => { } });
     component.requestUID();
     fixture.detectChanges();
     expect(session.uid).toHaveBeenCalled();
   });
 
-  it('should load profile by requesting it', () => {
-    spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {} })
-    component.loadProfile('testUID');
-    fixture.detectChanges();
-    expect(component.requestProfile).toHaveBeenCalled
-  });
-
-  it('should request profile from firebase provider', () => {
-    spyOn(firebase, 'object').and.returnValue;
+  it('should use uid to ask for profile from Firebase Provider', () => {
+    spyOn(firebase, 'profile').and.returnValue({ subscribe: () => { } });
     component.requestProfile('testUID');
     fixture.detectChanges();
-    expect(firebase.object).toHaveBeenCalled();
+    expect(firebase.profile).toHaveBeenCalled();
   });
 
   it('should add standard bio to profile if bio not found', () => {
@@ -134,6 +137,17 @@ describe('ProfilePage', () => {
     component.addStandardBio(profile);
     fixture.detectChanges();
     expect(firebase.setObject).toHaveBeenCalled();
+  });
+
+  it('should query posts by UID', () => {
+    spyOn(firebase, 'query').and.returnValue({ subscribe: () => { } });
+    component.loadUserPosts('testUID');
+    fixture.detectChanges();
+    expect(firebase.query).toHaveBeenCalled();
+  });
+
+  it('should be able to view post', () => {
+    expect(component.viewPost('testPostID')).toBeUndefined();
   });
 
 });

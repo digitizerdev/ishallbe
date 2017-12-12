@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the PostPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { SessionProvider } from '../../providers/session/session';
 
 @IonicPage()
 @Component({
@@ -15,11 +11,45 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class PostPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  postID: string;
+  post: any;
+  key: any;
+  account:any;
+  comments: any[] = [];
+  likedComments: any[] = [];
+  postLiked = false;
+  postLikerKey: any;
+  likerKey:any;
+  postComment: any = {
+    name: '',
+    face: '',
+    liked: false,
+    likeCount: 0,
+    time: '',
+    rawTime: '',
+    content: '',
+    post: null,
+    uid: ''
+  };
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public session: SessionProvider,
+    public firebase: FirebaseProvider
+  ) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PostPage');
+  ionViewDidEnter() {
+    this.postID = this.navParams.get('id');
+    this.loadPost(this.postID).subscribe((post)=> {
+      this.post = post      
+    })
+  }
+
+  loadPost(postID) {
+    let path = '/posts/' + postID;
+    return this.firebase.object(path);
   }
 
 }

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
 
 import { HomePage } from '../home/home';
 import { ProfileManagerPage } from '../profile-manager/profile-manager';
 import { StatementPage } from '../statement/statement';
+import { PostPage } from '../post/post';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
@@ -17,6 +17,7 @@ import { SessionProvider } from '../../providers/session/session';
 export class ProfilePage {
 
   profile: any;
+  posts: any;
 
   constructor(
     public navCtrl: NavController, 
@@ -24,36 +25,43 @@ export class ProfilePage {
     public session: SessionProvider,
     public navParams: NavParams
   ) {
-    this.requestUID();
+    this.loadProfile();
   }
 
-  pushStatementPage() {
-    this.navCtrl.push(StatementPage);
+  loadProfile() {
+    return this.requestUID().subscribe((uid) => {
+      return this.requestProfile(uid).subscribe((profile) => {
+        this.syncProfile(profile);
+        return this.loadUserPosts(profile.uid).subscribe((userPosts)=> {
+          console.log("Got posts");
+          console.log(userPosts);
+          this.posts = userPosts;
+        })
+      })
+;
+    });
   }
 
-  pushProfileManagerPage() {
-    this.navCtrl.push(ProfileManagerPage);
+  syncProfile(profile) {
+    this.profile = profile;
+    if (!profile.bio) {
+      this.addStandardBio(profile);
+    }
   }
 
   requestUID() {
-    this.session.uid().subscribe((uid)=>{
-      this.loadProfile(uid);
-    })
-  }
-
-  loadProfile(uid) {
-    this.requestProfile(uid).subscribe((profile) => {
-      this.profile = profile;
-      if (!profile.bio) {
-        this.addStandardBio(profile);
-      }
-    })
+    return this.session.uid();
   }
 
   requestProfile(uid) {
-    let path = '/users/' + uid;
-    return this.firebase.object(path)
+    return this.firebase.profile(uid);
   }
+
+  loadUserPosts(uid) {
+    let path = '/posts/'
+    console.log("Path is " + path);
+    return this.firebase.query(path, 'uid', uid);
+  } 
 
   addStandardBio(noBioProfile) {
     let profile = {
@@ -72,6 +80,20 @@ export class ProfilePage {
 
   setRootHomePage() {
     this.navCtrl.setRoot(HomePage);
+  }
+
+  pushStatementPage() {
+    this.navCtrl.push(StatementPage);
+  }
+
+  pushProfileManagerPage() {
+    this.navCtrl.push(ProfileManagerPage);
+  }
+
+  viewPost(postID) {
+    console.log("About to push post pgae");
+    console.log(postID);
+    this.navCtrl.push(PostPage, {id: postID})    
   }
 
 }

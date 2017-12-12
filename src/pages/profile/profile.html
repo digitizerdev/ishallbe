@@ -14,7 +14,7 @@
 
 <ion-content padding>
   <div text-center>
-    <img src="{{ profile?.photo }}">
+    <img class="avatar" src="{{ profile?.photo }}">
     <br>
     <h4>{{ profile?.bio}} </h4>
   </div>
@@ -23,9 +23,36 @@
       <button ion-button id="ProfileCreateStatementButton" (click)="pushStatementPage()" color="primary" round large>Create Statement</button>
     </ion-col>
   </ion-row>
-  <ion-row responsive-sm>
+  <ion-row responsive-sm padding>
     <ion-col text-center>
       <button ion-button id="ProfileEditProfileButton" (click)="pushProfileManagerPage()" color="secondary" round>Edit Profile</button>
     </ion-col>
   </ion-row>
+  <div *ngIf="!posts" class="posts" padding>
+    <ion-row padding text-center>
+      <ion-col text-center>
+        <h3>No Posts</h3>
+      </ion-col>
+    </ion-row>
+  </div>
+  <ion-card id="profilePosts" class="posts" *ngFor="let post of posts">
+    <ion-item class="post-header">
+      <ion-avatar item-left>
+        <img src="{{ post?.face }}">
+      </ion-avatar>
+      <h2 ion-text color="primary" class="post-author">{{ post?.name }}</h2>
+      <h2>
+        <b>{{ post?.title}}</b>
+      </h2>
+    </ion-item>
+    <div text-center (click)="viewPost(post.$key)">
+      <img class="full-image" src="{{ post?.url }}">
+      <h2 text-center padding>{{ post?.content}}</h2>
+    </div>
+    <div padding-left>
+      <a (click)="viewPost(post.$key)" class="subdued">{{ post.likeCount}} Likes</a>
+      <a (click)="viewPost(post.$key)" class="subdued" margin-left>{{ post.commentCount}} Comments</a>
+    </div>
+    <br>
+  </ion-card>
 </ion-content>

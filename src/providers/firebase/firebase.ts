@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FirebaseListObservable, FirebaseObjectObservable, AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import { UploadProvider } from '../upload/upload';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class FirebaseProvider {
@@ -27,6 +28,15 @@ export class FirebaseProvider {
 
   list(path): FirebaseListObservable<any> {
     return this.afdb.list(path);
+  }
+
+  query(path, fieldName, fieldValue) {
+    return this.afdb.list(path, {
+      query: {
+        orderByChild: fieldName,
+        equalTo: fieldValue,
+      }
+    });
   }
 
   removeObject(path, obj) {
