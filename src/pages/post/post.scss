@@ -1,3 +1,47 @@
 page-post {
-
+    .container {
+        background-color: color($colors, light-gray);    
+      }
+    
+      .post-body {
+        border-top: 1px solid $borderColor;
+        border-bottom: 1px solid $borderColor;
+        
+        p {
+          font-size: 0.8em;
+        }
+        
+        a.subdued {
+          color: $textColor;
+          font-size: 0.8em;
+          }
+        }
+      
+      .item-complex{
+          padding-right: 0 !important;
+      }
+    
+      .post-author {
+        align-self: center;
+      }
+    
+      h3.post-author {
+        font-weight: normal;
+      }
+    
+      .post-comment {  
+        
+        .like-count {
+          margin-right: 5px;
+          font-size: 0.8em;
+        }
+      }
+    
+      .interactions {
+        border-bottom: thin solid color($colors, secondary);    
+      }
+    
+      .post-header {
+        border-bottom: thin solid color($colors, primary);
+      }
 }

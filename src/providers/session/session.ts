@@ -30,7 +30,6 @@ export class SessionProvider {
   uid() {
     return Observable.create((observer: any) => {
       return this.storage.get('uid').then((uid) => {
-        console.log("UID: " + uid);        
         if (uid) {
           observer.next(uid);
         } else {
@@ -43,7 +42,6 @@ export class SessionProvider {
   loggedIn() {
     return Observable.create((observer: any) => {
       return this.storage.get('loggedIn').then((loggedIn) => {
-        console.log("Logged In: " + loggedIn);
         if (loggedIn) {
           observer.next(loggedIn);
         } else {
@@ -56,7 +54,6 @@ export class SessionProvider {
   role() {
     return Observable.create((observer: any) => {
       return this.storage.get('role').then((role) => {
-        console.log("Role: " + role);        
         if (role) {
           observer.next(role);
         } else {

@@ -1,11 +1,6 @@
 <ion-header>
   <ion-navbar color="primary">
     <ion-title>{{ post?.title}}</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="syncPost()">
-        <ion-icon name="refresh"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -25,8 +20,8 @@
       <h2 text-center padding>{{ post?.content}}</h2>
       <div class="interactions">
         <a (click)="toggleLike(post)" class="subdued">
-          <ion-icon name="thumbs-up" color="secondary" *ngIf="post?.liked"></ion-icon>
-          <ion-icon name="thumbs-up" color="gray" *ngIf="!post?.liked"></ion-icon>
+          <ion-icon name="thumbs-up" color="secondary" *ngIf="likedPost"></ion-icon>
+          <ion-icon name="thumbs-up" color="gray" *ngIf="!likedPost"></ion-icon>
           {{ post?.likeCount}}
         </a>
         <a class="subdued">
@@ -47,8 +42,8 @@
         </h3>
         <p text-wrap>{{ comment?.content}}</p>
         <a (click)="toggleCommentLike(comment)" class="subdued like-count">
-          <ion-icon name="heart" color="danger" *ngIf="comment?.liked"></ion-icon>
-          <ion-icon name="heart" color="gray" *ngIf="!comment?.liked"></ion-icon>
+          <ion-icon name="heart" color="danger" *ngIf="comment?.userLiked"></ion-icon>
+          <ion-icon name="heart" color="gray" *ngIf="!comment?.userLiked"></ion-icon>
           {{ comment?.likeCount}}
         </a>
         <span class="post-time">
@@ -60,7 +55,7 @@
     <ion-list>
       <ion-item>
         <ion-label floating>Add Comment: </ion-label>
-        <ion-input [(ngModel)]="postComment.content" type="text"></ion-input>
+        <ion-input [(ngModel)]="templateComment.content" type="text"></ion-input>
       </ion-item>
       <button (click)="addComment()" color="secondary" ion-button full>Save</button>
     </ion-list>

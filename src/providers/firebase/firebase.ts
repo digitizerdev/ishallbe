@@ -30,6 +30,14 @@ export class FirebaseProvider {
     return this.afdb.list(path);
   }
 
+  orderList(path, fieldName) {
+    return this.afdb.list(path, {
+      query: {
+        orderByValue: fieldName
+      }
+    });
+  }
+
   query(path, fieldName, fieldValue) {
     return this.afdb.list(path, {
       query: {
@@ -39,7 +47,11 @@ export class FirebaseProvider {
     });
   }
 
-  removeObject(path, obj) {
+  push(path, obj) {
+    return this.afdb.list(path).push(obj);
+  }
+
+  removeObject(path) {
     return this.object(path).remove()
   }
 

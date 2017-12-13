@@ -33,12 +33,10 @@ export class ProfilePage {
       return this.requestProfile(uid).subscribe((profile) => {
         this.syncProfile(profile);
         return this.loadUserPosts(profile.uid).subscribe((userPosts)=> {
-          console.log("Got posts");
-          console.log(userPosts);
           this.posts = userPosts;
         })
       })
-;
+
     });
   }
 
@@ -59,7 +57,6 @@ export class ProfilePage {
 
   loadUserPosts(uid) {
     let path = '/posts/'
-    console.log("Path is " + path);
     return this.firebase.query(path, 'uid', uid);
   } 
 
@@ -91,8 +88,6 @@ export class ProfilePage {
   }
 
   viewPost(postID) {
-    console.log("About to push post pgae");
-    console.log(postID);
     this.navCtrl.push(PostPage, {id: postID})    
   }
 
