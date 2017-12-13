@@ -26,6 +26,7 @@ export class PostPage {
   templateComment = {
     content: ''
   }
+  requestCount = 0;
 
   constructor(
     public navCtrl: NavController,
@@ -37,26 +38,26 @@ export class PostPage {
 
   ionViewDidLoad() {
     this.postID = this.navParams.get('id');
-    this.makeRequests(this.postID).subscribe((profile) => {
-      console.log("Got profile");
-      console.log(profile);
-      this.checkIfUserLikedPost().subscribe(() => {
-        console.log("About to make comment requests")
+    this.makeRequests(this.postID).first().subscribe(() => {
+      this.checkIfUserLikedPost().first().subscribe(() => {
         this.makeCommentRequests();
       })
     })
   }
 
   makeRequests(postID) {
+    this.requestCount++;
     return Observable.create((observer) => {
       return this.requestUID().subscribe((uid) => {
         this.uid = uid;
+        this.profile = [];
         return this.requestProfile().subscribe((profile) => {
           this.profile = profile
+          this.post = [];
           return this.requestPost().subscribe((post) => {
             this.postComment = null;
             this.post = post
-            observer.next(profile);
+            observer.next();
           });
         });
       });
@@ -78,10 +79,9 @@ export class PostPage {
   }
 
   checkIfUserLikedPost() {
-    console.log("Checking if user liked post");
     return Observable.create((observer) => {
       let path = 'posts/' + this.post.id + '/likers/';
-      return this.firebase.query(path, 'uid', this.uid).subscribe((likedPost) => {
+      return this.firebase.query(path, 'uid', this.uid).first().subscribe((likedPost) => {
         if (likedPost.length == 1) {
           this.postLikerKey = likedPost[0].$key;
           this.likedPost = true;
@@ -137,54 +137,38 @@ export class PostPage {
   }
 
   makeCommentRequests() {
-      console.log("Make comment requests triggered");
-      console.log("Post comments: " + this.post.comments);
       if (this.post.comments) {
         return this.requestComments().subscribe((comments) => {
-          console.log("Got comments");
-          console.log(comments);
           this.prepComments(comments);
         });
       }
   }
 
   requestComments() {
-    console.log("Request comments triggered")
     let path = 'posts/' + this.post.id + '/comments/';
     return this.firebase.orderList(path, 'rawTime');
   }
 
   prepComments(comments) {
-    console.log("Prep comments triggered");
-    console.log(comments);
     this.comments = [];
     comments.forEach((comment) => {
-      console.log("For each comment");
-      console.log(comment);
       if (comment.likers) {
-        console.log("Comment likers: " + comment.likers);
-        console.log("STARTED!!!!");        
-        this.checkIfUserLikedComment(comment, this.uid).subscribe((liked) => {
+        this.checkIfUserLikerObject(comment, this.uid).subscribe((liked) => {
           this.markLiked(liked, comment).subscribe((comment) => {
             this.checkIfCommentMine(comment).subscribe((comment) => {
-              console.log("Pushing comment");
-              console.log(comment);
               this.comments.push(comment);
             });
           });
-          console.log("FINISHED!!!!")
         });
       } else {
         this.checkIfCommentMine(comment).subscribe((comment) => {
-          console.log("Pushing comment");
-          console.log(comment);
           this.comments.push(comment);
         });
       }
     });
   }
 
-  checkIfUserLikedComment(comment, uid) {
+  checkIfUserLikerObject(comment, uid) {
     let path = 'posts/' + this.post.id + '/comments/' + comment.$key + '/likers/';
     return this.firebase.query(path, 'uid', uid);
   }
@@ -192,13 +176,9 @@ export class PostPage {
   markLiked(liked, comment) {
     return Observable.create((observer) => {
       if (liked.length == 1) {
-        console.log("This user liked ");
         comment.userLiked = true;
-        console.log(comment);
       } else {
-        console.log("This user did not like");
         comment.userLiked = false;
-        console.log(comment);
       }
       observer.next(comment)
     });
@@ -206,7 +186,6 @@ export class PostPage {
 
   checkIfCommentMine(comment) {
     return Observable.create((observer) => {
-      console.log("Check if comment mine triggered");
       if (comment.uid == this.uid) {
         comment.mine = true;
       } else {
@@ -214,58 +193,6 @@ export class PostPage {
       }
       observer.next(comment)
     });
-  }
-
-  toggleCommentLike(comment) {
-    console.log("Toggle comment like triggered");
-    if (comment.userLiked) {
-      this.checkIfUserLikedComment(comment, this.uid).subscribe((likerObject) => {
-        this.removeCommentLikerObject(likerObject).then(() => {
-          this.unlikeComment(comment).then(() => {
-            comment.userLiked = false;
-          });
-        });
-      });
-    } else {
-      this.pushCommentLikerObject(comment).then(() => {
-        this.likeComment(comment).then(() => {
-        })
-      })
-    }
-  }
-
-  removeCommentLikerObject(liker) {
-    let path = 'posts/' + this.post.id + '/comments/' + liker.comment + '/likers/' + liker.$key;
-    return this.firebase.removeObject(path);
-  }
-
-  unlikeComment(comment) {
-    comment.userLiked = null;
-    if (comment.likeCount == 1) {
-      comment.liked = false;
-    }
-    comment.likeCount--;
-    let path = 'posts/' + this.post.id + '/comments/' + comment.$key;
-    return this.firebase.setObject(path, comment);
-  }
-
-  pushCommentLikerObject(comment) {
-    let path = 'posts/' + this.post.id + '/comments/' + comment.$key + '/likers/'
-    let likerObject = {
-      "comment": comment.$key,
-      "uid": this.uid
-    }
-    return this.firebase.push(path, likerObject);
-  }
-
-  likeComment(comment) {
-    comment.likeCount++;
-    comment.userLiked = true;
-    if (!comment.liked) {
-      comment.liked = true;
-    }
-    let path = 'posts/' + this.post.id + '/comments/' + comment.$key;
-    return this.firebase.setObject(path, this.post);
   }
 
   addComment() {
@@ -285,16 +212,13 @@ export class PostPage {
       "mine": true,
       "userLiked": false
     };
-    console.log(this.postComment);
     this.addCommentToPost().then(() => {
-      console.log("Finished adding comment to post");
       this.incrementPostCommentCount();
       this.templateComment.content = null;
     })
   }
 
   addCommentToPost() {
-    console.log("Adding comment to post");
     let path = '/posts/' + this.post.id + '/comments';
     return this.firebase.push(path, this.postComment);
   }
@@ -307,7 +231,6 @@ export class PostPage {
   }
 
   incrementPostCommentCount() {
-    console.log("Increment Post Comment Count triggered");
     this.post.commentCount++;
     let path = '/posts/' + this.post.id + '/commentCount'
     this.firebase.setObject(path, this.post.commentCount);
@@ -317,6 +240,68 @@ export class PostPage {
     this.post.commentCount--;
     let path = '/posts/' + this.post.id + '/commentCount'
     this.firebase.setObject(path, this.post.commentCount);
+  }
+
+  toggleCommentLike(comment) {
+    console.log("Toggled comment like");
+    if (comment.userLiked) {
+      console.log("User already liked this comment");
+      console.log(comment);
+      console.log("My uid is " + this.uid);
+      console.log("Checking for liker object");
+      this.checkIfUserLikerObject(comment, this.uid).first().subscribe((liker) => {
+        console.log("Got liker object");
+        console.log(liker);
+        console.log("Let's remove comment liker object");
+        this.unlikeComment(comment).then(()=> {
+          this.removeCommentLikerObject(liker).then(() => {
+            console.log("Removed comment liker object");
+            console.log("Let's unlike");
+          });
+        })        
+      });
+    } else {
+      console.log("User hasn't liked this comment")
+      this.pushCommentLikerObject(comment).then(() => {
+        this.likeComment(comment)        
+      })
+    }
+  }
+
+  removeCommentLikerObject(liker) {
+    console.log("Removing comment liker object")
+    let path = 'posts/' + this.post.id + '/comments/' + liker[0].comment + '/likers/' + liker[0].$key;
+    console.log("Path is " + path);
+    return this.firebase.removeObject(path);
+  }
+
+  unlikeComment(comment) {
+    if (comment.likeCount == 1) {
+      comment.liked = false;
+    }
+    comment.userLiked = null;
+    comment.likeCount--;
+    console.log(comment);
+    let path = 'posts/' + this.post.id + '/comments/' + comment.$key;
+    return this.firebase.setObject(path, comment);
+  }
+
+  pushCommentLikerObject(comment) {
+    let path = 'posts/' + this.post.id + '/comments/' + comment.$key + '/likers/'
+    let likerObject = {
+      "comment": comment.$key,
+      "uid": this.uid
+    }
+    return this.firebase.push(path, likerObject);
+  }
+
+  likeComment(comment) {
+    comment.likeCount++;
+    if (!comment.liked) {
+      comment.liked = true;
+    }
+   let path = 'posts/' + this.post.id + '/comments/' + comment.$key;
+    return this.firebase.updateObject(path, comment);
   }
 
 }

@@ -79,30 +79,39 @@ describe('PostPage', () => {
 
   it('should be initialized', () => {
     expect(component.uid).toBeUndefined();
+    expect(component.profile).toBeUndefined();
     expect(component.postID).toBeUndefined();
     expect(component.post).toBeUndefined();
-    expect(component.postLiked).toBeFalsy();
+    expect(component.likedPost).toBeFalsy();
     expect(component.postLikerKey).toBeUndefined();
-    expect(component.likedComments).toBeDefined();
+    expect(component.commentsLoaded).toBeFalsy();
+    expect(component.postComment).toBeUndefined();
     expect(component.comments).toBeDefined();
-    expect(component.postComment).toBeDefined();
+    expect(component.templateComment).toBeDefined();    
   });
 
-  it('should ask for uid from Session Provider', () => {
+  it('should request uid from Session Provider', () => {
     spyOn(session, 'uid').and.returnValue({ subscribe: () => { } });
     component.requestUID();
     fixture.detectChanges();
     expect(session.uid).toHaveBeenCalled();
   });
 
-  it('should load post object', () => {
+  it('should request profile from Firebase Provider', () => {
+    spyOn(firebase, 'profile').and.returnValue({ subscribe: () => { } });
+    component.requestProfile();
+    fixture.detectChanges();
+    expect(firebase.profile).toHaveBeenCalled();
+  });
+
+  it('should request post from Firebase Provider', () => {
     spyOn(firebase, 'object').and.returnValue({ subscribe: () => { } });
     component.requestPost();
     fixture.detectChanges();
     expect(firebase.object).toHaveBeenCalled();
   });
 
-  it('should show post liked if uid is found in post liker', () => {
+  it('should show if user liked post', () => {
     spyOn(firebase, 'query').and.returnValue({ subscribe: () => { } });    
     component.post = {
       "commentCount" : 0,
@@ -131,10 +140,18 @@ describe('PostPage', () => {
       "url" : "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2Fstatement?alt=media&token=286d74d7-57d3-48d0-9d35-9483bf37ef1e"
     }
     component.uid = 'testUID';
-    component.checkPostLikers(component.post);
+    component.checkIfUserLikedPost();
     fixture.detectChanges();
     expect(firebase.query).toHaveBeenCalled();
   });
+
+  it('should request comments from Firebase Provider', () => {
+    spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => { } });
+    this.post.id('testPostID');
+    component.requestComments();
+    fixture.detectChanges();
+    expect(firebase.orderList).toHaveBeenCalled();
+  })
 
   it('should push like object when post liked if not already liked', () => {
     spyOn(firebase, 'push').and.returnValue({ subscribe: () => { } }); 
