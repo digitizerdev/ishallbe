@@ -111,43 +111,10 @@ describe('PostPage', () => {
     expect(firebase.object).toHaveBeenCalled();
   });
 
-  it('should show if user liked post', () => {
-    spyOn(firebase, 'query').and.returnValue({ subscribe: () => { } });    
-    component.post = {
-      "commentCount" : 0,
-      "content" : "Portland Segway Tour",
-      "date" : "20171211",
-      "face" : "https://graph.facebook.com/10207699735370765/picture?type=large",
-      "flagged" : false,
-      "id" : "-L07ooCD3QF-zuM_FZPd",
-      "image" : true,
-      "likeCount" : 1,
-      "liked" : true,
-      "likers" : {
-        "-L0AFJRSe1hle_oknuJ-" : {
-          "id" : "-L0AFJRSe1hle_oknuJ-",
-          "post" : "-L07ooCD3QF-zuM_FZPd",
-          "time" : "100417",
-          "uid" : "testUID"
-        },
-      },
-      "name" : "Troy DC Thompson",
-      "onFeed" : true,
-      "postType" : "image",
-      "time" : -20171211104453,
-      "title" : "I Shall Be Adventurous ",
-      "uid" : "testUID",
-      "url" : "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2Fstatement?alt=media&token=286d74d7-57d3-48d0-9d35-9483bf37ef1e"
-    }
-    component.uid = 'testUID';
-    component.checkIfUserLikedPost();
-    fixture.detectChanges();
-    expect(firebase.query).toHaveBeenCalled();
-  });
-
   it('should request comments from Firebase Provider', () => {
     spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => { } });
     this.post.id('testPostID');
+    
     component.requestComments();
     fixture.detectChanges();
     expect(firebase.orderList).toHaveBeenCalled();
