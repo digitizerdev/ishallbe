@@ -1,5 +1,5 @@
 import { Post } from './model';
-export const mockPost1t: Post =  {
+export const mockPost1: Post =  {
     "commentCount" : 2,
     "comments" : {
       "testCommentID1" : {
