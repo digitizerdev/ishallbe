@@ -8,8 +8,7 @@ import { environment } from '../../environments/environment';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 
-import { HeaderComponent } from '../../components/header/header';
-
+import { mockPost1 } from '../../../test-data/post/mocks'
 import { PostPage } from './post';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
