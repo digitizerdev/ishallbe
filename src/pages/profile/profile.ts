@@ -41,9 +41,15 @@ export class ProfilePage {
   }
 
   syncProfile(profile) {
+    console.log("Syncing profile");
+    console.log(profile);
     this.profile = profile;
     if (!profile.bio) {
       this.addStandardBio(profile);
+    }
+    if (profile.photo == 'https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png') {
+      this.profile.photo = 'assets/img/default-profile.png';
+
     }
   }
 

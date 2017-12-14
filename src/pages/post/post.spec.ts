@@ -83,11 +83,11 @@ describe('PostPage', () => {
     expect(component.postID).toBeUndefined();
     expect(component.post).toBeUndefined();
     expect(component.likedPost).toBeFalsy();
-    expect(component.postLikerKey).toBeUndefined();
-    expect(component.commentsLoaded).toBeFalsy();
     expect(component.postComment).toBeUndefined();
     expect(component.comments).toBeDefined();
-    expect(component.templateComment).toBeDefined();    
+    expect(component.form.comment).toBeUndefined();   
+    expect(component.submitted).toBeFalsy();
+    expect(component.refreshing).toBeFalsy(); 
   });
 
   it('should request uid from Session Provider', () => {

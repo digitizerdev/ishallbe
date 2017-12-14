@@ -1,6 +1,18 @@
 page-post {
     .container {
-        background-color: color($colors, light-gray);    
+        background-color: color($colors, light-gray);  
+        .card {
+          border-radius : 15px;
+        } 
+      }
+
+      .post-header {
+        background: linear-gradient(to Top, #faf6ed, #fff);        
+      }
+    
+      .full-image {
+        border-top: thick solid color($colors, secondary); 
+        border-bottom: thick solid color($colors, secondary); 
       }
     
       .post-body {
@@ -37,11 +49,10 @@ page-post {
         }
       }
     
-      .interactions {
-        border-bottom: thin solid color($colors, secondary);    
+      .info {
+        padding: 5px;
+        border-bottom: thin color($colors, secondary);  
+        background: linear-gradient(#faf6ed, #fff);
       }
-    
-      .post-header {
-        border-bottom: thin solid color($colors, primary);
-      }
+  
 }

@@ -5,6 +5,10 @@
 </ion-header>
 
 <ion-content class="container">
+  <ion-refresher (ionRefresh)="loadPost($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
   <ion-card>
     <ion-item padding class="post-header">
       <ion-avatar item-left>
@@ -16,10 +20,11 @@
       </h2>
     </ion-item>
     <div text-center>
+
       <img class="full-image" src="{{ post?.url }}">
-      <h2 text-center padding>{{ post?.content}}</h2>
-      <div class="interactions">
-        <a (click)="toggleLike(post)" class="subdued">
+      <div class="info">
+        <h2 text-center padding>{{ post?.content}}</h2>
+        <a (click)="togglePostLike(post)" class="subdued">
           <ion-icon name="thumbs-up" color="secondary" *ngIf="likedPost"></ion-icon>
           <ion-icon name="thumbs-up" color="gray" *ngIf="!likedPost"></ion-icon>
           {{ post?.likeCount}}
@@ -42,7 +47,7 @@
         </h3>
         <p text-wrap>{{ comment?.content}}</p>
         <a (click)="toggleCommentLike(comment)" class="subdued like-count">
-          <ion-icon name="heart" color="danger" *ngIf="comment?.userLiked"></ion-icon>
+          <ion-icon name="heart" color="secondary" *ngIf="comment?.userLiked"></ion-icon>
           <ion-icon name="heart" color="gray" *ngIf="!comment?.userLiked"></ion-icon>
           {{ comment?.likeCount}}
         </a>
@@ -52,12 +57,19 @@
         </span>
       </ion-item>
     </div>
-    <ion-list>
-      <ion-item>
-        <ion-label floating>Add Comment: </ion-label>
-        <ion-input [(ngModel)]="templateComment.content" type="text"></ion-input>
-      </ion-item>
-      <button (click)="addComment()" color="secondary" ion-button full>Save</button>
-    </ion-list>
+    <form #commentForm="ngForm" novalidate>
+      <ion-list>
+        <ion-item>
+          <ion-label floating color="primary">Add Comment: </ion-label>
+          <ion-input [(ngModel)]="form.comment" name="comment" type="text" #comment="ngModel" spellcheck="false" autocapitalize="off"
+            required>
+          </ion-input>
+        </ion-item>
+        <p ion-text [hidden]="comment.valid || submitted == false" color="danger" padding-left>
+          Comment is required
+        </p>
+        <button ion-button (click)="submit(form)" color="primary" type="submit" full>Comment</button>
+      </ion-list>
+    </form>
   </ion-card>
 </ion-content>
