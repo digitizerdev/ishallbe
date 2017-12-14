@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 
-import { mockPost1 } from '../../../test-data/post/mocks'
+import { mockPost } from '../../../test-data/post/mocks'
 import { PostPage } from './post';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -36,10 +36,10 @@ describe('PostPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PostPage], 
+      declarations: [PostPage],
       imports: [
         IonicModule.forRoot(PostPage),
-        AngularFireModule.initializeApp(environment.firebase)                        
+        AngularFireModule.initializeApp(environment.firebase)
       ],
       providers: [
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
@@ -48,7 +48,7 @@ describe('PostPage', () => {
         { provide: NavController, useClass: NavMock },
         { provide: NavParams, useClass: NavMock },
         { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
-        { provide: AngularFireAuth, useClass: AngularFireAuthMock },       
+        { provide: AngularFireAuth, useClass: AngularFireAuthMock },
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA
@@ -59,7 +59,7 @@ describe('PostPage', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PostPage);
     component = fixture.componentInstance;
-    session = fixture.componentRef.injector.get(SessionProvider);    
+    session = fixture.componentRef.injector.get(SessionProvider);
     firebase = fixture.componentRef.injector.get(FirebaseProvider);
   });
 
@@ -84,9 +84,9 @@ describe('PostPage', () => {
     expect(component.likedPost).toBeFalsy();
     expect(component.postComment).toBeUndefined();
     expect(component.comments).toBeDefined();
-    expect(component.form.comment).toBeUndefined();   
+    expect(component.form.comment).toBeUndefined();
     expect(component.submitted).toBeFalsy();
-    expect(component.refreshing).toBeFalsy(); 
+    expect(component.refreshing).toBeFalsy();
   });
 
   it('should request uid from Session Provider', () => {
@@ -111,10 +111,38 @@ describe('PostPage', () => {
   });
 
   it('should request Firebase Provider to check if user already liked post', () => {
-    spyOn(firebase, 'query').and.returnValue({ subscribe: () => {}});
-    component.checkIfUserLikedPost(mockPost1, 'testUID');
+    spyOn(firebase, 'query').and.returnValue({ subscribe: () => { } });
+    component.post = mockPost.mature;
+    component.uid = 'testUID'
+    component.checkIfUserLikedPost();
     fixture.detectChanges();
     expect(firebase.query).toHaveBeenCalled();
+  });
+
+  it('should not mark post liked if user liker object not found', () => {
+    component.markPostLike(mockPost.new.likers);
+    fixture.detectChanges();
+    expect(component.likedPost).toBeFalsy();
+  });
+
+  it('should mark post liked if user liker object found', () => {
+    component.markPostLike(mockPost.mature.likers);
+    fixture.detectChanges();
+    expect(component.likedPost).toBeTruthy();
+  });
+
+  it('should not request post comments if no comment object found', () => {
+    spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => {}});
+    component.post = mockPost.new;
+    component.makeCommentsRequests();
+    expect(firebase.orderList).toHaveBeenCalledTimes(0);
+  });
+
+  it('should request post comments if comment object found', () => {
+    spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => {} });
+    component.post = mockPost.mature;
+    component.makeCommentsRequests();
+    expect(firebase.orderList).toHaveBeenCalled();
   });
 
 });

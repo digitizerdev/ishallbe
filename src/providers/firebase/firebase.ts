@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { FirebaseListObservable, FirebaseObjectObservable, AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import { UploadProvider } from '../upload/upload';
+
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/take';
 
 @Injectable()
 export class FirebaseProvider {
@@ -34,9 +36,11 @@ export class FirebaseProvider {
     return this.afdb.list(path, {
       query: {
         orderByValue: fieldName
-      }
-    });
+      },
+    }).take(1);;
   }
+
+  
 
   query(path, fieldName, fieldValue) {
     return this.afdb.list(path, {
