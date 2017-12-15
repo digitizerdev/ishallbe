@@ -17,7 +17,7 @@ export class FirebaseProvider {
   }
 
   object(path): FirebaseObjectObservable<any> {
-    return this.afdb.object(path);
+    return this.afdb.object(path)
   }
 
   setObject(path, obj) {
@@ -29,7 +29,7 @@ export class FirebaseProvider {
   }
 
   list(path): FirebaseListObservable<any> {
-    return this.afdb.list(path);
+    return this.afdb.list(path)
   }
 
   orderList(path, fieldName) {
@@ -37,10 +37,8 @@ export class FirebaseProvider {
       query: {
         orderByValue: fieldName
       },
-    }).take(1);;
+    }).take(1);
   }
-
-  
 
   query(path, fieldName, fieldValue) {
     return this.afdb.list(path, {
@@ -48,7 +46,7 @@ export class FirebaseProvider {
         orderByChild: fieldName,
         equalTo: fieldValue,
       }
-    });
+    }).take(1);
   }
 
   push(path, obj) {
@@ -61,7 +59,7 @@ export class FirebaseProvider {
 
   profile(uid) {
     let path = '/users/' + uid;
-    return this.object(path)
+    return this.object(path);
   }
 
   account() {

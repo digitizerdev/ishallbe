@@ -6,7 +6,7 @@ export const mockPost = {
       "testCommentID1" : {
         "content" : "That was such a good time",
         "face" : "https://graph.facebook.com/10207699735370765/picture?type=large",
-        "id" : "-L0LiVYoqC1qevvkCnhg",
+        "id" : "testCommentID1",
         "likeCount" : 0,
         "liked" : false,
         "mine" : true,
@@ -20,7 +20,7 @@ export const mockPost = {
       "testCommentID2" : {
         "content" : "Want to go back asap",
         "face" : "https://graph.facebook.com/10207699735370765/picture?type=large",
-        "id" : "-L0LiXVWxQ0BT3_oRysh",
+        "id" : "testCommentID2",
         "likeCount" : 1,
         "liked" : true,
         "likers" : {

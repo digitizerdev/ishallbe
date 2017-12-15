@@ -6,6 +6,7 @@ import { SessionProvider } from '../../providers/session/session';
 
 import moment from 'moment';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/take';
 
 @IonicPage()
 @Component({
@@ -42,12 +43,12 @@ export class PostPage {
   loadPost(refresh) {
     this.startRefresh(refresh);
     this.postID = this.navParams.get('id');
-    return this.makeProfileRequests().first().subscribe(() => {
+    return this.makeProfileRequests().subscribe(() => {
       this.post = [];
-      return this.requestPost().first().subscribe((post) => {
+      return this.requestPost().subscribe((post) => {
         this.post = post;
         return this.checkIfUserLikedPost().first().subscribe((liker) => {
-          this.markPostLike(liker);
+          this.markPostLike(liker[0]);
           this.makeCommentsRequests();
           this.endRefresh(refresh);
         });
@@ -120,8 +121,8 @@ export class PostPage {
     this.comments = [];
     comments.forEach((comment) => {
       if (comment.likers) {
-        this.checkIfUserLikedComment(comment, this.uid).first().subscribe((liker) => {
-          this.markLikedComment(liker, comment).first().subscribe((comment) => {
+        this.checkIfUserLikedComment(comment).first().subscribe((liker) => {
+          this.markCommentLike(liker[0], comment).first().subscribe((comment) => {
             this.checkIfCommentMine(comment).first().subscribe((comment) => {
               this.comments.push(comment);
             });
@@ -135,14 +136,14 @@ export class PostPage {
     });
   }
 
-  checkIfUserLikedComment(comment, uid) {
+  checkIfUserLikedComment(comment) {
     let path = 'posts/' + this.post.id + '/comments/' + comment.id + '/likers/';
-    return this.firebase.query(path, 'uid', uid);
+    return this.firebase.query(path, 'uid', this.uid);
   }
 
-  markLikedComment(liked, comment) {
+  markCommentLike(liker, comment) {
     return Observable.create((observer) => {
-      if (liked.length == 1) {
+      if (liker) {
         comment.userLiked = true;
       } else {
         comment.userLiked = false;
@@ -166,6 +167,9 @@ export class PostPage {
     if (this.likedPost) {
       this.checkIfUserLikedPost().first().subscribe((liker) => {
         this.removePostLikerObject(liker).then(() => {
+          if (this.post.likeCount == 1) {
+            this.unflagPostLike();
+          }
           this.unlikePost();
         });
       });
@@ -183,14 +187,17 @@ export class PostPage {
 
   unlikePost() {
     this.likedPost = false;
-    let liked = true;
-    if (this.post.likeCount == 1) {
-      let liked = false;
-    }
     let likeCount = --this.post.likeCount;
     let post = {
-      "liked": liked,
       "likeCount": likeCount
+    }
+    let path = 'posts/' + this.post.id;
+    return this.firebase.updateObject(path, post);
+  }
+
+  unflagPostLike() {
+    let post = {
+      "liked":false,
     }
     let path = 'posts/' + this.post.id;
     return this.firebase.updateObject(path, post);
@@ -267,7 +274,7 @@ export class PostPage {
 
   toggleCommentLike(comment) {
     if (comment.userLiked) {
-      this.checkIfUserLikedComment(comment, this.uid).first().subscribe((liker) => {
+      this.checkIfUserLikedComment(comment).subscribe((liker) => {
         this.unlikeComment(comment).then(() => {
           this.removeCommentLikerObject(liker);
         })

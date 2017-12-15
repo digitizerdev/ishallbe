@@ -145,4 +145,26 @@ describe('PostPage', () => {
     expect(firebase.orderList).toHaveBeenCalled();
   });
 
+  it('should request Firebase Provider to check if user already liked comment', () => {
+    spyOn(firebase, 'query').and.returnValue({ subscribe: () => { } });
+    component.post = mockPost.mature;
+    component.uid = 'testUID'
+    component.checkIfUserLikedComment(mockPost.mature.comments.testCommentID2);
+    fixture.detectChanges();
+    expect(firebase.query).toHaveBeenCalled();
+  });
+
+  it('should not mark comment liked if user liker object not found', () => {
+    let liker = null;       
+    component.markCommentLike(liker, mockPost.mature.comments.testCommentID1);
+    fixture.detectChanges();
+    expect(mockPost.mature.comments.testCommentID1.userLiked).toBeFalsy();
+  });
+
+  it('should mark comment liked if user liker object found', () => {  
+    component.markCommentLike(mockPost.mature.comments.testCommentID2.likers[0], component.comments.testCommentID2);
+    fixture.detectChanges();
+    expect(mockPost.mature.comments.testCommentID2.userLiked).toBeTruthy();
+  });
+
 });
