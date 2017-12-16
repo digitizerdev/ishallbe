@@ -3,10 +3,10 @@ export const mockPost = {
   "mature": {
     "commentCount" : 2,
     "comments" : {
-      "testCommentID1" : {
+      "testComment1" : {
         "content" : "That was such a good time",
         "face" : "https://graph.facebook.com/10207699735370765/picture?type=large",
-        "id" : "testCommentID1",
+        "id" : "testComment1",
         "likeCount" : 0,
         "liked" : false,
         "mine" : true,
@@ -17,16 +17,17 @@ export const mockPost = {
         "uid" : "testUID",
         "userLiked" : false
       },
-      "testCommentID2" : {
+      "testComment2" : {
         "content" : "Want to go back asap",
         "face" : "https://graph.facebook.com/10207699735370765/picture?type=large",
-        "id" : "testCommentID2",
+        "id" : "testComment2",
         "likeCount" : 1,
         "liked" : true,
         "likers" : {
           "testCommentLikerID1" : {
             "comment" : "-L0LiXVWxQ0BT3_oRysh",
-            "uid" : "testUID"
+            "uid" : "testUID",
+            "$key": "testKey"
           }
         },
         "mine" : true,
@@ -50,7 +51,8 @@ export const mockPost = {
     "likers" : {
       "testPostLikerID1" : {
         "post" : "-L07ooCD3QF-zuM_FZPd",
-        "uid" : "testUID"
+        "uid" : "testUID",
+        "$key": "testKey"
       }
     },
     "name" : "Troy DC Thompson",

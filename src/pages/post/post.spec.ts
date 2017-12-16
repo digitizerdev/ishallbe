@@ -24,6 +24,7 @@ import {
   AngularFireDatabaseMock,
   AngularFireAuthMock
 } from '../../../test-config/mocks-ionic';
+import { ZipSubscriber } from 'rxjs/operator/zip';
 
 let fixture;
 let component;
@@ -92,21 +93,18 @@ describe('PostPage', () => {
   it('should request uid from Session Provider', () => {
     spyOn(session, 'uid').and.returnValue({ subscribe: () => { } });
     component.requestUID();
-    fixture.detectChanges();
     expect(session.uid).toHaveBeenCalled();
   });
 
   it('should request profile from Firebase Provider', () => {
     spyOn(firebase, 'profile').and.returnValue({ subscribe: () => { } });
     component.requestProfile();
-    fixture.detectChanges();
     expect(firebase.profile).toHaveBeenCalled();
   });
 
   it('should request post from Firebase Provider', () => {
     spyOn(firebase, 'object').and.returnValue({ subscribe: () => { } });
     component.requestPost();
-    fixture.detectChanges();
     expect(firebase.object).toHaveBeenCalled();
   });
 
@@ -114,57 +112,112 @@ describe('PostPage', () => {
     spyOn(firebase, 'query').and.returnValue({ subscribe: () => { } });
     component.post = mockPost.mature;
     component.uid = 'testUID'
-    component.checkIfUserLikedPost();
-    fixture.detectChanges();
+    component.requestPostUserLikerObject();
     expect(firebase.query).toHaveBeenCalled();
   });
 
   it('should not mark post liked if user liker object not found', () => {
     component.markPostLike(mockPost.new.likers);
-    fixture.detectChanges();
     expect(component.likedPost).toBeFalsy();
   });
 
   it('should mark post liked if user liker object found', () => {
     component.markPostLike(mockPost.mature.likers);
-    fixture.detectChanges();
     expect(component.likedPost).toBeTruthy();
   });
 
   it('should not request post comments if no comment object found', () => {
-    spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => {}});
+    spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => { } });
     component.post = mockPost.new;
-    component.makeCommentsRequests();
+    component.requestComments();
     expect(firebase.orderList).toHaveBeenCalledTimes(0);
   });
 
   it('should request post comments if comment object found', () => {
-    spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => {} });
+    spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => { } });
     component.post = mockPost.mature;
-    component.makeCommentsRequests();
+    component.requestComments();
     expect(firebase.orderList).toHaveBeenCalled();
   });
 
-  it('should request Firebase Provider to check if user already liked comment', () => {
+  it('should request Firebase Provider for comment user liker object', () => {
     spyOn(firebase, 'query').and.returnValue({ subscribe: () => { } });
     component.post = mockPost.mature;
     component.uid = 'testUID'
-    component.checkIfUserLikedComment(mockPost.mature.comments.testCommentID2);
-    fixture.detectChanges();
+    component.requestCommentUserLikerObject(mockPost.mature.comments.testComment2);
     expect(firebase.query).toHaveBeenCalled();
   });
 
   it('should not mark comment liked if user liker object not found', () => {
-    let liker = null;       
-    component.markCommentLike(liker, mockPost.mature.comments.testCommentID1);
-    fixture.detectChanges();
-    expect(mockPost.mature.comments.testCommentID1.userLiked).toBeFalsy();
+    let liker = null;
+    component.markCommentLike(liker, mockPost.mature.comments.testComment1);
+    let liked = mockPost.mature.comments.testComment1.userLiked;
+    expect(liked).toBeFalsy();
   });
 
-  it('should mark comment liked if user liker object found', () => {  
-    component.markCommentLike(mockPost.mature.comments.testCommentID2.likers[0], component.comments.testCommentID2);
-    fixture.detectChanges();
-    expect(mockPost.mature.comments.testCommentID2.userLiked).toBeTruthy();
+  it('should mark comment liked if user liker object found', () => {
+    component.markCommentLike(mockPost.mature.comments.testComment2.likers.testCommentLikerID1, mockPost.mature.comments.testComment2);
+    let liked = mockPost.mature.comments.testComment2.userLiked;
+    expect(liked).toBeTruthy();
+  });
+
+  it('should mark comment mine if uid matches', () => {
+    component.uid = 'testUID';
+    component.markCommentMine(mockPost.mature.comments.testComment2);
+    let mine = mockPost.mature.comments.testComment2.mine
+    expect(mine).toBeTruthy();
+  });
+
+  it('should mark comment mine if uid matches', () => {
+    component.uid = 'notTestUID';
+    component.markCommentMine(mockPost.mature.comments.testComment2);
+    let mine = mockPost.mature.comments.testComment2.mine
+    expect(mine).toBeFalsy();
+  });
+
+  it('should push comment into comments array after it marks whether it is mine', () => {
+    component.markCommentMine(mockPost.mature.comments.testComment1);
+    let comment = mockPost.mature.comments.testComment1;
+    expect(component.comments[0]).toBe(comment);
+  });
+
+  it('should be able to like post', () => {
+    expect(component.likePost).toBeDefined();
+  });
+
+  it('should unlike post on toggle post like if user already liked post', () => {
+    spyOn(component, 'requestPostUserLikerObject').and.returnValue({ subscribe: () => {}});
+    component.likedPost = true;
+    component.togglePostLike();
+    expect(component.requestPostUserLikerObject).toHaveBeenCalled();
+  });
+  
+  it('should request Firebase Provider to remove liker object from liked post', () => {
+    spyOn(firebase, 'removeObject').and.returnValue({ subscribe: () => {}});
+    component.post = mockPost.mature;
+    component.removePostLikerObject(mockPost.mature.likers.testPostLikerID1);
+    expect(firebase.removeObject).toHaveBeenCalled();
+  });
+
+  it('should be able to like comment', () => {
+    expect(component.likeComment).toBeDefined();
+  });
+
+  it('should unlike comment on toggle comment like if user already liked comment', () => {
+    spyOn(component, 'requestCommentUserLikerObject').and.returnValue({ subscribe: () => {}});
+    component.toggleCommentLike(mockPost.mature.comments.testComment2);
+    expect(component.requestCommentUserLikerObject).toHaveBeenCalled();
+  });
+
+  it('should request Firebase Provider to remove liker object from liked comment', () => {
+    spyOn(firebase, 'removeObject').and.returnValue({ subscribe: () => {}});
+    component.post = mockPost.mature;
+    component.removeCommentLikerObject(mockPost.mature.comments.testComment2.likers.testCommentLikerID1);
+    expect(firebase.removeObject).toHaveBeenCalled();
+  });
+
+  it('should be able to remove comment if mine', () => {
+    expect(component.deleteComment).toBeDefined();
   });
 
 });

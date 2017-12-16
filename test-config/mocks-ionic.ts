@@ -204,6 +204,14 @@ export class AngularFireDatabaseMock extends AngularFireDatabaseModule {
       }
     }
   }
+
+  public object(): any {
+    return {
+      update(object) {
+        return;
+      }
+    }
+  }
 }
 
 export class AngularFireAuthMock extends AngularFireAuthModule {
