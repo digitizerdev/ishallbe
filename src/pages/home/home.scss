@@ -1,6 +1,21 @@
 page-home {
+    
+    .home-posts {
+      background: color($colors, light-gray)
+    }
+  
     .card {
         border-radius : 15px;
+      }
+
+      .space {
+        background: linear-gradient(to Top, #fafafa, #fff);                
+      }
+
+
+      .feature {
+        background-color: #fff;
+        border: thick solid color($colors, primary);    
       }
 
     .post-header {

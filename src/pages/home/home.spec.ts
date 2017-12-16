@@ -76,6 +76,14 @@ describe('HomePage', () => {
     expect(component instanceof HomePage).toBe(true);
   });
 
+  it('should display header component', () => {
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('header'));
+    el = de.nativeElement.src;
+    expect(el).toBeUndefined();
+  });
+
   it('should be initialized', () => {
     expect(component.profile).toBeUndefined();
     expect(component.posts).toBeDefined();

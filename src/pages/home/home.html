@@ -12,10 +12,16 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <div class="homePosts">
+<ion-content>
+    <header></header>   
+    <br>
+    <ion-card text-center padding class="feature">      
+        <h5>Work hard for what you want because it won’t come without a fight. We are currently improving the iShallBe App. The motivational bar will be down for a few days. Continue to inspire each other by sharing your iShallBe Statements.</h5>
+    </ion-card>
+  <div class="home-posts">
+    <div class = "space"><br><br></div>      
     <ion-refresher (ionRefresh)="loadPosts($event)">
-      <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+      <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="">
       </ion-refresher-content>
     </ion-refresher>
     <ion-card id="profilePosts" class="posts" *ngFor="let post of posts">
