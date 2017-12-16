@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { ProfilePage } from '../profile/profile';
 import { PostPage } from '../post/post';
 import { UserPage } from '../user/user';
+import { LoginPage } from '../login/login';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
@@ -22,10 +23,11 @@ export class HomePage {
   refreshing: any;
 
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
     public firebase: FirebaseProvider,
-    public session: SessionProvider
+    public session: SessionProvider,
+    public alertCtrl: AlertController
   ) {
   }
 
@@ -37,9 +39,17 @@ export class HomePage {
     this.startRefresh(refresh);
     return this.requestUID().subscribe((uid) => {
       this.uid = uid
-      return this.requestPosts().first().subscribe((posts) => {
-        this.presentPosts(posts);
-        this.endRefresh(refresh);
+      return this.requestProfile().subscribe((profile) => {
+        console.log("Got profile");
+        console.log(profile);
+        if (profile.blocked) {
+          console.log("This profile is blocked");
+          this.handleBlocked();
+        }
+        return this.requestPosts().first().subscribe((posts) => {
+          this.presentPosts(posts);
+          this.endRefresh(refresh);
+        });
       });
     });
   }
@@ -58,6 +68,30 @@ export class HomePage {
 
   requestUID() {
     return this.session.uid();
+  }
+
+  requestProfile() {
+    let uid = this.uid;
+    return this.firebase.profile(uid);
+  }
+
+  handleBlocked() {
+    this.session.end();
+    this.navCtrl.setRoot(LoginPage);
+    this.presentBlocked();
+  }
+
+  presentBlocked() {
+    let alert = this.alertCtrl.create({
+      title: 'Fail',
+      message: 'This account has been blocked',
+      buttons: [
+        {
+          text: 'Okay',
+        }
+      ]
+    });
+    alert.present();
   }
 
   requestPosts() {
@@ -163,7 +197,7 @@ export class HomePage {
 
 
   viewPost(postID) {
-    this.navCtrl.push(PostPage, {id: postID})    
+    this.navCtrl.push(PostPage, { id: postID })
   }
 
   goToProfilePage() {
@@ -171,7 +205,7 @@ export class HomePage {
   }
 
   viewUser(uid) {
-    this.navCtrl.push(UserPage, {uid: uid})        
+    this.navCtrl.push(UserPage, { uid: uid })
   }
 
 }

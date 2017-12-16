@@ -6,6 +6,8 @@ import { HomePage } from '../../pages/home/home';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
 
+import { Observable } from 'rxjs/Observable';
+
 @Component({
   selector: 'register-form',
   templateUrl: 'register-form.html'
@@ -37,14 +39,45 @@ export class RegisterFormComponent {
   ) { }
 
   submit(form) {
-
-    this.prepareRequest(form)
-    this.makeRequests(form).then(() => {
-      this.confirmDelivery();
-    }).catch((error) => {
-      this.errorHandler(error);
+    this.presentEULA().subscribe((accepted) => {
+      if (accepted) {
+        this.prepareRequest(form)
+        this.makeRequests(form).then(() => {
+          this.confirmDelivery();
+        }).catch((error) => {
+          this.errorHandler(error);
+        });
+      }
     });
   }
+
+  presentEULA() {
+    return Observable.create((observer:any) => {                  
+    let alert = this.alertCtrl.create({
+      title: 'Accept Terms of Service',
+      message: 'Please confirm to continue',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+            observer.next(false);
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            console.log('Confirm clicked');
+            observer.next(true);
+          }
+        }
+      ]
+    });
+    alert.present();
+    });
+  }
+
 
   prepareRequest(form) {
     this.buildData(form);

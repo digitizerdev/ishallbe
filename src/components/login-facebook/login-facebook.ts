@@ -82,7 +82,11 @@ export class LoginFacebookComponent {
       if (profile) {
         this.welcome(profile);
       } else {
+        this.presentEULA().subscribe((accepted) => {
+          if (accepted) {
         this.createProfile(account);
+          }
+        });
       }
     })
   }
@@ -90,6 +94,33 @@ export class LoginFacebookComponent {
   requestProfile(uid) {
     let path = '/users/' + uid;
     return this.firebase.object(path)
+  }
+
+  presentEULA() {
+    return Observable.create((observer:any) => {                  
+    let alert = this.alertCtrl.create({
+      title: 'Accept Terms of Service',
+      message: 'Please confirm to continue',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+            observer.next(false);
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            console.log('Confirm clicked');
+            observer.next(true);
+          }
+        }
+      ]
+    });
+    alert.present();
+    });
   }
 
   createProfile(account) {

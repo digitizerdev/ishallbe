@@ -116,7 +116,11 @@ describe('LoginFacebookComponent', () => {
         component.checkForExistingProfile('testUID');
         fixture.detectChanges();
         expect(component.requestProfile).toHaveBeenCalled();
-    })
+    });
+
+    it('should present alert to confirm EULA agreement', () => {
+        expect(component.presentEULAA).toBeUndefined();
+    });
 
     it('should start session with user', () => {
         spyOn(session, 'start');

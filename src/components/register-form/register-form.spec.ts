@@ -96,6 +96,10 @@ describe('RegisterFormComponent', () => {
         expect(el).toContain('Register');
     }));
 
+    it('should present alert to confirm EULA agreement', () => {
+        expect(component.presentEULAA).toBeUndefined();
+    });
+
     it('should prepare request by building data and starting loader', () => {
         spyOn(component, 'buildData');
         spyOn(component, 'startLoader');
