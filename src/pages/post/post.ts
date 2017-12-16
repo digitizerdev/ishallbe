@@ -291,7 +291,7 @@ export class PostPage {
     } else {
       this.likeComment(comment).then(() => {
         this.pushCommentLikerObject(comment).then((liker) => {
-          this.addIDToCommentLike(liker[0]);
+          this.addIDToCommentLike(liker.key, comment);
         });
       });
     }
@@ -333,10 +333,10 @@ export class PostPage {
     return this.firebase.updateObject(path, comment);
   }
 
-  addIDToCommentLike(liker) {
-    let path = '/posts/' + this.post.id + '/comments/' + this.postComment.id + '/likers/' + liker.id;
+  addIDToCommentLike(commentLikerID, comment) {
+    let path = '/posts/' + this.post.id + '/comments/' + comment.id + '/likers/' + commentLikerID;
     let likerObject = {
-      id: liker.id
+      id: commentLikerID
     }
     return this.firebase.updateObject(path, likerObject);
   }
