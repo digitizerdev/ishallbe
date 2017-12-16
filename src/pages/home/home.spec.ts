@@ -105,12 +105,6 @@ describe('HomePage', () => {
     expect(firebase.profile).toHaveBeenCalled();
   });
 
-  it('should logout user if he/she is blocked', () => {
-    spyOn(session, 'end').and.returnValue({ subscribe: {} });
-    component.handleBlocked();
-    expect(session.end).toHaveBeenCalled();
-  });
-
   it('should request Firebase Provider to load posts in order', () => {
     spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => {}});
     component.requestPosts();
