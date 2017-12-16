@@ -111,7 +111,7 @@ describe('AboutPage', () => {
   it('should display about information', async(() => {
     let de: DebugElement;
     let el: HTMLElement;
-    de = fixture.debugElement.query(By.css('p'));
+    de = fixture.debugElement.query(By.css('h5'));
     el = de.nativeElement.innerHTML
     expect(el).toContain('iShallBe is your daily boost');
   }));

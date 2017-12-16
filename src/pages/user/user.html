@@ -9,6 +9,7 @@
         <img class="avatar" src="{{ profile?.photo }}">
         <h4>{{ profile?.bio}} </h4>
       </div>
+      <br>
       <div class="profile-posts">
         <br>
         <div *ngIf="!posts" class="posts" padding>
@@ -34,11 +35,12 @@
             <div class="info">
               <h2 text-center padding>{{ post?.content}}</h2>
             </div>
-            <div padding-left>
-              <a (click)="viewPost(post?.$key)" class="subdued">{{ post?.likeCount}} Likes</a>
-              <a (click)="viewPost(post?.$key)" class="subdued" margin-left>{{ post?.commentCount}} Comments</a>
+            <div class="interactions" padding-left>
+                <a (click)="viewPost(post?.$key)" class="subdued">{{ post?.likeCount}} Likes</a>
+                <a (click)="viewPost(post?.$key)" class="subdued" margin-left>{{ post?.commentCount}} Comments</a>
+                <br>  
+                <br>        
             </div>
-            <br>
           </div>
           <ion-grid class="post-actions">
             <ion-row>

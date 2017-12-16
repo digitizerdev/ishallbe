@@ -1,8 +1,8 @@
 page-post {
     .container {
-        background-color: color($colors, light-gray);  
         .card {
           border-radius : 15px;
+          
         } 
       }
 
@@ -42,7 +42,10 @@ page-post {
       }
     
       .post-comment {  
-        
+
+        background-color:#FFF!important;
+        background: #FFF;
+
         .like-count {
           margin-right: 5px;
           font-size: 0.8em;
@@ -57,6 +60,15 @@ page-post {
 
       .report-post {
           color: color($colors, gray); 
+      }
+      .add-comment {  
+        
+        background-color:#FFF!important;
+
+        .like-count {
+          margin-right: 5px;
+          font-size: 0.8em;
+        }
       }
   
 }

@@ -56,24 +56,24 @@
         </span>
       </ion-item>
     </div>
-    <form #commentForm="ngForm" novalidate>
-      <ion-list>
-        <ion-item>
-          <ion-label floating color="primary">Add Comment: </ion-label>
-          <ion-input [(ngModel)]="form.comment" name="comment" type="text" #comment="ngModel" spellcheck="false" autocapitalize="off"
-            required>
-          </ion-input>
-        </ion-item>
-        <p ion-text [hidden]="comment.valid || submitted == false" color="danger" padding-left>
-          Comment is required
-        </p>
-        <button ion-button (click)="submit(form)" color="primary" type="submit" full>Comment</button>
-      </ion-list>
-    </form>
+      <form #commentForm="ngForm" novalidate>
+        <ion-list>
+          <ion-item class="add-comment">
+            <ion-label floating color="primary">Add Comment: </ion-label>
+            <ion-input [(ngModel)]="form.comment" name="comment" type="text" #comment="ngModel" spellcheck="false" autocapitalize="off"
+              required>
+            </ion-input>
+          </ion-item>
+          <p ion-text [hidden]="comment.valid || submitted == false" color="danger" padding-left>
+            Comment is required
+          </p>
+          <button ion-button (click)="submit(form)" color="primary" type="submit" full>Comment</button>
+        </ion-list>
+      </form>
   </ion-card>
   <br>
   <br>
-  <div text-center  >
+  <div text-center>
     <h6 class="report-post" (click)="reportPost()">Report Post</h6>
   </div>
 </ion-content>
