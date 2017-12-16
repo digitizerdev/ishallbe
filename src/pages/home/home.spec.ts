@@ -9,7 +9,7 @@ import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/dat
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 
 import { mockPost } from '../../../test-data/post/mocks'
-import { ProfilePage } from './profile';
+import { HomePage } from './home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
@@ -32,13 +32,13 @@ let sessionSpy;
 let firebase: FirebaseProvider;
 let firebaseSpy;
 
-describe('ProfilePage', () => {
+describe('HomePage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ProfilePage], 
+      declarations: [HomePage], 
       imports: [
-        IonicModule.forRoot(ProfilePage),
+        IonicModule.forRoot(HomePage),
         AngularFireModule.initializeApp(environment.firebase)                        
       ],
       providers: [
@@ -57,7 +57,7 @@ describe('ProfilePage', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProfilePage);
+    fixture = TestBed.createComponent(HomePage);
     component = fixture.componentInstance;
     session = fixture.componentRef.injector.get(SessionProvider);    
     firebase = fixture.componentRef.injector.get(FirebaseProvider);
@@ -73,7 +73,7 @@ describe('ProfilePage', () => {
   });
 
   it('should be created', () => {
-    expect(component instanceof ProfilePage).toBe(true);
+    expect(component instanceof HomePage).toBe(true);
   });
 
   it('should be initialized', () => {
@@ -83,64 +83,17 @@ describe('ProfilePage', () => {
     expect(component.post).toBeUndefined();
   });
 
-  it('should display create statement button', async(() => {
-    fixture.detectChanges();
-    let de: DebugElement;
-    let el: HTMLElement;
-    de = fixture.debugElement.query(By.css('#ProfileCreateStatementButton'));
-    el = de.nativeElement.innerHTML
-    expect(el).toContain('Create Statement');
-  }));
-
-  it('should display edit profile button', async(() => {
-    fixture.detectChanges();
-    let de: DebugElement;
-    let el: HTMLElement;
-    de = fixture.debugElement.query(By.css('#ProfileEditProfileButton'));
-    el = de.nativeElement.innerHTML
-    expect(el).toContain('Edit Profile');
-  }));
-
-  it('should display manage account button', async(() => {
-    fixture.detectChanges();
-    let de: DebugElement;
-    let el: HTMLElement;
-    de = fixture.debugElement.query(By.css('#ProfileAccountPageButton'));
-    el = de.nativeElement.innerHTML
-    expect(el).toContain('Manage Account');
-  }));
-
   it('should request uid from Session Provider', () => {
     spyOn(session, 'uid').and.returnValue({ subscribe: () => { } });
     component.requestUID();
+    fixture.detectChanges();
     expect(session.uid).toHaveBeenCalled();
   });
 
-  it('should use uid to request profile from Firebase Provider', () => {
-    spyOn(firebase, 'profile').and.returnValue({ subscribe: () => { } });
-    component.requestProfile('testUID');
-    expect(firebase.profile).toHaveBeenCalled();
-  });
-
-  it('should add standard bio to profile if bio not found', () => {
-    spyOn(firebase, 'setObject').and.returnValue;
-    let profile = {
-        uid: 'testUID',
-        name: 'testName',
-        email: 'testEmail',
-        photo: "https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png",
-        blocked: false,
-        role: "testRole",
-        bio: 'Improving Every Day'
-      }
-    component.addStandardBio(profile);
-    expect(firebase.setObject).toHaveBeenCalled();
-  });
-
-  it('should request Firebase Provider to query posts by UID', () => {
-    spyOn(firebase, 'query').and.returnValue({ subscribe: () => { } });
-    component.loadUserPosts('testUID');
-    expect(firebase.query).toHaveBeenCalled();
+  it('should request Firebase Provider to load posts in order', () => {
+    spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => {}});
+    component.requestPosts();
+    expect(firebase.orderList).toHaveBeenCalled();
   });
 
   it('should request Firebase Provider to check if user already liked post', () => {

@@ -24,42 +24,48 @@
   </ion-row>
   <ion-row responsive-sm padding>
     <ion-col text-center>
-      <button ion-button id="ProfileEditProfileButton" (click)="pushProfileManagerPage()" color="secondary" round>Edit Profile</button>
+      <button ion-button id="ProfileEditProfileButton" (click)="pushProfileManagerPage()" color="secondary" round small>Edit Profile</button>
     </ion-col>
-  </ion-row>
-  <div *ngIf="!posts" class="posts" padding>
-    <ion-row padding text-center>
-      <ion-col text-center>
-        <h3>No Posts</h3>
+    <ion-col text-center>
+        <button ion-button id="ProfileAccountPageButton" (click)="setRootAccountPage()" color="secondary" round small>Manage Account</button>
       </ion-col>
-    </ion-row>
-  </div>
-  <ion-card id="profilePosts" class="posts" *ngFor="let post of posts">
-    <ion-item padding class="post-header">
-      <ion-avatar padding-top item-left>
-        <img src="{{ post?.face }}">
-      </ion-avatar>
-      <ion-icon *ngIf="post.flagged" (click)="flaggedMessage()" name="alert" color="danger" item-right ></ion-icon>
-      <h2 padding-top ion-text color="primary" class="post-author">{{ post?.name }}</h2>
-      <h2>
-        <b>{{ post?.title}}</b>
-      </h2>
-    </ion-item>
-    <div text-center (click)="viewPost(post.$key)">
+  </ion-row>
+  <br>
+  <div class="profile-posts">
+    <br>
+    <div *ngIf="!posts" class="posts" padding>
+      <ion-row padding text-center>
+        <ion-col text-center>
+          <h3>No Posts</h3>
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-card id="profilePosts" class="posts" *ngFor="let post of posts">
+      <ion-item padding class="post-header">
+        <ion-avatar padding-top item-left>
+          <img src="{{ post?.face }}">
+        </ion-avatar>
+        <ion-icon *ngIf="post.flagged" (click)="flaggedMessage()" name="alert" color="danger" item-right></ion-icon>
+        <h2 padding-top ion-text color="primary" class="post-author">{{ post?.name }}</h2>
+        <h2>
+          <b>{{ post?.title}}</b>
+        </h2>
+      </ion-item>
+      <div text-center (click)="viewPost(post.$key)">
         <img class="full-image" *ngIf="post.image" src="{{ post?.url }}">
-        <div class="info" >
-        <h2 text-center padding>{{ post?.content}}</h2>
-      </div>
-      <div padding-left>
+        <div class="info">
+          <h2 text-center padding>{{ post?.content}}</h2>
+        </div>
+        <div padding-left>
           <a (click)="viewPost(post?.$key)" class="subdued">{{ post?.likeCount}} Likes</a>
           <a (click)="viewPost(post?.$key)" class="subdued" margin-left>{{ post?.commentCount}} Comments</a>
+        </div>
+        <br>
       </div>
-      <br>
-    </div>
-    <ion-grid class="post-actions">
+      <ion-grid class="post-actions">
         <ion-row>
           <ion-col width-33 text-center (click)="togglePostLike(post)">
-            <ion-icon name="thumbs-up" color="secondary"  *ngIf="post?.userLiked"></ion-icon>
+            <ion-icon name="thumbs-up" color="secondary" *ngIf="post?.userLiked"></ion-icon>
             <ion-icon name="thumbs-up" *ngIf="!post?.userLiked"></ion-icon>
           </ion-col>
           <ion-col width-33 text-center (click)="viewPost(post?.$key)">
@@ -67,5 +73,6 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-  </ion-card>
+    </ion-card>
+  </div>
 </ion-content>

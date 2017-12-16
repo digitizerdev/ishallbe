@@ -56,7 +56,7 @@ export class RegisterFormComponent {
     this.profile = {
       name: form.name,
       email: form.email,
-      photo: "https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png",
+      photo: "assets/img/default-profile.png",
       role: 'contributor',
       blocked: false,
       uid: "default"

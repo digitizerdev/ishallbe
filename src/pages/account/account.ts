@@ -68,8 +68,8 @@ export class AccountPage {
     this.navCtrl.push(AccountPasswordPage);
   }
 
-  pushProfilePage() {
-    this.navCtrl.push(ProfilePage);
+  setRootProfilePage() {
+    this.navCtrl.setRoot(ProfilePage);
   }
 
   logout() {

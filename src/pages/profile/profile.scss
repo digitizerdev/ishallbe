@@ -11,6 +11,10 @@ page-profile {
         text-align: center;
     }
 
+    .profile-posts {
+        border-top: thick solid color($colors, primary);         
+    }
+
     .card {
         border-radius : 15px;
       }
@@ -53,6 +57,7 @@ page-profile {
       .post-actions {
         color: color($colors, gray);
         font-size: 1.4em;
+        background-color: color($colors, light-green);        
     }
 
     .info {

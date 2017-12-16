@@ -5,24 +5,23 @@ import { HomePage } from '../home/home';
 import { ProfileManagerPage } from '../profile-manager/profile-manager';
 import { StatementPage } from '../statement/statement';
 import { PostPage } from '../post/post';
+import { AccountPage } from '../account/account';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/take';
 
 @IonicPage()
 @Component({
   selector: 'page-profile',
   templateUrl: 'profile.html',
 })
-export class ProfilePage {
+  export class ProfilePage {
 
   profile: any;
   posts: any[] = [];
   uid: any;
-  post: any;
 
   constructor(
     public navCtrl: NavController, 
@@ -60,13 +59,12 @@ export class ProfilePage {
   }
 
   syncProfile(profile) {
-    this.profile = profile;
+    this.profile = profile;    
+    if (profile.photo == 'https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png') {
+      profile.photo = 'assets/img/default-profile.png';
+    }
     if (!profile.bio) {
       this.addStandardBio(profile);
-    }
-    if (profile.photo == 'https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png') {
-      this.profile.photo = 'assets/img/default-profile.png';
-
     }
   } 
 
@@ -99,8 +97,9 @@ export class ProfilePage {
         } else {
           post.userLiked = false;
         }
-        console.log("About to post post");
-        console.log(post);
+        if (post.face == 'https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png') {
+          post.face = 'assets/img/default-profile.png';
+        }
         this.posts.push(post);
       });
     });
@@ -188,7 +187,6 @@ export class ProfilePage {
     });
   }
 
-
   setRootHomePage() {
     this.navCtrl.setRoot(HomePage);
   }
@@ -201,10 +199,6 @@ export class ProfilePage {
     this.navCtrl.push(ProfileManagerPage);
   }
 
-  viewPost(postID) {
-    this.navCtrl.push(PostPage, {id: postID})    
-  }
-
   flaggedMessage() {
     let alert = this.alertCtrl.create({
       title: 'Flagged Post',
@@ -214,4 +208,11 @@ export class ProfilePage {
     alert.present();
   }
 
+  viewPost(postID) {
+    this.navCtrl.push(PostPage, {id: postID})    
+  }
+
+  setRootAccountPage() {
+    this.navCtrl.setRoot(AccountPage);
+  }
 }

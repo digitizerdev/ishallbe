@@ -20,9 +20,10 @@
   </div>
   <ion-row responsive-sm padding>
     <ion-col text-center>
-      <button ion-button id="AccountViewProfileButton" (click)="pushProfilePage()" color="primary" round large>View Profile</button>
+      <button ion-button id="AccountViewProfileButton" (click)="setRootProfilePage()" color="primary" round large>View Profile</button>
     </ion-col>
   </ion-row>
+  <br>
   <ion-row responsive-sm >
     <ion-col text-center>
       <button ion-button id="AccountUpdateEmailButton" (click)="pushAccountEmailPage()" color="secondary" round small>Update Email</button>
@@ -31,11 +32,14 @@
       <button ion-button id="AccountUpdatePasswordButton" (click)="pushAccountPasswordPage()" color="secondary" round small>Update Password</button>
     </ion-col>
   </ion-row>
+  <br>
   <ion-row responsive-sm>
     <ion-col text-center>
       <button ion-button id="AccountLogoutButton" (click)="logout()" color="primary" round outline>Logout</button>
     </ion-col>
   </ion-row>
+  <br>
+  <br>
   <ion-row responsive-sm>
     <ion-col text-center>
         <terms-of-service></terms-of-service>        
