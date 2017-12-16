@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
+import { UserPage } from '../user/user';
+
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
 
@@ -391,6 +393,10 @@ export class PostPage {
       onFeed: false
     }
     return this.firebase.updateObject(path, post)
+  }
+
+  viewUser(uid) {
+    this.navCtrl.push(UserPage, {uid: uid})        
   }
 
 }

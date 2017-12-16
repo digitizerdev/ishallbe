@@ -39,6 +39,7 @@ import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
 import { PinManagerPage } from '../pages/pin-manager/pin-manager';
+import { UserPage } from '../pages/user/user';
 
 import { ComponentsModule } from '../components/components.module';
 
@@ -70,7 +71,8 @@ import { UploadProvider } from '../providers/upload/upload';
     PinsManagerPage,
     PinManagerPage,
     PostsManagerPage,
-    PostManagerPage
+    PostManagerPage,
+    UserPage
   ],
   imports: [
     BrowserModule,
@@ -105,7 +107,8 @@ import { UploadProvider } from '../providers/upload/upload';
     PinsManagerPage,
     PinManagerPage,
     PostsManagerPage,
-    PostManagerPage
+    PostManagerPage,
+    UserPage
   ],
   providers: [
     StatusBar,

@@ -11,7 +11,7 @@
   </ion-refresher>
   <ion-card>
     <ion-item padding class="post-header">
-      <ion-avatar item-left>
+      <ion-avatar (click)="viewUser(post.uid)" item-left>
         <img src="{{ post?.face }}">
       </ion-avatar>
       <h2 ion-text color="primary" class="post-author">{{ post?.name }}</h2>

@@ -27,6 +27,7 @@ import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
 import { PinManagerPage } from '../pages/pin-manager/pin-manager';
+import { UserPage } from '../pages/user/user';
 
 import { ComponentsModule } from '../components/components.module';
 import { HeaderComponent } from '../components/header/header';
@@ -93,7 +94,8 @@ export class iShallBe {
       { title: 'Posts Manager Page', component: PostsManagerPage },
       { title: 'Post Manager Page', component: PostManagerPage },
       { title: 'Pins Manager Page', component: PinsManagerPage },
-      { title: 'Pin Manager Page', component: PinManagerPage }
+      { title: 'Pin Manager Page', component: PinManagerPage },
+      { title: 'User Page', component: UserPage }
     ];
 
     this.providers = [

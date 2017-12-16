@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { ProfilePage } from '../profile/profile';
 import { PostPage } from '../post/post';
+import { UserPage } from '../user/user';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
@@ -167,6 +168,10 @@ export class HomePage {
 
   goToProfilePage() {
     this.navCtrl.setRoot(ProfilePage);
+  }
+
+  viewUser(uid) {
+    this.navCtrl.push(UserPage, {uid: uid})        
   }
 
 }

@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { HomePage } from '../home/home';
-import { ProfileManagerPage } from '../profile-manager/profile-manager';
-import { StatementPage } from '../statement/statement';
 import { PostPage } from '../post/post';
-import { AccountPage } from '../account/account';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
@@ -14,38 +10,47 @@ import { Observable } from 'rxjs/Observable';
 
 @IonicPage()
 @Component({
-  selector: 'page-profile',
-  templateUrl: 'profile.html',
+  selector: 'page-user',
+  templateUrl: 'user.html',
 })
-  export class ProfilePage {
+export class UserPage {
 
   profile: any;
-  posts: any[] = [];
   uid: any;
-
+  posts: any[] = [];
+  myUID: any;
+  
   constructor(
     public navCtrl: NavController, 
-    public firebase: FirebaseProvider,
-    public session: SessionProvider,
     public navParams: NavParams,
-    public alertCtrl: AlertController
+    public firebase: FirebaseProvider,
+    public session: SessionProvider
   ) {
   }
 
   ionViewDidEnter() {
-    this.loadProfile();
+    this.loadUser();
   }
 
-  loadProfile() {
-    return this.requestUID().subscribe((uid) => {
-      this.uid = uid;
-      return this.requestProfile().subscribe((profile) => {
-        this.syncProfile(profile);
-        return this.loadUserPosts(profile.uid).subscribe((userPosts)=> {
-          this.presentPosts(userPosts);
-        });
+  loadUser() {
+    this.uid = this.navParams.get('uid'); 
+    return this.requestUser().first().subscribe((user) => {
+      this.profile = user;
+      return this.requestUID().first().subscribe((uid) => {
+        this.myUID = uid;
+        return this.requestProfile().first().subscribe((profile) => {
+          this.syncProfile(profile);
+          return this.loadUserPosts(profile.uid).first().subscribe((userPosts)=> {
+            this.presentPosts(userPosts);
+          })
+        })
       });
     });
+  }
+
+  requestUser() {
+    let path = '/users/' + this.uid;    
+    return this.firebase.object(path)
   }
 
   requestUID() {
@@ -88,6 +93,8 @@ import { Observable } from 'rxjs/Observable';
   }
 
   presentPosts(posts) {
+    console.log("Presenting posts");
+    console.log(posts);
     this.posts = [];
     posts.forEach((post) => {
       this.requestPostUserLikerObject(post).first().subscribe((liker) => {
@@ -126,7 +133,7 @@ import { Observable } from 'rxjs/Observable';
 
   requestPostUserLikerObject(post) {
     let path = 'posts/' + post.id + '/likers/';
-    return this.firebase.query(path, 'uid', this.uid);
+    return this.firebase.query(path, 'uid', this.myUID);
   }
 
   removePostLikerObject(liker, post) {
@@ -156,7 +163,7 @@ import { Observable } from 'rxjs/Observable';
     let path = 'posts/' + myPost.id + '/likers/';
     let likerObject = {
       "post": myPost.id,
-      "uid": this.uid
+      "uid": this.myUID
     }
     return this.firebase.push(path, likerObject);
   }
@@ -186,32 +193,7 @@ import { Observable } from 'rxjs/Observable';
     });
   }
 
-  setRootHomePage() {
-    this.navCtrl.setRoot(HomePage);
-  }
-
-  pushStatementPage() {
-    this.navCtrl.push(StatementPage);
-  }
-
-  pushProfileManagerPage() {
-    this.navCtrl.push(ProfileManagerPage);
-  }
-
-  flaggedMessage() {
-    let alert = this.alertCtrl.create({
-      title: 'Flagged Post',
-      subTitle: 'Please contact support to address content',
-      buttons: ['Dismiss']
-    });
-    alert.present();
-  }
-
   viewPost(postID) {
     this.navCtrl.push(PostPage, {id: postID})    
-  }
-
-  setRootAccountPage() {
-    this.navCtrl.setRoot(AccountPage);
   }
 }
