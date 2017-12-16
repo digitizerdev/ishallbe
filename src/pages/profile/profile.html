@@ -15,7 +15,6 @@
 <ion-content padding>
   <div text-center>
     <img class="avatar" src="{{ profile?.photo }}">
-    <br>
     <h4>{{ profile?.bio}} </h4>
   </div>
   <ion-row responsive-sm>
@@ -36,23 +35,37 @@
     </ion-row>
   </div>
   <ion-card id="profilePosts" class="posts" *ngFor="let post of posts">
-    <ion-item class="post-header">
-      <ion-avatar item-left>
+    <ion-item padding class="post-header">
+      <ion-avatar padding-top item-left>
         <img src="{{ post?.face }}">
       </ion-avatar>
-      <h2 ion-text color="primary" class="post-author">{{ post?.name }}</h2>
+      <ion-icon *ngIf="post.flagged" (click)="flaggedMessage()" name="alert" color="danger" item-right ></ion-icon>
+      <h2 padding-top ion-text color="primary" class="post-author">{{ post?.name }}</h2>
       <h2>
         <b>{{ post?.title}}</b>
       </h2>
     </ion-item>
     <div text-center (click)="viewPost(post.$key)">
-      <img class="full-image" src="{{ post?.url }}">
-      <h2 text-center padding>{{ post?.content}}</h2>
+        <img class="full-image" *ngIf="post.image" src="{{ post?.url }}">
+        <div class="info" >
+        <h2 text-center padding>{{ post?.content}}</h2>
+      </div>
+      <div padding-left>
+          <a (click)="viewPost(post?.$key)" class="subdued">{{ post?.likeCount}} Likes</a>
+          <a (click)="viewPost(post?.$key)" class="subdued" margin-left>{{ post?.commentCount}} Comments</a>
+      </div>
+      <br>
     </div>
-    <div padding-left>
-      <a (click)="viewPost(post.$key)" class="subdued">{{ post.likeCount}} Likes</a>
-      <a (click)="viewPost(post.$key)" class="subdued" margin-left>{{ post.commentCount}} Comments</a>
-    </div>
-    <br>
+    <ion-grid class="post-actions">
+        <ion-row>
+          <ion-col width-33 text-center (click)="togglePostLike(post)">
+            <ion-icon name="thumbs-up" color="secondary"  *ngIf="post?.userLiked"></ion-icon>
+            <ion-icon name="thumbs-up" *ngIf="!post?.userLiked"></ion-icon>
+          </ion-col>
+          <ion-col width-33 text-center (click)="viewPost(post?.$key)">
+            <ion-icon name="chatboxes"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
   </ion-card>
 </ion-content>

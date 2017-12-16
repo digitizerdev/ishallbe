@@ -220,4 +220,14 @@ describe('PostPage', () => {
     expect(component.deleteComment).toBeDefined();
   });
 
+  it('should be able to report post', () => {
+    fixture.detectChanges();
+    let de: DebugElement;
+    let el: HTMLElement;
+    de = fixture.debugElement.query(By.css('h6'));
+    el = de.nativeElement.innerHTML
+    expect(el).toContain('Report Post');
+    expect(component.reportPost).toBeDefined();
+  });
+
 });

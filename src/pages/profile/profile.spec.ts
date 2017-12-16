@@ -79,7 +79,9 @@ describe('ProfilePage', () => {
 
   it('should be initialized', () => {
     expect(component.profile).toBeUndefined();
-    expect(component.posts).toBeUndefined();
+    expect(component.posts).toBeDefined();
+    expect(component.uid).toBeUndefined();
+    expect(component.post).toBeUndefined();
   });
 
   it('should display create statement button', async(() => {
@@ -99,15 +101,6 @@ describe('ProfilePage', () => {
     el = de.nativeElement.innerHTML
     expect(el).toContain('Edit Profile');
   }));
-
-  it('should say No Posts if user has no published posts', () => {
-    fixture.detectChanges();
-    let de: DebugElement;
-    let el: HTMLElement;
-    de = fixture.debugElement.query(By.css('h3'));
-    el = de.nativeElement.innerHTML
-    expect(el).toContain('No Posts');
-  });
 
   it('should ask for uid from Session Provider', () => {
     spyOn(session, 'uid').and.returnValue({ subscribe: () => { } });

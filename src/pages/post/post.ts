@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
@@ -31,12 +31,13 @@ export class PostPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public alertCtrl: AlertController,
     public session: SessionProvider,
     public firebase: FirebaseProvider
   ) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.loadPost('');
   }
 
@@ -313,9 +314,7 @@ export class PostPage {
   }
 
   pushCommentLikerObject(comment) {
-    console.log("Pushing comment liker object");
     let path = 'posts/' + this.post.id + '/comments/' + comment.id + '/likers/';
-    console.log("Path is" + path);
     let likerObject = { 
       "comment": comment.id,
       "uid": this.uid
@@ -355,4 +354,43 @@ export class PostPage {
     let path = '/posts/' + this.post.id + '/commentCount'
     return this.firebase.setObject(path, this.post.commentCount);
   }
+
+  reportPost() {
+    let alert = this.alertCtrl.create({
+      title: 'Hold It!',
+      message: 'Do you really want to report this post?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this.flagPost().then(() => {
+              this.removeFromFeed();
+            });
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  flagPost() {
+    let path = "/flagged/"
+    return this.firebase.push(path, this.post);
+  }
+
+  removeFromFeed() {
+    let path = "/posts/" + this.post.id;
+    let post = {
+      flagged: true,
+      onFeed: false
+    }
+    return this.firebase.updateObject(path, post)
+  }
+
 }

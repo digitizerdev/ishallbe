@@ -41,7 +41,6 @@
         <div text-right>
           <ion-icon (click)="deleteComment(comment)" name="close" color="gray" class="item-complex" *ngIf="comment?.mine"></ion-icon>
         </div>
-
         <h3 ion-text color="primary" class="post-author">
           {{ comment?.name }}
         </h3>
@@ -72,4 +71,9 @@
       </ion-list>
     </form>
   </ion-card>
+  <br>
+  <br>
+  <div text-center  >
+    <h6 class="report-post" (click)="reportPost()">Report Post</h6>
+  </div>
 </ion-content>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { HomePage } from '../home/home';
 import { ProfileManagerPage } from '../profile-manager/profile-manager';
@@ -9,6 +9,9 @@ import { PostPage } from '../post/post';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
 
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/take';
+
 @IonicPage()
 @Component({
   selector: 'page-profile',
@@ -17,32 +20,46 @@ import { SessionProvider } from '../../providers/session/session';
 export class ProfilePage {
 
   profile: any;
-  posts: any;
+  posts: any[] = [];
+  uid: any;
+  post: any;
 
   constructor(
     public navCtrl: NavController, 
     public firebase: FirebaseProvider,
     public session: SessionProvider,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public alertCtrl: AlertController
   ) {
+  }
+
+  ionViewDidEnter() {
     this.loadProfile();
   }
 
   loadProfile() {
     return this.requestUID().subscribe((uid) => {
-      return this.requestProfile(uid).subscribe((profile) => {
+      this.uid = uid;
+      return this.requestProfile().subscribe((profile) => {
         this.syncProfile(profile);
         return this.loadUserPosts(profile.uid).subscribe((userPosts)=> {
-          this.posts = userPosts;
+          this.presentPosts(userPosts);
         })
       })
 
     });
   }
 
+  requestUID() {
+    return this.session.uid();
+  }
+
+  requestProfile() {
+    let uid = this.uid;
+    return this.firebase.profile(uid);
+  }
+
   syncProfile(profile) {
-    console.log("Syncing profile");
-    console.log(profile);
     this.profile = profile;
     if (!profile.bio) {
       this.addStandardBio(profile);
@@ -51,19 +68,6 @@ export class ProfilePage {
       this.profile.photo = 'assets/img/default-profile.png';
 
     }
-  }
-
-  requestUID() {
-    return this.session.uid();
-  }
-
-  requestProfile(uid) {
-    return this.firebase.profile(uid);
-  }
-
-  loadUserPosts(uid) {
-    let path = '/posts/'
-    return this.firebase.query(path, 'uid', uid);
   } 
 
   addStandardBio(noBioProfile) {
@@ -81,6 +85,110 @@ export class ProfilePage {
     this.firebase.setObject(path, profile);
   }
 
+  loadUserPosts(uid) {
+    let path = '/posts/'
+    return this.firebase.query(path, 'uid', uid);
+  }
+
+  presentPosts(posts) {
+    this.posts = [];
+    posts.forEach((post) => {
+      this.requestPostUserLikerObject(post).first().subscribe((liker) => {
+        if (liker[0]) {
+          post.userLiked = true;
+        } else {
+          post.userLiked = false;
+        }
+        console.log("About to post post");
+        console.log(post);
+        this.posts.push(post);
+      });
+    });
+  }
+
+  requestPostUserLikerObject(post) {
+    let path = 'posts/' + post.id + '/likers/';
+    return this.firebase.query(path, 'uid', this.uid);
+  }
+
+  togglePostLike(post) {
+    if (post.userLiked) {
+      this.requestPostUserLikerObject(post).subscribe((liker) => {
+        this.removePostLikerObject(liker[0], post).then(() => {
+          if (post.likeCount == 1) {
+            this.unflagPostLike(post);
+          }
+          this.unlikePost(post);
+        });
+      });
+    } else {
+      this.likePost(post).subscribe(() => {
+        this.pushPostLikerObject(post).then((postLikeProps) => {
+          let postLikerID = postLikeProps.key;
+          this.addIDToPostLikerObject(postLikerID, post);
+        });
+      });
+    }
+  }
+
+  removePostLikerObject(liker, post) {
+    let path = 'posts/' + post.id + '/likers/' + liker.id;
+    return this.firebase.removeObject(path);
+  }
+
+  unlikePost(myPost) {
+    myPost.userLiked = false;
+    let likeCount = --myPost.likeCount;
+    let post = {
+      "likeCount": likeCount
+    }
+    let path = 'posts/' + myPost.id;
+    return this.firebase.updateObject(path, post);
+  }
+
+  unflagPostLike(myPost) {
+    let post = {
+      "liked": false,
+    }
+    let path = 'posts/' + myPost.id;
+    return this.firebase.updateObject(path, post);
+  }
+
+  pushPostLikerObject(myPost) {
+    let path = 'posts/' + myPost.id + '/likers/';
+    let likerObject = {
+      "post": myPost.id,
+      "uid": this.uid
+    }
+    return this.firebase.push(path, likerObject);
+  }
+
+  addIDToPostLikerObject(postLikerID, myPost) {
+    let path = '/posts/' + myPost.id + '/likers/' + postLikerID;
+    let liker = {
+      id: postLikerID
+    }
+    return this.firebase.updateObject(path, liker);
+  }
+
+  likePost(myPost) {
+    return Observable.create((observer) => {
+      myPost.liked = true;
+      myPost.userLiked = true;
+      let likeCount = ++myPost.likeCount;
+      let liked = true;
+      let post = {
+        "likeCount": likeCount,
+        "liked": liked
+      }
+      let path = 'posts/' + myPost.id;
+      return this.firebase.updateObject(path, post).then((obj) => {
+        observer.next(obj)
+      });
+    });
+  }
+
+
   setRootHomePage() {
     this.navCtrl.setRoot(HomePage);
   }
@@ -95,6 +203,15 @@ export class ProfilePage {
 
   viewPost(postID) {
     this.navCtrl.push(PostPage, {id: postID})    
+  }
+
+  flaggedMessage() {
+    let alert = this.alertCtrl.create({
+      title: 'Flagged Post',
+      subTitle: 'Please contact support to address content',
+      buttons: ['Dismiss']
+    });
+    alert.present();
   }
 
 }
