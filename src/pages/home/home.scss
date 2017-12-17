@@ -1,4 +1,30 @@
 page-home {
+
+  .sunday {
+    border-top: thick solid color($colors, primary);
+    border-bottom: thick solid color($colors, primary);    
+  }
+
+  .saturday {
+    border-top: thick dashed color($colors, secondary);
+  }
+
+  .pin-image {
+    max-height: 300px;            
+  }
+  
+  ion-grid {
+    height: 100%;
+    justify-content: center;
+}
+
+  .feature-space-bottom {
+    background: linear-gradient(to Top, color($colors, light-gray), #fff);            
+  }
+
+  .feature-space-top {
+    background: linear-gradient(to Bottom, color($colors, light-gray), #fff);            
+  }
     
     .home-posts {
       background: color($colors, light-gray)
@@ -10,7 +36,18 @@ page-home {
 
       .feature {
         background-color: #fff;
-        border: thick solid color($colors, primary);    
+        border-top: thick solid color($colors, primary);   
+        border-bottom: thick solid color($colors, primary); 
+      }
+
+      .slide-title {
+        font-weight: bold
+      }
+
+      .pin-actions {
+        background-color:  color($colors, light-gray);
+        border: thick solid color($colors, light-green);
+        border-radius: 10px;        
       }
 
     .post-header {
@@ -19,7 +56,7 @@ page-home {
     
       .full-image {
         border-top: thick solid color($colors, secondary); 
-        border-bottom: thick solid color($colors, secondary); 
+        border-bottom: thick solid color($colors, secondary);
       }
     
       .post-body {

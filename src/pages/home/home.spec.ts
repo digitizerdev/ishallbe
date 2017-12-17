@@ -88,7 +88,40 @@ describe('HomePage', () => {
     expect(component.profile).toBeUndefined();
     expect(component.posts).toBeDefined();
     expect(component.uid).toBeUndefined();
-    expect(component.post).toBeUndefined();
+    expect(component.refreshing).toBeUndefined();
+    expect(component.pins).toBeDefined();
+    expect(component.day).toBeUndefined();
+    expect(component.saturday).toBeUndefined();
+    expect(component.sunday).toBeUndefined();
+  });
+
+  it('should set day', () => {
+    expect(component.setDay).toBeDefined();
+  });
+
+  it('should request Firebase Provider for ordered pins', () => {
+    spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => {}});
+    component.requestPins();
+    expect(firebase.orderList).toHaveBeenCalled();
+  });
+
+  it('should request Firebase Provider to check if user already liked pin', () => {
+    spyOn(firebase, 'query').and.returnValue({ subscribe: () => { } });
+    component.uid = 'testUID'
+    component.requestPinUserLikerObject(mockPost.mature);
+    expect(firebase.query).toHaveBeenCalled();
+  });
+
+  it('should be able to like pin', () => {
+    expect(component.likePin).toBeDefined();
+  });
+
+  it('should be able to unlike pin', () => {
+    expect(component.unlikePin).toBeDefined();
+  });
+
+  it('should be able to view pin', () => {
+    expect(component.viewPin('testPinID')).toBeUndefined();
   });
 
   it('should request uid from Session Provider', () => {
@@ -97,7 +130,6 @@ describe('HomePage', () => {
     fixture.detectChanges();
     expect(session.uid).toHaveBeenCalled();
   });
-
 
   it('should use uid to request profile from Firebase Provider', () => {
     spyOn(firebase, 'profile').and.returnValue({ subscribe: () => { } });
@@ -132,6 +164,10 @@ describe('HomePage', () => {
 
   it('should be able to view user', () => {
     expect(component.viewUser).toBeDefined();
+  });
+
+  it('should be able to open link', () => {
+    expect(component.openLink).toBeDefined
   });
 
 });

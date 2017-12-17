@@ -15,12 +15,63 @@
 <ion-content>
     <header></header>   
     <br>
-    <ion-card text-center padding class="feature">      
-        <h5>Work hard for what you want because it won’t come without a fight. We are currently improving the iShallBe App. The motivational bar will be down for a few days. Continue to inspire each other by sharing your iShallBe Statements.</h5>
-    </ion-card>
+    <div class="saturday" *ngIf="this.saturday" text-center> 
+            <h3>Happy Saturday!</h3>
+            <i>                
+            <h5>Swipe below to see the daily affirmations for the week</h5>
+        </i>
+        <br>
+    </div> 
+    <div class="sunday" *ngIf="this.sunday" text-center> 
+        <h3>It's iShallBe Sunday!</h3>
+        <br>
+        <ion-row responsive-sm>
+            <ion-col text-center>
+              <button ion-button (click)="goToStatementPage()" color="secondary" large>Create Your Statement</button>
+            </ion-col>
+        </ion-row>
+        <br>
+    </div>  
+    <div class="feature" *ngIf="!this.Sunday" >
+        <div class = "feature-space-top"><br><br></div>                             
+        <ion-slides pager>
+            <ion-slide *ngFor="let pin of pins" padding>
+                <ion-row justify-content-center align-items-center style="height: 100%">
+                <ion-col>
+                    <h1 padding class="slide-title" [innerHTML]="pin.title" ></h1>             
+                    <img class="pin-image" (click)="viewPin(pin.id)"  *ngIf="pin?.image" src="{{ pin?.url }}" />
+                    <video (click)="viewPin(pin.id)" *ngIf="pin?.video" width= "80%" controls="controls" preload="metadata" webkit-playsinline="webkit-playsinline" class="videoPlayer"><source src={{pin?.url}} type="video/mp4"/></video>               
+                    <h4 (click)="viewPin(pin.id)" [innerHTML]="pin.content"></h4>
+                    <div class="tuesday" *ngIf="pin.tuesday" (click)="openLink(pin.url)" text-center>
+                        <button ion-button large round ><ion-icon name="play"></ion-icon></button>  
+                  </div>
+                </ion-col>
+              </ion-row>
+            <div class = "pin-interaction-counts">
+                <p>
+                <a (click)="viewPin(pin.id)" class="subdued">{{ pin?.likeCount}} Likes</a>
+                <a (click)="viewPin(pin.id)" class="subdued" margin-left>{{ pin?.commentCount}} Comments</a>
+              </p>
+            </div>
+              <ion-grid class="pin-actions">
+                  <ion-row>
+                    <ion-col width-50 text-center (click)="togglePinLike(pin)">
+                      <ion-icon name="thumbs-up" color="secondary"  *ngIf="pin?.userLiked"></ion-icon>
+                      <ion-icon name="thumbs-up" *ngIf="!pin?.userLiked"></ion-icon>
+                    </ion-col>
+                    <ion-col width-50 text-center (click)="viewPin(pin?.id)">
+                      <ion-icon name="chatboxes"></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+                <br>
+            </ion-slide>
+      </ion-slides>
+      <div class = "feature-space-bottom"><br><br></div>                           
+    </div>    
   <div class="home-posts">
     <div class = "space"><br><br></div>      
-    <ion-refresher (ionRefresh)="loadPosts($event)">
+    <ion-refresher (ionRefresh)="loadHome($event)">
       <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="">
       </ion-refresher-content>
     </ion-refresher>
