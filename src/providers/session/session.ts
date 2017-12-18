@@ -16,49 +16,59 @@ export class SessionProvider {
   start(user) {
     let role = user.role;
     let uid = user.uid
-    this.storage.set('loggedIn', true);
-    this.storage.set('role', role);
-    this.storage.set('uid', uid)
+    this.storage.ready().then(() => {
+      this.storage.set('loggedIn', true);
+      this.storage.set('role', role);
+      this.storage.set('uid', uid)
+    })
   }
 
   end() {
-    this.storage.remove('loggedIn');
-    this.storage.remove('role');
-    this.storage.remove('uid');
+    this.storage.ready().then(() => {
+      this.storage.remove('loggedIn');
+      this.storage.remove('role');
+      this.storage.remove('uid');
+    });
   }
 
   uid() {
     return Observable.create((observer: any) => {
-      return this.storage.get('uid').then((uid) => {
-        if (uid) {
-          observer.next(uid);
-        } else {
-          observer.complete(false);
-        }
+      return this.storage.ready().then(() => {
+        return this.storage.get('uid').then((uid) => {
+          if (uid) {
+            observer.next(uid);
+          } else {
+            observer.complete(false);
+          }
+        });
       });
     });
   };
 
   loggedIn() {
     return Observable.create((observer: any) => {
-      return this.storage.get('loggedIn').then((loggedIn) => {
-        if (loggedIn) {
-          observer.next(loggedIn);
-        } else {
-          observer.complete(false);
-        }
+      return this.storage.ready().then(() => {
+        return this.storage.get('loggedIn').then((loggedIn) => {
+          if (loggedIn) {
+            observer.next(loggedIn);
+          } else {
+            observer.complete(false);
+          }
+        });
       });
     });
   };
 
   role() {
     return Observable.create((observer: any) => {
-      return this.storage.get('role').then((role) => {
-        if (role) {
-          observer.next(role);
-        } else {
-          observer.complete(false);
-        }
+      return this.storage.ready().then(() => {
+        return this.storage.get('role').then((role) => {
+          if (role) {
+            observer.next(role);
+          } else {
+            observer.complete(false);
+          }
+        });
       });
     });
   };

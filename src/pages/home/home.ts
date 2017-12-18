@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-
 import { ProfilePage } from '../profile/profile';
 import { PostPage } from '../post/post';
 import { UserPage } from '../user/user';
