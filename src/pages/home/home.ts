@@ -75,11 +75,14 @@ export class HomePage {
   }
 
   requestPins() {
+    console.log("Requesting pins");
     let path = '/pins/';
     return this.firebase.orderList(path, 'date');
   }
 
   presentPins(pins) {
+    console.log("Presenting pins");
+    console.log(pins);
     this.pins = [];
     pins.forEach((pin) => {
       this.requestPinUserLikerObject(pin).first().subscribe((liker) => {
