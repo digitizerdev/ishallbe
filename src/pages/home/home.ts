@@ -6,7 +6,7 @@ import { PostPage } from '../post/post';
 import { UserPage } from '../user/user';
 import { LoginPage } from '../login/login';
 import { StatementPage } from '../statement/statement';
-import { PinPage } from '../pin/pin'
+import { PinPage } from '../pin/pin';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
@@ -33,13 +33,24 @@ export class HomePage {
     public navParams: NavParams,
     public firebase: FirebaseProvider,
     public session: SessionProvider,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public storage: Storage
   ) {
   }
 
   ionViewDidEnter() {
     console.log("Entered home");
     this.loadHome('');
+    this.storage.ready().then(() => {
+      console.log("Storage ready");
+      return this.storage.get('uid').then((uid) => {
+        console.log("Got uid");
+        console.log(uid);
+        if (uid) {
+        } else {
+        }
+      });
+    });
   }
 
   loadHome(refresh) {
