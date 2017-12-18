@@ -101,14 +101,14 @@
       "phonegap-plugin-push": {
         "SENDER_ID": "1:881822459028:android:58c20c02735f7e42"
       },
+      "cordova-plugin-email-composer": {},
       "cordova-plugin-ionic": {
-        "APP_ID": "abddc926",
+        "APP_ID": "69d144ed",
         "CHANNEL_NAME": "Master",
-        "UPDATE_METHOD": "splashscreen",
+        "UPDATE_METHOD": "background",
         "UPDATE_API": "https://api.ionicjs.com",
         "MAX_STORE": "2"
-      },
-      "cordova-plugin-email-composer": {}
+      }
     },
     "platforms": [
       "ios"
