@@ -32,9 +32,13 @@ export class SessionProvider {
   }
 
   uid() {
+    console.log("Getting uid");
     return Observable.create((observer: any) => {
       return this.storage.ready().then(() => {
+        console.log("Storage ready");
         return this.storage.get('uid').then((uid) => {
+          console.log("Got uid");
+          console.log(uid);
           if (uid) {
             observer.next(uid);
           } else {
