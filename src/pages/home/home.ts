@@ -38,6 +38,7 @@ export class HomePage {
   }
 
   ionViewDidEnter() {
+    console.log("Entered home");
     this.loadHome('');
   }
 
@@ -175,14 +176,19 @@ export class HomePage {
   }
 
   loadPosts(refresh) {
+    console.log("Loading posts");
     this.startRefresh(refresh);
     return this.requestUID().subscribe((uid) => {
+      console.log("Got UID");
+      console.log(uid);
       this.uid = uid
       return this.requestProfile().subscribe((profile) => {
         if (profile.blocked) {
           this.handleBlocked();
         }
         return this.requestPosts().first().subscribe((posts) => {
+          console.log("Got posts");
+          console.log(posts);
           this.presentPosts(posts);
           this.endRefresh(refresh);
         });
@@ -203,6 +209,7 @@ export class HomePage {
   }
 
   requestUID() {
+    console.log("Requesting UID");
     return this.session.uid();
   }
 
