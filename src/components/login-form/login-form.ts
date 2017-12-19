@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, LoadingController, AlertController } from 'ionic-angular';
+import { Observable } from 'rxjs/Rx';
 
 import { HomePage } from '../../pages/home/home';
 
@@ -67,7 +68,7 @@ export class LoginFormComponent {
     return this.requestAuthentication(form).then((token) => {
       console.log("Got authenticaiton token");
       console.log(token);
-      return this.requestProfile(token.uid).subscribe((profile) => {
+      return this.requestProfile(token.uid).map((profile) => {
         return profile
       }, (error) => { throw error });
     }, (error) => { throw error });
