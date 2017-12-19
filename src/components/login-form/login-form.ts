@@ -107,14 +107,8 @@ export class LoginFormComponent {
   startSession(profile) {
     console.log("UID is " + this.uid);
     let uid = profile.uid;
-    let user = {
-      "loggedIn": true,
-      "role": profile.role,
-      "uid": uid
-    }
     console.log("Starting session");
-    console.log(user);
-    this.session.start(user);
+    this.session.start(uid);
     this.setRootHomePage();
   }
 
