@@ -75,19 +75,23 @@ export class LoginFacebookComponent {
   }
 
   unpackageCordovaToken(provider) {
-    this.firebase.afa.auth.signInWithCredential(provider).then((token) => {  
-      console.log("Got unpackaged token");
-      console.log(token);
-      let photoURL = "https://graph.facebook.com/" + token.success.providerData[0].uid + "/picture?type=large";
-      let account = {
-        "uid": token.uid,
-        "name": token.displayName,
-        "email": token.email,
-        "photo": photoURL,   
-      }
-      this.uid = token.uid;
-      this.checkForExistingProfile(account);
-    });
+      this.doLogin(provider).then((token) => {
+        console.log("Got unpackaged token");
+        console.log(token);
+        let photoURL = "https://graph.facebook.com/" + token.success.providerData[0].uid + "/picture?type=large";
+        let account = {
+          "uid": token.uid,
+          "name": token.displayName,
+          "email": token.email,
+          "photo": photoURL,   
+        }
+        this.uid = token.uid;
+        this.checkForExistingProfile(account);
+      });
+  }
+
+  doLogin(provider) {
+    return this.firebase.afa.auth.signInWithCredential(provider);
   }
 
   checkForExistingProfile(account) {
