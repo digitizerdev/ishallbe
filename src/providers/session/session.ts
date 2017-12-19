@@ -28,9 +28,7 @@ export class SessionProvider {
 
   end() {
     this.storage.ready().then(() => {
-      this.storage.remove('loggedIn');
-      this.storage.remove('role');
-      this.storage.remove('uid');
+      this.storage.clear();      
     });
   }
 
