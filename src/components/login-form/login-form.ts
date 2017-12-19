@@ -38,8 +38,10 @@ export class LoginFormComponent {
   submit(form) {
     this.prepareRequest(form)
     this.makeRequests(form).then((profile) => {
+      console.log("Got profile");
+      console.log(profile);
       this.profile = profile;
-      this.confirmDelivery();
+      this.confirmDelivery(profile);
     }).catch((error) => {
       this.errorHandler(error);
     });
@@ -77,10 +79,10 @@ export class LoginFormComponent {
     return this.firebase.profile(uid);
   }
 
-  confirmDelivery() {
+  confirmDelivery(profile) {
     this.endLoader();
     this.presentConfirmationAlert();
-    this.startSession();        
+    this.startSession(profile);        
     this.setRootHomePage();
   }
 
@@ -97,12 +99,14 @@ export class LoginFormComponent {
     alert.present();
   }
 
-  startSession() {
+  startSession(profile) {
     let user = {
       "loggedIn": true,
-      "role": this.profile.role,
-      "uid": this.profile.uid
+      "role": profile.role,
+      "uid": profile.uid
     }
+    console.log("Starting session");
+    console.log(user);
     this.session.start(user);
     this.setRootHomePage();
   }
