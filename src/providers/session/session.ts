@@ -14,7 +14,7 @@ export class SessionProvider {
   }
 
   start(uid) {
-    console.log("Starting user");
+    console.log("Starting session");
     console.log(uid);
     this.storage.ready().then(() => {
       console.log("Storage ready");
