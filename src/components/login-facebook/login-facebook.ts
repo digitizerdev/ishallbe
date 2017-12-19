@@ -53,9 +53,11 @@ export class LoginFacebookComponent {
 
   cordova() {
     console.log("Logging in with facebook cordova");
-    this.facebook.login(['email', 'public_profile']).then((accessToken) => {
-      console.log("Got access token");
-      console.log(accessToken);
+    this.facebook.login(['email', 'public_profile']).then((token) => {
+      console.log("Got token");
+      console.log(token);
+      let accessToken = token[0].accessToken;
+      console.log("Access token is " + accessToken);
       this.unpackageCordovaToken(accessToken);  
     });
   }
@@ -87,6 +89,8 @@ export class LoginFacebookComponent {
         }
         this.uid = token.uid;
         this.checkForExistingProfile(account);
+      }).catch((error) => {
+        this.errorHandler(error);
       });
   }
 
