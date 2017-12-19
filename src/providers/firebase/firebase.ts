@@ -57,7 +57,7 @@ export class FirebaseProvider {
     return this.object(path).remove()
   }
 
-  profile(uid) {
+  profile(uid): FirebaseObjectObservable<any> {
     let path = '/users/' + uid;
     return this.object(path);
   }
