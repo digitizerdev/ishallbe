@@ -75,7 +75,7 @@ export class LoginFacebookComponent {
   }
 
   unpackageCordovaToken(provider) {
-      this.doLogin(provider).then((token) => {
+      this.doLogin(provider).then(function(token){
         console.log("Got unpackaged token");
         console.log(token);
         let photoURL = "https://graph.facebook.com/" + token.success.providerData[0].uid + "/picture?type=large";
