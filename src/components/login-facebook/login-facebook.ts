@@ -33,6 +33,7 @@ export class LoginFacebookComponent {
   }
 
   authenticate() {
+    console.log("Authenticating");
     this.viaCordova(this.platform.is('cordova'))
     this.startLoader();
   }
