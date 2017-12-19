@@ -26,7 +26,8 @@ export class LoginFormComponent {
     name?: string,
     role?: string,
     photo?: string
-  }
+  };
+  uid: any;
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -68,6 +69,7 @@ export class LoginFormComponent {
     return this.requestAuthentication(form).then((token) => {
       console.log("Got authenticaiton token");
       console.log(token);
+      this.uid = token.uid;
       return this.requestProfile(token.uid).map((profile) => {
         return profile
       }, (error) => { throw error });
@@ -103,10 +105,12 @@ export class LoginFormComponent {
   }
 
   startSession(profile) {
+    console.log("UID is " + this.uid);
+
     let user = {
       "loggedIn": true,
       "role": profile.role,
-      "uid": profile.uid
+      "uid": this.uid
     }
     console.log("Starting session");
     console.log(user);
