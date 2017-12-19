@@ -42,6 +42,7 @@ export class LoginFacebookComponent {
     this.loader = this.loadingCtrl.create({
       content: 'Please Wait..'
     });
+    this.loader.present();
   }
 
   viaCordova(cordova) {
