@@ -260,6 +260,13 @@ export class UploadProviderMock extends UploadProvider {
 }
 
 export class StorageMock extends IonicStorageModule {
+  
+  public ready(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+
   public get(): any {
     return new Promise(function (resolve: Function): void {
       resolve();

@@ -32,13 +32,6 @@ export class AccountPage {
     public session: SessionProvider
   ) {
     this.requestUID();
-    this.requestRole();
-  }
-
-  requestRole() {
-    this.session.role().subscribe((role)=>{
-      this.role = role;
-    })
   }
 
   requestUID() {

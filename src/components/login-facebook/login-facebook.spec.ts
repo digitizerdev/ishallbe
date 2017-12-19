@@ -82,6 +82,11 @@ describe('LoginFacebookComponent', () => {
         expect(component instanceof LoginFacebookComponent).toBe(true);
     });
 
+    it('should be initialized', () => {
+        expect(component.uid).toBeUndefined();
+        expect(component.loader).toBeUndefined();
+    });
+
     it('should be triggered by Login with Facebook Button', async(() => {
         let de: DebugElement;
         let el: HTMLElement;
@@ -90,7 +95,11 @@ describe('LoginFacebookComponent', () => {
         expect(el).toContain('Login with Facebook');
     }));
 
-    it('should determine whether cordova or not before authentication', () => {
+    it('should start loader on authentication', () => {       
+        expect(component.startLoader).toBeDefined();
+    })
+
+    it('should determine whether cordova or not bkefore authentication', () => {
         spyOn(component, 'viaCordova');
         component.authenticate();
         fixture.detectChanges();
@@ -122,7 +131,8 @@ describe('LoginFacebookComponent', () => {
         expect(component.presentEULAA).toBeUndefined();
     });
 
-    it('should start session with user', () => {
+    it('should end loader to start session with user', () => {
+        spyOn(component, 'endLoader');
         spyOn(session, 'start');
         spyOn(component, 'setRootHomePage');
         let user = {
@@ -132,18 +142,13 @@ describe('LoginFacebookComponent', () => {
         }
         component.welcome(user);
         fixture.detectChanges();
+        expect(component.endLoader).toHaveBeenCalled();
         expect(session.start).toHaveBeenCalled();
         expect(component.setRootHomePage).toHaveBeenCalled();
     });
 
     it('should log error message on error', () => {
         expect(component.error).toBeUndefined();
-        let error = {
-            "code": "invalid",
-            "message": "Test Error"
-        }
-        component.errorHandler(error);
-        expect(component.error).toBe(error);
     });
 
 });

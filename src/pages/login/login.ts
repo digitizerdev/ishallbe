@@ -23,14 +23,11 @@ export class LoginPage {
   }
 
   wakeUp() {
-    console.log("Waking up")
     this.session.loggedIn().subscribe((user)=>{
-      console.log("Got user");
       console.log(user);
       if (user) {
         this.sessionFound();
       } else {
-        console.log("Didn't get user");
       }
     })
   }

@@ -121,13 +121,6 @@ describe('AccountPage', () => {
     expect(el).toContain('Logout');
   }));
 
-  it('should request role from session provider', () => {
-    spyOn(session, 'role').and.returnValue({ subscribe: () => {} })
-    component.requestRole();
-    fixture.detectChanges();
-    expect(session.role).toHaveBeenCalled();
-  });
-
   it('should request uid from session provider', () => {
     spyOn(session, 'uid').and.returnValue({ subscribe: () => {} })
     component.requestUID();

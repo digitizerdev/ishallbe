@@ -17,9 +17,8 @@ import { Observable } from 'rxjs/Observable';
 })
 export class LoginFacebookComponent {
 
-  error: any;
-  token: any;
-  photoURL: any;
+  uid: any;
+  loader: any;
 
   constructor(
     public firebase: FirebaseProvider,
@@ -29,12 +28,19 @@ export class LoginFacebookComponent {
     public loadingCtrl: LoadingController,
     public platform: Platform,
     public facebook: Facebook,
-    public storage: Storage
+    public storage: Storage,
   ) {
   }
 
   authenticate() {
     this.viaCordova(this.platform.is('cordova'))
+    this.startLoader();
+  }
+
+  startLoader() {
+    this.loader = this.loadingCtrl.create({
+      content: 'Please Wait..'
+    });
   }
 
   viaCordova(cordova) {
@@ -46,7 +52,10 @@ export class LoginFacebookComponent {
   }
 
   cordova() {
+    console.log("Logging in with facebook cordova");
     this.facebook.login(['email', 'public_profile']).then((accessToken) => {
+      console.log("Got access token");
+      console.log(accessToken);
       this.unpackageCordovaToken(accessToken);  
     });
   }
@@ -60,12 +69,15 @@ export class LoginFacebookComponent {
         "email": token.user.email,
         "photo": photoURL,   
       }
+      this.uid = token.uid;
       this.checkForExistingProfile(account);
     });
   }
 
   unpackageCordovaToken(provider) {
     this.firebase.afa.auth.signInWithCredential(provider).then((token) => {  
+      console.log("Got unpackaged token");
+      console.log(token);
       let photoURL = "https://graph.facebook.com/" + token.success.providerData[0].uid + "/picture?type=large";
       let account = {
         "uid": token.uid,
@@ -73,14 +85,20 @@ export class LoginFacebookComponent {
         "email": token.email,
         "photo": photoURL,   
       }
+      this.uid = token.uid;
       this.checkForExistingProfile(account);
     });
   }
 
   checkForExistingProfile(account) {
-    this.requestProfile(account.uid).subscribe((profile)=> {
+    console.log("Checking for existing account");
+    console.log(account);
+    this.requestProfile(this.uid).subscribe((profile)=> {
+      console.log("Got profile");
+      console.log(profile);
       if (profile) {
-        this.welcome(profile);
+        console.log("Let's welcome this user")
+        this.welcome();
       } else {
         this.presentEULA().subscribe((accepted) => {
           if (accepted) {
@@ -124,7 +142,7 @@ export class LoginFacebookComponent {
   }
 
   createProfile(account) {
-    let path = '/users/' + account.uid;
+    let path = '/users/' + this.uid;
     let profile = {
       "uid": account.uid,
       "name": account.name,
@@ -134,18 +152,19 @@ export class LoginFacebookComponent {
       "blocked": false
     }
     this.firebase.setObject(path, profile).then(()=>{
-      this.welcome(profile);
+      this.welcome();
     })
   }
   
-  welcome(profile) {
-    let user = {
-      loggedIn: true,
-      role: profile.role,
-      uid: profile.uid
-    }
-    this.session.start(user);
+  welcome() {
+    console.log("Welcoming user");
+    this.endLoader();
+    this.session.start(this.uid);
     this.setRootHomePage();
+  }
+
+  endLoader() {
+    this.loader.dismiss();
   }
 
   setRootHomePage() {
@@ -153,7 +172,6 @@ export class LoginFacebookComponent {
   }
 
   errorHandler(error) {
-    this.error = error;
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,

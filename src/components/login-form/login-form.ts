@@ -40,8 +40,6 @@ export class LoginFormComponent {
   submit(form) {
     this.prepareRequest(form)
     this.makeRequests(form).then((profile) => {
-      console.log("Got profile");
-      console.log(profile);
       this.profile = profile;
       this.confirmDelivery(profile);
     }).catch((error) => {
@@ -67,10 +65,8 @@ export class LoginFormComponent {
 
   makeRequests(form) {
     return this.requestAuthentication(form).then((token) => {
-      console.log("Got authenticaiton token");
-      console.log(token);
       this.uid = token.uid;
-      return this.requestProfile(token.uid).map((profile) => {
+      return this.requestProfile(token.uid).subscribe((profile) => {
         return profile
       }, (error) => { throw error });
     }, (error) => { throw error });
@@ -105,9 +101,7 @@ export class LoginFormComponent {
   }
 
   startSession(profile) {
-    console.log("UID is " + this.uid);
     let uid = this.uid;
-    console.log("Starting session");
     this.session.start(uid);
     this.setRootHomePage();
   }
