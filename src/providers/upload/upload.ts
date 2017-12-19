@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import * as firebase from 'firebase/app';
+import * as Firebase from 'firebase';
+let firebase: any = Firebase;
+
 import 'firebase/storage';
 
 @Injectable()
@@ -9,6 +11,10 @@ export class UploadProvider {
   
   constructor() {
     this.storage = firebase.storage();    
+  }
+
+  instance() {
+    return firebase.default;
   }
 
 }

@@ -75,7 +75,7 @@ export class LoginFacebookComponent {
   }
 
   unpackageCordovaToken(provider) {
-      this.doLogin(provider).then(function(token){
+      this.doLogin(provider).then((token) => {
         console.log("Got unpackaged token");
         console.log(token);
         let photoURL = "https://graph.facebook.com/" + token.success.providerData[0].uid + "/picture?type=large";
@@ -91,7 +91,7 @@ export class LoginFacebookComponent {
   }
 
   doLogin(provider) {
-    return this.firebase.afa.auth.signInWithCredential(provider);
+    return this.firebase.fire.instance().auth().signInWithCredential(provider);
   }
 
   checkForExistingProfile(account) {

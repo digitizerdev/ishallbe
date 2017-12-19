@@ -13,6 +13,7 @@ export class FirebaseProvider {
     (
     public afdb: AngularFireDatabase,
     public afa: AngularFireAuth,
+    public fire: UploadProvider
     ) {
   }
 
