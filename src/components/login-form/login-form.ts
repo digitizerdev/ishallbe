@@ -39,7 +39,6 @@ export class LoginFormComponent {
     this.prepareRequest(form)
     this.makeRequests(form).then((profile) => {
       console.log("Got profile");
-      profile = profile.json();
       console.log(profile);
       this.profile = profile;
       this.confirmDelivery(profile);
