@@ -57,9 +57,10 @@ export class LoginFacebookComponent {
     this.facebook.login(['email', 'public_profile']).then((token) => {
       console.log("Got token");
       console.log(token);
-      let accessToken = token[0].accessToken;
-      console.log("Access token is " + accessToken);
-      this.unpackageCordovaToken(accessToken);  
+      let facebookProviderCredential = this.firebase.fire.instance().auth().FacebookAuthProvider.credential(token);          
+      console.log("Facebook provider credential is ");
+      console.log(facebookProviderCredential);
+      this.unpackageCordovaToken(facebookProviderCredential);  
     });
   }
 
@@ -78,6 +79,8 @@ export class LoginFacebookComponent {
   }
 
   unpackageCordovaToken(provider) {
+    console.log("Unpackaging cordova");
+    console.log(provider);
       this.doLogin(provider).then((token) => {
         console.log("Got unpackaged token");
         console.log(token);
