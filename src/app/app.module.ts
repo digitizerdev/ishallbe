@@ -11,7 +11,7 @@ import { MediaCapture } from '@ionic-native/media-capture';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
-import { IonicStorageModule } from '@ionic/storage';
+import { IonicStorageModule, Storage } from '@ionic/storage';
 import { AngularFireModule, FirebaseApp } from 'angularfire2';
 import { environment } from '../environments/environment';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';

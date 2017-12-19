@@ -14,9 +14,12 @@ export class SessionProvider {
   }
 
   start(user) {
+    console.log("Starting user");
+    console.log(user);
     let role = user.role;
     let uid = user.uid
     this.storage.ready().then(() => {
+      console.log("Storage ready");
       this.storage.set('loggedIn', true);
       this.storage.set('role', role);
       this.storage.set('uid', uid)
