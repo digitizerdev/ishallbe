@@ -39,6 +39,7 @@ export class LoginFormComponent {
     this.prepareRequest(form)
     this.makeRequests(form).then((profile) => {
       console.log("Got profile");
+      profile = profile.json();
       console.log(profile);
       this.profile = profile;
       this.confirmDelivery(profile);
@@ -65,6 +66,8 @@ export class LoginFormComponent {
 
   makeRequests(form) {
     return this.requestAuthentication(form).then((token) => {
+      console.log("Got authenticaiton token");
+      console.log(token);
       return this.requestProfile(token.uid).subscribe((profile) => {
         return profile
       }, (error) => { throw error });
