@@ -1,7 +1,7 @@
 import { FirebaseProvider } from '../src/providers/firebase/firebase';
 import { SessionProvider } from '../src/providers/session/session';
 import { NativeProvider } from '../src/providers/native/native';
-import { UploadProvider } from '../src/providers/upload/upload';
+import { DigitalProvider } from '../src/providers/digital/digital';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -253,7 +253,7 @@ export class NativeProviderMock extends NativeProvider {
   }
 }
 
-export class UploadProviderMock extends UploadProvider {
+export class DigitalProviderMock extends DigitalProvider {
   hide() {
     return;
   }

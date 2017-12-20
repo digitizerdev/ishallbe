@@ -17,12 +17,16 @@ import { PasswordResetPage } from './password-reset';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
+import { NativeProvider } from '../../providers/native/native';
+import { DigitalProvider } from '../../providers/digital/digital';
 
 import { } from 'jasmine';
 
 import {
   FirebaseProviderMock,
   SessionProviderMock,
+  NativeProviderMock,
+  DigitalProviderMock,
   NavMock,
   StorageMock,
   AngularFireDatabaseMock,
@@ -35,6 +39,10 @@ let session: SessionProvider;
 let sessionSpy;
 let firebase: FirebaseProvider;
 let firebaseSpy;
+let native: NativeProvider;
+let nativeSpy;
+let digital: DigitalProvider;
+let digitalSpy;
 
 describe('PasswordResetPage', () => {
 
@@ -47,6 +55,8 @@ describe('PasswordResetPage', () => {
       providers: [
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
         { provide: SessionProvider, useClass: SessionProviderMock },
+        { provide: NativeProvider, useClass: NativeProviderMock },
+        { provide: DigitalProvider, useClass: DigitalProviderMock },
         { provide: Storage, useClass: StorageMock },
         { provide: NavController, useClass: NavMock },
         { provide: NavParams, useClass: NavMock },
@@ -64,6 +74,8 @@ describe('PasswordResetPage', () => {
     component = fixture.componentInstance;
     session = fixture.componentRef.injector.get(SessionProvider);
     firebase = fixture.componentRef.injector.get(FirebaseProvider);
+    native = fixture.componentRef.injector.get(NativeProvider);
+    digital = fixture.componentRef.injector.get(DigitalProvider);
   });
 
   afterEach(() => {
@@ -73,7 +85,11 @@ describe('PasswordResetPage', () => {
     sessionSpy = null;
     firebase = null;
     firebaseSpy = null;
-  });
+    native = null;
+    nativeSpy = null;
+    digital = null;
+    digitalSpy = null;
+    });
 
   it('should be created', () => {
     expect(component instanceof PasswordResetPage).toBe(true);

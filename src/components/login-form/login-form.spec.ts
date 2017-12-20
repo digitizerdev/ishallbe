@@ -12,12 +12,16 @@ import { LoginFormComponent } from './login-form';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
+import { NativeProvider } from '../../providers/native/native';
+import { DigitalProvider } from '../../providers/digital/digital';
 
 import { } from 'jasmine';
 
 import {
     FirebaseProviderMock,
     SessionProviderMock,
+    NativeProviderMock,
+    DigitalProviderMock,
     NavMock,
     StorageMock,
     AngularFireDatabaseMock,
@@ -32,6 +36,10 @@ let session: SessionProvider;
 let sessionSpy;
 let firebase: FirebaseProvider;
 let firebaseSpy;
+let native: NativeProvider;
+let nativeSpy;
+let digital: DigitalProvider;
+let digitalSpy;
 
 describe('LoginFormComponent', () => {
 
@@ -40,18 +48,20 @@ describe('LoginFormComponent', () => {
             declarations: [LoginFormComponent],
             imports: [
                 IonicModule.forRoot(LoginFormComponent),
-                AngularFireModule.initializeApp(environment.firebase)                
+                AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: SessionProvider, useClass: SessionProviderMock },
+                { provide: NativeProvider, useClass: NativeProviderMock },
+                { provide: DigitalProvider, useClass: DigitalProviderMock },
                 { provide: Storage, useClass: StorageMock },
                 { provide: NavController, useClass: NavMock },
                 { provide: NavParams, useClass: NavMock },
                 { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
                 { provide: AngularFireAuth, useClass: AngularFireAuthMock },
                 { provide: AlertController, useClass: AlertControllerMock },
-                { provide: LoadingController, useClass: LoadingControllerMock }                
+                { provide: LoadingController, useClass: LoadingControllerMock }
             ],
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
@@ -64,6 +74,8 @@ describe('LoginFormComponent', () => {
         component = fixture.componentInstance;
         session = fixture.componentRef.injector.get(SessionProvider);
         firebase = fixture.componentRef.injector.get(FirebaseProvider);
+        native = fixture.componentRef.injector.get(NativeProvider);
+        digital = fixture.componentRef.injector.get(DigitalProvider);
     });
 
     afterEach(() => {
@@ -73,6 +85,10 @@ describe('LoginFormComponent', () => {
         sessionSpy = null;
         firebase = null;
         firebaseSpy = null;
+        native = null;
+        nativeSpy = null;
+        digital = null;
+        digitalSpy = null;
     });
 
     it('should be created', () => {
@@ -110,7 +126,7 @@ describe('LoginFormComponent', () => {
     });
 
     it('should request Firebase Provider for profile object', () => {
-        spyOn(firebase, 'object').and.returnValue({ subscribe: () => {} })
+        spyOn(firebase, 'object').and.returnValue({ subscribe: () => { } })
         component.requestProfile('testUid');
         fixture.detectChanges();
         expect(firebase.object).toHaveBeenCalled();
@@ -130,4 +146,3 @@ describe('LoginFormComponent', () => {
     });
 
 });
- 

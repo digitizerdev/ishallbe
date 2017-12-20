@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, Platform } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
-import * as firebase from 'firebase/app';
 import { Storage } from '@ionic/storage';
+
+import * as firebase from 'firebase';
 
 import { HomePage } from '../../pages/home/home';
 
@@ -42,7 +43,6 @@ export class LoginFacebookComponent {
     this.loader = this.loadingCtrl.create({
       content: 'Please Wait..'
     });
-    this.loader.present();
   }
 
   viaCordova(cordova) {
@@ -58,10 +58,7 @@ export class LoginFacebookComponent {
     this.facebook.login(['email', 'public_profile']).then((token) => {
       console.log("Got token");
       console.log(token);
-      let facebookProviderCredential = this.firebase.fire.instance().auth().FacebookAuthProvider.credential(token);          
-      console.log("Facebook provider credential is ");
-      console.log(facebookProviderCredential);
-      this.unpackageCordovaToken(facebookProviderCredential);  
+      console.log("Facebook provider credential is "); 
     });
   }
 
@@ -82,27 +79,7 @@ export class LoginFacebookComponent {
   unpackageCordovaToken(provider) {
     console.log("Unpackaging cordova");
     console.log(provider);
-      this.doLogin(provider).then((token) => {
-        console.log("Got unpackaged token");
-        console.log(token);
-        let photoURL = "https://graph.facebook.com/" + token.success.providerData[0].uid + "/picture?type=large";
-        let account = {
-          "uid": token.uid,
-          "name": token.displayName,
-          "email": token.email,
-          "photo": photoURL,   
-        }
-        this.uid = token.uid;
-        this.checkForExistingProfile(account);
-      }).catch((error) => {
-        this.errorHandler(error);
-      });
   }
-
-  doLogin(provider) {
-    return this.firebase.fire.instance().auth().signInWithCredential(provider);
-  }
-
   checkForExistingProfile(account) {
     console.log("Checking for existing account");
     console.log(account);

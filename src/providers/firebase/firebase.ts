@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FirebaseListObservable, FirebaseObjectObservable, AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import { UploadProvider } from '../upload/upload';
+import { DigitalProvider } from '../digital/digital';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
@@ -13,7 +13,7 @@ export class FirebaseProvider {
     (
     public afdb: AngularFireDatabase,
     public afa: AngularFireAuth,
-    public fire: UploadProvider
+    public fire: DigitalProvider
     ) {
   }
 

@@ -16,7 +16,6 @@ import { AngularFireModule, FirebaseApp } from 'angularfire2';
 import { environment } from '../environments/environment';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
 
 import { LoginPage } from '../pages/login/login';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
@@ -46,7 +45,9 @@ import { ComponentsModule } from '../components/components.module';
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { SessionProvider } from '../providers/session/session';
 import { NativeProvider } from '../providers/native/native';
-import { UploadProvider } from '../providers/upload/upload';
+import { DigitalProvider } from '../providers/digital/digital';
+
+import * as firebase from 'firebase/app';
 
 @NgModule({
   declarations: [
@@ -123,8 +124,7 @@ import { UploadProvider } from '../providers/upload/upload';
     FirebaseProvider,
     SessionProvider,
     NativeProvider,
-    NativeProvider,
-    UploadProvider,
+    DigitalProvider
   ]
 })
 export class AppModule { }

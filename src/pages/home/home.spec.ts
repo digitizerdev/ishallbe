@@ -13,12 +13,16 @@ import { HomePage } from './home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
+import { NativeProvider } from '../../providers/native/native';
+import { DigitalProvider } from '../../providers/digital/digital';
 
 import { } from 'jasmine';
 
 import {
   FirebaseProviderMock,
   SessionProviderMock,
+  NativeProviderMock,
+  DigitalProviderMock,
   NavMock,
   StorageMock,
   AngularFireDatabaseMock,
@@ -31,24 +35,30 @@ let session: SessionProvider;
 let sessionSpy;
 let firebase: FirebaseProvider;
 let firebaseSpy;
+let native: NativeProvider;
+let nativeSpy;
+let digital: DigitalProvider;
+let digitalSpy;
 
 describe('HomePage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [HomePage], 
+      declarations: [HomePage],
       imports: [
         IonicModule.forRoot(HomePage),
-        AngularFireModule.initializeApp(environment.firebase)                        
+        AngularFireModule.initializeApp(environment.firebase),
       ],
       providers: [
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
         { provide: SessionProvider, useClass: SessionProviderMock },
+        { provide: NativeProvider, useClass: NativeProviderMock },
+        { provide: DigitalProvider, useClass: DigitalProviderMock },
         { provide: Storage, useClass: StorageMock },
         { provide: NavController, useClass: NavMock },
         { provide: NavParams, useClass: NavMock },
         { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
-        { provide: AngularFireAuth, useClass: AngularFireAuthMock },       
+        { provide: AngularFireAuth, useClass: AngularFireAuthMock },
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA
@@ -59,8 +69,10 @@ describe('HomePage', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HomePage);
     component = fixture.componentInstance;
-    session = fixture.componentRef.injector.get(SessionProvider);    
+    session = fixture.componentRef.injector.get(SessionProvider);
     firebase = fixture.componentRef.injector.get(FirebaseProvider);
+    native = fixture.componentRef.injector.get(NativeProvider);
+    digital = fixture.componentRef.injector.get(DigitalProvider);
   });
 
   afterEach(() => {
@@ -70,6 +82,10 @@ describe('HomePage', () => {
     sessionSpy = null;
     firebase = null;
     firebaseSpy = null;
+    native = null;
+    nativeSpy = null;
+    digital = null;
+    digitalSpy = null;
   });
 
   it('should be created', () => {
@@ -100,7 +116,7 @@ describe('HomePage', () => {
   });
 
   it('should request Firebase Provider for ordered pins', () => {
-    spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => {}});
+    spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => { } });
     component.requestPins();
     expect(firebase.orderList).toHaveBeenCalled();
   });
@@ -138,7 +154,7 @@ describe('HomePage', () => {
   });
 
   it('should request Firebase Provider to load posts in order', () => {
-    spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => {}});
+    spyOn(firebase, 'orderList').and.returnValue({ subscribe: () => { } });
     component.requestPosts();
     expect(firebase.orderList).toHaveBeenCalled();
   });

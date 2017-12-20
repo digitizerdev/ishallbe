@@ -13,12 +13,16 @@ import { ProfilePage } from './profile';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
+import { NativeProvider } from '../../providers/native/native';
+import { DigitalProvider } from '../../providers/digital/digital';
 
 import { } from 'jasmine';
 
 import {
   FirebaseProviderMock,
   SessionProviderMock,
+  NativeProviderMock,
+  DigitalProviderMock,
   NavMock,
   StorageMock,
   AngularFireDatabaseMock,
@@ -31,24 +35,30 @@ let session: SessionProvider;
 let sessionSpy;
 let firebase: FirebaseProvider;
 let firebaseSpy;
+let native: NativeProvider;
+let nativeSpy;
+let digital: DigitalProvider;
+let digitalSpy;
 
 describe('ProfilePage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ProfilePage], 
+      declarations: [ProfilePage],
       imports: [
         IonicModule.forRoot(ProfilePage),
-        AngularFireModule.initializeApp(environment.firebase)                        
+        AngularFireModule.initializeApp(environment.firebase)
       ],
       providers: [
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
         { provide: SessionProvider, useClass: SessionProviderMock },
+        { provide: NativeProvider, useClass: NativeProviderMock },
+        { provide: DigitalProvider, useClass: DigitalProviderMock },
         { provide: Storage, useClass: StorageMock },
         { provide: NavController, useClass: NavMock },
         { provide: NavParams, useClass: NavMock },
         { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
-        { provide: AngularFireAuth, useClass: AngularFireAuthMock },       
+        { provide: AngularFireAuth, useClass: AngularFireAuthMock },
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA
@@ -59,8 +69,10 @@ describe('ProfilePage', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfilePage);
     component = fixture.componentInstance;
-    session = fixture.componentRef.injector.get(SessionProvider);    
+    session = fixture.componentRef.injector.get(SessionProvider);
     firebase = fixture.componentRef.injector.get(FirebaseProvider);
+    native = fixture.componentRef.injector.get(NativeProvider);
+    digital = fixture.componentRef.injector.get(DigitalProvider);
   });
 
   afterEach(() => {
@@ -70,6 +82,10 @@ describe('ProfilePage', () => {
     sessionSpy = null;
     firebase = null;
     firebaseSpy = null;
+    native = null;
+    nativeSpy = null;
+    digital = null;
+    digitalSpy = null;
   });
 
   it('should be created', () => {
@@ -125,14 +141,14 @@ describe('ProfilePage', () => {
   it('should add standard bio to profile if bio not found', () => {
     spyOn(firebase, 'setObject').and.returnValue;
     let profile = {
-        uid: 'testUID',
-        name: 'testName',
-        email: 'testEmail',
-        photo: "https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png",
-        blocked: false,
-        role: "testRole",
-        bio: 'Improving Every Day'
-      }
+      uid: 'testUID',
+      name: 'testName',
+      email: 'testEmail',
+      photo: "https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png",
+      blocked: false,
+      role: "testRole",
+      bio: 'Improving Every Day'
+    }
     component.addStandardBio(profile);
     expect(firebase.setObject).toHaveBeenCalled();
   });

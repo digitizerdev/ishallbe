@@ -13,12 +13,16 @@ import { LoginFacebookComponent } from './login-facebook';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
+import { NativeProvider } from '../../providers/native/native';
+import { DigitalProvider } from '../../providers/digital/digital';
 
 import { } from 'jasmine';
 
 import {
     FirebaseProviderMock,
     SessionProviderMock,
+    NativeProviderMock,
+    DigitalProviderMock,
     NavMock,
     StorageMock,
     AngularFireDatabaseMock,
@@ -34,10 +38,14 @@ let session: SessionProvider;
 let sessionSpy;
 let firebase: FirebaseProvider;
 let firebaseSpy;
+let native: NativeProvider;
+let nativeSpy;
+let digital: DigitalProvider;
+let digitalSpy;
 
 describe('LoginFacebookComponent', () => {
 
-    beforeEach(async(() => {
+        beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [LoginFacebookComponent],
             imports: [
@@ -47,6 +55,8 @@ describe('LoginFacebookComponent', () => {
             providers: [
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: SessionProvider, useClass: SessionProviderMock },
+                { provide: NativeProvider, useClass: NativeProviderMock },
+                { provide: DigitalProvider, useClass: DigitalProviderMock },
                 { provide: Storage, useClass: StorageMock },
                 { provide: NavController, useClass: NavMock },
                 { provide: NavParams, useClass: NavMock },
@@ -67,17 +77,23 @@ describe('LoginFacebookComponent', () => {
         component = fixture.componentInstance;
         session = fixture.componentRef.injector.get(SessionProvider);
         firebase = fixture.componentRef.injector.get(FirebaseProvider);
-    });
-
-    afterEach(() => {
+        native = fixture.componentRef.injector.get(NativeProvider);
+        digital = fixture.componentRef.injector.get(DigitalProvider);
+      });
+    
+      afterEach(() => {
         fixture.destroy();
         component = null;
         session = null;
         sessionSpy = null;
         firebase = null;
         firebaseSpy = null;
-    });
-
+        native = null;
+        nativeSpy = null;
+        digital = null;
+        digitalSpy = null;
+        });
+    
     it('should be created', () => {
         expect(component instanceof LoginFacebookComponent).toBe(true);
     });
@@ -95,7 +111,7 @@ describe('LoginFacebookComponent', () => {
         expect(el).toContain('Login with Facebook');
     }));
 
-    it('should start loader on authentication', () => {       
+    it('should start loader on authentication', () => {
         expect(component.startLoader).toBeDefined();
     })
 
@@ -121,7 +137,7 @@ describe('LoginFacebookComponent', () => {
     });
 
     it('should request profile when checking for existing account', () => {
-        spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {} })
+        spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => { } })
         component.checkForExistingProfile('testUID');
         fixture.detectChanges();
         expect(component.requestProfile).toHaveBeenCalled();

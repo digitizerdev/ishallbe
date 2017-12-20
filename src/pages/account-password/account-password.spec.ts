@@ -7,6 +7,7 @@ import { AngularFireModule } from 'angularfire2';
 import { environment } from '../../environments/environment';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
+import { EmailComposer } from '@ionic-native/email-composer';
 
 import { HeaderComponent } from '../../components/header/header';
 import { LoginFormComponent } from '../../components/login-form/login-form';
@@ -17,16 +18,21 @@ import { AccountPasswordPage } from './account-password';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SessionProvider } from '../../providers/session/session';
+import { NativeProvider } from '../../providers/native/native';
+import { DigitalProvider } from '../../providers/digital/digital';
 
 import { } from 'jasmine';
 
 import {
   FirebaseProviderMock,
   SessionProviderMock,
+  NativeProviderMock,
+  DigitalProviderMock,
   NavMock,
   StorageMock,
   AngularFireDatabaseMock,
-  AngularFireAuthMock
+  AngularFireAuthMock,
+  EmailComposerMock
 } from '../../../test-config/mocks-ionic';
 
 let fixture;
@@ -35,24 +41,31 @@ let session: SessionProvider;
 let sessionSpy;
 let firebase: FirebaseProvider;
 let firebaseSpy;
+let native: NativeProvider;
+let nativeSpy;
+let digital: DigitalProvider;
+let digitalSpy;
 
 describe('AccountPasswordPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AccountPasswordPage], 
+      declarations: [AccountPasswordPage],
       imports: [
         IonicModule.forRoot(AccountPasswordPage),
-        AngularFireModule.initializeApp(environment.firebase)                        
+        AngularFireModule.initializeApp(environment.firebase)
       ],
       providers: [
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
         { provide: SessionProvider, useClass: SessionProviderMock },
+        { provide: NativeProvider, useClass: NativeProviderMock },
+        { provide: DigitalProvider, useClass: DigitalProviderMock },
         { provide: Storage, useClass: StorageMock },
         { provide: NavController, useClass: NavMock },
         { provide: NavParams, useClass: NavMock },
         { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
-        { provide: AngularFireAuth, useClass: AngularFireAuthMock },       
+        { provide: AngularFireAuth, useClass: AngularFireAuthMock },
+        { provide: EmailComposer, useClass: EmailComposerMock}
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA
@@ -63,8 +76,10 @@ describe('AccountPasswordPage', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountPasswordPage);
     component = fixture.componentInstance;
-    session = fixture.componentRef.injector.get(SessionProvider);    
+    session = fixture.componentRef.injector.get(SessionProvider);
     firebase = fixture.componentRef.injector.get(FirebaseProvider);
+    native = fixture.componentRef.injector.get(NativeProvider);
+    digital = fixture.componentRef.injector.get(DigitalProvider);
   });
 
   afterEach(() => {
@@ -74,6 +89,10 @@ describe('AccountPasswordPage', () => {
     sessionSpy = null;
     firebase = null;
     firebaseSpy = null;
+    native = null;
+    nativeSpy = null;
+    digital = null;
+    digitalSpy = null;
   });
 
   it('should be created', () => {

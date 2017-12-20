@@ -43,7 +43,7 @@ import { LoginFacebookComponent } from '../components/login-facebook/login-faceb
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { SessionProvider } from '../providers/session/session';
 import { NativeProvider } from '../providers/native/native';
-import { UploadProvider } from '../providers/upload/upload';
+import { DigitalProvider } from '../providers/digital/digital';
 import { makeDecorator } from '@angular/core/src/util/decorators';
 
 export interface PageInterface {
@@ -102,7 +102,7 @@ export class iShallBe {
       { title: 'Firebase Provider', component: FirebaseProvider },
       { title: 'Session Provider', component: SessionProvider },
       { title: 'Media Provider', component: NativeProvider },
-      { title: 'Upload Provider', component: UploadProvider }
+      { title: 'Digital Provider', component: DigitalProvider }
     ]
 
     this.menuPages = [
