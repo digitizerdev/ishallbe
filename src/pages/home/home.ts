@@ -9,7 +9,6 @@ import { StatementPage } from '../statement/statement';
 import { PinPage } from '../pin/pin';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-import { SessionProvider } from '../../providers/session/session';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -32,7 +31,6 @@ export class HomePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public firebase: FirebaseProvider,
-    public session: SessionProvider,
     public alertCtrl: AlertController,
     public storage: Storage
   ) {
@@ -192,7 +190,7 @@ export class HomePage {
   loadPosts(refresh) {
     console.log("Loading posts");
     this.startRefresh(refresh);
-    return this.requestUID().subscribe((uid) => {
+    return this.requestUID().then((uid) => {
       console.log("Got UID");
       console.log(uid);
       this.uid = uid
@@ -224,7 +222,9 @@ export class HomePage {
 
   requestUID() {
     console.log("Requesting UID");
-    return this.session.uid();
+    return this.storage.ready().then(() => {
+      return this.storage.get('uid');
+    });
   }
 
   requestProfile() {
@@ -233,7 +233,6 @@ export class HomePage {
   }
 
   handleBlocked() {
-    this.session.end();
     this.navCtrl.setRoot(LoginPage);
     this.presentBlocked();
   }

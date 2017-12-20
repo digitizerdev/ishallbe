@@ -3,12 +3,12 @@ import { NavController, AlertController, LoadingController, Platform } from 'ion
 import { Facebook } from '@ionic-native/facebook';
 import { Storage } from '@ionic/storage';
 
-import * as firebase from 'firebase';
-
 import { HomePage } from '../../pages/home/home';
 
+import * as Firebase from 'firebase';
+let firebase = Firebase;
+
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-import { SessionProvider } from '../../providers/session/session';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -23,7 +23,6 @@ export class LoginFacebookComponent {
 
   constructor(
     public firebase: FirebaseProvider,
-    public session: SessionProvider,
     public navCtrl: NavController,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
@@ -149,7 +148,6 @@ export class LoginFacebookComponent {
   welcome() {
     console.log("Welcoming user");
     this.endLoader();
-    this.session.start(this.uid);
     this.setRootHomePage();
   }
 

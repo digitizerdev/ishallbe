@@ -43,9 +43,6 @@ import { UserPage } from '../pages/user/user';
 import { ComponentsModule } from '../components/components.module';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
-import { SessionProvider } from '../providers/session/session';
-import { NativeProvider } from '../providers/native/native';
-import { DigitalProvider } from '../providers/digital/digital';
 
 import * as firebase from 'firebase/app';
 
@@ -121,10 +118,7 @@ import * as firebase from 'firebase/app';
     Camera,
     MediaCapture,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    FirebaseProvider,
-    SessionProvider,
-    NativeProvider,
-    DigitalProvider
-  ]
+    FirebaseProvider
+   ]
 })
 export class AppModule { }

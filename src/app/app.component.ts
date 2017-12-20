@@ -3,7 +3,6 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
-
 import { Observable } from 'rxjs/Rx';
 
 import { LoginPage } from '../pages/login/login';
@@ -32,19 +31,9 @@ import { UserPage } from '../pages/user/user';
 import { ComponentsModule } from '../components/components.module';
 import { HeaderComponent } from '../components/header/header';
 import { TermsOfServiceComponent } from '../components/terms-of-service/terms-of-service';
-import { LoginFormComponent } from '../components/login-form/login-form';
-import { ResetPasswordFormComponent } from '../components/reset-password-form/reset-password-form';
-import { RegisterFormComponent } from '../components/register-form/register-form';
-import { AccountEmailFormComponent } from '../components/account-email-form/account-email-form';
-import { AccountPasswordFormComponent } from '../components/account-password-form/account-password-form';
-import { SupportFormComponent } from '../components/support-form/support-form';
 import { LoginFacebookComponent } from '../components/login-facebook/login-facebook';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
-import { SessionProvider } from '../providers/session/session';
-import { NativeProvider } from '../providers/native/native';
-import { DigitalProvider } from '../providers/digital/digital';
-import { makeDecorator } from '@angular/core/src/util/decorators';
 
 export interface PageInterface {
 }
@@ -68,7 +57,7 @@ export class iShallBe {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public firebase: FirebaseProvider,
-    public session: SessionProvider,
+    public storage: Storage
   ) {
     this.rootPage = LoginPage;
     platform.ready();
@@ -100,9 +89,6 @@ export class iShallBe {
 
     this.providers = [
       { title: 'Firebase Provider', component: FirebaseProvider },
-      { title: 'Session Provider', component: SessionProvider },
-      { title: 'Media Provider', component: NativeProvider },
-      { title: 'Digital Provider', component: DigitalProvider }
     ]
 
     this.menuPages = [
@@ -135,13 +121,7 @@ export class iShallBe {
 
     this.components = [
       { title: 'Header Component', component: HeaderComponent },      
-      { title: 'Login Form', component: LoginFormComponent },
-      { title: 'Reset Password Form Component', component: ResetPasswordFormComponent },
-      { title: 'Register Form Component', component: RegisterFormComponent },
       { title: 'Terms of Service Component', component: TermsOfServiceComponent },
-      { title: 'Account Email Form Component', component: AccountEmailFormComponent },
-      { title: 'Account Password Form Component', component: AccountPasswordFormComponent },
-      { title: 'Support Form Component', component: SupportFormComponent },
       { title: 'Login Facebook Component', component: LoginFacebookComponent },      
     ]
   }
@@ -149,24 +129,22 @@ export class iShallBe {
   platformReady() {
     this.platform.ready().then(() => {
       console.log("Platform ready");
-      this.wakeUp();
+      this.checkForSession();
       this.splashScreen.hide();
     });
   }
 
-  wakeUp() {
-    console.log("Waking up")
-    this.session.loggedIn().subscribe((user)=>{
-      console.log("Got user");
-      console.log(user);
-      if (user) {
-        this.sessionFound();
-      } else {
-        console.log("Didn't get user");
-      }
-    })
+  checkForSession() {
+    console.log("Checking for session");
+    this.storage.ready().then(() => {
+      this.storage.get('uid').then((uid) => {
+        if (uid) {
+          this.sessionFound();
+        }
+      });
+    });
   }
-
+  
   sessionFound() {
     this.nav.setRoot(HomePage);
   }

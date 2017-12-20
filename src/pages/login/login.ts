@@ -5,8 +5,6 @@ import { HomePage } from '../home/home';
 import { RegisterPage } from '../register/register';
 import { PasswordResetPage } from '../password-reset/password-reset';
 
-import { SessionProvider } from '../../providers/session/session';
-
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -17,19 +15,11 @@ export class LoginPage {
 
   constructor(
     public navCtrl: NavController,
-    public session: SessionProvider
   ) { 
     this.wakeUp();
   }
 
   wakeUp() {
-    this.session.loggedIn().subscribe((user)=>{
-      console.log(user);
-      if (user) {
-        this.sessionFound();
-      } else {
-      }
-    })
   }
 
   sessionFound() {

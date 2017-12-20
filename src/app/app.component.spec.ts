@@ -22,17 +22,10 @@ import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
-import { SessionProvider } from '../providers/session/session';
-import { NativeProvider } from '../providers/native/native';
-import { DigitalProvider } from '../providers/digital/digital';
 
 import { iShallBe } from './app.component';
 
 import {
-  FirebaseProviderMock,
-  SessionProviderMock,
-  NativeProviderMock,
-  DigitalProviderMock,
   PlatformMock,
   StatusBarMock,
   SplashScreenMock,
@@ -43,21 +36,15 @@ import {
   AngularFireDatabaseMock,
   AngularFireAuthMock,
   FirebaseAppMock,
-  EmailComposerMock
+  FirebaseProviderMock
 } from '../../test-config/mocks-ionic';
 
 import { } from 'jasmine';
 
 let fixture;
 let component;
-let session: SessionProvider;
-let sessionSpy;
 let firebase: FirebaseProvider;
 let firebaseSpy;
-let native: NativeProvider;
-let nativeSpy;
-let digital: DigitalProvider;
-let digitalSpy;
 
 describe('iShallBe App Component', () => {
 
@@ -69,12 +56,7 @@ describe('iShallBe App Component', () => {
         AngularFireModule.initializeApp(environment.firebase),
       ],
       providers: [
-        { provide: FirebaseProvider, useClass: FirebaseProviderMock },
-        { provide: SessionProvider, useClass: SessionProviderMock },
-        { provide: NativeProvider, useClass: NativeProviderMock },
-        { provide: DigitalProvider, useClass: DigitalProviderMock },
         { provide: StatusBar, useClass: StatusBarMock },
-        { provide: EmailComposer, useClass: EmailComposerMock },        
         { provide: SplashScreen, useClass: SplashScreenMock },
         { provide: Platform, useClass: PlatformMock },
         { provide: Storage, useClass: StorageMock },
@@ -84,7 +66,8 @@ describe('iShallBe App Component', () => {
         { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
         { provide: AngularFireAuth, useClass: AngularFireAuthMock },
         { provide: FirebaseApp, useClass: FirebaseAppMock },
-        { provide: firebase, useClass: FirebaseApp }
+        { provide: firebase, useClass: FirebaseApp },
+        { provide: FirebaseProvider, useClass: FirebaseProviderMock }
       ]
     })
       .compileComponents();
@@ -93,23 +76,14 @@ describe('iShallBe App Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(iShallBe);
     component = fixture.componentInstance;
-    session = fixture.componentRef.injector.get(SessionProvider);
     firebase = fixture.componentRef.injector.get(FirebaseProvider);
-    native = fixture.componentRef.injector.get(NativeProvider);
-    digital = fixture.componentRef.injector.get(DigitalProvider);
   });
 
   afterEach(() => {
     fixture.destroy();
     component = null;
-    session = null;
-    sessionSpy = null;
     firebase = null;
     firebaseSpy = null;
-    native = null;
-    nativeSpy = null;
-    digital = null;
-    digitalSpy = null;
   });
 
   it('should be created', (done) => {
@@ -118,8 +92,8 @@ describe('iShallBe App Component', () => {
     promise.then(done).catch(done.fail);
   });
 
-  it('should have 4 providers', () => {
-    expect(component.providers.length).toBe(4);
+  it('should have 1 provider', () => {
+    expect(component.providers.length).toBe(1);
   });
 
   it('should have 5 menu pages', () => {
@@ -130,19 +104,12 @@ describe('iShallBe App Component', () => {
     expect(component.pages.length).toBe(22);
   });
 
-  it('should have 9 components', () => {
-    expect(component.components.length).toBe(9);
+  it('should have 3 components', () => {
+    expect(component.components.length).toBe(3);
   });
 
   it('should initialize with login page as root page', () => {
     expect(component['rootPage']).toBe(LoginPage);
-  });
-
-  it('should request authentication state from Session Provider when awoken', () => {
-    spyOn(session, 'loggedIn').and.returnValue({ subscribe: () => { } })
-    component.wakeUp();
-    fixture.detectChanges();
-    expect(session.loggedIn).toHaveBeenCalled();
   });
 
 });

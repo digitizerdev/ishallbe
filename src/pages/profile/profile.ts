@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { HomePage } from '../home/home';
 import { ProfileManagerPage } from '../profile-manager/profile-manager';
@@ -8,7 +9,6 @@ import { PostPage } from '../post/post';
 import { AccountPage } from '../account/account';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-import { SessionProvider } from '../../providers/session/session';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -26,9 +26,9 @@ import { Observable } from 'rxjs/Observable';
   constructor(
     public navCtrl: NavController, 
     public firebase: FirebaseProvider,
-    public session: SessionProvider,
     public navParams: NavParams,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public storage: Storage
   ) {
   }
 
@@ -37,7 +37,7 @@ import { Observable } from 'rxjs/Observable';
   }
 
   loadProfile() {
-    return this.requestUID().subscribe((uid) => {
+    return this.requestUID().then((uid) => {
       this.uid = uid;
       return this.requestProfile().subscribe((profile) => {
         this.syncProfile(profile);
@@ -49,7 +49,9 @@ import { Observable } from 'rxjs/Observable';
   }
 
   requestUID() {
-    return this.session.uid();
+    return this.storage.ready().then(() => {
+      return this.storage.get(('uid'));      
+    });
   }
 
   requestProfile() {

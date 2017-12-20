@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { Observable } from 'rxjs/Observable';
 
 import { PostPage } from '../post/post';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-import { SessionProvider } from '../../providers/session/session';
-
-import { Observable } from 'rxjs/Observable';
 
 @IonicPage()
 @Component({
@@ -24,7 +23,7 @@ export class UserPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public firebase: FirebaseProvider,
-    public session: SessionProvider
+    public storage: Storage
   ) {
   }
 
@@ -36,7 +35,7 @@ export class UserPage {
     this.uid = this.navParams.get('uid'); 
     return this.requestUser().first().subscribe((user) => {
       this.profile = user;
-      return this.requestUID().first().subscribe((uid) => {
+      return this.requestUID().then((uid) => {
         this.myUID = uid;
         return this.requestProfile().first().subscribe((profile) => {
           this.syncProfile(profile);
@@ -54,7 +53,9 @@ export class UserPage {
   }
 
   requestUID() {
-    return this.session.uid();
+    return this.storage.ready().then(() => {
+      return this.storage.get(('uid'));      
+    });
   }
 
   requestProfile() {

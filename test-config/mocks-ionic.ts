@@ -1,7 +1,4 @@
 import { FirebaseProvider } from '../src/providers/firebase/firebase';
-import { SessionProvider } from '../src/providers/session/session';
-import { NativeProvider } from '../src/providers/native/native';
-import { DigitalProvider } from '../src/providers/digital/digital';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -236,24 +233,6 @@ export class AngularFireAuthMock extends AngularFireAuthModule {
 }
 
 export class FirebaseAppMock extends AngularFireModule {
-  hide() {
-    return;
-  }
-}
-
-export class SessionProviderMock extends SessionProvider {
-  hide() {
-    return;
-  }
-}
-
-export class NativeProviderMock extends NativeProvider {
-  hide() {
-    return;
-  }
-}
-
-export class DigitalProviderMock extends DigitalProvider {
   hide() {
     return;
   }

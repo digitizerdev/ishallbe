@@ -4,11 +4,11 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import { UserPage } from '../user/user';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-import { SessionProvider } from '../../providers/session/session';
 
 import moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -34,7 +34,7 @@ export class PostPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertCtrl: AlertController,
-    public session: SessionProvider,
+    public storage: Storage,
     public firebase: FirebaseProvider
   ) {
   }
@@ -77,7 +77,7 @@ export class PostPage {
 
   makeProfileRequests() {
     return Observable.create((observer) => {
-      return this.requestUID().subscribe((uid) => {
+      return this.requestUID().then((uid) => {
         this.uid = uid;
         this.profile = [];
         return this.requestProfile().subscribe((profile) => {
@@ -89,7 +89,9 @@ export class PostPage {
   }
 
   requestUID() {
-    return this.session.uid();
+    return this.storage.ready().then(() => {
+      return this.storage.get(('uid'));      
+    });
   }
 
   requestProfile() {
