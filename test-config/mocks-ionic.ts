@@ -191,6 +191,15 @@ export class FirebaseProviderMock extends FirebaseProvider {
   styleDefault() {
     return;
   }
+
+  public login (loginForm): any {
+    return new Promise(function (resolve: Function): void {
+      let token = {
+        uid: 'testUID'
+      }
+      resolve(token);
+    });
+  }
 }
 
 export class AngularFireDatabaseMock extends AngularFireDatabaseModule {
@@ -212,13 +221,14 @@ export class AngularFireDatabaseMock extends AngularFireDatabaseModule {
 }
 
 export class AngularFireAuthMock extends AngularFireAuthModule {
-  hide() {
-    return;
-  }
+
   public auth(): any {
     return {
       signInWithEmailAndPassword(email, password) {
-        return;
+        let token = {
+          uid: 'testUID'
+        }
+        return token;
       },
 
       currentUser(): any {
@@ -242,17 +252,27 @@ export class StorageMock extends IonicStorageModule {
   
   public ready(): any {
     return new Promise(function (resolve: Function): void {
-      resolve();
+      resolve(true);
     });
   }
 
-  public get(): any {
-    return new Promise(function (resolve: Function): void {
-      resolve();
-    });
+  public get( name: string ) {
+
+    if ( name = 'session') {
+      return new Promise(function (resolve: Function): void {
+        resolve(true);
+      });
+    }
+
+    if ( name = 'failSession') {
+      return new Promise(function (resolve: Function): void {
+        resolve(true);
+      });
+    }
+    
   }
 
-  public set(): any {
+  public set( name: string, value: any ): any {
     return new Promise(function (resolve: Function): void {
       resolve();
     });

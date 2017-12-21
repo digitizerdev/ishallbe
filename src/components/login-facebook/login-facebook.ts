@@ -62,17 +62,7 @@ export class LoginFacebookComponent {
   }
 
   browser() {
-    this.firebase.afa.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((token)=> {
-      let photoURL = "https://graph.facebook.com/" + token.user.providerData[0].uid + "/picture?type=large";      
-      let account = {
-        "uid": token.user.uid,
-        "name": token.user.displayName,
-        "email": token.user.email,
-        "photo": photoURL,   
-      }
-      this.uid = token.uid;
-      this.checkForExistingProfile(account);
-    });
+
   }
 
   unpackageCordovaToken(provider) {

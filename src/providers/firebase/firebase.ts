@@ -5,14 +5,56 @@ import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
 
+class Credentials {
+  email: string;
+  password: string;
+}
+
 @Injectable()
 export class FirebaseProvider {
-
+ 
   constructor
     (
     public afdb: AngularFireDatabase,
-    public afa: AngularFireAuth,
-    ) {
+    private afAuth: AngularFireAuth,
+  ) {
+  }
+
+  register(credentials: Credentials) {
+    return this.afAuth.auth
+      .createUserWithEmailAndPassword(
+        credentials.email,
+        credentials.password,
+      );
+  }
+
+  logIn(credentials: Credentials) {
+    return this.afAuth.auth
+      .signInWithEmailAndPassword(
+        credentials.email,
+        credentials.password,
+      );
+  }
+
+  logOut() {
+    return this.afAuth.auth
+      .signOut();
+  }
+
+  account() {
+    return this.afAuth.auth.currentUser;
+  }
+  
+  resetPassword(email) {
+    return this.afAuth.auth.sendPasswordResetEmail(email)    
+  }
+
+  updateAccountEmail(email) {
+    return this.account().updateEmail(email);
+  }
+
+  updateAccountPassword(password) {
+    return this.account().updatePassword(password);
   }
 
   object(path): FirebaseObjectObservable<any> {
@@ -61,27 +103,4 @@ export class FirebaseProvider {
     return this.object(path);
   }
 
-  account() {
-    return this.afa.auth.currentUser;
-  }
-
-  authenticate(email, password) {
-    return this.afa.auth.signInWithEmailAndPassword(email, password);
-  }
-
-  createAccount(email, password) {
-    return this.afa.auth.createUserWithEmailAndPassword(email, password);
-  }
-  
-  resetPassword(email) {
-    return this.afa.auth.sendPasswordResetEmail(email)    
-  }
-
-  updateAccountEmail(email) {
-    return this.account().updateEmail(email);
-  }
-
-  updateAccountPassword(password) {
-    return this.account().updatePassword(password);
-  }
 }

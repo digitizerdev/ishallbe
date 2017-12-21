@@ -129,24 +129,8 @@ export class iShallBe {
   platformReady() {
     this.platform.ready().then(() => {
       console.log("Platform ready");
-      this.checkForSession();
       this.splashScreen.hide();
     });
-  }
-
-  checkForSession() {
-    console.log("Checking for session");
-    this.storage.ready().then(() => {
-      this.storage.get('uid').then((uid) => {
-        if (uid) {
-          this.sessionFound();
-        }
-      });
-    });
-  }
-  
-  sessionFound() {
-    this.nav.setRoot(HomePage);
   }
 
   openPage(page) {
