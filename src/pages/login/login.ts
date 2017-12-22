@@ -24,7 +24,7 @@ export class LoginPage {
   submitted = false;
   loader: any;
   uid: any;
-  
+
   constructor(
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
@@ -57,7 +57,6 @@ export class LoginPage {
         this.uid = token.uid;              
         observer.next(token);
       }, (error) => {
-        console.log(error);
         this.errorHandler(error);
       });
     });
