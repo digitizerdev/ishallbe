@@ -7,7 +7,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
-import { MediaCapture } from '@ionic-native/media-capture';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
@@ -119,7 +118,6 @@ import * as firebase from 'firebase/app';
     File,
     Facebook,
     Camera,
-    MediaCapture,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     FirebaseProvider
    ]

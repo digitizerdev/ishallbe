@@ -3,7 +3,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
-import { MediaCapture } from '@ionic-native/media-capture';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
@@ -13,7 +12,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { Observable } from 'rxjs/Observable'; 
+import { Observable } from 'rxjs/Observable';
 
 export class PlatformMock {
 
@@ -107,6 +106,17 @@ export class FileMock extends File {
   }
 }
 
+
+export class CameraMock extends Camera {
+
+  public open(email): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+}
+
+
 export class EmailComposerMock extends EmailComposer {
 
   public open(email): any {
@@ -122,6 +132,37 @@ export class PushMock extends Push {
   }
 }
 
+export class StorageMock extends IonicStorageModule {
+
+  public ready(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve(true);
+    });
+  }
+
+  public get(name: string) {
+
+    if (name = 'session') {
+      return new Promise(function (resolve: Function): void {
+        resolve(true);
+      });
+    }
+
+    if (name = 'failSession') {
+      return new Promise(function (resolve: Function): void {
+        resolve(true);
+      });
+    }
+
+  }
+
+  public set(name: string, value: any): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+
+}
 export class NavMock {
 
   public pop(): any {
@@ -164,8 +205,8 @@ export class DeepLinkerMock {
 export class AlertControllerMock {
   _getPortal(): any { return {} };
 
-  create(options?: any) { 
-      return new AlertMock()
+  create(options?: any) {
+    return new AlertMock()
   };
 }
 
@@ -175,8 +216,8 @@ class AlertMock {
 
 export class LoadingControllerMock {
   _getPortal(): any { return {} };
-  create(options?: any) { 
-      return new LoadingMock()
+  create(options?: any) {
+    return new LoadingMock()
   };
 
 }
@@ -192,7 +233,7 @@ export class FirebaseProviderMock extends FirebaseProvider {
     return;
   }
 
-  public login (loginForm): any {
+  public login(loginForm): any {
     return new Promise(function (resolve: Function): void {
       let token = {
         uid: 'testUID'
@@ -245,36 +286,5 @@ export class AngularFireAuthMock extends AngularFireAuthModule {
 export class FirebaseAppMock extends AngularFireModule {
   hide() {
     return;
-  }
-}
-
-export class StorageMock extends IonicStorageModule {
-  
-  public ready(): any {
-    return new Promise(function (resolve: Function): void {
-      resolve(true);
-    });
-  }
-
-  public get( name: string ) {
-
-    if ( name = 'session') {
-      return new Promise(function (resolve: Function): void {
-        resolve(true);
-      });
-    }
-
-    if ( name = 'failSession') {
-      return new Promise(function (resolve: Function): void {
-        resolve(true);
-      });
-    }
-    
-  }
-
-  public set( name: string, value: any ): any {
-    return new Promise(function (resolve: Function): void {
-      resolve();
-    });
   }
 }

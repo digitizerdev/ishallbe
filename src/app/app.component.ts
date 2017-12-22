@@ -3,6 +3,7 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { Observable } from 'rxjs/Rx';
 
 import { StartupPage } from '../pages/startup/startup';
@@ -58,7 +59,8 @@ export class iShallBe {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public firebase: FirebaseProvider,
-    public storage: Storage
+    public storage: Storage,
+    public push: Push
   ) {
     this.rootPage = StartupPage;
     platform.ready();
@@ -132,8 +134,36 @@ export class iShallBe {
     this.platform.ready().then(() => {
       console.log("Platform ready");
       this.splashScreen.hide();
+      this.initPushNotifications();
     });
   }
+
+  initPushNotifications(){
+    if (!this.platform.is('cordova')) {
+      return;
+    }
+    const options: PushOptions = {
+      android: {},
+      ios: {
+          alert: 'true',
+          badge: true,
+          sound: 'false'
+      },
+      windows: {},
+      browser: {
+          pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+      }
+   };
+
+    const pushObject: PushObject = this.push.init(options);    
+
+    pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
+    
+    pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
+    
+    pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+  }
+
 
   openPage(page) {
     this.nav.setRoot(page.component);

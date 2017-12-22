@@ -1,4 +1,4 @@
-import { async, TestBed, ComponentFixture } from '@angular/core/testing';
+import { async, TestBed, ComponentFixture, tick, fakeAsync } from '@angular/core/testing';
 import { NgModule, Component, ViewChild } from '@angular/core';
 import { IonicModule, Platform } from 'ionic-angular';
 import { AngularFireModule, FirebaseApp, FirebaseAppConfig } from 'angularfire2';
@@ -10,7 +10,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
-import { MediaCapture } from '@ionic-native/media-capture';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { Storage } from '@ionic/storage';
@@ -32,10 +31,13 @@ import {
   FacebookMock,
   FileMock,
   PushMock,
+  CameraMock,
+  EmailComposerMock,
   AngularFireDatabaseMock,
   AngularFireAuthMock,
   FirebaseAppMock,
-  FirebaseProviderMock
+  FirebaseProviderMock,
+
 } from '../../test-config/mocks-ionic';
 
 import { } from 'jasmine';
@@ -62,6 +64,8 @@ describe('iShallBe App Component', () => {
         { provide: Facebook, useClass: FacebookMock },
         { provide: File, useClass: FileMock },
         { provide: Push, useClass: PushMock },
+        { provide: Camera, useClass: CameraMock },
+        { provide: EmailComposer, useClass: EmailComposerMock },
         { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
         { provide: AngularFireAuth, useClass: AngularFireAuthMock },
         { provide: FirebaseApp, useClass: FirebaseAppMock },
@@ -106,6 +110,10 @@ describe('iShallBe App Component', () => {
   it('should have 3 components', () => {
     expect(component.components.length).toBe(3);
   });
+
+  it('should enable push notifications', fakeAsync(() => {
+    expect(component.initPushNotifications).toBeDefined();
+  }));
 
   it('should initialize with startup page as root page', () => {
     expect(component['rootPage']).toBe(StartupPage);
