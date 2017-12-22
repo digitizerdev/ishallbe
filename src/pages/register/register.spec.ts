@@ -195,6 +195,21 @@ describe('RegisterPage', () => {
         expect(component.setRootHomePage).toHaveBeenCalled();
     });
 
+    it('should display login button', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#RegisterLoginButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Login');
+    });
+
+    it('should be able to set root to LoginPage', () => {
+        spyOn(nav, 'setRoot');
+        component.setRootLoginPage();
+        fixture.detectChanges();
+        expect(nav.setRoot).toHaveBeenCalled();
+    });
+
     it('should display terms-of-service component', () => {
         let de: DebugElement;
         let el: HTMLElement;

@@ -159,8 +159,8 @@ export class RegisterPage {
     alert.present();
   }
 
-  pushLoginPage() {
-    this.navCtrl.push(LoginPage);
+  setRootLoginPage() {
+    this.navCtrl.setRoot(LoginPage);
   }
 
 }
