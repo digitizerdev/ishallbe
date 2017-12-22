@@ -1,12 +1,43 @@
 <ion-content center padding>
   <header></header>
-  <br><br>
+  <br>
+  <br>
   <login-facebook></login-facebook>
-  <br><br>  
-  <ion-row responsive-sm>
-    <ion-col text-center>
-      <button ion-button id="RegisterLoginButton" (click)="pushLoginPage()" color="secondary" round outline>Login</button>
-    </ion-col>
-  </ion-row>
+  <br>
+  <br>
+  <form #registerForm="ngForm" novalidate>
+    <ion-list no-lines>
+      <ion-item>
+        <ion-label stacked color="primary">Name</ion-label>
+        <ion-input [(ngModel)]="registerForm.name" name="name" type="text" #name="ngModel" required>
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="name.valid || submitted == false" color="danger" padding-left>
+        Name is required
+      </p>
+      <ion-item>
+        <ion-label stacked color="primary">Email</ion-label>
+        <ion-input [(ngModel)]="registerForm.email" name="email" type="text" #email="ngModel" required>
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="email.valid || submitted == false" color="danger" padding-left>
+        Email is required
+      </p>
+      <ion-item>
+        <ion-label stacked color="primary">Password</ion-label>
+        <ion-input [(ngModel)]="registerForm.password" name="password" type="password" #password="ngModel" required minlength="8">
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>
+        Password is required to be at least 8 characters long
+      </p>
+      <br>
+      <ion-row>
+        <ion-col text-center>
+          <button id="RegisterButton" ion-button (click)="submit(registerForm)" type="submit" round large>Register with Email</button>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+  </form>
   <terms-of-service></terms-of-service>
 </ion-content>

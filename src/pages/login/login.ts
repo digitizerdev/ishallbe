@@ -24,8 +24,7 @@ export class LoginPage {
   submitted = false;
   loader: any;
   uid: any;
-  session = false;
-
+  
   constructor(
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,

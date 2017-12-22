@@ -15,7 +15,7 @@ import { HeaderComponent } from '../../components/header/header';
 import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
 import { TermsOfServiceComponent } from '../../components/terms-of-service/terms-of-service';
 
-import { LoginPage } from './login';
+import { RegisterPage } from './register';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -58,24 +58,28 @@ const credentialsMock = {
   const fakeSignOutHandler = (): Promise<any> => {
     fakeAuthState.next(null);
     return Promise.resolve();
-  };  
+  };
   
   const angularFireAuthStub = {
     authState: fakeAuthState,
     auth: {
-      signInWithEmailAndPassword: jasmine
-        .createSpy('signInWithEmailAndPassword')
+      createUserWithEmailAndPassword: jasmine
+        .createSpy('createUserWithEmailAndPassword')
         .and
-        .callFake(fakeSignInHandler)
+        .callFake(fakeSignInHandler),
+      signOut: jasmine
+        .createSpy('signOut')
+        .and
+        .callFake(fakeSignOutHandler),
     },
   };
-describe('LoginPage', () => {
+describe('RegisterPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [LoginPage],
+            declarations: [RegisterPage],
             imports: [
-                IonicModule.forRoot(LoginPage),
+                IonicModule.forRoot(RegisterPage),
                 AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
@@ -93,7 +97,7 @@ describe('LoginPage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(LoginPage);
+        fixture = TestBed.createComponent(RegisterPage);
         component = fixture.componentInstance;
         nav = fixture.componentRef.injector.get(NavController);
         storage = fixture.componentRef.injector.get(Storage);
@@ -112,11 +116,11 @@ describe('LoginPage', () => {
     });
 
     it('should be created', () => {
-        expect(component instanceof LoginPage).toBe(true);
+        expect(component instanceof RegisterPage).toBe(true);
     });
 
     it('should be initialized', () => {
-        expect(component.loginForm).toBeDefined();
+        expect(component.registerForm).toBeDefined();
         expect(component.submitted).toBeDefined();
         expect(component.loader).toBeUndefined();
         expect(component.uid).toBeUndefined();
@@ -138,28 +142,43 @@ describe('LoginPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display login form', () => {
+    it('should submit via Register Button', async(() => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#RegisterButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Register');
+    }));
+
+    it('should present alert to confirm EULA agreement', () => {
+        expect(component.presentEULAA).toBeUndefined();
+    });
+
+    it('should display register form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Login with Email');
+        expect(el).toContain('Register with Email');
+        expect(el).toContain('name');
         expect(el).toContain('email');
         expect(el).toContain('password');
     });
 
     it('should submit form', () => {
-        let loginForm = {
+        let registerForm = {
+            name: 'testName',
             email: 'testEmail',
             password: 'testPassword'
         }
-        component.submit(loginForm);
+        component.submit(registerForm);
         expect(component.submitted).toBeTruthy();
     });;
 
-    it('should request Firebase to authenticate', () => {
-        component.firebase.logIn(credentialsMock);
-        expect(afAuth.auth.signInWithEmailAndPassword)
+    
+    it('should request Firebase to create user', () => {
+        component.firebase.register(credentialsMock);
+        expect(afAuth.auth.createUserWithEmailAndPassword)
           .toHaveBeenCalledWith(credentialsMock.email, credentialsMock.password);
     });
 
@@ -174,36 +193,6 @@ describe('LoginPage', () => {
         expect(component.presentConfirmationAlert).toHaveBeenCalled();
         expect(component.startSession).toHaveBeenCalled();
         expect(component.setRootHomePage).toHaveBeenCalled();
-    });
-
-    it('should display register button', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#LoginRegisterButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Register');
-    });
-
-    it('should be able to set root to RegisterPage', () => {
-        spyOn(nav, 'setRoot');
-        component.pushRegisterPage();
-        fixture.detectChanges();
-        expect(nav.setRoot).toHaveBeenCalled();
-    });
-
-    it('should display forgot password button', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#LoginForgotPasswordButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Forgot Password?');
-    });
-
-    it('should be able to push PasswordResetPage', () => {
-        spyOn(nav, 'push');
-        component.pushPasswordResetPage();
-        fixture.detectChanges();
-        expect(nav.push).toHaveBeenCalled();
     });
 
     it('should display terms-of-service component', () => {
