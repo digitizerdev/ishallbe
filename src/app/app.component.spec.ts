@@ -18,8 +18,7 @@ import { EmailComposer } from '@ionic-native/email-composer'
 
 import { Observable } from 'rxjs/Rx';
 
-import { LoginPage } from '../pages/login/login';
-import { HomePage } from '../pages/home/home';
+import { StartupPage } from '../pages/startup/startup';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
@@ -100,16 +99,16 @@ describe('iShallBe App Component', () => {
     expect(component.menuPages.length).toBe(5);
   })
 
-  it('should have 22 pages', () => {
-    expect(component.pages.length).toBe(22);
+  it('should have 23 pages', () => {
+    expect(component.pages.length).toBe(23);
   });
 
   it('should have 3 components', () => {
     expect(component.components.length).toBe(3);
   });
 
-  it('should initialize with login page as root page', () => {
-    expect(component['rootPage']).toBe(LoginPage);
+  it('should initialize with startup page as root page', () => {
+    expect(component['rootPage']).toBe(StartupPage);
   });
 
 });

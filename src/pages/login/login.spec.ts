@@ -131,35 +131,6 @@ describe('LoginPage', () => {
         expect(component.uid).toBeUndefined();
     });
 
-    it('should load view on entrance', fakeAsync(() => {
-        spyOn(component, 'loadView').and.returnValue({ subscribe: () => {}});
-        component.ionViewDidEnter();
-        tick();
-        fixture.detectChanges();
-        expect(component.loadView).toHaveBeenCalled();
-    }));
-
-    it('should retrieve session to determine which view to load', () => {
-        spyOn(component, 'retrieveSession').and.returnValue({ subscribe: () => {}});
-        component.loadView();
-        expect(storage.ready).toBeDefined();
-        expect(storage.get).toBeDefined();
-        expect(component.retrieveSession).toHaveBeenCalled();
-    });
-
-    it('should not set view to home page if session not found', () => {
-        spyOn(nav, 'setRoot').and.returnValue;        
-        component.setView();
-        expect(nav.setRoot).toHaveBeenCalledTimes(0);
-    });
-
-    it('should set view to home page if session found', () => {
-        spyOn(nav, 'setRoot').and.returnValue;        
-        component.session = true;
-        component.setView();
-        expect(nav.setRoot).toHaveBeenCalled();
-    });
-
     it('should display header component', () => {
         let de: DebugElement;
         let el: HTMLElement;
@@ -222,7 +193,7 @@ describe('LoginPage', () => {
         expect(el).toContain('Register');
     });
 
-    it('should be able to set root to registration page', () => {
+    it('should be able to set root to RegisterPage', () => {
         spyOn(nav, 'setRoot');
         component.pushRegisterPage();
         fixture.detectChanges();
@@ -237,7 +208,7 @@ describe('LoginPage', () => {
         expect(el).toContain('Forgot Password?');
     });
 
-    it('should be able to push password page', () => {
+    it('should be able to push PasswordResetPage', () => {
         spyOn(nav, 'push');
         component.pushPasswordResetPage();
         fixture.detectChanges();

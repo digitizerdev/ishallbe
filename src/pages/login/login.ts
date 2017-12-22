@@ -35,31 +35,6 @@ export class LoginPage {
   ) {
   }
 
-  ionViewDidEnter() {
-    this.loadView();
-  }
-
-  loadView() {
-    this.retrieveSession().subscribe((session) => {
-      this.session = session;
-      this.setView();
-    });
-  }
-
-  retrieveSession() {
-    return Observable.create((observer) => {
-      return this.storage.ready().then(() => {
-        return this.storage.get('session');
-      });
-    });
-  }
-
-  setView() {
-    if (this.session) {
-      this.navCtrl.setRoot(HomePage);
-    }
-  }
-
   submit(loginForm) {
     this.submitted = true;
     if (loginForm.valid) {

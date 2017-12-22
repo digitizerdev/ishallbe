@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Rx';
 
+import { StartupPage } from '../pages/startup/startup';
 import { LoginPage } from '../pages/login/login';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
 import { RegisterPage } from '../pages/register/register';
@@ -59,10 +60,11 @@ export class iShallBe {
     public firebase: FirebaseProvider,
     public storage: Storage
   ) {
-    this.rootPage = LoginPage;
+    this.rootPage = StartupPage;
     platform.ready();
 
     this.pages = [
+      { title: 'Startup Page', component: StartupPage },
       { title: 'Login Page', component: LoginPage },
       { title: 'Password Reset Page', component: PasswordResetPage },
       { title: 'Register Page', component: RegisterPage },

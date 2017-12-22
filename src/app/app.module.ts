@@ -17,6 +17,7 @@ import { environment } from '../environments/environment';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 
+import { StartupPage } from '../pages/startup/startup';
 import { LoginPage } from '../pages/login/login';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
 import { RegisterPage } from '../pages/register/register';
@@ -49,6 +50,7 @@ import * as firebase from 'firebase/app';
 @NgModule({
   declarations: [
     iShallBe,
+    StartupPage,
     LoginPage,
     PasswordResetPage,  
     RegisterPage,
@@ -85,6 +87,7 @@ import * as firebase from 'firebase/app';
   bootstrap: [IonicApp],
   entryComponents: [
     iShallBe,
+    StartupPage,
     LoginPage,
     PasswordResetPage,  
     RegisterPage,
