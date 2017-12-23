@@ -116,7 +116,7 @@ export class RegisterPage {
 
   requestProfileCreation() {
     let path = '/users/' + this.profile.uid;
-    return this.firebase.setObject(path, this.profile);    
+    return this.firebase.object(path).set(this.profile);    
   }
 
   confirmDelivery() {

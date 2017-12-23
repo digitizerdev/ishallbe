@@ -15,7 +15,7 @@ import { HeaderComponent } from '../../components/header/header';
 import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
 import { TermsOfServiceComponent } from '../../components/terms-of-service/terms-of-service';
 
-import { LoginPage } from './login';
+import { AccountEmailPage } from './account-email';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -38,45 +38,32 @@ let afAuth: AngularFireAuth;
 let isAuth$: Subscription;
 let isAuthRef: boolean;
 
-const credentialsMock = {
-    email: 'abc@123.com',
-    password: 'password'
-  };
-  
-  const userMock = {
-    uid: 'ABC123',
-    email: credentialsMock.email,
-  };
-  
-  const fakeAuthState = new BehaviorSubject(null);
-  
-  const fakeSignInHandler = (email, password): Promise<any> => {
-    fakeAuthState.next(userMock);
-    return Promise.resolve(userMock);
-  };
-  
-  const fakeSignOutHandler = (): Promise<any> => {
-    fakeAuthState.next(null);
-    return Promise.resolve();
-  };  
-  
-  const angularFireAuthStub = {
+const fakeAuthState = new BehaviorSubject(null);
+
+const fakeUpdateEmail = (email): Promise<any> => {
+    fakeAuthState.next(email);
+    return Promise.resolve(email);
+};
+
+const angularFireAuthStub = {
     authState: fakeAuthState,
     auth: {
-      signInWithEmailAndPassword: jasmine
-        .createSpy('signInWithEmailAndPassword')
-        .and
-        .callFake(fakeSignInHandler)
+        currentUser: {
+            updateEmail: jasmine
+            .createSpy('updateEmail')
+            .and
+            .callFake(fakeUpdateEmail)
+        }
     },
-  };
-  
-describe('LoginPage', () => {
+};
+
+describe('AccountEmailPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [LoginPage],
+            declarations: [AccountEmailPage],
             imports: [
-                IonicModule.forRoot(LoginPage),
+                IonicModule.forRoot(AccountEmailPage),
                 AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
@@ -94,12 +81,12 @@ describe('LoginPage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(LoginPage);
+        fixture = TestBed.createComponent(AccountEmailPage);
         component = fixture.componentInstance;
         nav = fixture.componentRef.injector.get(NavController);
         storage = fixture.componentRef.injector.get(Storage);
         firebase = fixture.componentRef.injector.get(FirebaseProvider);
-        afAuth = TestBed.get(AngularFireAuth);   
+        afAuth = TestBed.get(AngularFireAuth);
     });
 
     afterEach(() => {
@@ -107,112 +94,75 @@ describe('LoginPage', () => {
         component = null;
         nav = null;
         storage = null;
-        firebase = null;        
+        firebase = null;
         afAuth = null;
         fakeAuthState.next(null);
     });
 
     it('should be created', () => {
-        expect(component instanceof LoginPage).toBe(true);
+        expect(component instanceof AccountEmailPage).toBe(true);
     });
 
     it('should be initialized', () => {
-        expect(component.loginForm).toBeDefined();
+        expect(component.updateEmailForm).toBeDefined();
         expect(component.submitted).toBeDefined();
         expect(component.loader).toBeUndefined();
         expect(component.uid).toBeUndefined();
+        expect(component.title).toBe('Update Email');
     });
 
-    it('should display header component', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('header'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    it('should display login-facebook component', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('login-facebook'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    it('should display login form', () => {
+    it('should display update email form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Login with Email');
+        expect(el).toContain('Update Email');
         expect(el).toContain('email');
-        expect(el).toContain('password');
     });
 
+    it('should load account', fakeAsync(() => {
+        spyOn(component, 'requestUID').and.callThrough();
+        spyOn(component, 'requestProfile').and.callThrough();
+        spyOn(storage, 'ready').and.callThrough();
+        spyOn(storage, 'get').and.callThrough();
+        component.loadAccount();
+        tick();
+        fixture.detectChanges();
+        expect(storage.ready).toHaveBeenCalled();
+        expect(storage.get).toHaveBeenCalled();
+        expect(component.requestUID).toHaveBeenCalled();
+        expect(component.requestProfile).toHaveBeenCalled();
+    }));
+
     it('should submit form', () => {
-        let loginForm = {
-            email: 'testEmail',
-            password: 'testPassword'
-        }
-        component.submit(loginForm);
+        component.submit('testEmail');
         expect(component.submitted).toBeTruthy();
     });;
 
-    it('should request Firebase to authenticate', () => {
-        component.firebase.logIn(credentialsMock);
-        expect(afAuth.auth.signInWithEmailAndPassword)
-          .toHaveBeenCalledWith(credentialsMock.email, credentialsMock.password);
+    it('should request Firebase to update email', () => {
+        component.firebase.account().updateEmail('testEmail');
+        fixture.detectChanges();
+        expect(afAuth.auth.currentUser.updateEmail)
+          .toHaveBeenCalledWith('testEmail');
+    });
+
+    fit('should request Firebase to update profile with new email', () => {
+        spyOn(firebase, 'object').and.callThrough();
+        let path = 'testPath';
+        let profile = 'testProfile';
+        component.firebase.object(path).update(profile);
+        expect(firebase.object).toHaveBeenCalled();
     });
 
     it('should confirm delivery by displaying alert', () => {
         spyOn(component, 'endLoader');
         spyOn(component, 'presentConfirmationAlert');
-        spyOn(component, 'startSession');
-        spyOn(component, 'setRootHomePage');
+        spyOn(component, 'popToAccountPage');
         component.confirmDelivery();
         fixture.detectChanges();
         expect(component.endLoader).toHaveBeenCalled();
         expect(component.presentConfirmationAlert).toHaveBeenCalled();
-        expect(component.startSession).toHaveBeenCalled();
-        expect(component.setRootHomePage).toHaveBeenCalled();
-    });
-
-    it('should display register button', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#LoginRegisterButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Register');
-    });
-
-    it('should be able to set root to RegisterPage', () => {
-        spyOn(nav, 'setRoot');
-        component.pushRegisterPage();
-        fixture.detectChanges();
-        expect(nav.setRoot).toHaveBeenCalled();
-    });
-
-    it('should display forgot password button', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#LoginForgotPasswordButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Forgot Password?');
-    });
-
-    it('should be able to push PasswordResetPage', () => {
-        spyOn(nav, 'push');
-        component.pushPasswordResetPage();
-        fixture.detectChanges();
-        expect(nav.push).toHaveBeenCalled();
-    });
-
-    it('should display terms-of-service component', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('terms-of-service'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
+        expect(component.popToAccountPage).toHaveBeenCalled();
     });
 
 });

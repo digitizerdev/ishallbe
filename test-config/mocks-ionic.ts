@@ -9,7 +9,7 @@ import { File } from '@ionic-native/file';
 import { IonicStorageModule, } from '@ionic/storage';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
+import { FirebaseListObservable, FirebaseObjectObservable, AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs/Observable';
@@ -80,8 +80,6 @@ export class PlatformMock {
     return document['activeElement'];
   }
 }
-
-
 
 export class StatusBarMock extends StatusBar {
   styleDefault() {
@@ -233,15 +231,6 @@ export class FirebaseProviderMock extends FirebaseProvider {
   styleDefault() {
     return;
   }
-
-  public login(loginForm): any {
-    return new Promise(function (resolve: Function): void {
-      let token = {
-        uid: 'testUID'
-      }
-      resolve(token);
-    });
-  }
 }
 
 export class AngularFireDatabaseMock extends AngularFireDatabaseModule {
@@ -253,10 +242,13 @@ export class AngularFireDatabaseMock extends AngularFireDatabaseModule {
     }
   }
 
-  object(): Observable<any> {
-    return Observable.of('you object');
+  object(path:string): Observable <any> {
+    return Observable.of({
+      update(obj: any): Observable <any> {
+        return Observable.of(true);
+      }
+    })
   } 
-
 }
 
 export class AngularFireAuthMock extends AngularFireAuthModule {

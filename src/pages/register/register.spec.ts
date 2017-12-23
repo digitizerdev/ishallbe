@@ -173,9 +173,8 @@ describe('RegisterPage', () => {
         }
         component.submit(registerForm);
         expect(component.submitted).toBeTruthy();
-    });;
+    });
 
-    
     it('should request Firebase to create user', () => {
         component.firebase.register(credentialsMock);
         expect(afAuth.auth.createUserWithEmailAndPassword)

@@ -59,8 +59,8 @@ export class UserPage {
   }
 
   requestProfile() {
-    let uid = this.uid;
-    return this.firebase.profile(uid);
+    let path = '/users/' + this.uid;
+    return this.firebase.object(path);
   }
 
   syncProfile(profile) {
@@ -85,7 +85,7 @@ export class UserPage {
     }
     this.profile = profile;
     let path = '/users/' + noBioProfile.uid;
-    this.firebase.setObject(path, profile);
+    this.firebase.object(path).set(profile);
   }
 
   loadUserPosts(uid) {
@@ -139,7 +139,7 @@ export class UserPage {
 
   removePostLikerObject(liker, post) {
     let path = 'posts/' + post.id + '/likers/' + liker.id;
-    return this.firebase.removeObject(path);
+    return this.firebase.object(path).remove();
   }
 
   unlikePost(myPost) {
@@ -149,7 +149,7 @@ export class UserPage {
       "likeCount": likeCount
     }
     let path = 'posts/' + myPost.id;
-    return this.firebase.updateObject(path, post);
+    return this.firebase.object(path).update(post);
   }
 
   unflagPostLike(myPost) {
@@ -157,7 +157,7 @@ export class UserPage {
       "liked": false,
     }
     let path = 'posts/' + myPost.id;
-    return this.firebase.updateObject(path, post);
+    return this.firebase.object(path).update(post);
   }
 
   pushPostLikerObject(myPost) {
@@ -166,7 +166,7 @@ export class UserPage {
       "post": myPost.id,
       "uid": this.myUID
     }
-    return this.firebase.push(path, likerObject);
+    return this.firebase.list(path).push(likerObject);
   }
 
   addIDToPostLikerObject(postLikerID, myPost) {
@@ -174,7 +174,7 @@ export class UserPage {
     let liker = {
       id: postLikerID
     }
-    return this.firebase.updateObject(path, liker);
+    return this.firebase.object(path).update(liker);
   }
 
   likePost(myPost) {
@@ -188,7 +188,7 @@ export class UserPage {
         "liked": liked
       }
       let path = 'posts/' + myPost.id;
-      return this.firebase.updateObject(path, post).then((obj) => {
+      return this.firebase.object(path).update(post).then((obj) => {
         observer.next(obj)
       });
     });

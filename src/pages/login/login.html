@@ -9,7 +9,8 @@
     <ion-list no-lines>
       <ion-item>
         <ion-label stacked color="primary">Email</ion-label>
-        <ion-input [(ngModel)]="loginForm.email" name="email" type="email" #email="ngModel" spellcheck="false" autocapitalize="off" required>
+        <ion-input [(ngModel)]="loginForm.email" name="email" type="email" #email="ngModel" spellcheck="false" autocapitalize="off"
+          required>
         </ion-input>
       </ion-item>
       <p ion-text [hidden]="email.valid || submitted == false" color="danger" padding-left>
@@ -27,7 +28,7 @@
       <ion-row>
         <ion-col text-center>
           <button id="LoginWithEmailButton" ion-button (click)="submit(loginForm)" type="submit" round large>Login with Email</button>
-        </ ion-col>
+        </ion-col>
       </ion-row>
     </ion-list>
   </form>

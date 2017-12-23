@@ -55,24 +55,8 @@ export class FirebaseProvider {
     return this.afAuth.auth.currentUser;
   }
 
-  updateAccountEmail(email) {
-    return this.account().updateEmail(email);
-  }
-
-  updateAccountPassword(password) {
-    return this.account().updatePassword(password);
-  }
-
   object(path): FirebaseObjectObservable<any> {
     return this.afdb.object(path)
-  }
-
-  setObject(path, obj) {
-    return this.object(path).set(obj);
-  }
-
-  updateObject(path, obj) {
-    return this.object(path).update(obj)
   }
 
   list(path): FirebaseListObservable<any> {
@@ -94,19 +78,6 @@ export class FirebaseProvider {
         equalTo: fieldValue,
       }
     }).take(1);
-  }
-
-  push(path, obj) {
-    return this.afdb.list(path).push(obj);
-  }
-
-  removeObject(path) {
-    return this.object(path).remove()
-  }
-
-  profile(uid): FirebaseObjectObservable<any> {
-    let path = '/users/' + uid;
-    return this.object(path);
   }
 
 }

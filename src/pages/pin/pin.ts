@@ -90,13 +90,13 @@ export class PinPage {
 
   requestUID() {
     return this.storage.ready().then(() => {
-      return this.storage.get(('uid'));      
+      return this.storage.get(('uid'));
     });
   }
 
   requestProfile() {
-    let uid = this.uid;
-    return this.firebase.profile(uid);
+    let path = '/users/' + this.uid;
+    return this.firebase.object(path);
   }
 
   requestPin() {
@@ -184,7 +184,7 @@ export class PinPage {
 
   removePinLikerObject(liker) {
     let path = 'pins/' + this.pin.id + '/likers/' + liker.id;
-    return this.firebase.removeObject(path);
+    return this.firebase.object(path).remove();
   }
 
   unlikePin() {
@@ -194,7 +194,7 @@ export class PinPage {
       "likeCount": likeCount
     }
     let path = 'pins/' + this.pin.id;
-    return this.firebase.updateObject(path, pin);
+    return this.firebase.object(path).update(pin);
   }
 
   unflagPinLike() {
@@ -202,7 +202,7 @@ export class PinPage {
       "liked": false,
     }
     let path = 'pins/' + this.pin.id;
-    return this.firebase.updateObject(path, pin);
+    return this.firebase.object(path).update(pin);
   }
 
   pushPinLikerObject() {
@@ -211,7 +211,7 @@ export class PinPage {
       "pin": this.pin.id,
       "uid": this.uid
     }
-    return this.firebase.push(path, likerObject);
+    return this.firebase.list(path).push(likerObject);
   }
 
   addIDToPinLikerObject(pinLikerID) {
@@ -219,7 +219,7 @@ export class PinPage {
     let liker = {
       id: pinLikerID
     }
-    return this.firebase.updateObject(path, liker);
+    return this.firebase.object(path).update(liker);
   }
 
   likePin() {
@@ -232,7 +232,7 @@ export class PinPage {
         "liked": liked
       }
       let path = 'pins/' + this.pin.id;
-      return this.firebase.updateObject(path, pin).then((obj) => {
+      return this.firebase.object(path).update(pin).then((obj) => {
         observer.next(obj)
       });
     });
@@ -272,23 +272,23 @@ export class PinPage {
 
   addCommentToPin() {
     let path = '/pins/' + this.pin.id + '/comments';
-    return this.firebase.push(path, this.pinComment);
+    return this.firebase.list(path).push(this.pinComment);
   }
 
   addIDToComment() {
     let path = '/pins/' + this.pin.id + '/comments/' + this.pinComment.id;
-    return this.firebase.updateObject(path, this.pinComment);
+    return this.firebase.object(path).update(this.pinComment);
   }
 
   incrementPinCommentCount() {
     this.pin.commentCount++;
     let path = '/pins/' + this.pin.id + '/commentCount'
-    this.firebase.setObject(path, this.pin.commentCount);
+    this.firebase.object(path).set(this.pin.commentCount);
   }
 
   toggleCommentLike(comment) {
     if (comment.userLiked) {
-      this.requestCommentUserLikerObject (comment).subscribe((liker) => {
+      this.requestCommentUserLikerObject(comment).subscribe((liker) => {
         this.removeCommentLikerObject(liker[0]).then(() => {
           this.unlikeComment(comment);
         });
@@ -304,7 +304,7 @@ export class PinPage {
 
   removeCommentLikerObject(liker) {
     let path = 'pins/' + this.pin.id + '/comments/' + liker.comment + '/likers/' + liker.id;
-    return this.firebase.removeObject(path);
+    return this.firebase.object(path).remove();
   }
 
   unlikeComment(comment) {
@@ -314,16 +314,16 @@ export class PinPage {
     comment.userLiked = false;
     comment.likeCount--;
     let path = 'pins/' + this.pin.id + '/comments/' + comment.id;
-    return this.firebase.setObject(path, comment);
+    return this.firebase.object(path).set(comment);
   }
 
   pushCommentLikerObject(comment) {
     let path = 'pins/' + this.pin.id + '/comments/' + comment.id + '/likers/';
-    let likerObject = { 
+    let likerObject = {
       "comment": comment.id,
       "uid": this.uid
     }
-    return this.firebase.push(path, likerObject);
+    return this.firebase.list(path).push(likerObject);
   }
 
   likeComment(comment) {
@@ -333,7 +333,7 @@ export class PinPage {
     }
     comment.userLiked = true;
     let path = 'pins/' + this.pin.id + '/comments/' + comment.id;
-    return this.firebase.updateObject(path, comment);
+    return this.firebase.object(path).update(comment);
   }
 
   addIDToCommentLike(commentLikerID, comment) {
@@ -341,13 +341,13 @@ export class PinPage {
     let likerObject = {
       id: commentLikerID
     }
-    return this.firebase.updateObject(path, likerObject);
+    return this.firebase.object(path).update(likerObject);
   }
 
   deleteComment(comment) {
     let path = '/pins/' + this.pin.id + '/comments/' + comment.id;
     this.comments = this.comments.filter(item => item !== comment);
-    this.firebase.removeObject(path).then(() => {
+    this.firebase.object(path).remove().then(() => {
       this.decrementPinCommentCount().then(() => {
       });
     });
@@ -356,7 +356,7 @@ export class PinPage {
   decrementPinCommentCount() {
     this.pin.commentCount--;
     let path = '/pins/' + this.pin.id + '/commentCount'
-    return this.firebase.setObject(path, this.pin.commentCount);
+    return this.firebase.object(path).set(this.pin.commentCount);
   }
 
   reportPin() {
@@ -385,7 +385,7 @@ export class PinPage {
 
   flagPin() {
     let path = "/flagged/"
-    return this.firebase.push(path, this.pin);
+    return this.firebase.list(path).push(this.pin);
   }
 
   removeFromFeed() {
@@ -394,15 +394,14 @@ export class PinPage {
       flagged: true,
       onFeed: false
     }
-    return this.firebase.updateObject(path, pin)
+    return this.firebase.object(path).update(pin)
   }
   viewUser(uid) {
-    this.navCtrl.push(UserPage, {uid: uid})        
+    this.navCtrl.push(UserPage, { uid: uid })
   }
 
   openLink(url) {
     open(url)
   }
-  
 
 }

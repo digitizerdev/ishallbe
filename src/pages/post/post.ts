@@ -8,7 +8,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 import moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage/es2015/storage';
 
 @IonicPage()
 @Component({
@@ -90,13 +90,13 @@ export class PostPage {
 
   requestUID() {
     return this.storage.ready().then(() => {
-      return this.storage.get(('uid'));      
+      return this.storage.get(('uid'));
     });
   }
 
   requestProfile() {
-    let uid = this.uid;
-    return this.firebase.profile(uid);
+    let path = '/users/' + this.uid;
+    return this.firebase.object(path);
   }
 
   requestPost() {
@@ -184,7 +184,7 @@ export class PostPage {
 
   removePostLikerObject(liker) {
     let path = 'posts/' + this.post.id + '/likers/' + liker.id;
-    return this.firebase.removeObject(path);
+    return this.firebase.object(path).remove();
   }
 
   unlikePost() {
@@ -194,7 +194,7 @@ export class PostPage {
       "likeCount": likeCount
     }
     let path = 'posts/' + this.post.id;
-    return this.firebase.updateObject(path, post);
+    return this.firebase.object(path).update(post);
   }
 
   unflagPostLike() {
@@ -202,7 +202,7 @@ export class PostPage {
       "liked": false,
     }
     let path = 'posts/' + this.post.id;
-    return this.firebase.updateObject(path, post);
+    return this.firebase.object(path).update(post);
   }
 
   pushPostLikerObject() {
@@ -211,7 +211,7 @@ export class PostPage {
       "post": this.post.id,
       "uid": this.uid
     }
-    return this.firebase.push(path, likerObject);
+    return this.firebase.list(path).push(likerObject);
   }
 
   addIDToPostLikerObject(postLikerID) {
@@ -219,7 +219,7 @@ export class PostPage {
     let liker = {
       id: postLikerID
     }
-    return this.firebase.updateObject(path, liker);
+    return this.firebase.object(path).update(liker);
   }
 
   likePost() {
@@ -232,7 +232,7 @@ export class PostPage {
         "liked": liked
       }
       let path = 'posts/' + this.post.id;
-      return this.firebase.updateObject(path, post).then((obj) => {
+      return this.firebase.object(path).update(post).then((obj) => {
         observer.next(obj)
       });
     });
@@ -272,23 +272,23 @@ export class PostPage {
 
   addCommentToPost() {
     let path = '/posts/' + this.post.id + '/comments';
-    return this.firebase.push(path, this.postComment);
+    return this.firebase.list(path).push(this.postComment);
   }
 
   addIDToComment() {
     let path = '/posts/' + this.post.id + '/comments/' + this.postComment.id;
-    return this.firebase.updateObject(path, this.postComment);
+    return this.firebase.object(path).update(this.postComment);
   }
 
   incrementPostCommentCount() {
     this.post.commentCount++;
     let path = '/posts/' + this.post.id + '/commentCount'
-    this.firebase.setObject(path, this.post.commentCount);
+    this.firebase.object(path).set(this.post.commentCount);
   }
 
   toggleCommentLike(comment) {
     if (comment.userLiked) {
-      this.requestCommentUserLikerObject (comment).subscribe((liker) => {
+      this.requestCommentUserLikerObject(comment).subscribe((liker) => {
         this.removeCommentLikerObject(liker[0]).then(() => {
           this.unlikeComment(comment);
         });
@@ -304,7 +304,7 @@ export class PostPage {
 
   removeCommentLikerObject(liker) {
     let path = 'posts/' + this.post.id + '/comments/' + liker.comment + '/likers/' + liker.id;
-    return this.firebase.removeObject(path);
+    return this.firebase.object(path).remove();
   }
 
   unlikeComment(comment) {
@@ -314,16 +314,16 @@ export class PostPage {
     comment.userLiked = false;
     comment.likeCount--;
     let path = 'posts/' + this.post.id + '/comments/' + comment.id;
-    return this.firebase.setObject(path, comment);
+    return this.firebase.object(path).set(comment);
   }
 
   pushCommentLikerObject(comment) {
     let path = 'posts/' + this.post.id + '/comments/' + comment.id + '/likers/';
-    let likerObject = { 
+    let likerObject = {
       "comment": comment.id,
       "uid": this.uid
     }
-    return this.firebase.push(path, likerObject);
+    return this.firebase.list(path).push(likerObject);
   }
 
   likeComment(comment) {
@@ -333,7 +333,7 @@ export class PostPage {
     }
     comment.userLiked = true;
     let path = 'posts/' + this.post.id + '/comments/' + comment.id;
-    return this.firebase.updateObject(path, comment);
+    return this.firebase.object(path).update(comment);
   }
 
   addIDToCommentLike(commentLikerID, comment) {
@@ -341,13 +341,13 @@ export class PostPage {
     let likerObject = {
       id: commentLikerID
     }
-    return this.firebase.updateObject(path, likerObject);
+    return this.firebase.object(path).update(likerObject);
   }
 
   deleteComment(comment) {
     let path = '/posts/' + this.post.id + '/comments/' + comment.id;
     this.comments = this.comments.filter(item => item !== comment);
-    this.firebase.removeObject(path).then(() => {
+    this.firebase.object(path).remove().then(() => {
       this.decrementPostCommentCount().then(() => {
       });
     });
@@ -356,7 +356,7 @@ export class PostPage {
   decrementPostCommentCount() {
     this.post.commentCount--;
     let path = '/posts/' + this.post.id + '/commentCount'
-    return this.firebase.setObject(path, this.post.commentCount);
+    return this.firebase.object(path).set(this.post.commentCount);
   }
 
   reportPost() {
@@ -385,7 +385,7 @@ export class PostPage {
 
   flagPost() {
     let path = "/flagged/"
-    return this.firebase.push(path, this.post);
+    return this.firebase.list(path).push(this.post);
   }
 
   removeFromFeed() {
@@ -394,11 +394,13 @@ export class PostPage {
       flagged: true,
       onFeed: false
     }
-    return this.firebase.updateObject(path, post)
+    return this.firebase.object(path).update(post)
   }
-
   viewUser(uid) {
-    this.navCtrl.push(UserPage, {uid: uid})        
+    this.navCtrl.push(UserPage, { uid: uid })
   }
 
+  openLink(url) {
+    open(url)
+  }
 }

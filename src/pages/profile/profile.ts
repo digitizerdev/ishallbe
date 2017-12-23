@@ -40,6 +40,8 @@ import { Observable } from 'rxjs/Observable';
     return this.requestUID().then((uid) => {
       this.uid = uid;
       return this.requestProfile().subscribe((profile) => {
+        console.log("Got Profile");
+        console.log(profile);
         this.syncProfile(profile);
         return this.loadUserPosts(profile.uid).subscribe((userPosts)=> {
           this.presentPosts(userPosts);
@@ -55,8 +57,8 @@ import { Observable } from 'rxjs/Observable';
   }
 
   requestProfile() {
-    let uid = this.uid;
-    return this.firebase.profile(uid);
+    let path = '/users/' + this.uid;
+    return this.firebase.object(path);
   }
 
   syncProfile(profile) {
@@ -81,7 +83,7 @@ import { Observable } from 'rxjs/Observable';
     }
     this.profile = profile;
     let path = '/users/' + noBioProfile.uid;
-    this.firebase.setObject(path, profile);
+    this.firebase.object(path).set(profile);
   }
 
   loadUserPosts(uid) {
@@ -133,7 +135,7 @@ import { Observable } from 'rxjs/Observable';
 
   removePostLikerObject(liker, post) {
     let path = 'posts/' + post.id + '/likers/' + liker.id;
-    return this.firebase.removeObject(path);
+    return this.firebase.object(path).remove();;
   }
 
   unlikePost(myPost) {
@@ -143,7 +145,7 @@ import { Observable } from 'rxjs/Observable';
       "likeCount": likeCount
     }
     let path = 'posts/' + myPost.id;
-    return this.firebase.updateObject(path, post);
+    return this.firebase.object(path).update(post);
   }
 
   unflagPostLike(myPost) {
@@ -151,7 +153,7 @@ import { Observable } from 'rxjs/Observable';
       "liked": false,
     }
     let path = 'posts/' + myPost.id;
-    return this.firebase.updateObject(path, post);
+    return this.firebase.object(path).update(post);
   }
 
   pushPostLikerObject(myPost) {
@@ -160,7 +162,7 @@ import { Observable } from 'rxjs/Observable';
       "post": myPost.id,
       "uid": this.uid
     }
-    return this.firebase.push(path, likerObject);
+    return this.firebase.list(path).push(likerObject);
   }
 
   addIDToPostLikerObject(postLikerID, myPost) {
@@ -168,7 +170,7 @@ import { Observable } from 'rxjs/Observable';
     let liker = {
       id: postLikerID
     }
-    return this.firebase.updateObject(path, liker);
+    return this.firebase.object(path).update(liker);
   }
 
   likePost(myPost) {
@@ -182,7 +184,7 @@ import { Observable } from 'rxjs/Observable';
         "liked": liked
       }
       let path = 'posts/' + myPost.id;
-      return this.firebase.updateObject(path, post).then((obj) => {
+      return this.firebase.object(path).update(post).then((obj) => {
         observer.next(obj)
       });
     });

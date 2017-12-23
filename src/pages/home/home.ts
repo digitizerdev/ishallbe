@@ -67,23 +67,20 @@ export class HomePage {
   }
 
   loadPins() {
-    return this.requestPins().first().subscribe((pins) => {
+    return this.requestPins().subscribe((pins) => {
       this.presentPins(pins);
     });
   }
 
   requestPins() {
-    console.log("Requesting pins");
     let path = '/pins/';
     return this.firebase.orderList(path, 'date');
   }
 
   presentPins(pins) {
-    console.log("Presenting pins");
-    console.log(pins);
     this.pins = [];
     pins.forEach((pin) => {
-      this.requestPinUserLikerObject(pin).first().subscribe((liker) => {
+      this.requestPinUserLikerObject(pin).subscribe((liker) => {
         if (liker[0]) {
           pin.userLiked = true;
         } else {
@@ -121,7 +118,7 @@ export class HomePage {
 
   removePinLikerObject(liker, pin) {
     let path = 'pins/' + pin.id + '/likers/' + liker.id;
-    return this.firebase.removeObject(path);
+    return this.firebase.object(path).remove();
   }
 
   unlikePin(myPin) {
@@ -131,7 +128,7 @@ export class HomePage {
       "likeCount": likeCount
     }
     let path = 'pins/' + myPin.id;
-    return this.firebase.updateObject(path, pin);
+    return this.firebase.object(path).update(pin);
   }
 
   unflagPinLike(myPin) {
@@ -139,7 +136,7 @@ export class HomePage {
       "liked": false,
     }
     let path = 'pins/' + myPin.id;
-    return this.firebase.updateObject(path, pin);
+    return this.firebase.object(path).update(pin);
   }
 
   pushPinLikerObject(myPin) {
@@ -148,7 +145,7 @@ export class HomePage {
       "pin": myPin.id,
       "uid": this.uid
     }
-    return this.firebase.push(path, likerObject);
+    return this.firebase.list(path).push(likerObject);
   }
 
   addIDToPinLikerObject(pinLikerID, myPin) {
@@ -156,7 +153,7 @@ export class HomePage {
     let liker = {
       id: pinLikerID
     }
-    return this.firebase.updateObject(path, liker);
+    return this.firebase.object(path).update(liker);
   }
 
   likePin(myPin) {
@@ -170,26 +167,21 @@ export class HomePage {
         "liked": liked
       }
       let path = 'pins/' + myPin.id;
-      return this.firebase.updateObject(path, pin).then((obj) => {
+      return this.firebase.object(path).update(pin).then((obj) => {
         observer.next(obj)
       });
     });
   }
 
   loadPosts(refresh) {
-    console.log("Loading posts");
     this.startRefresh(refresh);
     return this.requestUID().then((uid) => {
-      console.log("Got UID");
-      console.log(uid);
       this.uid = uid
       return this.requestProfile().subscribe((profile) => {
         if (profile.blocked) {
           this.handleBlocked();
         }
-        return this.requestPosts().first().subscribe((posts) => {
-          console.log("Got posts");
-          console.log(posts);
+        return this.requestPosts().subscribe((posts) => {
           this.presentPosts(posts);
           this.endRefresh(refresh);
         });
@@ -210,15 +202,14 @@ export class HomePage {
   }
 
   requestUID() {
-    console.log("Requesting UID");
     return this.storage.ready().then(() => {
       return this.storage.get('uid');
     });
   }
 
   requestProfile() {
-    let uid = this.uid;
-    return this.firebase.profile(uid);
+    let path = '/users/' + this.uid;
+    return this.firebase.object(path);
   }
 
   handleBlocked() {
@@ -247,7 +238,7 @@ export class HomePage {
   presentPosts(posts) {
     this.posts = [];
     posts.forEach((post) => {
-      this.requestPostUserLikerObject(post).first().subscribe((liker) => {
+      this.requestPostUserLikerObject(post).subscribe((liker) => {
         if (liker[0]) {
           post.userLiked = true;
         } else {
@@ -285,7 +276,7 @@ export class HomePage {
 
   removePostLikerObject(liker, post) {
     let path = 'posts/' + post.id + '/likers/' + liker.id;
-    return this.firebase.removeObject(path);
+    return this.firebase.object(path).remove();
   }
 
   unlikePost(myPost) {
@@ -295,7 +286,7 @@ export class HomePage {
       "likeCount": likeCount
     }
     let path = 'posts/' + myPost.id;
-    return this.firebase.updateObject(path, post);
+    return this.firebase.object(path).update(post);
   }
 
   unflagPostLike(myPost) {
@@ -303,7 +294,7 @@ export class HomePage {
       "liked": false,
     }
     let path = 'posts/' + myPost.id;
-    return this.firebase.updateObject(path, post);
+    return this.firebase.object(path).update(post);
   }
 
   pushPostLikerObject(myPost) {
@@ -312,7 +303,7 @@ export class HomePage {
       "post": myPost.id,
       "uid": this.uid
     }
-    return this.firebase.push(path, likerObject);
+    return this.firebase.list(path).push(likerObject);
   }
 
   addIDToPostLikerObject(postLikerID, myPost) {
@@ -320,7 +311,7 @@ export class HomePage {
     let liker = {
       id: postLikerID
     }
-    return this.firebase.updateObject(path, liker);
+    return this.firebase.object(path).update(liker);
   }
 
   likePost(myPost) {
@@ -334,7 +325,7 @@ export class HomePage {
         "liked": liked
       }
       let path = 'posts/' + myPost.id;
-      return this.firebase.updateObject(path, post).then((obj) => {
+      return this.firebase.object(path).update(post).then((obj) => {
         observer.next(obj)
       });
     });
