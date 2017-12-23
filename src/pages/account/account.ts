@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
@@ -30,10 +30,10 @@ export class AccountPage {
     public firebase: FirebaseProvider,
     public storage: Storage
   ) {
-    this.loadProfile();
+    this.loadAccount();
   }
 
-  loadProfile() {
+  loadAccount() {
     this.requestUID().then((uid) => {
       this.uid = uid;
       this.requestProfile().subscribe((profile) => {
@@ -67,6 +67,7 @@ export class AccountPage {
   }
 
   logout() {
+    this.firebase.logOut();
     this.storage.clear();
     this.setRootLoginPage();
   }

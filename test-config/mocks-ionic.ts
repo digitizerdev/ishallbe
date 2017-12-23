@@ -13,6 +13,7 @@ import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/dat
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 export class PlatformMock {
 
@@ -252,13 +253,10 @@ export class AngularFireDatabaseMock extends AngularFireDatabaseModule {
     }
   }
 
-  public object(): any {
-    return {
-      update(object) {
-        return;
-      }
-    }
-  }
+  object(): Observable<any> {
+    return Observable.of('you object');
+  } 
+
 }
 
 export class AngularFireAuthMock extends AngularFireAuthModule {

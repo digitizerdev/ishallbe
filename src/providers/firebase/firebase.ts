@@ -46,13 +46,13 @@ export class FirebaseProvider {
       email
     );
   }
-
-  account() {
-    return this.afAuth.auth.currentUser;
-  }
   
   resetPassword(email) {
     return this.afAuth.auth.sendPasswordResetEmail(email)    
+  }
+
+  account() {
+    return this.afAuth.auth.currentUser;
   }
 
   updateAccountEmail(email) {
