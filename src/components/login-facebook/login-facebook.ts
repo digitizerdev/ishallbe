@@ -65,10 +65,6 @@ export class LoginFacebookComponent {
         firebase.auth().signInWithCredential(facebookProviderCredential).then((finalToken) => {
           console.log("Got final token");
           console.log(finalToken);
-          this.uid = finalToken[0].uid;
-          this.data = finalToken[0].providerData;
-          console.log(this.uid);
-          console.log(this.data);
           console.log("About to check for existing profile");
           this.checkForExistingProfile();
         });
