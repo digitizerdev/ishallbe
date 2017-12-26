@@ -117,7 +117,8 @@ export class CameraMock extends Camera {
 
 
 export class EmailComposerMock extends EmailComposer {
-
+  _getPortal(): any { return {} };
+  
   public open(email): any {
     return new Promise(function (resolve: Function): void {
       resolve();

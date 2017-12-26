@@ -144,15 +144,6 @@ describe('SupportPage', () => {
         expect(el).toContain('body');
     });
 
-    it('should submit form', () => {
-        let supportForm = {
-            subject: "testSubject",
-            body: "testBody"
-        }
-        component.submit(supportForm);
-        expect(component.submitted).toBeTruthy();
-    });;
-
     it('should request Email Composer to compose email', () => {
         spyOn(emailComposer, 'open').and.returnValue({ subscribe: {} });
         let supportForm = {
