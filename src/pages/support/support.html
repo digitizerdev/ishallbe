@@ -10,4 +10,26 @@
 <ion-content padding>
   <header></header>
   <br>
+  <form #supportForm="ngForm" novalidate>
+      <ion-list no-lines>
+        <ion-item>
+          <ion-label stacked color="primary">Subject</ion-label>
+          <ion-input [(ngModel)]="supportForm.subject" name="subject" type="text" #subject="ngModel" spellcheck="false" autocapitalize="off"
+            required>
+          </ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked color="primary">Body</ion-label>
+            <ion-input [(ngModel)]="supportForm.body" name="body" type="text" #subject="ngModel" spellcheck="false" autocapitalize="off"
+              required>
+            </ion-input>
+          </ion-item>
+        <br>
+        <ion-row>
+          <ion-col text-center>
+            <button id="SupportFormButton" ion-button (click)="submit(supportForm)" type="submit" round large>Contact Support</button>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </form>
 </ion-content>
