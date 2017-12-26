@@ -55,9 +55,16 @@ export class LoginFacebookComponent {
   cordova() {
     this.facebook.login(['email', 'public_profile']).then((token) => {
       let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(token.authResponse.accessToken);
+      console.log("About to authenticate");
+      console.log(facebookProviderCredential);
       firebase.auth().signInWithCredential(facebookProviderCredential).then((finalToken) => {
+        console.log("Got final token");
+        console.log(finalToken);
         this.uid = finalToken[0].uid;
         this.data = finalToken[0].providerData;
+        console.log(this.uid);
+        console.log(this.data);
+        console.log("About to check for existing profile");
         this.checkForExistingProfile();
       });
     })
