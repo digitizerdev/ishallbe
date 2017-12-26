@@ -45,7 +45,9 @@ export class LoginFacebookComponent {
   }
 
   viaCordova(cordova) {
+    console.log(cordova);
     if (cordova) {
+      console.log("This platform is cordova");
       this.cordova();
     } else {
       this.browser();
@@ -53,6 +55,7 @@ export class LoginFacebookComponent {
   }
 
   cordova() {
+    console.log("About to authenticate with cordova")
     this.facebook.login(['email', 'public_profile']).then((token) => {
       let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(token.authResponse.accessToken);
       console.log("About to authenticate");
