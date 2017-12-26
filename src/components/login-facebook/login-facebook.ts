@@ -57,7 +57,10 @@ export class LoginFacebookComponent {
     this.facebook.login(['email', 'public_profile']).then((token) => {
       console.log("Got token");
       console.log(token);
-      console.log("Facebook provider credential is "); 
+      this.facebook.getAccessToken().then((accessToken) => {
+        console.log("Facebook access token is "); 
+        console.log(accessToken);
+      })
     });
   }
 
@@ -69,6 +72,7 @@ export class LoginFacebookComponent {
     console.log("Unpackaging cordova");
     console.log(provider);
   }
+
   checkForExistingProfile(account) {
     console.log("Checking for existing account");
     console.log(account);
