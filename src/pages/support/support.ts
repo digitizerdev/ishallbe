@@ -14,9 +14,7 @@ export class SupportPage {
     subject?: string;
     body?: string;
   } = {};
-  submitted = false;
   title = 'Support';
-  loader: any;
 
   constructor(
     private navCtrl: NavController,
@@ -28,18 +26,9 @@ export class SupportPage {
   }
 
   submit(supportForm) {
-    this.submitted = true;
-    this.startLoader();
     return this.composeSupportEmail(supportForm).then(() => {
       this.confirmDelivery();
     });
-  }
-
-  startLoader() {
-    this.loader = this.loadingCtrl.create({
-      content: 'Please Wait..'
-    });
-    this.loader.present();
   }
 
   composeSupportEmail(supportForm) {
@@ -53,12 +42,7 @@ export class SupportPage {
   }
 
   confirmDelivery() {
-    this.endLoader();
     this.setRootAccountPage();
-  }
-
-  endLoader() {
-    this.loader.dismiss();
   }
 
   setRootAccountPage() {
@@ -66,7 +50,6 @@ export class SupportPage {
   }
 
   errorHandler(error) {
-    this.endLoader();
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,

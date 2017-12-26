@@ -129,8 +129,6 @@ describe('SupportPage', () => {
 
     it('should be initialized', () => {
         expect(component.supportForm).toBeDefined();
-        expect(component.submitted).toBeDefined();
-        expect(component.loader).toBeUndefined();
         expect(component.title).toBe('Support');
     });
 
@@ -156,11 +154,9 @@ describe('SupportPage', () => {
     });
 
     it('should confirm delivery', () => {
-        spyOn(component, 'endLoader');
         spyOn(component, 'setRootAccountPage');
         component.confirmDelivery();
         fixture.detectChanges();
-        expect(component.endLoader).toHaveBeenCalled();
         expect(component.setRootAccountPage).toHaveBeenCalled();
     });
 
