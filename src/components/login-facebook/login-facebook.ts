@@ -55,8 +55,8 @@ export class LoginFacebookComponent {
     console.log("Logging in with facebook cordova");
     this.facebook.login(['email', 'public_profile']).then((token) => {
       console.log("Got token");
-      console.log(token.authResponse.accessToken)
-      let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(token);
+      console.log(token.authResponse.accessToken);
+      let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(token.authResponse.accessToken);
       console.log("Facebook provider credential is");
       console.log(facebookProviderCredential);
       firebase.auth().signInWithCredential(facebookProviderCredential).then((finalToken) => {
