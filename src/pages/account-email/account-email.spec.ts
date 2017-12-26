@@ -34,6 +34,7 @@ let component;
 let nav: NavController;
 let firebase: FirebaseProvider;
 let storage: Storage;
+let afData: AngularFireDatabase;
 let afAuth: AngularFireAuth;
 let isAuth$: Subscription;
 let isAuthRef: boolean;
@@ -50,12 +51,26 @@ const angularFireAuthStub = {
     auth: {
         currentUser: {
             updateEmail: jasmine
-            .createSpy('updateEmail')
-            .and
-            .callFake(fakeUpdateEmail)
+                .createSpy('updateEmail')
+                .and
+                .callFake(fakeUpdateEmail)
         }
     },
 };
+
+const fakeObjectUpdate = (path: string): Function => {
+    return;
+};
+
+let updateSpy = jasmine.createSpy("update");
+
+let objectSpy = jasmine.createSpy("object").and.returnValue({
+    update: updateSpy
+});
+
+const angularFireDataStub = {
+    object: objectSpy
+}
 
 describe('AccountEmailPage', () => {
 
@@ -71,7 +86,8 @@ describe('AccountEmailPage', () => {
                 { provide: Storage, useClass: StorageMock },
                 { provide: NavController, useClass: NavMock },
                 { provide: NavParams, useClass: NavMock },
-                { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
+                { provide: FirebaseProvider, useClass: FirebaseProviderMock },
+                { provide: AngularFireDatabase, useValue: angularFireDataStub },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
             ],
             schemas: [
@@ -85,8 +101,8 @@ describe('AccountEmailPage', () => {
         component = fixture.componentInstance;
         nav = fixture.componentRef.injector.get(NavController);
         storage = fixture.componentRef.injector.get(Storage);
-        firebase = fixture.componentRef.injector.get(FirebaseProvider);
         afAuth = TestBed.get(AngularFireAuth);
+        afData = TestBed.get(AngularFireDatabase);
     });
 
     afterEach(() => {
@@ -95,7 +111,10 @@ describe('AccountEmailPage', () => {
         nav = null;
         storage = null;
         firebase = null;
+        afData = null;
         afAuth = null;
+        updateSpy.calls.reset();
+        objectSpy.calls.reset();
         fakeAuthState.next(null);
     });
 
@@ -122,7 +141,7 @@ describe('AccountEmailPage', () => {
 
     it('should load account', fakeAsync(() => {
         spyOn(component, 'requestUID').and.callThrough();
-        spyOn(component, 'requestProfile').and.callThrough();
+        spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {}});
         spyOn(storage, 'ready').and.callThrough();
         spyOn(storage, 'get').and.callThrough();
         component.loadAccount();
@@ -143,16 +162,18 @@ describe('AccountEmailPage', () => {
         component.firebase.account().updateEmail('testEmail');
         fixture.detectChanges();
         expect(afAuth.auth.currentUser.updateEmail)
-          .toHaveBeenCalledWith('testEmail');
+            .toHaveBeenCalledWith('testEmail');
     });
 
-    fit('should request Firebase to update profile with new email', () => {
-        spyOn(firebase, 'object').and.callThrough();
+    it('should request Firebase to update profile with new email', fakeAsync(() => {
         let path = 'testPath';
         let profile = 'testProfile';
+        tick();
+        fixture.detectChanges();
         component.firebase.object(path).update(profile);
-        expect(firebase.object).toHaveBeenCalled();
-    });
+        expect(objectSpy).toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalled();
+    }));
 
     it('should confirm delivery by displaying alert', () => {
         spyOn(component, 'endLoader');

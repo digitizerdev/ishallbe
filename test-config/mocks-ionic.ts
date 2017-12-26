@@ -231,6 +231,7 @@ export class FirebaseProviderMock extends FirebaseProvider {
   styleDefault() {
     return;
   }
+  
 }
 
 export class AngularFireDatabaseMock extends AngularFireDatabaseModule {
@@ -242,13 +243,13 @@ export class AngularFireDatabaseMock extends AngularFireDatabaseModule {
     }
   }
 
-  object(path:string): Observable <any> {
+  public object(path:string): Observable <any> {
     return Observable.of({
-      update(obj: any): Observable <any> {
-        return Observable.of(true);
+     update(obj: any): Observable <any> {
+        return Observable.of('true');
       }
     })
-  } 
+  }
 }
 
 export class AngularFireAuthMock extends AngularFireAuthModule {
