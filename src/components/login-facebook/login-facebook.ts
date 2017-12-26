@@ -66,9 +66,12 @@ export class LoginFacebookComponent {
           console.log("Got final token");
           console.log(finalToken);
           this.uid = finalToken.uid;
-          this.data = finalToken.providerData;
+          this.data = finalToken.providerData[0];
           console.log(this.uid);
           console.log(this.data);
+          console.log("Email is " + this.data.email);
+          console.log("Name is " + this.data.displayName);
+          console.log("Facebook ID is " + this.data.uid);
           this.checkForExistingProfile();
         });
       })
@@ -90,7 +93,7 @@ export class LoginFacebookComponent {
       console.log(profile);
       if (profile) {
         console.log("Let's welcome this user")
-        this.welcome();
+        this.confirmDelivery();
       } else {
         this.presentEULA().subscribe((accepted) => {
           if (accepted) {
@@ -144,19 +147,37 @@ export class LoginFacebookComponent {
       "blocked": false
     }
     this.firebase.object(path).set(profile).then(() => {
-      this.welcome();
+      this.confirmDelivery();
     })
   }
 
-  welcome() {
-    console.log("Welcoming user");
+  confirmDelivery() {
     this.endLoader();
+    this.presentConfirmationAlert();
+    this.startSession();     
     this.setRootHomePage();
   }
 
   endLoader() {
     this.loader.dismiss();
   }
+
+  presentConfirmationAlert() {
+    let alert = this.alertCtrl.create({
+      title: '',
+      subTitle: 'Authenticated',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  startSession() {
+    let uid = this.uid;
+    this.storage.set('uid', uid);
+    this.storage.set('session', true);
+    this.setRootHomePage();
+  }
+
 
   setRootHomePage() {
     this.navCtrl.setRoot(HomePage);
