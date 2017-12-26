@@ -22,12 +22,12 @@ export class AccountEmailPage {
   profile: any;
 
   constructor(
-    public navCtrl: NavController, 
-    public navParams: NavParams,
-    public loadingCtrl: LoadingController,
-    public storage: Storage,
-    public alertCtrl: AlertController,
-    public firebase: FirebaseProvider
+    private navCtrl: NavController, 
+    private navParams: NavParams,
+    private loadingCtrl: LoadingController,
+    private storage: Storage,
+    private alertCtrl: AlertController,
+    private firebase: FirebaseProvider
   ) {
   }
 
