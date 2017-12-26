@@ -57,10 +57,17 @@ export class LoginFacebookComponent {
     this.facebook.login(['email', 'public_profile']).then((token) => {
       console.log("Got token");
       console.log(token);
-      this.facebook.getAccessToken().then((accessToken) => {
-        console.log("Facebook access token is "); 
-        console.log(accessToken);
-      })
+        this.facebook.getAccessToken().then((accessToken) => {
+          console.log("Facebook access token is "); 
+          console.log(accessToken);
+          let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(accessToken);
+          console.log("Facebook provider credential is");
+          console.log(facebookProviderCredential);
+          firebase.auth().signInWithCredential(facebookProviderCredential).then((finalToken) => {
+            console.log("Final token is");
+            console.log(finalToken);
+          });         
+        })
     });
   }
 
