@@ -19,6 +19,7 @@ export class LoginFacebookComponent {
 
   uid: any;
   loader: any;
+  data: any;
 
   constructor(
     public firebase: FirebaseProvider,
@@ -52,16 +53,12 @@ export class LoginFacebookComponent {
   }
 
   cordova() {
-    console.log("Logging in with facebook cordova");
     this.facebook.login(['email', 'public_profile']).then((token) => {
-      console.log("Got token");
-      console.log(token.authResponse.accessToken);
       let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(token.authResponse.accessToken);
-      console.log("Facebook provider credential is");
-      console.log(facebookProviderCredential);
       firebase.auth().signInWithCredential(facebookProviderCredential).then((finalToken) => {
-        console.log("Final token is");
-        console.log(finalToken);
+        this.uid = finalToken[0].uid;
+        this.data = finalToken[0].providerData;
+        this.checkForExistingProfile();
       });
     })
   }
@@ -70,14 +67,12 @@ export class LoginFacebookComponent {
 
   }
 
-  unpackageCordovaToken(provider) {
-    console.log("Unpackaging cordova");
-    console.log(provider);
-  }
 
-  checkForExistingProfile(account) {
-    console.log("Checking for existing account");
-    console.log(account);
+  checkForExistingProfile() {
+    console.log("Checking for existing profile");
+    console.log("UID is " + this.uid);
+    console.log("Facebook data is " );
+    console.log(this.data);
     this.requestProfile(this.uid).subscribe((profile) => {
       console.log("Got profile");
       console.log(profile);
@@ -87,7 +82,7 @@ export class LoginFacebookComponent {
       } else {
         this.presentEULA().subscribe((accepted) => {
           if (accepted) {
-            this.createProfile(account);
+            this.createProfile();
           }
         });
       }
@@ -126,13 +121,13 @@ export class LoginFacebookComponent {
     });
   }
 
-  createProfile(account) {
+  createProfile() {
     let path = '/users/' + this.uid;
     let profile = {
-      "uid": account.uid,
-      "name": account.name,
-      "email": account.email,
-      "photo": account.photo,
+      "uid": this.uid,
+      "name": this.data.displayName,
+      "email": this.data.email,
+      "photo": this.data.photo,
       "role": "contributor",
       "blocked": false
     }
