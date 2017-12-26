@@ -42,6 +42,7 @@ export class LoginFacebookComponent {
     this.loader = this.loadingCtrl.create({
       content: 'Please Wait..'
     });
+    this.loader.present();
   }
 
   viaCordova(cordova) {
@@ -57,19 +58,21 @@ export class LoginFacebookComponent {
   cordova() {
     console.log("About to authenticate with cordova")
     this.facebook.login(['email', 'public_profile']).then((token) => {
-      let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(token.authResponse.accessToken);
-      console.log("About to authenticate");
-      console.log(facebookProviderCredential);
-      firebase.auth().signInWithCredential(facebookProviderCredential).then((finalToken) => {
-        console.log("Got final token");
-        console.log(finalToken);
-        this.uid = finalToken[0].uid;
-        this.data = finalToken[0].providerData;
-        console.log(this.uid);
-        console.log(this.data);
-        console.log("About to check for existing profile");
-        this.checkForExistingProfile();
-      });
+      this.facebook.getAccessToken().then((accessToken) => {
+        let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(accessToken);
+        console.log("About to authenticate");
+        console.log(facebookProviderCredential);
+        firebase.auth().signInWithCredential(facebookProviderCredential).then((finalToken) => {
+          console.log("Got final token");
+          console.log(finalToken);
+          this.uid = finalToken[0].uid;
+          this.data = finalToken[0].providerData;
+          console.log(this.uid);
+          console.log(this.data);
+          console.log("About to check for existing profile");
+          this.checkForExistingProfile();
+        });
+      })
     })
   }
 
@@ -81,7 +84,7 @@ export class LoginFacebookComponent {
   checkForExistingProfile() {
     console.log("Checking for existing profile");
     console.log("UID is " + this.uid);
-    console.log("Facebook data is " );
+    console.log("Facebook data is ");
     console.log(this.data);
     this.requestProfile(this.uid).subscribe((profile) => {
       console.log("Got profile");
