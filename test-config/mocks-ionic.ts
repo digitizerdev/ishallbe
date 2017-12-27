@@ -94,6 +94,8 @@ export class SplashScreenMock extends SplashScreen {
 }
 
 export class FacebookMock extends Facebook {
+  _getPortal(): any { return {} };
+  
   hide() {
     return;
   }

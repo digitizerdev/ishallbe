@@ -39,38 +39,23 @@ let isAuth$: Subscription;
 let isAuthRef: boolean;
 let facebook: Facebook;
 
-const credentialsMock = {
-    email: 'abc@123.com',
-    password: 'password'
-  };
-  
-  const userMock = {
-    uid: 'ABC123',
-    email: credentialsMock.email,
-  };
-  
-  const fakeAuthState = new BehaviorSubject(null);
-  
-  const fakeSignInHandler = (email, password): Promise<any> => {
-    fakeAuthState.next(userMock);
-    return Promise.resolve(userMock);
-  };
-  
-  const fakeSignOutHandler = (): Promise<any> => {
-    fakeAuthState.next(null);
-    return Promise.resolve();
-  };  
-  
-  const angularFireAuthStub = {
-    authState: fakeAuthState,
-    auth: {
-      signInWithEmailAndPassword: jasmine
-        .createSpy('signInWithEmailAndPassword')
-        .and
-        .callFake(fakeSignInHandler)
-    },
-  };
-  
+const angularFireAuthStub = {
+};
+
+const fakeObjectSet = (path: string): Function => {
+    return;
+};
+
+let setSpy = jasmine.createSpy("set");
+
+let objectSpy = jasmine.createSpy("object").and.returnValue({
+    set: setSpy
+});
+
+const angularFireDataStub = {
+    object: objectSpy
+}
+
 describe('LoginFacebookComponent', () => {
 
     beforeEach(async(() => {
@@ -85,7 +70,7 @@ describe('LoginFacebookComponent', () => {
                 { provide: Storage, useClass: StorageMock },
                 { provide: NavController, useClass: NavMock },
                 { provide: NavParams, useClass: NavMock },
-                { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
+                { provide: AngularFireDatabase, useValue: angularFireDataStub },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: Facebook, useClass: FacebookMock }
             ],
@@ -101,7 +86,7 @@ describe('LoginFacebookComponent', () => {
         nav = fixture.componentRef.injector.get(NavController);
         storage = fixture.componentRef.injector.get(Storage);
         firebase = fixture.componentRef.injector.get(FirebaseProvider);
-        afAuth = TestBed.get(AngularFireAuth);   
+        afAuth = TestBed.get(AngularFireAuth);
     });
 
     afterEach(() => {
@@ -109,9 +94,8 @@ describe('LoginFacebookComponent', () => {
         component = null;
         nav = null;
         storage = null;
-        firebase = null;        
+        firebase = null;
         afAuth = null;
-        fakeAuthState.next(null);
         facebook = null;
     });
 
@@ -122,6 +106,70 @@ describe('LoginFacebookComponent', () => {
     it('should be initialized', () => {
         expect(component.uid).toBeUndefined();
         expect(component.loader).toBeUndefined();
+        expect(component.data).toBeUndefined();
     });
+
+    it('should be triggered by Login with Facebook Button', async(() => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#LoginWithFacebookButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Login with Facebook');
+    }));
+
+    it('should authenticate', () => {
+        spyOn(component, 'startLoader');
+        spyOn(component, 'viaCordova');
+        component.authenticate();
+        expect(component.startLoader).toHaveBeenCalled();
+        expect(component.viaCordova).toHaveBeenCalled();
+    })
+
+    it('should authenticate via cordova if platform is not browser', () => {
+        spyOn(component, 'cordova');
+        component.viaCordova(true);
+        fixture.detectChanges();
+        expect(component.cordova).toHaveBeenCalled();
+    });
+
+    it('should authenticate via browser if browser', () => {
+        spyOn(component, 'browser');
+        component.viaCordova(false);
+        fixture.detectChanges();
+        expect(component.browser).toHaveBeenCalled();
+    });
+
+    it('should check for existing account afer authentication', () => {
+        spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => { } });
+        component.uid = 'testUID';
+        component.checkForExistingProfile();
+        expect(component.requestProfile).toHaveBeenCalled();
+    });
+
+    it('should register user if profile does not exist', () => {
+        spyOn(component, 'presentEULA').and.returnValue({ subscribe: () => { } });
+        component.registerUser();
+        expect(component.presentEULA).toHaveBeenCalled();
+    });
+
+    it('should request Firebase to create profile', fakeAsync(() => {
+        tick();
+        fixture.detectChanges();
+        component.firebase.object('testPath').set('testProfile');        
+        expect(objectSpy).toHaveBeenCalled();
+        expect(setSpy).toHaveBeenCalled();
+    }));
+
+    it('should confirm delivery', () => { 
+        spyOn(component, 'endLoader');
+        spyOn(component, 'presentConfirmationAlert');
+        spyOn(component, 'startSession');
+        spyOn(component, 'setRootHomePage');
+        component.confirmDelivery();
+        expect(component.endLoader).toHaveBeenCalled();
+        expect(component.presentConfirmationAlert).toHaveBeenCalled();
+        expect(component.startSession).toHaveBeenCalled();
+        expect(component.setRootHomePage).toHaveBeenCalled();
+    })
 
 });

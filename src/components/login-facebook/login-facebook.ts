@@ -7,9 +7,7 @@ import firebase from 'firebase';
 
 import { HomePage } from '../../pages/home/home';
 
-
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-
 
 @Component({
   selector: 'login-facebook',
@@ -33,7 +31,6 @@ export class LoginFacebookComponent {
   }
 
   authenticate() {
-    console.log("Authenticating");
     this.viaCordova(this.platform.is('cordova'))
     this.startLoader();
   }
@@ -46,9 +43,7 @@ export class LoginFacebookComponent {
   }
 
   viaCordova(cordova) {
-    console.log(cordova);
     if (cordova) {
-      console.log("This platform is cordova");
       this.cordova();
     } else {
       this.browser();
@@ -56,52 +51,63 @@ export class LoginFacebookComponent {
   }
 
   cordova() {
-    console.log("About to authenticate with cordova")
     this.facebook.login(['email', 'public_profile']).then((token) => {
       this.facebook.getAccessToken().then((accessToken) => {
         let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(accessToken);
-        console.log("About to authenticate");
-        console.log(facebookProviderCredential);
-        firebase.auth().signInWithCredential(facebookProviderCredential).then((finalToken) => {
-          console.log("Got final token");
-          console.log(finalToken);
-          this.uid = finalToken.uid;
-          this.data = finalToken.providerData[0];
-          console.log(this.uid);
-          console.log(this.data);
-          console.log("Email is " + this.data.email);
-          console.log("Name is " + this.data.displayName);
-          console.log("Facebook ID is " + this.data.uid);
-          this.checkForExistingProfile();
+        firebase.auth().signInWithCredential(facebookProviderCredential).then((token) => {
+          this.prepCordova(token);
         });
       })
     })
   }
 
-  browser() {
-
+  prepCordova(token) {
+    this.uid = token.uid;
+    this.data = token.providerData[0];
+    let photoURL = "https://graph.facebook.com/" + token.providerData[0].uid + "/picture?type=large";      
+    let data = {
+      "name": token.providerData[0].displayName,
+      "email": token.providerData[0].email,
+      "photo": photoURL,   
+    }
+    this.data = data;    
+    this.checkForExistingProfile();
   }
 
+  browser() {
+    firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((token)=> {
+      this.prepBrowser(token);
+    });
+  }
+
+  prepBrowser(token) {
+    let photoURL = "https://graph.facebook.com/" + token.user.providerData[0].uid + "/picture?type=large";      
+    let data = {
+      "name": token.user.displayName,
+      "email": token.user.email,
+      "photo": photoURL,   
+    }
+    this.data = data; 
+    this.uid = token.user.uid;
+    this.checkForExistingProfile();
+  }
 
   checkForExistingProfile() {
-    console.log("Checking for existing profile");
-    console.log("UID is " + this.uid);
-    console.log("Facebook data is ");
-    console.log(this.data);
     this.requestProfile(this.uid).subscribe((profile) => {
-      console.log("Got profile");
-      console.log(profile);
       if (profile) {
-        console.log("Let's welcome this user")
         this.confirmDelivery();
       } else {
-        this.presentEULA().subscribe((accepted) => {
-          if (accepted) {
-            this.createProfile();
-          }
-        });
+       this.registerUser(); 
       }
     })
+  }
+
+  registerUser() {
+    this.presentEULA().subscribe((accepted) => {
+      if (accepted) {
+        this.createProfile();
+      }
+    });
   }
 
   requestProfile(uid) {
@@ -119,14 +125,12 @@ export class LoginFacebookComponent {
             text: 'Cancel',
             role: 'cancel',
             handler: () => {
-              console.log('Cancel clicked');
               observer.next(false);
             }
           },
           {
             text: 'Confirm',
             handler: () => {
-              console.log('Confirm clicked');
               observer.next(true);
             }
           }
@@ -140,7 +144,7 @@ export class LoginFacebookComponent {
     let path = '/users/' + this.uid;
     let profile = {
       "uid": this.uid,
-      "name": this.data.displayName,
+      "name": this.data.name,
       "email": this.data.email,
       "photo": this.data.photo,
       "role": "contributor",
@@ -177,7 +181,6 @@ export class LoginFacebookComponent {
     this.storage.set('session', true);
     this.setRootHomePage();
   }
-
 
   setRootHomePage() {
     this.navCtrl.setRoot(HomePage);
