@@ -31,9 +31,9 @@ export class HomePage {
   pinsQuery: any;
   postsQuery: any;
   loader: any;
-  pinsLoaded = false;
-  postLimit = 1;
-  endOfPosts = false;
+  pinsLoaded: any;
+  postLimit: any;
+  endOfPosts: any;
 
   constructor(
     private navCtrl: NavController,
@@ -46,6 +46,10 @@ export class HomePage {
   }
 
   ionViewDidEnter() {
+    this.posts = [];    
+    this.pinsLoaded = false;
+    this.postLimit = 1;
+    this.endOfPosts = false;
     this.requestUID().then((uid) => {
       this.uid = uid;
       this.loadHome('');
@@ -223,7 +227,6 @@ export class HomePage {
 
   loadPosts(refresh) {
     this.startRefresh(refresh);
-    this.posts = [];
     this.preparePostsRequest().subscribe((queryParameters) => {
       this.postsQuery = queryParameters
       this.requestPosts().subscribe((posts) => {

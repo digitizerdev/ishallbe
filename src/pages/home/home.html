@@ -78,7 +78,7 @@
   <div class="home-posts">
     <ion-row class="home-time" *ngIf="this.pinsLoaded">
       <ion-col text-center>
-        {{time}}
+        {{this.feedTimestamp.time}}
       </ion-col>
     </ion-row>
     <ion-refresher (ionRefresh)="loadHome($event)">

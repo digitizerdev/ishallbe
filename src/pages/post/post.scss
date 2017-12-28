@@ -9,7 +9,12 @@ page-post {
       .post-header {
         background: linear-gradient(to Top, #faf6ed, #fff);        
       }
-    
+      
+      .post-time {
+        color: gray;
+        font-size: .85em;
+      }
+
       .full-image {
         border-top: thick solid color($colors, secondary); 
         border-bottom: thick solid color($colors, secondary); 

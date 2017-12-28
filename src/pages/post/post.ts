@@ -28,7 +28,8 @@ export class PostPage {
     comment?: string
   } = {};
   submitted = false;
-  refreshing = false
+  refreshing = false;
+  loaded = false;
 
   constructor(
     public navCtrl: NavController,
@@ -44,16 +45,19 @@ export class PostPage {
   }
 
   loadPost(refresh) {
-    this.startRefresh(refresh);
-    this.postID = this.navParams.get('id');
-    return this.makeProfileRequests().subscribe(() => {
-      this.post = [];
-      return this.requestPost().first().subscribe((post) => {
-        this.post = post;
-        this.presentPost();
-        this.endRefresh(refresh);
+    if (!this.loaded) {
+      this.startRefresh(refresh);
+      this.postID = this.navParams.get('id');
+      return this.makeProfileRequests().subscribe(() => {
+        this.post = [];
+        return this.requestPost().subscribe((post) => {
+          this.loaded = true;
+          this.post = post;
+          this.presentPost();
+          this.endRefresh(refresh);
+        });
       });
-    });
+    }
   }
 
   startRefresh(refresh) {
@@ -69,7 +73,7 @@ export class PostPage {
   }
 
   presentPost() {
-    this.requestPostUserLikerObject().first().subscribe((liker) => {
+    this.requestPostUserLikerObject().subscribe((liker) => {
       this.markPostLike(liker[0]);
       this.requestComments();
     });
@@ -130,7 +134,7 @@ export class PostPage {
     this.comments = [];
     comments.forEach((comment) => {
       if (comment.likers) {
-        this.requestCommentUserLikerObject(comment).first().subscribe((liker) => {
+        this.requestCommentUserLikerObject(comment).subscribe((liker) => {
           this.markCommentLike(liker[0], comment);
         });
       } else {
@@ -164,12 +168,13 @@ export class PostPage {
 
   togglePostLike() {
     if (this.likedPost) {
-      this.requestPostUserLikerObject().subscribe((liker) => {
-        this.removePostLikerObject(liker[0]).then(() => {
-          if (this.post.likeCount == 1) {
-            this.unflagPostLike();
-          }
-          this.unlikePost();
+      if (this.post.likeCount == 0) {
+        this.post.liked = false;
+      }
+      this.unlikePost().subcribe(() => {
+        this.requestPostUserLikerObject().subscribe((liker) => {
+          this.removePostLikerObject(liker[0]).then(() => {
+          });
         });
       });
     } else {
@@ -188,21 +193,16 @@ export class PostPage {
   }
 
   unlikePost() {
-    this.likedPost = false;
-    let likeCount = --this.post.likeCount;
-    let post = {
-      "likeCount": likeCount
-    }
-    let path = 'posts/' + this.post.id;
-    return this.firebase.object(path).update(post);
-  }
-
-  unflagPostLike() {
-    let post = {
-      "liked": false,
-    }
-    let path = 'posts/' + this.post.id;
-    return this.firebase.object(path).update(post);
+    return Observable.create((observer) => {
+      this.likedPost = false;
+      this.post.likeCount--;
+      let post = {
+        "likeCount": this.post.likeCount,
+        "liked": this.post.liked
+      }
+      let path = 'posts/' + this.post.id;
+      return this.firebase.object(path).update(post);
+    });
   }
 
   pushPostLikerObject() {
