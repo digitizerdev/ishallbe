@@ -80,4 +80,14 @@ export class FirebaseProvider {
     }).take(1);
   }
 
+  queryRange(queryParameters) {
+    let path = queryParameters.path;
+    let order = queryParameters.orderByValue;
+    let limit = queryParameters.limitToLast;
+    return this.afdb.list(path, {
+      query: {
+        limitToLast: limit
+      }
+    }).take(1);
+  }
 }

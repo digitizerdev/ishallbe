@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { Moment, lang } from 'moment';
+import { Observable } from 'rxjs/Observable';
+import moment from 'moment';
+
 import { ProfilePage } from '../profile/profile';
 import { PostPage } from '../post/post';
 import { UserPage } from '../user/user';
@@ -10,8 +14,6 @@ import { PinPage } from '../pin/pin';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
-import { Observable } from 'rxjs/Observable';
-
 @IonicPage()
 @Component({
   selector: 'page-home',
@@ -19,62 +21,100 @@ import { Observable } from 'rxjs/Observable';
 })
 export class HomePage {
 
-  pins: any[] = [];  
+  pins: any[] = [];
   posts: any[] = [];
   uid: any;
   refreshing: any;
-  day: any;
+  feedTimestamp: any;
   saturday: any;
   sunday: any;
+  pinsQuery: any;
+  postsQuery: any;
+  loader: any;
+  pinsLoaded = false;
+  postLimit = 1;
+  endOfPosts = false;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public firebase: FirebaseProvider,
-    public alertCtrl: AlertController,
-    public storage: Storage
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private firebase: FirebaseProvider,
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
+    private storage: Storage,
   ) {
   }
 
   ionViewDidEnter() {
-    this.loadHome('');
+    this.requestUID().then((uid) => {
+      this.uid = uid;
+      this.loadHome('');
+    });
+  }
+
+  requestUID() {
+    return this.storage.ready().then(() => {
+      return this.storage.get('uid');
+    });
   }
 
   loadHome(refresh) {
-    this.setDay();
-    this.loadPins();    
-    this.loadPosts(refresh);
+    this.checkIfProfileBlocked();
+    this.startLoader();
+    this.timestampFeed().subscribe(() => {
+      this.setWeekend();
+      this.loadPins();
+      this.loadPosts(refresh);
+    });
   }
 
-  setDay() {
-    var d = new Date();
-    var weekday = new Array(7);
-    weekday[0] =  "Sunday";
-    weekday[1] = "Monday";
-    weekday[2] = "Tuesday";
-    weekday[3] = "Wednesday";
-    weekday[4] = "Thursday";
-    weekday[5] = "Friday";
-    weekday[6] = "Saturday";
-    this.day = weekday[d.getDay()];
-    if (this.day == 'Saturday') {
-      this.saturday = true;
-    }
-    if (this.day == 'Sunday') {
-      this.sunday = true;
-    }
-    let dayNumber = d.getDay();
+  startLoader() {
+    this.loader = this.loadingCtrl.create({
+      content: 'Loading...'
+    });
+    this.loader.present();
+  }
+
+  timestampFeed() {
+    return Observable.create((observer) => {
+      let time = moment().format('MMMM D h:mma')
+      let date = moment().format('YYYYMMDD');
+      let day = moment().format('dddd');
+      let dayNumberString = moment().format('d');
+      let dayNumber = parseInt(dayNumberString);
+      this.feedTimestamp = { time: time, date: date, day: day,dayNumber: dayNumber }
+      observer.next()
+    });
+  }
+
+  setWeekend() {
+    if (this.feedTimestamp.day == 'Saturday') { this.saturday = true; }
+    if (this.feedTimestamp.day == 'Sunday') { this.sunday = true; }
   }
 
   loadPins() {
-    return this.requestPins().subscribe((pins) => {
-      this.presentPins(pins);
+    this.preparePinsRequest().subscribe((queryParameters) => {
+      this.pinsQuery = queryParameters;
+      this.requestPins().subscribe((pins) => {
+        this.pinsLoaded = true;
+        this.presentPins(pins);
+      });
+    });
+  }
+
+  preparePinsRequest() {
+    return Observable.create((observer) => {
+      let queryParameters = {
+        path: '/pins/',
+        orderByValue: 'date',
+        limitToLast: this.feedTimestamp.dayNumber
+      }
+      observer.next(queryParameters)
     });
   }
 
   requestPins() {
-    let path = '/pins/';
-    return this.firebase.orderList(path, 'date');
+    return this.firebase.queryRange(this.pinsQuery);
   }
 
   presentPins(pins) {
@@ -173,19 +213,43 @@ export class HomePage {
     });
   }
 
+  checkIfProfileBlocked() {
+    this.requestProfile().subscribe((profile) => {
+      if (profile.blocked) {
+        this.handleBlocked();
+      }
+    });
+  }
+
   loadPosts(refresh) {
     this.startRefresh(refresh);
-    return this.requestUID().then((uid) => {
-      this.uid = uid
-      return this.requestProfile().subscribe((profile) => {
-        if (profile.blocked) {
-          this.handleBlocked();
-        }
-        return this.requestPosts().subscribe((posts) => {
-          this.presentPosts(posts);
-          this.endRefresh(refresh);
-        });
+    this.posts = [];
+    this.postLimit = 1;
+    this.endOfPosts = false;    
+    this.preparePostsRequest().subscribe((queryParameters) => {
+      this.postsQuery = queryParameters
+      this.requestPosts().subscribe((posts) => {
+        console.log("Got originally loaded post");
+        console.log(posts);
+        console.log(posts);
+        this.presentPosts(posts);
+        this.endRefresh(refresh);
       });
+    });
+  }
+
+  requestPosts() {
+    return this.firebase.queryRange(this.postsQuery)
+  }
+
+  preparePostsRequest() {
+    return Observable.create((observer) => {
+      let queryParameters = {
+        path: '/posts/',
+        orderByValue: 'rawTime',
+        limitToLast: this.postLimit,
+      }
+      observer.next(queryParameters)
     });
   }
 
@@ -199,12 +263,6 @@ export class HomePage {
     if (refresh) {
       refresh.complete();
     }
-  }
-
-  requestUID() {
-    return this.storage.ready().then(() => {
-      return this.storage.get('uid');
-    });
   }
 
   requestProfile() {
@@ -230,13 +288,7 @@ export class HomePage {
     alert.present();
   }
 
-  requestPosts() {
-    let path = "/posts/"
-    return this.firebase.orderList(path, 'rawTime');
-  }
-
   presentPosts(posts) {
-    this.posts = [];
     posts.forEach((post) => {
       this.requestPostUserLikerObject(post).subscribe((liker) => {
         if (liker[0]) {
@@ -247,11 +299,16 @@ export class HomePage {
         this.posts.push(post);
       });
     });
+    this.endLoader();
   }
 
   requestPostUserLikerObject(post) {
     let path = 'posts/' + post.id + '/likers/';
     return this.firebase.query(path, 'uid', this.uid);
+  }
+
+  endLoader() {
+    this.loader.dismiss();
   }
 
   togglePostLike(post) {
@@ -260,6 +317,7 @@ export class HomePage {
         this.removePostLikerObject(liker[0], post).then(() => {
           if (post.likeCount == 1) {
             this.unflagPostLike(post);
+            post.liked = false;
           }
           this.unlikePost(post);
         });
@@ -331,7 +389,6 @@ export class HomePage {
     });
   }
 
-
   viewPost(postID) {
     this.navCtrl.push(PostPage, { id: postID })
   }
@@ -351,9 +408,38 @@ export class HomePage {
   openLink(url) {
     open(url)
   }
-  
+
   goToStatementPage() {
     this.navCtrl.setRoot(StatementPage);
   }
 
+  doInfinite(infiniteScroll) {
+    console.log("Post limit is " + this.postLimit);
+    this.postLimit++;
+    this.preparePostsRequest().subscribe((queryParameters) => {
+      this.postsQuery = queryParameters;
+      this.requestPosts().subscribe((posts) => {
+        if (posts.length < this.postLimit) {
+          console.log("Done loading posts");
+          this.endOfPosts = true;
+        } else {
+          console.log("Got next set of posts");
+          console.log(posts);
+          this.presentNextPost(posts[0]);
+          infiniteScroll.complete();
+        }
+      });
+    });
+  }
+
+  presentNextPost(post) {
+    this.requestPostUserLikerObject(post).subscribe((liker) => {
+      if (liker[0]) {
+        post.userLiked = true;
+      } else {
+        post.userLiked = false;
+      }
+      this.posts.push(post);
+    });
+  }
 }

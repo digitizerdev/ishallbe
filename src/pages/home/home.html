@@ -13,70 +13,80 @@
 </ion-header>
 
 <ion-content>
-    <header></header>
+  <header></header>
+  <br>
+  <div class="saturday" *ngIf="this.saturday" text-center>
+    <h3>Happy Saturday!</h3>
+    <i>
+      <h5>Swipe below to see the daily affirmations for the week</h5>
+    </i>
     <br>
-    <div class="saturday" *ngIf="this.saturday" text-center> 
-            <h3>Happy Saturday!</h3>
-            <i>                
-            <h5>Swipe below to see the daily affirmations for the week</h5>
-        </i>
-        <br>
-    </div> 
-    <div class="sunday" *ngIf="this.sunday" text-center> 
-        <h3>It's iShallBe Sunday!</h3>
-        <br>
-        <ion-row responsive-sm>
-            <ion-col text-center>
-              <button ion-button (click)="goToStatementPage()" color="secondary" large>Create Your Statement</button>
-            </ion-col>
-        </ion-row>
-        <br>
-    </div>  
-    <div class="feature" *ngIf="!this.Sunday" >
-        <div class = "feature-space-top"><br><br></div>                             
-        <ion-slides pager>
-            <ion-slide *ngFor="let pin of pins" padding>
-                <ion-row justify-content-center align-items-center style="height: 100%">
-                <ion-col>
-                    <h1 padding class="slide-title" [innerHTML]="pin.title" ></h1>             
-                    <img class="pin-image" (click)="viewPin(pin.id)"  *ngIf="pin?.image" src="{{ pin?.url }}" />
-                    <video (click)="viewPin(pin.id)" *ngIf="pin?.video" width= "80%" controls="controls" preload="metadata" webkit-playsinline="webkit-playsinline" class="videoPlayer"><source src={{pin?.url}} type="video/mp4"/></video>               
-                    <h4 (click)="viewPin(pin.id)" [innerHTML]="pin.content"></h4>
-                    <div class="tuesday" *ngIf="pin.tuesday" (click)="openLink(pin.url)" text-center>
-                        <button ion-button large round ><ion-icon name="play"></ion-icon></button>  
-                  </div>
-                </ion-col>
-              </ion-row>
-            <div class = "pin-interaction-counts">
-                <p>
-                <a (click)="viewPin(pin.id)" class="subdued">{{ pin?.likeCount}} Likes</a>
-                <a (click)="viewPin(pin.id)" class="subdued" margin-left>{{ pin?.commentCount}} Comments</a>
-              </p>
+  </div>
+  <div class="sunday" *ngIf="this.sunday" text-center>
+    <h3>It's iShallBe Sunday!</h3>
+    <br>
+    <ion-row responsive-sm>
+      <ion-col text-center>
+        <button ion-button (click)="goToStatementPage()" color="secondary" large>Create Your Statement</button>
+      </ion-col>
+    </ion-row>
+    <br>
+  </div>
+  <div class="feature" *ngIf="!this.Sunday">
+    <ion-slides pager>
+      <ion-slide *ngFor="let pin of pins" padding>
+        <ion-row justify-content-center align-items-center style="height: 100%">
+          <ion-col>
+            <h1 padding class="slide-title" [innerHTML]="pin.title"></h1>
+            <img class="pin-image" (click)="viewPin(pin.id)" *ngIf="pin?.image" src="{{ pin?.url }}" />
+            <video (click)="viewPin(pin.id)" *ngIf="pin?.video" width="80%" controls="controls" preload="metadata" webkit-playsinline="webkit-playsinline"
+              class="videoPlayer">
+              <source src={{pin?.url}} type="video/mp4" />
+            </video>
+            <h4 (click)="viewPin(pin.id)" [innerHTML]="pin.content"></h4>
+            <div class="tuesday" *ngIf="pin.tuesday" (click)="openLink(pin.url)" text-center>
+              <button ion-button large round>
+                <ion-icon name="play"></ion-icon>
+              </button>
             </div>
-              <ion-grid class="pin-actions">
-                  <ion-row>
-                    <ion-col width-50 text-center (click)="togglePinLike(pin)">
-                      <ion-icon name="thumbs-up" color="secondary"  *ngIf="pin?.userLiked"></ion-icon>
-                      <ion-icon name="thumbs-up" *ngIf="!pin?.userLiked"></ion-icon>
-                    </ion-col>
-                    <ion-col width-50 text-center (click)="viewPin(pin?.id)">
-                      <ion-icon name="chatboxes"></ion-icon>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-                <br>
-            </ion-slide>
-      </ion-slides>
-      <div class = "feature-space-bottom"><br><br></div>                           
-    </div>    
+          </ion-col>
+        </ion-row>
+        <div class="pin-interaction-counts" (click)="viewPin(pin.id)">
+          <p>
+            <a *ngIf="pin.likeCount > 1 || pin.likeCount == 0" class="subdued">{{ pin?.likeCount}} Likes</a>
+            <a *ngIf="pin.likeCount == 1" class="subdued">{{ pin?.likeCount}} Like</a>
+            <a *ngIf="pin.commentCount > 1 || pin.commentCount == 0" class="subdued" margin-left>{{ pin?.commentCount}} Comments</a>
+            <a *ngIf="pin.commmentCount == 1" class="subdued" margin-left>{{ pin?.commentCount}} Comment</a>
+          </p>
+        </div>
+        <ion-grid class="pin-actions">
+          <ion-row>
+            <ion-col width-50 text-center (click)="togglePinLike(pin)">
+              <ion-icon name="thumbs-up" color="secondary" *ngIf="pin?.userLiked"></ion-icon>
+              <ion-icon name="thumbs-up" *ngIf="!pin?.userLiked"></ion-icon>
+            </ion-col>
+            <ion-col width-50 text-center (click)="viewPin(pin?.id)">
+              <ion-icon name="chatboxes"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <br>
+      </ion-slide>
+    </ion-slides>
+  </div>
+  <br class=space>  
   <div class="home-posts">
-    <div class = "space"><br><br></div>      
+    <ion-row class="home-time" *ngIf="this.pinsLoaded">
+      <ion-col text-center>
+        {{time}}
+      </ion-col>
+    </ion-row>
     <ion-refresher (ionRefresh)="loadHome($event)">
       <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="">
       </ion-refresher-content>
     </ion-refresher>
     <ion-card id="profilePosts" class="posts" *ngFor="let post of posts">
-      <ion-item padding class="post-header">
+      <ion-item class="post-header">
         <ion-avatar (click)="viewUser(post.uid)" padding-top item-left>
           <img src="{{ post?.face }}">
         </ion-avatar>
@@ -85,24 +95,29 @@
         <h2>
           <b>{{ post?.title}}</b>
         </h2>
+        <span class="post-time">
+          <ion-icon name="timer-outline"></ion-icon>
+          {{ post?.time }}
+        </span>
       </ion-item>
       <div text-center (click)="viewPost(post.$key)">
-        <img class="full-image" *ngIf="post.image" src="{{ post?.url }}">
+        <img class="full-image" src="{{ post?.url }}">
         <div class="info">
           <h2 text-center padding>{{ post?.content}}</h2>
         </div>
-        <div class="interactions" padding-left>
-            <a (click)="viewPost(post?.$key)" class="subdued">{{ post?.likeCount}} Likes</a>
-            <a (click)="viewPost(post?.$key)" class="subdued" margin-left>{{ post?.commentCount}} Comments</a>
-            <br>  
-            <br>
-            <br>                    
+        <div (click)="viewPost(post?.$key)" class="interactions" padding-left>
+          <a *ngIf="post.likeCount > 1 || post.likeCount == 0" class="subdued">{{ post?.likeCount}} Likes</a>
+          <a *ngIf="post.likeCount == 1" class="subdued">{{ post?.likeCount}} Like</a>
+          <a *ngIf="post.commentCount > 1 || post.commentCount == 0" class="subdued" margin-left>{{ post?.commentCount}} Comments</a>
+          <a *ngIf="post.commmentCount == 1" class="subdued" margin-left>{{ post?.commentCount}} Comment</a>
+          <br>
+          <br>
         </div>
       </div>
       <ion-grid class="post-actions">
         <ion-row>
           <ion-col width-33 text-center (click)="togglePostLike(post)">
-            <ion-icon name="thumbs-up" color="secondary" *ngIf="post?.userLiked"></ion-icon>
+            <ion-icon class="like-icon" name="thumbs-up" color="secondary" *ngIf="post?.userLiked"></ion-icon>
             <ion-icon name="thumbs-up" *ngIf="!post?.userLiked"></ion-icon>
           </ion-col>
           <ion-col width-33 text-center (click)="viewPost(post?.$key)">
@@ -111,5 +126,20 @@
         </ion-row>
       </ion-grid>
     </ion-card>
+  </div>
+  <ion-infinite-scroll [hidden]="endOfPosts" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content loadingSpinner="dots">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <div *ngIf="this.endOfPosts">
+    <ion-row padding class="posts-loaded">
+      <ion-col text-center>
+        All Posts Loaded
+      </ion-col>
+    </ion-row>
+    <ion-row class="footer-bar">
+      <ion-col text-center>
+      </ion-col>
+    </ion-row>
   </div>
 </ion-content>
