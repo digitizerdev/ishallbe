@@ -82,7 +82,7 @@ export class HomePage {
       let day = moment().format('dddd');
       let dayNumberString = moment().format('d');
       let dayNumber = parseInt(dayNumberString);
-      this.feedTimestamp = { time: time, date: date, day: day,dayNumber: dayNumber }
+      this.feedTimestamp = { time: time, date: date, day: day, dayNumber: dayNumber }
       observer.next()
     });
   }
@@ -224,14 +224,12 @@ export class HomePage {
   loadPosts(refresh) {
     this.startRefresh(refresh);
     this.posts = [];
-    this.postLimit = 1;
-    this.endOfPosts = false;    
     this.preparePostsRequest().subscribe((queryParameters) => {
       this.postsQuery = queryParameters
       this.requestPosts().subscribe((posts) => {
-        console.log("Got originally loaded post");
-        console.log(posts);
-        console.log(posts);
+        if (this.endOfPosts) {
+          posts.reverse();
+        }
         this.presentPosts(posts);
         this.endRefresh(refresh);
       });
@@ -414,17 +412,15 @@ export class HomePage {
   }
 
   doInfinite(infiniteScroll) {
+    console.log("Doing infinite scroll");
     console.log("Post limit is " + this.postLimit);
     this.postLimit++;
     this.preparePostsRequest().subscribe((queryParameters) => {
       this.postsQuery = queryParameters;
       this.requestPosts().subscribe((posts) => {
         if (posts.length < this.postLimit) {
-          console.log("Done loading posts");
           this.endOfPosts = true;
         } else {
-          console.log("Got next set of posts");
-          console.log(posts);
           this.presentNextPost(posts[0]);
           infiniteScroll.complete();
         }
