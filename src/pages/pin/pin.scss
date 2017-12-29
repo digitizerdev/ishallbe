@@ -1,84 +1,103 @@
 page-pin {
-    .container {
-        .card {
-          border-radius : 15px;
-          
-        } 
-      }
-      
-      .tuesday {
-        background-color: #faf6ed;
-        background: #faf6ed;
-      }
-      
-      .affirmation {
-        background-color: #faf6ed;
-        background: #faf6ed;
-      }
-
-      .pin-header {
-        background: linear-gradient(to Top, #faf6ed, #fff);        
-      }
-    
-      .full-image {
-        border-top: thick solid color($colors, secondary); 
-        border-bottom: thick solid color($colors, secondary); 
-      }
-    
-      .pin-body {
-        border-top: 1px solid $borderColor;
-        border-bottom: 1px solid $borderColor;
-        
-        p {
-          font-size: 0.8em;
+  
+        .tuesday {
+          background-color: #faf6ed;
+          background: #faf6ed;
         }
         
-        a.subdued {
-          color: $textColor;
-          font-size: 0.8em;
+        .affirmation {
+          background-color: #faf6ed;
+          background: #faf6ed;
+        }
+  
+        .top-affirmation {
+          background: linear-gradient(to Top, #faf6ed, color($colors, light-gray));        
+        }
+
+        .bottom-affirmation {
+          background: linear-gradient(to Bottom, #faf6ed, #FFF);        
+        }
+
+        .pin-time {
+          color: gray;
+          font-size: .85em;
+        }
+  
+        .full-image {
+          border-top: thick solid color($colors, secondary); 
+          border-bottom: thick solid color($colors, secondary); 
+        }
+      
+        .pin-body {
+          border-top: 1px solid $borderColor;
+          border-bottom: 1px solid $borderColor;
+          
+          p {
+            font-size: 0.8em;
+          }
+          
+          a.subdued {
+            color: $textColor;
+            font-size: 0.8em;
+            }
+          }
+        
+        .remove{
+            padding-right: 0 !important;
+            font-size: 1.25em;
+        }
+      
+        .pin-author {
+          align-self: center;
+        }
+      
+        h3.pin-author {
+          font-weight: normal;
+        }
+      
+        .pin-comment {  
+  
+          background-color:#FFF!important;
+          background: #FFF;
+  
+          .like-count {
+            margin-right: 5px;
+            font-size: 0.8em;
           }
         }
       
-      .item-complex{
-          padding-right: 0 !important;
-      }
-    
-      .pin-author {
-        align-self: center;
-      }
-    
-      h3.pin-author {
-        font-weight: normal;
-      }
-    
-      .pin-comment {  
-
-        background-color:#FFF!important;
-        background: #FFF;
-
-        .like-count {
-          margin-right: 5px;
-          font-size: 0.8em;
+        .info {
+          background-color: #FFF;          
+          padding: 5px;
         }
-      }
-    
-      .info {
-        padding: 5px;
-        border-bottom: thin color($colors, secondary);  
-        background: linear-gradient(#faf6ed, #fff);
-      }
-
-      .report-pin {
-          color: color($colors, gray); 
-      }
-      .add-comment {  
-        
-        background-color:#FFF!important;
-
-        .like-count {
-          margin-right: 5px;
-          font-size: 0.8em;
-        }
-      }
   
-}
+        .report-pin {
+            font-size: .8em;
+            color: color($colors, gray); 
+        }
+        .add-comment {  
+          
+          background-color:#FFF!important;
+  
+          .like-count {
+            margin-right: 5px;
+            font-size: 0.8em;
+          }
+  
+        }
+  
+        .comment-content {
+          color: #000
+        }
+  
+        .comment-time {
+          font-size: 0.75em;
+        }
+  
+        .submit-button {
+          border: thick solid color($colors, light-gray); 
+          border-radius: 10px;         
+        }
+    
+  }
+  
