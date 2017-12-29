@@ -27,7 +27,7 @@ export const mockPost = {
           "testCommentLikerID1" : {
             "comment" : "-L0LiXVWxQ0BT3_oRysh",
             "uid" : "testUID",
-            "$key": "testKey"
+            "id": "testKey"
           }
         },
         "mine" : true,
@@ -52,7 +52,7 @@ export const mockPost = {
       "testPostLikerID1" : {
         "post" : "-L07ooCD3QF-zuM_FZPd",
         "uid" : "testUID",
-        "$key": "testKey"
+        "id": "testKey"
       }
     },
     "name" : "Troy DC Thompson",

@@ -118,7 +118,7 @@ export class HomePage {
   }
 
   requestPins() {
-    return this.firebase.queryRange(this.pinsQuery);
+    return this.firebase.limitedList(this.pinsQuery);
   }
 
   presentPins(pins) {
@@ -137,7 +137,7 @@ export class HomePage {
 
   requestPinUserLikerObject(pin) {
     let path = 'pins/' + pin.id + '/likers/';
-    return this.firebase.query(path, 'uid', this.uid);
+    return this.firebase.queriedList(path, 'uid', this.uid);
   }
 
   togglePinLike(pin) {
@@ -240,7 +240,7 @@ export class HomePage {
   }
 
   requestPosts() {
-    return this.firebase.queryRange(this.postsQuery)
+    return this.firebase.limitedList(this.postsQuery)
   }
 
   preparePostsRequest() {
@@ -305,7 +305,7 @@ export class HomePage {
 
   requestPostUserLikerObject(post) {
     let path = 'posts/' + post.id + '/likers/';
-    return this.firebase.query(path, 'uid', this.uid);
+    return this.firebase.queriedList(path, 'uid', this.uid);
   }
 
   endLoader() {

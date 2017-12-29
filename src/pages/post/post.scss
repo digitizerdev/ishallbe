@@ -1,4 +1,5 @@
 page-post {
+
     .container {
         .card {
           border-radius : 15px;
@@ -34,8 +35,9 @@ page-post {
           }
         }
       
-      .item-complex{
+      .remove{
           padding-right: 0 !important;
+          font-size: 1.25em;
       }
     
       .post-author {
@@ -64,6 +66,7 @@ page-post {
       }
 
       .report-post {
+          font-size: .8em;
           color: color($colors, gray); 
       }
       .add-comment {  
@@ -74,6 +77,20 @@ page-post {
           margin-right: 5px;
           font-size: 0.8em;
         }
+
+      }
+
+      .comment-content {
+        color: #000
+      }
+
+      .comment-time {
+        font-size: 0.75em;
+      }
+
+      .submit-button {
+        border: thick solid color($colors, light-gray); 
+        border-radius: 10px;         
       }
   
 }

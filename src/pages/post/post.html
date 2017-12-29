@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title>{{ post?.title}}</ion-title>
+    <ion-title>iShallBe</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -9,8 +9,8 @@
     <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
     </ion-refresher-content>
   </ion-refresher>
-  <ion-card>
-    <ion-item padding class="post-header">
+  <div *ngIf="loaded">
+    <ion-item class="post-header">
       <ion-avatar (click)="viewUser(post.uid)" item-left>
         <img src="{{ post?.face }}">
       </ion-avatar>
@@ -24,7 +24,6 @@
       </span>
     </ion-item>
     <div text-center>
-
       <img class="full-image" src="{{ post?.url }}">
       <div class="info">
         <h2 text-center padding>{{ post?.content}}</h2>
@@ -38,46 +37,44 @@
           {{ post?.commentCount}}
         </a>
       </div>
-      <ion-item class="post-comment" *ngFor="let comment of comments">
+      <ion-item no-lines class="post-comment" *ngFor="let comment of comments">
         <ion-avatar item-left (click)="viewUser(comment?.user_id)">
           <img src="{{ comment?.face }}">
         </ion-avatar>
         <div text-right>
-          <ion-icon (click)="deleteComment(comment)" name="close" color="gray" class="item-complex" *ngIf="comment?.mine"></ion-icon>
+          <ion-icon (click)="deleteComment(comment)" name="close" color="gray" class="delete" *ngIf="comment?.mine"></ion-icon>
         </div>
         <h3 ion-text color="primary" class="post-author">
           {{ comment?.name }}
         </h3>
-        <p text-wrap>{{ comment?.content}}</p>
+        <p class="comment-content" text-wrap>{{ comment?.content}}</p>
         <a (click)="toggleCommentLike(comment)" class="subdued like-count">
-          <ion-icon name="heart" color="secondary" *ngIf="comment?.userLiked"></ion-icon>
-          <ion-icon name="heart" color="gray" *ngIf="!comment?.userLiked"></ion-icon>
+          <ion-icon name="heart" color="love" *ngIf="comment?.userLiked"></ion-icon>
+          <ion-icon name="heart-outline" color="gray" *ngIf="!comment?.userLiked"></ion-icon>
           {{ comment?.likeCount}}
         </a>
-        <span class="post-time">
-          <ion-icon name="timer-outline"></ion-icon>
+        <span class="comment-time">
+          <ion-icon ></ion-icon>
           {{ comment?.time }}
         </span>
       </ion-item>
     </div>
     <form #commentForm="ngForm" novalidate>
       <ion-list>
-        <ion-item class="add-comment">
-          <ion-label floating color="primary">Add Comment: </ion-label>
-          <ion-input [(ngModel)]="form.comment" name="comment" type="text" #comment="ngModel" spellcheck="false" autocapitalize="off"
+        <ion-item class="add-comment" no-lines>
+          <ion-label floating color="primary">Add Encouragement: </ion-label>
+          <ion-input [(ngModel)]="commentForm.comment" name="comment" type="text" #comment="ngModel" spellcheck="false" autocapitalize="off"
             required>
           </ion-input>
         </ion-item>
         <p ion-text [hidden]="comment.valid || submitted == false" color="danger" padding-left>
           Comment is required
         </p>
-        <button ion-button (click)="submit(form)" color="primary" type="submit" full>Comment</button>
+        <button class="submit-button" ion-button (click)="submit(commentForm)" color="primary" type="submit" block>Post</button>
       </ion-list>
     </form>
-  </ion-card>
-  <br>
-  <br>
-  <div text-center>
+  </div>
+  <div text-center *ngIf="loaded">
     <h6 class="report-post" (click)="reportPost()">Report Post</h6>
   </div>
 </ion-content>

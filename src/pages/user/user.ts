@@ -90,7 +90,7 @@ export class UserPage {
 
   loadUserPosts(uid) {
     let path = '/posts/'
-    return this.firebase.query(path, 'uid', uid);
+    return this.firebase.queriedList(path, 'uid', uid);
   }
 
   presentPosts(posts) {
@@ -134,7 +134,7 @@ export class UserPage {
 
   requestPostUserLikerObject(post) {
     let path = 'posts/' + post.id + '/likers/';
-    return this.firebase.query(path, 'uid', this.myUID);
+    return this.firebase.queriedList(path, 'uid', this.myUID);
   }
 
   removePostLikerObject(liker, post) {

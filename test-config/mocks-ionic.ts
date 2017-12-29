@@ -200,6 +200,14 @@ export class NavMock {
 
 }
 
+export class NavParamsMock {
+  public get(name: string): any {
+    return new Promise(function (resolve: Function): void {
+      resolve('testNavParamReturnValue');
+    });
+  }
+}
+
 export class DeepLinkerMock {
 
 }

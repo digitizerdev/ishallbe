@@ -63,7 +63,17 @@ export class FirebaseProvider {
     return this.afdb.list(path)
   }
 
-  orderList(path, fieldName) {
+  limitedList(queryParameters) {
+    let path = queryParameters.path;
+    let limit = queryParameters.limitToLast;
+    return this.afdb.list(path, {
+      query: {
+        limitToLast: limit
+      }
+    }).take(1);
+  }
+
+  orderedList(path, fieldName) {
     return this.afdb.list(path, {
       query: {
         orderByValue: fieldName
@@ -71,7 +81,7 @@ export class FirebaseProvider {
     }).take(1);
   }
 
-  query(path, fieldName, fieldValue) {
+  queriedList(path, fieldName, fieldValue) {
     return this.afdb.list(path, {
       query: {
         orderByChild: fieldName,
@@ -80,14 +90,5 @@ export class FirebaseProvider {
     }).take(1);
   }
 
-  queryRange(queryParameters) {
-    let path = queryParameters.path;
-    let order = queryParameters.orderByValue;
-    let limit = queryParameters.limitToLast;
-    return this.afdb.list(path, {
-      query: {
-        limitToLast: limit
-      }
-    }).take(1);
-  }
+
 }

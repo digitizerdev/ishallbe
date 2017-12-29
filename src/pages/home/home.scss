@@ -42,7 +42,7 @@ page-home {
 
   .home-time {
     color: color($colors, gray);
-    font-size: .75em;                
+    font-size: .8em;                
   }
     
     .home-posts {
@@ -124,6 +124,10 @@ page-home {
 
     .posts-loaded {
       color: color($colors, gray);            
+    }
+
+    .footer-image {
+      max-height: 50px;
     }
 
     .footer-bar {

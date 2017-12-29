@@ -72,15 +72,16 @@ const angularFireAuthStub = {
     },
 };
 
-const fakeObjectUpdate = (path: string): Function => {
-    return;
-};
-
 let updateSpy = jasmine.createSpy("update");
 
+let removeSpy = jasmine.createSpy("remove");
+
 let objectSpy = jasmine.createSpy("object").and.returnValue({
-    update: updateSpy
+    update: updateSpy,
+    remove: removeSpy
 });
+
+let pushSpy = jasmine.createSpy("push");
 
 let takeSpy = jasmine.createSpy("take");
 
@@ -88,19 +89,10 @@ let querySpy = jasmine.createSpy("query").and.returnValue({
     take: takeSpy
 });
 
-let queryRangeSpy = jasmine.createSpy("queryRange").and.returnValue({
-    take: takeSpy
-})
-
-let orderListSpy = jasmine.createSpy("orderList").and.returnValue({
-    take: takeSpy
-});
-
 let listSpy = jasmine.createSpy("list").and.returnValue({
-    query: querySpy,
-    queryRange: queryRangeSpy,
-    orderList: orderListSpy,
-    take: takeSpy
+    push: pushSpy,
+    take: takeSpy,
+    query: querySpy
 });
 
 const angularFireDataStub = {
@@ -193,16 +185,16 @@ describe('HomePage', () => {
     })
 
     it('should request Firebase to load pins', () => {
-        spyOn(firebase, 'queryRange').and.returnValue({ subscribe: () => { } });
+        spyOn(firebase, 'limitedList').and.returnValue({ subscribe: () => { } });
         component.requestPins();
-        expect(firebase.queryRange).toHaveBeenCalled();
+        expect(firebase.limitedList).toHaveBeenCalled();
     });
 
     it('should request Firebase Provider to check if user already liked pin', () => {
-        spyOn(firebase, 'query').and.returnValue({ subscribe: () => { } });
+        spyOn(firebase, 'queriedList').and.returnValue({ subscribe: () => { } });
         component.uid = 'testUID'
         component.requestPinUserLikerObject(mockPost.mature);
-        expect(firebase.query).toHaveBeenCalled();
+        expect(firebase.queriedList).toHaveBeenCalled();
     });
 
     it('should be able to like pin', () => {
@@ -224,21 +216,21 @@ describe('HomePage', () => {
     })
 
     it('should request Firebase to load posts', () => {
-        component.queryParameters = {
+        component.queriedListParameters = {
             path: '/posts/',
             orderByValue: 'rawTime',
             limitToLast: 2,
           }
-        spyOn(firebase, 'queryRange').and.returnValue({ subscribe: () => { } });
+        spyOn(firebase, 'limitedList').and.returnValue({ subscribe: () => { } });
         component.requestPosts();
-        expect(firebase.queryRange).toHaveBeenCalled();
+        expect(firebase.limitedList).toHaveBeenCalled();
     });
 
     it('should request Firebase to check if user already liked post', () => {
-        spyOn(firebase, 'query').and.returnValue({ subscribe: () => { } });
+        spyOn(firebase, 'queriedList').and.returnValue({ subscribe: () => { } });
         component.uid = 'testUID'
         component.requestPostUserLikerObject(mockPost.mature);
-        expect(firebase.query).toHaveBeenCalled();
+        expect(firebase.queriedList).toHaveBeenCalled();
     });
 
     it('should be able to like post', () => {

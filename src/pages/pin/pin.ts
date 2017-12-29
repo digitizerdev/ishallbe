@@ -17,19 +17,21 @@ import { Storage } from '@ionic/storage/es2015/storage';
 })
 export class PinPage {
 
+  commentForm: {
+    comment?: string
+  } = {};
+  comments: any; 
+  likedPin: any;
+  submitted: any;
+  refreshing: any;
+  loaded: any;
   uid: any;
   profile: any;
   pinID: string;
   pin: any;
-  likedPin = false;
   pinComment: any;
-  comments: any[] = [];
-  form: {
-    comment?: string
-  } = {};
-  submitted = false;
-  refreshing = false
 
+  
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -40,48 +42,23 @@ export class PinPage {
   }
 
   ionViewDidEnter() {
-    this.loadPin('');
+    this.likedPin = false;
+    this.submitted = false;
+    this.refreshing = false;
+    this.loaded = false;
+    this.comments = [];
+    this.loadProfile().subscribe(() => {
+      this.loadPin('');
+   });
   }
 
-  loadPin(refresh) {
-    this.startRefresh(refresh);
-    this.pinID = this.navParams.get('id');
-    return this.makeProfileRequests().subscribe(() => {
-      this.pin = [];
-      return this.requestPin().first().subscribe((pin) => {
-        this.pin = pin;
-        this.presentPin();
-        this.endRefresh(refresh);
-      });
-    });
-  }
-
-  startRefresh(refresh) {
-    if (refresh) {
-      this.refreshing = true;
-    }
-  }
-
-  endRefresh(refresh) {
-    if (refresh) {
-      refresh.complete();
-    }
-  }
-
-  presentPin() {
-    this.requestPinUserLikerObject().first().subscribe((liker) => {
-      this.markPinLike(liker[0]);
-      this.requestComments();
-    });
-  }
-
-  makeProfileRequests() {
+  loadProfile() {
     return Observable.create((observer) => {
       return this.requestUID().then((uid) => {
         this.uid = uid;
         this.profile = [];
         return this.requestProfile().subscribe((profile) => {
-          this.profile = profile
+          this.profile = profile;
           observer.next();
         });
       });
@@ -99,14 +76,41 @@ export class PinPage {
     return this.firebase.object(path);
   }
 
+  loadPin(refresh) {
+    if (!this.loaded) {
+      this.startRefresh(refresh);
+      this.pinID = this.navParams.get('id');
+        this.pin = [];
+        this.requestPin().subscribe((pin) => {
+          this.pin = pin;
+          this.presentPin(refresh);
+        });
+    }
+  }
+
+  startRefresh(refresh) {
+    if (refresh) {
+      this.refreshing = true;
+    }
+  }
+
   requestPin() {
     let path = '/pins/' + this.pinID;
     return this.firebase.object(path)
   }
 
+  presentPin(refresh) {
+    this.loaded = true;    
+    this.endRefresh(refresh);    
+    this.requestPinUserLikerObject().subscribe((liker) => {
+      this.markPinLike(liker[0]);
+      this.requestComments();
+    });
+  }
+
   requestPinUserLikerObject() {
     let path = 'pins/' + this.pin.id + '/likers/';
-    return this.firebase.query(path, 'uid', this.uid);
+    return this.firebase.queriedList(path, 'uid', this.uid);
   }
 
   markPinLike(liker) {
@@ -117,10 +121,16 @@ export class PinPage {
     }
   }
 
+  endRefresh(refresh) {
+    if (refresh) {
+      refresh.complete();
+    }
+  }
+
   requestComments() {
     if (this.pin.comments) {
       let path = 'pins/' + this.pin.id + '/comments/';
-      this.firebase.orderList(path, 'rawTime').subscribe((comments) => {
+      this.firebase.orderedList(path, 'rawTime').subscribe((comments) => {
         this.pushComments(comments);
       });
     }
@@ -130,7 +140,7 @@ export class PinPage {
     this.comments = [];
     comments.forEach((comment) => {
       if (comment.likers) {
-        this.requestCommentUserLikerObject(comment).first().subscribe((liker) => {
+        this.requestCommentUserLikerObject(comment).subscribe((liker) => {
           this.markCommentLike(liker[0], comment);
         });
       } else {
@@ -141,7 +151,7 @@ export class PinPage {
 
   requestCommentUserLikerObject(comment) {
     let path = 'pins/' + this.pin.id + '/comments/' + comment.id + '/likers/';
-    return this.firebase.query(path, 'uid', this.uid);
+    return this.firebase.queriedList(path, 'uid', this.uid);
   }
 
   markCommentLike(liker, comment) {
@@ -164,12 +174,13 @@ export class PinPage {
 
   togglePinLike() {
     if (this.likedPin) {
-      this.requestPinUserLikerObject().subscribe((liker) => {
-        this.removePinLikerObject(liker[0]).then(() => {
-          if (this.pin.likeCount == 1) {
-            this.unflagPinLike();
-          }
-          this.unlikePin();
+      if (this.pin.likeCount == 0) {
+        this.pin.liked = false;
+      }
+      this.unlikePin().subcribe(() => {
+        this.requestPinUserLikerObject().subscribe((liker) => {
+          this.removePinLikerObject(liker[0]).then(() => {
+          });
         });
       });
     } else {
@@ -188,21 +199,18 @@ export class PinPage {
   }
 
   unlikePin() {
-    this.likedPin = false;
-    let likeCount = --this.pin.likeCount;
-    let pin = {
-      "likeCount": likeCount
-    }
-    let path = 'pins/' + this.pin.id;
-    return this.firebase.object(path).update(pin);
-  }
-
-  unflagPinLike() {
-    let pin = {
-      "liked": false,
-    }
-    let path = 'pins/' + this.pin.id;
-    return this.firebase.object(path).update(pin);
+    return Observable.create((observer) => {
+      this.likedPin = false;
+      this.pin.likeCount--;
+      let pin = {
+        "likeCount": this.pin.likeCount,
+        "liked": this.pin.liked
+      }
+      let path = 'pins/' + this.pin.id;
+      return this.firebase.object(path).update(pin).then(() => {
+        observer.next();
+      });
+    });
   }
 
   pushPinLikerObject() {
@@ -238,9 +246,9 @@ export class PinPage {
     });
   }
 
-  submit(form) {
+  submit(commentForm) {
     this.submitted = true;
-    if (form.comment) {
+    if (commentForm.comment) {
       this.submitted = false
       let path = '/pins/' + this.pin.id + '/comments/'
       let time = moment().format('MMM Do, YYYY h:mm A');
@@ -252,7 +260,7 @@ export class PinPage {
         "likeCount": 0,
         "time": time,
         "rawTime": rawTime,
-        "content": this.form.comment,
+        "content": this.commentForm.comment,
         "pin": this.pin.id,
         "uid": this.uid,
         "mine": true,
@@ -263,7 +271,7 @@ export class PinPage {
         this.addIDToComment().then(() => {
           this.comments.push(this.pinComment);
           this.incrementPinCommentCount();
-          this.form.comment = null;
+          this.commentForm.comment = null;
           this.pinComment = null;
         });
       });
@@ -403,5 +411,4 @@ export class PinPage {
   openLink(url) {
     open(url)
   }
-
 }

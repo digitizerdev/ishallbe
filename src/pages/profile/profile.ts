@@ -88,7 +88,7 @@ import { Observable } from 'rxjs/Observable';
 
   loadUserPosts(uid) {
     let path = '/posts/'
-    return this.firebase.query(path, 'uid', uid);
+    return this.firebase.queriedList(path, 'uid', uid);
   }
 
   presentPosts(posts) {
@@ -130,7 +130,7 @@ import { Observable } from 'rxjs/Observable';
 
   requestPostUserLikerObject(post) {
     let path = 'posts/' + post.id + '/likers/';
-    return this.firebase.query(path, 'uid', this.uid);
+    return this.firebase.queriedList(path, 'uid', this.uid);
   }
 
   removePostLikerObject(liker, post) {
