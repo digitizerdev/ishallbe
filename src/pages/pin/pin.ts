@@ -77,7 +77,6 @@ export class PinPage {
     });
   }
 
-
   requestProfile() {
     let path = '/users/' + this.uid;
     return this.firebase.object(path);
@@ -91,7 +90,7 @@ export class PinPage {
     this.requestPin().subscribe((pin) => {
       if (!this.loaded) {
         this.pin = pin;
-        this.title = pin.title;
+        this.title = pin.displayTime;
         this.presentPin(refresh);
       }
     });
