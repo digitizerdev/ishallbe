@@ -1,58 +1,64 @@
 <ion-header>
-    <ion-navbar color="primary">
-      <ion-title>{{ profile?.name}}</ion-title>
-    </ion-navbar>
-  </ion-header>
+  <ion-navbar color="primary">
+    <ion-title>iShallBe</ion-title>
+  </ion-navbar>
+</ion-header>
 
-  <ion-content padding>
-      <div text-center>
-        <img class="avatar" src="{{ profile?.photo }}">
-        <h4>{{ profile?.bio}} </h4>
-      </div>
-      <br>
-      <div class="profile-posts">
-        <br>
-        <div *ngIf="!posts" class="posts" padding>
-          <ion-row padding text-center>
-            <ion-col text-center>
-              <h3>No Posts</h3>
-            </ion-col>
-          </ion-row>
+<ion-content>
+  <div text-center class="user-profile">
+    <img class="avatar" src="{{ user?.photo }}">
+    <h2>{{ user?.name}}</h2>
+    <h5 class="bio" >{{ user?.bio}} </h5>
+    <br>
+  </div>
+  <div class="user-posts">
+    <br>
+    <div *ngIf="!posts" class="posts" padding>
+      <ion-row padding text-center>
+        <ion-col text-center>
+          <h3>No Posts</h3>
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-card id="userPosts" class="posts" *ngFor="let post of posts">
+      <ion-item class="post-header">
+        <ion-avatar (click)="viewUser(post.uid)" padding-top item-left>
+          <img src="{{ post?.face }}">
+        </ion-avatar>
+        <ion-icon *ngIf="post.flagged" (click)="flaggedMessage()" name="alert" color="danger" item-right></ion-icon>
+        <h2 padding-top ion-text color="primary" class="post-author">{{ post?.name }}</h2>
+        <h3>
+          <b>{{ post?.title}}</b>
+        </h3>
+        <span class="post-time">
+          {{ post?.time }}
+        </span>
+      </ion-item>
+      <div text-center (click)="viewPost(post.$key)">
+        <img class="full-image" src="{{ post?.url }}">
+        <div class="post-content">
+          <h2 text-center padding>{{ post?.content}}</h2>
         </div>
-        <ion-card id="profilePosts" class="posts" *ngFor="let post of posts">
-          <ion-item padding class="post-header">
-            <ion-avatar padding-top item-left>
-              <img src="{{ post?.face }}">
-            </ion-avatar>
-            <ion-icon *ngIf="post.flagged" (click)="flaggedMessage()" name="alert" color="danger" item-right></ion-icon>
-            <h2 padding-top ion-text color="primary" class="post-author">{{ post?.name }}</h2>
-            <h2>
-              <b>{{ post?.title}}</b>
-            </h2>
-          </ion-item>
-          <div text-center (click)="viewPost(post.$key)">
-            <img class="full-image" *ngIf="post.image" src="{{ post?.url }}">
-            <div class="info">
-              <h2 text-center padding>{{ post?.content}}</h2>
-            </div>
-            <div class="interactions" padding-left>
-                <a (click)="viewPost(post?.$key)" class="subdued">{{ post?.likeCount}} Likes</a>
-                <a (click)="viewPost(post?.$key)" class="subdued" margin-left>{{ post?.commentCount}} Comments</a>
-                <br>  
-                <br>        
-            </div>
-          </div>
-          <ion-grid class="post-actions">
-            <ion-row>
-              <ion-col width-33 text-center (click)="togglePostLike(post)">
-                <ion-icon name="thumbs-up" color="secondary" *ngIf="post?.userLiked"></ion-icon>
-                <ion-icon name="thumbs-up" *ngIf="!post?.userLiked"></ion-icon>
-              </ion-col>
-              <ion-col width-33 text-center (click)="viewPost(post?.$key)">
-                <ion-icon name="chatboxes"></ion-icon>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-card>
+        <div (click)="viewPost(post?.$key)" class="interactions" padding-left>
+          <a *ngIf="post.likeCount > 1 || post.likeCount == 0" class="subdued">{{ post?.likeCount}} Likes</a>
+          <a *ngIf="post.likeCount == 1" class="subdued">{{ post?.likeCount}} Like</a>
+          <a *ngIf="post.commentCount > 1 || post.commentCount == 0" class="subdued" margin-left>{{ post?.commentCount}} Comments</a>
+          <a *ngIf="post.commentCount == 1" class="subdued" margin-left>{{ post?.commentCount}} Comment</a>
+          <br>
+          <br>
+        </div>
       </div>
-  </ion-content>
+      <ion-grid class="post-actions">
+        <ion-row>
+          <ion-col width-33 text-center (click)="togglePostLike(post)">
+            <ion-icon class="like-icon" name="thumbs-up" color="secondary" *ngIf="post?.userLiked"></ion-icon>
+            <ion-icon name="thumbs-up" *ngIf="!post?.userLiked"></ion-icon>
+          </ion-col>
+          <ion-col width-33 text-center (click)="viewPost(post?.$key)">
+            <ion-icon name="chatboxes"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </div>
+</ion-content>

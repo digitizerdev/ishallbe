@@ -14,13 +14,13 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 })
 export class UserPage {
 
-  profile: any;
+  user: any;
   uid: any;
   posts: any[] = [];
   myUID: any;
-  
+
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
     public firebase: FirebaseProvider,
     public storage: Storage
@@ -28,88 +28,47 @@ export class UserPage {
   }
 
   ionViewDidEnter() {
-    this.loadUser();
+    this.uid = this.navParams.get('uid')
+    this.loadUser().subscribe((user) => {
+      this.user = user;
+      if(!this.user.bio) this.addDefaultBio();
+      this.loadUserPosts().subscribe((posts) => {
+        this.presentPosts(posts);
+      });
+    })
   }
 
   loadUser() {
-    this.uid = this.navParams.get('uid'); 
-    return this.requestUser().first().subscribe((user) => {
-      this.profile = user;
-      return this.requestUID().then((uid) => {
-        this.myUID = uid;
-        return this.requestProfile().first().subscribe((profile) => {
-          this.syncProfile(profile);
-          return this.loadUserPosts(profile.uid).first().subscribe((userPosts)=> {
-            this.presentPosts(userPosts);
-          })
-        })
-      });
-    });
-  }
-
-  requestUser() {
-    let path = '/users/' + this.uid;    
+    let path = '/users/' + this.uid;
     return this.firebase.object(path)
   }
 
-  requestUID() {
-    return this.storage.ready().then(() => {
-      return this.storage.get(('uid'));      
-    });
+  addDefaultBio() {
+    this.user.bio = 'Improving Every Day';
   }
 
-  requestProfile() {
-    let path = '/users/' + this.uid;
-    return this.firebase.object(path);
-  }
-
-  syncProfile(profile) {
-    this.profile = profile;    
-    if (profile.photo == 'https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png') {
-      profile.photo = 'assets/img/default-profile.png';
-    }
-    if (!profile.bio) {
-      this.addStandardBio(profile);
-    }
-  } 
-
-  addStandardBio(noBioProfile) {
-    let profile = {
-      uid: noBioProfile.uid,
-      name: noBioProfile.name,
-      email: noBioProfile.email,
-      photo: noBioProfile.photo,
-      blocked: noBioProfile.blocked,
-      role: noBioProfile.role,
-      bio: 'Improving Every Day'
-    }
-    this.profile = profile;
-    let path = '/users/' + noBioProfile.uid;
-    this.firebase.object(path).set(profile);
-  }
-
-  loadUserPosts(uid) {
+  loadUserPosts() {
     let path = '/posts/'
-    return this.firebase.queriedList(path, 'uid', uid);
+    return this.firebase.queriedList(path, 'uid', this.uid);
   }
 
   presentPosts(posts) {
-    console.log("Presenting posts");
-    console.log(posts);
     this.posts = [];
     posts.forEach((post) => {
-      this.requestPostUserLikerObject(post).first().subscribe((liker) => {
+      this.requestPostUserLikerObject(post).subscribe((liker) => {
         if (liker[0]) {
           post.userLiked = true;
         } else {
           post.userLiked = false;
         }
-        if (post.face == 'https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png') {
-          post.face = 'assets/img/default-profile.png';
-        }
         this.posts.push(post);
       });
     });
+  }
+
+  requestPostUserLikerObject(post) {
+    let path = 'posts/' + post.id + '/likers/';
+    return this.firebase.queriedList(path, 'uid', this.uid);
   }
 
   togglePostLike(post) {
@@ -118,6 +77,7 @@ export class UserPage {
         this.removePostLikerObject(liker[0], post).then(() => {
           if (post.likeCount == 1) {
             this.unflagPostLike(post);
+            post.liked = false;
           }
           this.unlikePost(post);
         });
@@ -130,11 +90,6 @@ export class UserPage {
         });
       });
     }
-  }
-
-  requestPostUserLikerObject(post) {
-    let path = 'posts/' + post.id + '/likers/';
-    return this.firebase.queriedList(path, 'uid', this.myUID);
   }
 
   removePostLikerObject(liker, post) {
@@ -164,7 +119,7 @@ export class UserPage {
     let path = 'posts/' + myPost.id + '/likers/';
     let likerObject = {
       "post": myPost.id,
-      "uid": this.myUID
+      "uid": this.uid
     }
     return this.firebase.list(path).push(likerObject);
   }
@@ -195,6 +150,6 @@ export class UserPage {
   }
 
   viewPost(postID) {
-    this.navCtrl.push(PostPage, {id: postID})    
+    this.navCtrl.push(PostPage, { id: postID })
   }
 }

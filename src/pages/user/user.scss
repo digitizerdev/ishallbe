@@ -1,5 +1,11 @@
 page-user {
+
+    .user-profile {
+      background-color: #FFF;
+    }
+
     .avatar {
+        padding-top: 10px;
         display: round;
         width: 100%;
         height: 80%;
@@ -10,8 +16,11 @@ page-user {
         text-align: center;
     }
 
-    .profile-posts {
-        border-top: thick solid color($colors, primary);         
+    .bio {
+      color: color($colors, primary);
+    }
+    .user-posts {
+      border-top: thick solid color($colors, primary);               
     }
 
     .card {
@@ -56,16 +65,20 @@ page-user {
       .post-actions {
         color: color($colors, gray);
         font-size: 1.4em;
-        background-color: color($colors, light-green);        
-    }
+        border-top: thin solid color($colors, light-gray);
+        background-color: color($colors, light-green);
+      }
 
-    .info {
+    .post-content {
         padding: 5px;
+        color: color($colors, primary);
         border-bottom: thin color($colors, secondary);  
         background: linear-gradient(#faf6ed, #fff);
       }
-
-      .interactions {
+    
+    .interactions {
+        color: gray;
         background-color:#FFF!important;        
     }
+
 }
