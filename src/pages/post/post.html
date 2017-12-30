@@ -19,14 +19,13 @@
         <b>{{ post?.title}}</b>
       </h2>
       <span class="post-time">
-        <ion-icon name="timer-outline"></ion-icon>
         {{ post?.time }}
       </span>
     </ion-item>
     <div text-center>
       <img class="full-image" src="{{ post?.url }}">
       <div class="info">
-        <h2 text-center padding>{{ post?.content}}</h2>
+        <h4 class="post-content" text-center padding>{{ post?.content}}</h4>
         <a (click)="togglePostLike(post)" class="subdued">
           <ion-icon name="thumbs-up" color="secondary" *ngIf="likedPost"></ion-icon>
           <ion-icon name="thumbs-up" color="gray" *ngIf="!likedPost"></ion-icon>

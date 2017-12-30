@@ -1,27 +1,18 @@
 page-pin {
 
         .pin-title {
+          border-top: thick solid color($colors, primary);             
           font-size: 1.1em;
-        }
-  
-        .tuesday {
-          background-color: #faf6ed;
-          background: #faf6ed;
+          padding-bottom: 0px;
+          margin-bottom: 0px;
         }
         
         .affirmation {
-          background-color: #faf6ed;
-          background: #faf6ed;
+          padding: 5px;
+          color: color($colors, primary);
+          background: linear-gradient(to Bottom, color($colors, light-gray), #FFF);                  
         }
-  
-        .top-affirmation {
-          background: linear-gradient(to Top, #faf6ed, color($colors, light-gray));        
-        }
-
-        .bottom-affirmation {
-          background: linear-gradient(to Bottom, #faf6ed, #FFF);        
-        }
-
+        
         .pin-time {
           color: gray;
           font-size: .85em;

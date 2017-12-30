@@ -9,6 +9,11 @@ page-home {
     border-top: thick dashed color($colors, secondary);
   }
 
+  .affirmation {
+    padding: 5px;
+    color: color($colors, primary);
+  }
+
   .pin-image {
     max-height: 200px;            
   }
@@ -110,8 +115,9 @@ page-home {
         background-color: color($colors, light-green);
       }
 
-    .info {
+    .post-content {
         padding: 5px;
+        color: color($colors, primary);
         border-bottom: thin color($colors, secondary);  
         background: linear-gradient(#faf6ed, #fff);
       }

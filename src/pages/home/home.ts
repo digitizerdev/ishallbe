@@ -46,15 +46,9 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    console.log("View entered");
     this.pinsLoaded = false;
     this.postLimit = 1;
     this.postsLoaded = false;
-    console.log("Posts are ");
-    console.log(this.posts);
-    console.log("Pins loaded: " + this.pinsLoaded);
-    console.log("Post limit: " + this.postLimit);
-    console.log("Posts loaded: " + this.postsLoaded);
     this.requestUID().then((uid) => {
       this.uid = uid;
       this.loadHome();
@@ -81,7 +75,6 @@ export class HomePage {
       this.loadPins();        
       this.posts = [];
       if (this.postsLoaded || this.postLimit > 1) {
-        console.log("Setting post limit to 25")
         this.postLimit = 25;
         this.postsLoaded = true;
       }
@@ -114,7 +107,7 @@ export class HomePage {
 
   loadPins() {
     if (!this.pinsLoaded) {
-      this.pins = [];      
+      this.pins = [];
       this.preparePinsRequest().subscribe((queryParameters) => {
         this.pinsQuery = queryParameters;
         this.requestPins().subscribe((pins) => {
@@ -137,23 +130,18 @@ export class HomePage {
   }
 
   requestPins() {
-    if (this.pinsLoaded) {
-      return this.firebase.list('/pins/')      
-    } else {
-      return this.firebase.list('/pins/').take(1);
-    }
+    return this.firebase.limitedList(this.pinsQuery);
   }
 
   presentPins(pins) {
-    this.pins = [];
-    pins.forEach((pin) => {
+    this.pins = pins;
+    this.pins.forEach((pin) => {
       this.requestPinUserLikerObject(pin).subscribe((liker) => {
         if (liker[0]) {
           pin.userLiked = true;
         } else {
           pin.userLiked = false;
         }
-        this.pins.push(pin);
       });
     });
   }
@@ -253,11 +241,8 @@ export class HomePage {
       this.postsQuery = queryParameters
       this.requestPosts().subscribe((posts) => {
         if (this.postLimit == 25) {
-          console.log("Reversing posts");
           posts.reverse();
         }
-        console.log("Presenting posts");
-        console.log(posts)
         this.presentPosts(posts);
       });
     });
@@ -315,8 +300,6 @@ export class HomePage {
 
   presentPosts(posts) {
     this.posts = [];
-    console.log("Posts array before push");
-    console.log(this.posts);
     posts.forEach((post) => {
       this.requestPostUserLikerObject(post).subscribe((liker) => {
         if (liker[0]) {
@@ -324,8 +307,6 @@ export class HomePage {
         } else {
           post.userLiked = false;
         }
-        console.log("Pushing post");
-        console.log(post);
         this.posts.push(post);
       });
     });
@@ -444,8 +425,6 @@ export class HomePage {
   }
 
   doInfinite(infiniteScroll) {
-    console.log("Infinite scroll triggered");
-    console.log("Post limit: " + this.postLimit)
     this.postLimit++;
     this.preparePostsRequest().subscribe((queryParameters) => {
       this.postsQuery = queryParameters;

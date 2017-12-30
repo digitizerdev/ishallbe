@@ -14,7 +14,6 @@
 
 <ion-content>
   <header></header>
-  <br>
   <div class="saturday" *ngIf="this.saturday" text-center>
     <h3>Happy Saturday!</h3>
     <i>
@@ -34,22 +33,22 @@
   </div>
   <div class="feature" *ngIf="!this.Sunday">
     <ion-slides pager>
-      <ion-slide *ngFor="let pin of pins" padding>
+      <ion-slide *ngFor="let pin of pins">
         <ion-row justify-content-center align-items-center style="height: 100%">
-          <ion-col>
-            <h1 padding class="slide-title" [innerHTML]="pin.title"></h1>
-            <img class="pin-image" (click)="viewPin(pin.id)" *ngIf="pin?.image" src="{{ pin?.url }}" />
-            <video (click)="viewPin(pin.id)" *ngIf="pin?.video" width="80%" controls="controls" preload="metadata" webkit-playsinline="webkit-playsinline"
-              class="videoPlayer">
-              <source src={{pin?.url}} type="video/mp4" />
-            </video>
-            <h4 (click)="viewPin(pin.id)" [innerHTML]="pin.content"></h4>
-            <div class="tuesday" *ngIf="pin.tuesday" (click)="openLink(pin.url)" text-center>
-              <button ion-button large round>
-                <ion-icon name="play"></ion-icon>
-              </button>
-            </div>
-          </ion-col>
+          <h2 class="slide-title" [innerHTML]="pin.title"></h2>
+          <img class="pin-image" (click)="viewPin(pin.id)" *ngIf="pin?.image" src="{{ pin?.url }}" />
+          <video (click)="viewPin(pin.id)" *ngIf="pin?.video" width="80%" controls="controls" preload="metadata" webkit-playsinline="webkit-playsinline"
+            class="videoPlayer">
+            <source src={{pin?.url}} type="video/mp4" />
+          </video>
+          <ion-row>
+              <h4 class="affirmation" (click)="viewPin(pin.id)" [innerHTML]="pin.content"></h4>              
+          </ion-row>
+          <div class="tuesday" *ngIf="pin.tuesday" (click)="openLink(pin.url)" text-center>
+            <button ion-button small round>
+              <ion-icon name="play"></ion-icon>
+            </button>
+          </div>
         </ion-row>
         <div class="pin-interaction-counts" (click)="viewPin(pin.id)">
           <p>
@@ -74,7 +73,7 @@
       </ion-slide>
     </ion-slides>
   </div>
-  <br class=space>  
+  <br class=space>
   <div class="home-posts">
     <ion-row class="home-time" *ngIf="this.postsLoaded">
       <ion-col text-center>
@@ -92,17 +91,16 @@
         </ion-avatar>
         <ion-icon *ngIf="post.flagged" (click)="flaggedMessage()" name="alert" color="danger" item-right></ion-icon>
         <h2 padding-top ion-text color="primary" class="post-author">{{ post?.name }}</h2>
-        <h2>
+        <h3>
           <b>{{ post?.title}}</b>
-        </h2>
+        </h3>
         <span class="post-time">
-          <ion-icon name="timer-outline"></ion-icon>
           {{ post?.time }}
         </span>
       </ion-item>
       <div text-center (click)="viewPost(post.$key)">
         <img class="full-image" src="{{ post?.url }}">
-        <div class="info">
+        <div class="post-content">
           <h2 text-center padding>{{ post?.content}}</h2>
         </div>
         <div (click)="viewPost(post?.$key)" class="interactions" padding-left>
@@ -138,10 +136,10 @@
       </ion-col>
     </ion-row>
     <ion-row class="posts-loaded">
-        <ion-col text-center>
-            <img class="footer-image" src="assets/img/icon.png">  
-        </ion-col>
-      </ion-row>
+      <ion-col text-center>
+        <img class="footer-image" src="assets/img/icon.png">
+      </ion-col>
+    </ion-row>
     <ion-row class="footer-bar">
       <ion-col text-center>
       </ion-col>

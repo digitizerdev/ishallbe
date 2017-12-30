@@ -65,6 +65,10 @@ page-post {
         background: linear-gradient(#faf6ed, #fff);
       }
 
+      .post-content {
+        color: color($colors, primary);
+      }
+
       .report-post {
           font-size: .8em;
           color: color($colors, gray); 

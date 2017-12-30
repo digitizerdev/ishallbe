@@ -189,10 +189,9 @@ describe('HomePage', () => {
     })
 
     it('should request Firebase to load pins', () => {
-        component.firebase.list('testPath');
+        spyOn(firebase, 'limitedList').and.returnValue({ subscribe: () => { } });
         component.requestPins();
-        expect(listSpy).toHaveBeenCalled();
-        expect(takeSpy).toHaveBeenCalled();
+        expect(firebase.limitedList).toHaveBeenCalled();
     });
 
     it('should request Firebase Provider to check if user already liked pin', () => {

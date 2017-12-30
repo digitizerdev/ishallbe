@@ -10,27 +10,21 @@
   </ion-refresher>
   <header></header>
   <div *ngIf="loaded">
-    <ion-row class="pin-title">
-      <ion-col text-center>
-        <h1><b>{{pin?.title}}</b></h1>
-      </ion-col>
-    </ion-row>
-    <div class="top-affirmation">
-      <br>
-    </div>
     <div text-center>
-      <img *ngIf="pin?.image" class="full-image" src="{{ pin?.url }}" (click)="openLink(pin.link)">
-      <ion-row padding class="affirmation" *ngIf="!pin?.image">
-        <h2 *ngIf="!pin?.image" padding>{{ pin?.content}}</h2>
+      <ion-row text-center no-padding-bottom class="pin-title">
+        <ion-col>
+          <h2>{{pin?.title}}</h2>
+        </ion-col>
       </ion-row>
-      <div padding class="tuesday" *ngIf="pin?.tuesday" (click)="openLink(pin.url)" text-center>
-        <button ion-button large round>
-          <ion-icon name="play"></ion-icon>
-        </button>
-      </div>
-      <div  class="bottom-affirmation">
-        <br>
-      </div>
+      <img *ngIf="pin?.image" class="full-image" src="{{ pin?.url }}" (click)="openLink(pin.link)">
+      <ion-row class="affirmation" *ngIf="!pin?.image">
+        <ion-col no-padding text-center>
+          <h4 *ngIf="!pin?.image" padding>{{ pin?.content}}</h4>
+          <button *ngIf="pin?.tuesday" (click)="openLink(pin.url)" text-center ion-button small round>
+            <ion-icon name="play"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
       <div class="info">
         <a (click)="togglePinLike(pin)" class="subdued">
           <ion-icon name="thumbs-up" color="secondary" *ngIf="likedPin"></ion-icon>
