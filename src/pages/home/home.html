@@ -76,12 +76,12 @@
   </div>
   <br class=space>  
   <div class="home-posts">
-    <ion-row class="home-time" *ngIf="this.pinsLoaded">
+    <ion-row class="home-time" *ngIf="this.postsLoaded">
       <ion-col text-center>
         {{this.feedTimestamp.time}}
       </ion-col>
     </ion-row>
-    <ion-refresher (ionRefresh)="loadHome($event)">
+    <ion-refresher (ionRefresh)="refreshPage($event)">
       <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="">
       </ion-refresher-content>
     </ion-refresher>
@@ -127,11 +127,11 @@
       </ion-grid>
     </ion-card>
   </div>
-  <ion-infinite-scroll [hidden]="endOfPosts" (ionInfinite)="doInfinite($event)">
+  <ion-infinite-scroll [hidden]="postsLoaded" (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content loadingSpinner="dots">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
-  <div *ngIf="this.endOfPosts">
+  <div *ngIf="this.postsLoaded">
     <ion-row class="posts-loaded">
       <ion-col text-center>
         All Posts Loaded

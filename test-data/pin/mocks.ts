@@ -61,7 +61,8 @@ export const mockPin = {
     "time" : -20171211104453,
     "title" : "I Shall Be Adventurous ",
     "uid" : "testUID",
-    "url" : "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2FtestUID%2Fimages%2Fstatement?alt=media&token=286d74d7-57d3-48d0-9d35-9483bf37ef1e"
+    "url" : "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2FtestUID%2Fimages%2Fstatement?alt=media&token=286d74d7-57d3-48d0-9d35-9483bf37ef1e",
+    "userLiked": true,
   },
   "new": {
     "commentCount" : 0,
@@ -82,6 +83,7 @@ export const mockPin = {
     "time" : -20171211104453,
     "title" : "I Shall Be Adventurous ",
     "uid" : "testUID",
-    "url" : "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2FtestUID%2Fimages%2Fstatement?alt=media&token=286d74d7-57d3-48d0-9d35-9483bf37ef1e"
+    "url" : "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2FtestUID%2Fimages%2Fstatement?alt=media&token=286d74d7-57d3-48d0-9d35-9483bf37ef1e",
+    "userLiked": false
   }
 }

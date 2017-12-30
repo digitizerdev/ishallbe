@@ -19,6 +19,7 @@ import { HomePage } from './home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
+import { mockPin } from '../../../test-data/pin/mocks';
 import { mockPost } from '../../../test-data/post/mocks';
 
 import { } from 'jasmine';
@@ -37,6 +38,7 @@ let nav: NavController;
 let firebase: FirebaseProvider;
 let storage: Storage;
 let afAuth: AngularFireAuth;
+let afData: AngularFireDatabase;
 let isAuth$: Subscription;
 let isAuthRef: boolean;
 
@@ -72,15 +74,6 @@ const angularFireAuthStub = {
     },
 };
 
-let updateSpy = jasmine.createSpy("update");
-
-let removeSpy = jasmine.createSpy("remove");
-
-let objectSpy = jasmine.createSpy("object").and.returnValue({
-    update: updateSpy,
-    remove: removeSpy
-});
-
 let pushSpy = jasmine.createSpy("push");
 
 let takeSpy = jasmine.createSpy("take");
@@ -93,6 +86,15 @@ let listSpy = jasmine.createSpy("list").and.returnValue({
     push: pushSpy,
     take: takeSpy,
     query: querySpy
+});
+
+let updateSpy = jasmine.createSpy("update");
+
+let removeSpy = jasmine.createSpy("remove");
+
+let objectSpy = jasmine.createSpy("object").and.returnValue({
+    update: updateSpy,
+    remove: removeSpy
 });
 
 const angularFireDataStub = {
@@ -130,6 +132,7 @@ describe('HomePage', () => {
         storage = fixture.componentRef.injector.get(Storage);
         firebase = fixture.componentRef.injector.get(FirebaseProvider);
         afAuth = TestBed.get(AngularFireAuth);
+        afData = TestBed.get(AngularFireDatabase);
     });
 
     afterEach(() => {
@@ -139,6 +142,7 @@ describe('HomePage', () => {
         storage = null;
         firebase = null;
         afAuth = null;
+        afData = null;
         fakeAuthState.next(null);
     });
 
@@ -159,7 +163,7 @@ describe('HomePage', () => {
         spyOn(storage, 'ready').and.callThrough();
         spyOn(storage, 'get').and.callThrough();
         spyOn(component, 'loadHome');
-        component.ionViewDidEnter();
+        component.ionViewDidLoad();
         tick();
         fixture.detectChanges();
         expect(component.requestUID).toHaveBeenCalled();        
@@ -185,9 +189,10 @@ describe('HomePage', () => {
     })
 
     it('should request Firebase to load pins', () => {
-        spyOn(firebase, 'limitedList').and.returnValue({ subscribe: () => { } });
+        component.firebase.list('testPath');
         component.requestPins();
-        expect(firebase.limitedList).toHaveBeenCalled();
+        expect(listSpy).toHaveBeenCalled();
+        expect(takeSpy).toHaveBeenCalled();
     });
 
     it('should request Firebase Provider to check if user already liked pin', () => {
@@ -197,13 +202,55 @@ describe('HomePage', () => {
         expect(firebase.queriedList).toHaveBeenCalled();
     });
 
-    it('should be able to like pin', () => {
-        expect(component.likePin).toBeDefined();
+    it('should unlike pin on toggle pin like if user already liked pin', () => {
+        spyOn(component, 'requestPinUserLikerObject').and.returnValue({ subscribe: () => {}});
+        component.togglePinLike(mockPin.mature);
+        expect(component.requestPinUserLikerObject).toHaveBeenCalled();
     });
 
-    it('should be able to unlike pin', () => {
-        expect(component.unlikePin).toBeDefined();
+    it('should request Firebase to update unliked pin', fakeAsync(() => {
+        component.firebase.object('testPath').update('pin')
+        tick();
+        fixture.detectChanges();
+        expect(objectSpy).toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalled();
+    }));
+
+    it('should request Firebase to remove liker object from liked pin', () => {
+        component.pin = mockPin.mature;
+        component.removePinLikerObject(mockPin.mature.likers.testPinLikerID1, mockPin.mature);
+        expect(afData.object).toHaveBeenCalled();
     });
+
+    it('should like pin on toggle pin like if user has not already liked pin', () => {
+        spyOn(component, 'likePin').and.returnValue({ subscribe: () => {}});        
+        component.togglePinLike(mockPin.new);
+        expect(component.likePin).toHaveBeenCalled();
+    });
+
+    it('should request Firebase to update liked pin', fakeAsync(() => {
+        component.firebase.object('testPath').update('pin')
+        tick();
+        fixture.detectChanges();
+        expect(objectSpy).toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalled();
+    }));
+
+    it('should request Firebase to push liker object', fakeAsync(() => {
+        component.firebase.list('testPath').push('pin')
+        tick();
+        fixture.detectChanges();
+        expect(listSpy).toHaveBeenCalled();
+        expect(pushSpy).toHaveBeenCalled();
+    }));
+
+    it('should request Firebase to update pin liker object with id', fakeAsync(() => {
+        component.firebase.object('testPath').update('pin')
+        tick();
+        fixture.detectChanges();
+        expect(objectSpy).toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalled();
+    }));
 
     it('should be able to view pin', () => {
         expect(component.viewPin('testPinID')).toBeUndefined();
@@ -233,13 +280,55 @@ describe('HomePage', () => {
         expect(firebase.queriedList).toHaveBeenCalled();
     });
 
-    it('should be able to like post', () => {
-        expect(component.likePost).toBeDefined();
+    it('should unlike post on toggle post like if user already liked post', () => {
+        spyOn(component, 'requestPostUserLikerObject').and.returnValue({ subscribe: () => {}});
+        component.togglePostLike(mockPost.mature);
+        expect(component.requestPostUserLikerObject).toHaveBeenCalled();
     });
 
-    it('should be able to unlike post', () => {
-        expect(component.unlikePost).toBeDefined();
+    it('should request Firebase to update unliked post', fakeAsync(() => {
+        component.firebase.object('testPath').update('post')
+        tick();
+        fixture.detectChanges();
+        expect(objectSpy).toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalled();
+    }));
+
+    it('should request Firebase to remove liker object from liked post', () => {
+        component.post = mockPost.mature;
+        component.removePostLikerObject(mockPost.mature.likers.testPostLikerID1, mockPost.mature);
+        expect(afData.object).toHaveBeenCalled();
     });
+
+    it('should like post on toggle post like if user has not already liked post', () => {
+        spyOn(component, 'likePost').and.returnValue({ subscribe: () => {}});        
+        component.togglePostLike(mockPost.new);
+        expect(component.likePost).toHaveBeenCalled();
+    });
+
+    it('should request Firebase to update liked post', fakeAsync(() => {
+        component.firebase.object('testPath').update('post')
+        tick();
+        fixture.detectChanges();
+        expect(objectSpy).toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalled();
+    }));
+
+    it('should request Firebase to push liker object', fakeAsync(() => {
+        component.firebase.list('testPath').push('post')
+        tick();
+        fixture.detectChanges();
+        expect(listSpy).toHaveBeenCalled();
+        expect(pushSpy).toHaveBeenCalled();
+    }));
+
+    it('should request Firebase to update post liker object with id', fakeAsync(() => {
+        component.firebase.object('testPath').update('post')
+        tick();
+        fixture.detectChanges();
+        expect(objectSpy).toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalled();
+    }));
 
     it('should be able to view post', () => {
         expect(component.viewPost('testPostID')).toBeUndefined();

@@ -33,7 +33,7 @@ export class HomePage {
   loader: any;
   pinsLoaded: any;
   postLimit: any;
-  endOfPosts: any;
+  postsLoaded: any;
 
   constructor(
     private navCtrl: NavController,
@@ -45,14 +45,19 @@ export class HomePage {
   ) {
   }
 
-  ionViewDidEnter() {
-    this.posts = [];    
+  ionViewDidLoad() {
+    console.log("View entered");
     this.pinsLoaded = false;
     this.postLimit = 1;
-    this.endOfPosts = false;
+    this.postsLoaded = false;
+    console.log("Posts are ");
+    console.log(this.posts);
+    console.log("Pins loaded: " + this.pinsLoaded);
+    console.log("Post limit: " + this.postLimit);
+    console.log("Posts loaded: " + this.postsLoaded);
     this.requestUID().then((uid) => {
       this.uid = uid;
-      this.loadHome('');
+      this.loadHome();
     });
   }
 
@@ -62,13 +67,25 @@ export class HomePage {
     });
   }
 
-  loadHome(refresh) {
+  refreshPage(refresh) {
+    this.posts = [];
+    this.pins = [];
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
+  }
+
+  loadHome() {
     this.checkIfProfileBlocked();
     this.startLoader();
     this.timestampFeed().subscribe(() => {
       this.setWeekend();
-      this.loadPins();
-      this.loadPosts(refresh);
+      this.loadPins();        
+      this.posts = [];
+      if (this.postsLoaded || this.postLimit > 1) {
+        console.log("Setting post limit to 25")
+        this.postLimit = 25;
+        this.postsLoaded = true;
+      }
+      this.loadPosts();
     });
   }
 
@@ -76,7 +93,6 @@ export class HomePage {
     this.loader = this.loadingCtrl.create({
       content: 'Loading...'
     });
-    this.loader.present();
   }
 
   timestampFeed() {
@@ -97,13 +113,16 @@ export class HomePage {
   }
 
   loadPins() {
-    this.preparePinsRequest().subscribe((queryParameters) => {
-      this.pinsQuery = queryParameters;
-      this.requestPins().subscribe((pins) => {
-        this.pinsLoaded = true;
-        this.presentPins(pins);
+    if (!this.pinsLoaded) {
+      this.pins = [];      
+      this.preparePinsRequest().subscribe((queryParameters) => {
+        this.pinsQuery = queryParameters;
+        this.requestPins().subscribe((pins) => {
+          this.pinsLoaded = true;
+          this.presentPins(pins);
+        });
       });
-    });
+    }
   }
 
   preparePinsRequest() {
@@ -118,7 +137,11 @@ export class HomePage {
   }
 
   requestPins() {
-    return this.firebase.limitedList(this.pinsQuery);
+    if (this.pinsLoaded) {
+      return this.firebase.list('/pins/')      
+    } else {
+      return this.firebase.list('/pins/').take(1);
+    }
   }
 
   presentPins(pins) {
@@ -225,16 +248,17 @@ export class HomePage {
     });
   }
 
-  loadPosts(refresh) {
-    this.startRefresh(refresh);
+  loadPosts() {
     this.preparePostsRequest().subscribe((queryParameters) => {
       this.postsQuery = queryParameters
       this.requestPosts().subscribe((posts) => {
-        if (this.endOfPosts) {
+        if (this.postLimit == 25) {
+          console.log("Reversing posts");
           posts.reverse();
         }
+        console.log("Presenting posts");
+        console.log(posts)
         this.presentPosts(posts);
-        this.endRefresh(refresh);
       });
     });
   }
@@ -290,6 +314,9 @@ export class HomePage {
   }
 
   presentPosts(posts) {
+    this.posts = [];
+    console.log("Posts array before push");
+    console.log(this.posts);
     posts.forEach((post) => {
       this.requestPostUserLikerObject(post).subscribe((liker) => {
         if (liker[0]) {
@@ -297,6 +324,8 @@ export class HomePage {
         } else {
           post.userLiked = false;
         }
+        console.log("Pushing post");
+        console.log(post);
         this.posts.push(post);
       });
     });
@@ -415,14 +444,14 @@ export class HomePage {
   }
 
   doInfinite(infiniteScroll) {
-    console.log("Doing infinite scroll");
-    console.log("Post limit is " + this.postLimit);
+    console.log("Infinite scroll triggered");
+    console.log("Post limit: " + this.postLimit)
     this.postLimit++;
     this.preparePostsRequest().subscribe((queryParameters) => {
       this.postsQuery = queryParameters;
       this.requestPosts().subscribe((posts) => {
         if (posts.length < this.postLimit) {
-          this.endOfPosts = true;
+          this.postsLoaded = true;
         } else {
           this.presentNextPost(posts[0]);
           infiniteScroll.complete();
