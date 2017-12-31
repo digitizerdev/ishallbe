@@ -145,13 +145,12 @@ export class CreateStatementPage {
   submit(statementForm) {
     this.submitted = true;
     this.statementForm = statementForm;
-    if (statementForm.valid) {
-      this.startLoader();
+    if (statementForm.valid) { this.loader = this.loadingCtrl.create({
+        content: 'Please Wait..' });
+      this.loader.present();
       return this.publish(statementForm).subscribe((token) => {
-        console.log("Got publish token");
-        console.log(token);
         this.addIDToPost(token).then(() => {
-          this.confirm();
+          this.loader.dismiss().then(() => { this.navCtrl.pop();});          
         });
       });
     }
@@ -175,7 +174,6 @@ export class CreateStatementPage {
   uploadPhoto() {
     return Observable.create((observer) => {
       console.log("Uploading photo");
-      this.startLoader();
       this.image = this.cropperInstance
         .getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
       let path = 'content/' + this.uid + '/images/' + this.rawTime;
@@ -238,24 +236,6 @@ export class CreateStatementPage {
       id: token.key
     }
     return this.firebase.object(path).update(post);
-  }
-
-  confirm() {
-    console.log("Confirming")
-    console.log("Finished publishing statement")
-    this.loader.dismiss();
-    this.navCtrl.pop();
-  }
-
-  startLoader() {
-    this.loader = this.loadingCtrl.create({
-      content: 'Please Wait..'
-    });
-    this.loader.present();
-  }
-
-  ionViewWillLeave() {
-    this.loader.dismiss();
   }
 
 }
