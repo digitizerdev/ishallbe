@@ -177,7 +177,7 @@ export class CreateStatementPage {
       console.log("Uploading photo");
       this.startLoader();
       this.image = this.cropperInstance
-      .getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
+        .getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
       let path = 'content/' + this.uid + '/images/' + this.rawTime;
       console.log("About to store statement");
       console.log(path);
@@ -242,11 +242,9 @@ export class CreateStatementPage {
 
   confirm() {
     console.log("Confirming")
-    this.updatePhoto().then(() => {
-      console.log("Finished publishing statement")
-      this.loader.dismiss();
-      this.navCtrl.pop();
-    })
+    console.log("Finished publishing statement")
+    this.loader.dismiss();
+    this.navCtrl.pop();
   }
 
   startLoader() {
@@ -256,16 +254,8 @@ export class CreateStatementPage {
     this.loader.present();
   }
 
-  updatePhoto() {
-    console.log("Updateing photo");
-    let path = '/users/' + this.uid
-    console.log("Path is " + path);
-    let profile = {
-      photo: this.imageURL
-    }
-    console.log("Profile object is");
-    console.log(profile);
-    return this.firebase.object(path).update(profile);
+  ionViewWillLeave() {
+    this.loader.dismiss();
   }
 
 }
