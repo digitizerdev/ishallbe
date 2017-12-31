@@ -1,8 +1,9 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, LoadingController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController, LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
+import firebase from 'firebase';
 
 import Cropper from 'cropperjs';
 import moment from 'moment';
@@ -34,7 +35,7 @@ export class PhotoPage {
     public actionSheetCtrl: ActionSheetController,
     public loadingCtrl: LoadingController,
     public camera: Camera,
-    public storage: Storage,    
+    public storage: Storage,
     public firebase: FirebaseProvider
   ) {
   }
@@ -49,7 +50,7 @@ export class PhotoPage {
 
   requestUID() {
     return this.storage.ready().then(() => {
-      return this.storage.get(('uid'));      
+      return this.storage.get(('uid'));
     });
   }
 
@@ -125,8 +126,8 @@ export class PhotoPage {
     console.log("Uploading photo");
     this.startLoader();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
-    let path = 'content/' + this.uid + '/images/profile/';        
-    this.firebase.store(path, this.image).then((snapshot)=> {
+    let path = 'content/' + this.uid + '/images/profile/';
+    this.store(path, this.image).then((snapshot) => {
       console.log("Stored image");
       console.log(snapshot)
       this.imageURL = snapshot.downloadURL;
@@ -141,12 +142,27 @@ export class PhotoPage {
     this.loader.present();
   }
 
-
   updatePhoto() {
     let path = '/users/' + this.uid + '/photo/';
     this.firebase.object(path).update(this.imageURL).then(() => {
       this.loader.dismiss();
       this.navCtrl.pop();
-    }); 
+    });
   }
+
+  store(path, obj) {
+    console.log("Storing image");
+    console.log("Path is " + path);
+    let myPath = firebase.storage().ref(path);
+    return myPath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).then(function (snapshot) {
+      console.log("Uploaded a data url string");
+      console.log(snapshot.downloadURL);
+      return snapshot;
+    }).catch((error: any) => {
+      console.log("There was an error");
+      console.log(error);
+      return error;
+    });
+  }
+  
 }
