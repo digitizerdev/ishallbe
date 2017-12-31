@@ -13,7 +13,7 @@ import { RegisterPage } from '../pages/register/register';
 import { ProfilePage } from '../pages/profile/profile';
 import { ProfileManagerPage } from '../pages/profile-manager/profile-manager';
 import { ProfilePhotoPage } from '../pages/profile-photo/profile-photo';
-import { StatementPage } from '../pages/statement/statement';
+import { StatementsPage } from '../pages/statements/statements';
 import { AccountPage } from '../pages/account/account';
 import { AccountEmailPage } from '../pages/account-email/account-email';
 import { AccountPasswordPage } from '../pages/account-password/account-password';
@@ -73,7 +73,7 @@ export class iShallBe {
       { title: 'Profile Page', component: ProfilePage },
       { title: 'Profile Manager Page', component: ProfileManagerPage },
       { title: 'Profile Photo Page', component: ProfilePhotoPage },
-      { title: 'Statement Page', component: StatementPage },
+      { title: 'Statements Page', component: StatementsPage },
       { title: 'Account Page', component: AccountPage },
       { title: 'Account Email Page', component: AccountEmailPage },
       { title: 'Account Password Page', component: AccountPasswordPage },
@@ -107,6 +107,11 @@ export class iShallBe {
         component: AboutPage
       },
       {
+        title: 'Statements',
+        icon: 'ios-quote',
+        component: StatementsPage
+      },
+      {
         title: 'Profile',
         icon: 'ios-person',
         component: ProfilePage
@@ -116,11 +121,7 @@ export class iShallBe {
         icon: 'ios-contact',
         component: AccountPage
       },
-      {
-        title: 'Support',
-        icon: 'ios-mail',
-        component: SupportPage
-      },
+
     ]
 
     this.components = [

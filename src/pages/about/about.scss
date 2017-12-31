@@ -10,4 +10,8 @@ page-about {
         border-radius: 50%;
         text-align: center;
     }
+
+    .tagline {
+        color: color($colors, primary)
+    }
 }

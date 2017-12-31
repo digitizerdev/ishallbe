@@ -9,7 +9,7 @@ import { ProfilePage } from '../profile/profile';
 import { PostPage } from '../post/post';
 import { UserPage } from '../user/user';
 import { LoginPage } from '../login/login';
-import { StatementPage } from '../statement/statement';
+import { StatementsPage } from '../statements/statements';
 import { PinPage } from '../pin/pin';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -26,7 +26,6 @@ export class HomePage {
   uid: any;
   refreshing: any;
   feedTimestamp: any;
-  saturday: any;
   sunday: any;
   pinsQuery: any;
   postsQuery: any;
@@ -71,7 +70,7 @@ export class HomePage {
     this.checkIfProfileBlocked();
     this.startLoader();
     this.timestampFeed().subscribe(() => {
-      this.setWeekend();
+      if (this.feedTimestamp.day == 'Sunday') { this.sunday = true; }
       this.loadPins();        
       this.posts = [];
       if (this.postsLoaded || this.postLimit > 1) {
@@ -98,11 +97,6 @@ export class HomePage {
       this.feedTimestamp = { time: time, date: date, day: day, dayNumber: dayNumber }
       observer.next()
     });
-  }
-
-  setWeekend() {
-    if (this.feedTimestamp.day == 'Saturday') { this.saturday = true; }
-    if (this.feedTimestamp.day == 'Sunday') { this.sunday = true; }
   }
 
   loadPins() {
@@ -301,6 +295,7 @@ export class HomePage {
   presentPosts(posts) {
     this.posts = [];
     posts.forEach((post) => {
+      if (post.content)
       this.requestPostUserLikerObject(post).subscribe((liker) => {
         if (liker[0]) {
           post.userLiked = true;
@@ -312,6 +307,7 @@ export class HomePage {
     });
     this.endLoader();
   }
+
 
   requestPostUserLikerObject(post) {
     let path = 'posts/' + post.id + '/likers/';
@@ -420,8 +416,8 @@ export class HomePage {
     open(url)
   }
 
-  goToStatementPage() {
-    this.navCtrl.setRoot(StatementPage);
+  goToStatementsPage() {
+    this.navCtrl.setRoot(StatementsPage);
   }
 
   doInfinite(infiniteScroll) {

@@ -23,7 +23,7 @@ import { RegisterPage } from '../pages/register/register';
 import { ProfilePage } from '../pages/profile/profile';
 import { ProfileManagerPage } from '../pages/profile-manager/profile-manager';
 import { ProfilePhotoPage } from '../pages/profile-photo/profile-photo';
-import { StatementPage } from '../pages/statement/statement';
+import { StatementsPage } from '../pages/statements/statements';
 import { AccountPage } from '../pages/account/account';
 import { AccountEmailPage } from '../pages/account-email/account-email';
 import { AccountPasswordPage } from '../pages/account-password/account-password';
@@ -56,7 +56,7 @@ import * as firebase from 'firebase/app';
     ProfilePage,
     ProfilePhotoPage,
     ProfileManagerPage,
-    StatementPage,  
+    StatementsPage,  
     AccountPage,
     AccountEmailPage,
     AccountPasswordPage,
@@ -93,7 +93,7 @@ import * as firebase from 'firebase/app';
     ProfilePage,
     ProfilePhotoPage,
     ProfileManagerPage,
-    StatementPage,  
+    StatementsPage,  
     AccountPage,
     AccountEmailPage,
     AccountPasswordPage,

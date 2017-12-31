@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 
 import { HomePage } from '../home/home';
 import { ProfileManagerPage } from '../profile-manager/profile-manager';
-import { StatementPage } from '../statement/statement';
+import { StatementsPage } from '../statements/statements';
 import { PostPage } from '../post/post';
 import { AccountPage } from '../account/account';
 
@@ -194,8 +194,8 @@ import { Observable } from 'rxjs/Observable';
     this.navCtrl.setRoot(HomePage);
   }
 
-  pushStatementPage() {
-    this.navCtrl.push(StatementPage);
+  pushStatementsPage() {
+    this.navCtrl.push(StatementsPage);
   }
 
   pushProfileManagerPage() {

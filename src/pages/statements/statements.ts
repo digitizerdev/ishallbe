@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
- * Generated class for the StatementPage page.
+ * Generated class for the StatementsPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -10,16 +10,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-statement',
-  templateUrl: 'statement.html',
+  selector: 'page-statements',
+  templateUrl: 'statements.html',
 })
-export class StatementPage {
+export class StatementsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad StatementPage');
+    console.log('ionViewDidLoad StatementsPage');
   }
 
 }

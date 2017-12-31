@@ -5,13 +5,13 @@
 </ion-header>
 
 <ion-content>
-  <div text-center class="user-profile">
+  <div *ngIf="loaded" text-center class="user-profile">
     <img class="avatar" src="{{ user?.photo }}">
     <h2>{{ user?.name}}</h2>
     <h5 class="bio" >{{ user?.bio}} </h5>
     <br>
   </div>
-  <div class="user-posts">
+  <div *ngIf="loaded" class="user-posts">
     <br>
     <div *ngIf="!posts" class="posts" padding>
       <ion-row padding text-center>

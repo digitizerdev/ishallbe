@@ -5,8 +5,13 @@ page-home {
     border-bottom: thick solid color($colors, primary);    
   }
 
-  .saturday {
-    border-top: thick color($colors, primary);
+  .saturday-icon {
+    font-size: 3em;
+    color: color($colors, primary);
+  }
+
+  .feature-slides {
+    background-color: color($colors, light-yellow);
   }
 
   .affirmation {
@@ -15,7 +20,7 @@ page-home {
   }
 
   .pin-image {
-    max-height: 200px;            
+    max-height: 100px;            
   }
   
   .pin-interaction-counts {
@@ -27,10 +32,18 @@ page-home {
     font-size: .85em;
   }
 
+
   ion-grid {
     height: 100%;
     justify-content: center;
-}
+  }
+
+  .pin-actions {
+    font-size: .75em;
+    max-width: 50%;
+    background-color: #FFF;
+    border-radius: 15px;
+  }
 
   .feature-space-bottom {
     background: linear-gradient(to Top, color($colors, light-gray), #fff);            
@@ -65,12 +78,6 @@ page-home {
 
       .slide-title {
         font-weight: bold
-      }
-
-      .pin-actions {
-        background-color:  color($colors, light-gray);
-        border: thick solid color($colors, light-green);
-        border-radius: 10px;        
       }
 
     .post-header {

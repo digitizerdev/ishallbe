@@ -17,7 +17,7 @@ export class UserPage {
   user: any;
   uid: any;
   posts: any[] = [];
-  myUID: any;
+  loaded = false;
 
   constructor(
     public navCtrl: NavController,
@@ -33,6 +33,7 @@ export class UserPage {
       this.user = user;
       if(!this.user.bio) this.addDefaultBio();
       this.loadUserPosts().subscribe((posts) => {
+        this.loaded = true;
         this.presentPosts(posts);
       });
     })

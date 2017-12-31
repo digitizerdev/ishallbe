@@ -14,13 +14,6 @@
 
 <ion-content>
   <header></header>
-  <div class="saturday" *ngIf="this.saturday" text-center>
-    <h3>Happy Saturday!</h3>
-    <i>
-      <h5>Swipe below to see the daily affirmations for the week</h5>
-    </i>
-    <br>
-  </div>
   <div class="sunday" *ngIf="this.sunday" text-center>
     <h3>It's iShallBe Sunday!</h3>
     <br>
@@ -31,10 +24,11 @@
     </ion-row>
     <br>
   </div>
-  <div class="feature" *ngIf="!this.Sunday">
-    <ion-slides pager>
-      <ion-slide *ngFor="let pin of pins">
-        <ion-row justify-content-center align-items-center style="height: 100%">
+  <div class="feature" *ngIf="!this.sunday">
+    <ion-slides pager class="feature-slides">
+      <ion-slide padding *ngFor="let pin of pins">
+        <ion-row *ngIf="!pin?.saturday" justify-content-center align-items-center style="height: 100%">
+          <div *ngIf="pin?.short"><br></div>
           <h2 class="slide-title" [innerHTML]="pin.title"></h2>
           <img class="pin-image" (click)="viewPin(pin.id)" *ngIf="pin?.image" src="{{ pin?.url }}" />
           <video (click)="viewPin(pin.id)" *ngIf="pin?.video" width="80%" controls="controls" preload="metadata" webkit-playsinline="webkit-playsinline"
@@ -44,13 +38,8 @@
           <ion-row>
               <h4 class="affirmation" (click)="viewPin(pin.id)" [innerHTML]="pin.content"></h4>              
           </ion-row>
-          <div class="tuesday" *ngIf="pin.tuesday" (click)="openLink(pin.url)" text-center>
-            <button ion-button small round>
-              <ion-icon name="play"></ion-icon>
-            </button>
-          </div>
         </ion-row>
-        <div class="pin-interaction-counts" (click)="viewPin(pin.id)">
+        <div *ngIf="!pin?.saturday" class="pin-interaction-counts" (click)="viewPin(pin.id)">
           <p>
             <a *ngIf="pin.likeCount > 1 || pin.likeCount == 0" class="subdued">{{ pin?.likeCount}} Likes</a>
             <a *ngIf="pin.likeCount == 1" class="subdued">{{ pin?.likeCount}} Like</a>
@@ -58,10 +47,10 @@
             <a *ngIf="pin.commentCount == 1" class="subdued" margin-left>{{ pin?.commentCount}} Comment</a>
           </p>
         </div>
-        <ion-grid class="pin-actions">
-          <ion-row>
+        <ion-grid *ngIf="!pin?.saturday" class="pin-actions">
+          <ion-row >
             <ion-col width-50 text-center (click)="togglePinLike(pin)">
-              <ion-icon name="thumbs-up" color="secondary" *ngIf="pin?.userLiked"></ion-icon>
+              <ion-icon name="thumbs-up" color="primary" *ngIf="pin?.userLiked"></ion-icon>
               <ion-icon name="thumbs-up" *ngIf="!pin?.userLiked"></ion-icon>
             </ion-col>
             <ion-col width-50 text-center (click)="viewPin(pin?.id)">
@@ -70,6 +59,13 @@
           </ion-row>
         </ion-grid>
         <br>
+        <ion-row *ngIf="pin?.saturday">
+          <ion-col text-center>
+              <h1 class="slide-title" [innerHTML]="pin.title"></h1>
+              <div class="saturday-icon"><b><ion-icon  name="ios-arrow-round-forward"></ion-icon></b></div>
+              <h2 class="affirmation" (click)="viewPin(pin.id)" [innerHTML]="pin.content"></h2>      
+          </ion-col>
+        </ion-row>
       </ion-slide>
     </ion-slides>
   </div>
