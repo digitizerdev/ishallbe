@@ -166,9 +166,14 @@ export class PhotoPage {
 
   updatePhoto() {
     console.log("Updateing photo");
-    let path = '/users/' + this.uid + '/photo/';
+    let path = '/users/' + this.uid
     console.log("Path is " + path);
-    return this.firebase.object(path).update(this.imageURL);
+    let profile = {
+      photo: this.imageURL
+    }
+    console.log("Profile object is");
+    console.log(profile);
+    return this.firebase.object(path).update(profile);
   }
 
 }
