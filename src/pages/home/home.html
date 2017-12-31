@@ -28,16 +28,10 @@
     <ion-slides pager class="feature-slides">
       <ion-slide padding *ngFor="let pin of pins">
         <ion-row *ngIf="!pin?.saturday" justify-content-center align-items-center style="height: 100%">
-          <div *ngIf="pin?.short"><br></div>
+          <div *ngIf="pin?.short"><br><br></div>
           <h2 class="slide-title" [innerHTML]="pin.title"></h2>
           <img class="pin-image" (click)="viewPin(pin.id)" *ngIf="pin?.image" src="{{ pin?.url }}" />
-          <video (click)="viewPin(pin.id)" *ngIf="pin?.video" width="80%" controls="controls" preload="metadata" webkit-playsinline="webkit-playsinline"
-            class="videoPlayer">
-            <source src={{pin?.url}} type="video/mp4" />
-          </video>
-          <ion-row>
-              <h4 class="affirmation" (click)="viewPin(pin.id)" [innerHTML]="pin.content"></h4>              
-          </ion-row>
+          <h4 class="affirmation" (click)="viewPin(pin.id)" [innerHTML]="pin.content"></h4>              
         </ion-row>
         <div *ngIf="!pin?.saturday" class="pin-interaction-counts" (click)="viewPin(pin.id)">
           <p>
