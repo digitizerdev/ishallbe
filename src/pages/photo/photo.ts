@@ -127,7 +127,7 @@ export class PhotoPage {
     this.startLoader();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
     let path = 'content/' + this.uid + '/images/profile/';
-    this.store(path, this.image).then((snapshot) => {
+    this.store(path, this.image).subscribe((snapshot) => {
       console.log("Stored image");
       console.log(snapshot)
       this.imageURL = snapshot.downloadURL;
@@ -151,18 +151,15 @@ export class PhotoPage {
   }
 
   store(path, obj) {
-    console.log("Storing image");
-    console.log("Path is " + path);
-    let myPath = firebase.storage().ref(path);
-    return myPath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).then(function (snapshot) {
-      console.log("Uploaded a data url string");
-      console.log(snapshot.downloadURL);
-      return snapshot;
-    }).catch((error: any) => {
-      console.log("There was an error");
-      console.log(error);
-      return error;
+    return Observable.create((observer) => {
+      let myPath = firebase.storage().ref(path);
+      return myPath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
+        then(function (snapshot) {
+          observer.next(snapshot);
+        }).catch((error: any) => {
+          observer.next(error);
+        });
     });
   }
-  
+
 }
