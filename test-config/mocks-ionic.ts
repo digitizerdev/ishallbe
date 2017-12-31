@@ -95,7 +95,7 @@ export class SplashScreenMock extends SplashScreen {
 
 export class FacebookMock extends Facebook {
   _getPortal(): any { return {} };
-  
+
   hide() {
     return;
   }
@@ -118,7 +118,7 @@ export class CameraMock extends Camera {
 
 export class EmailComposerMock extends EmailComposer {
   _getPortal(): any { return {} };
-  
+
   public open(email): any {
     return new Promise(function (resolve: Function): void {
       resolve();
@@ -206,14 +206,10 @@ export class NavParamsMock {
   }
 }
 
-export class ActionSheetControllerMock {
-  public create(name: string): any {
-    return new Promise(function (resolve: Function): void {
-      resolve('testActionSheetControllerValue');
-    });
-  }
+export class ActionSheetControllerMock extends ActionSheetController {
+  _getPortal(): any { return {} };
 
-  public present(name: string): any {
+  public present(): any {
     return new Promise(function (resolve: Function): void {
       resolve('testActionSheetControllerValue');
     });
@@ -224,12 +220,17 @@ export class DeepLinkerMock {
 
 }
 
-export class AlertControllerMock {
-  _getPortal(): any { return {} };
-
-  create(options?: any) {
-    return new AlertMock()
-  };
+export class AlertControllerMock extends AlertController {
+  public _getPortal(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve('testActionSheetControllerValue');
+    });
+  }
+  public present(name: string): any {
+    return new Promise(function (resolve: Function): void {
+      resolve('testActionSheetControllerValue');
+    });
+  }
 }
 
 class AlertMock {
@@ -254,7 +255,7 @@ export class FirebaseProviderMock extends FirebaseProvider {
   styleDefault() {
     return;
   }
-  
+
 }
 
 export class AngularFireDatabaseMock extends AngularFireDatabaseModule {
@@ -266,9 +267,9 @@ export class AngularFireDatabaseMock extends AngularFireDatabaseModule {
     }
   }
 
-  public object(path:string): Observable <any> {
+  public object(path: string): Observable<any> {
     return Observable.of({
-     update(obj: any): Observable <any> {
+      update(obj: any): Observable<any> {
         return Observable.of('true');
       }
     })

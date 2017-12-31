@@ -121,6 +121,7 @@ describe('PhotoPage', () => {
         component = null;
         nav = null;
         navParams = null;
+        action = null;
         camera = null;
         storage = null;
         firebase = null;
@@ -132,9 +133,24 @@ describe('PhotoPage', () => {
         expect(component instanceof PhotoPage).toBe(true);
     });
 
-    fit('should ask for image retrieval method on load', () => {
+    it('should ask for image retrieval method on load', async(() => {
+        spyOn(component, 'askForImageRetrievalMethod')
         component.ionViewDidLoad();
-        expect(component.getImageRetrievalAsk).toHaveBeenCalled();
+        expect(component.askForImageRetrievalMethod).toHaveBeenCalled();
+    }));
+
+    it('should request Camera to get picture', () => {
+        spyOn(camera, 'getPicture').and.callThrough();
+        component.getPicture();
+        expect(camera.getPicture).toHaveBeenCalled();
     });
+
+    it('should submit via Update Photo Button', async(() => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#UpdatePhotoButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Update Photo');
+    }));
 
 });

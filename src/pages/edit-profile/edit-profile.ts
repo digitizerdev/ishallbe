@@ -32,8 +32,8 @@ export class EditProfilePage {
     public navParams: NavParams,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
+    public storage: Storage,    
     public firebase: FirebaseProvider,
-    public storage: Storage    
   ) {
   }
 

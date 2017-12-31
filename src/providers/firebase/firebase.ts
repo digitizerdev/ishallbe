@@ -90,5 +90,18 @@ export class FirebaseProvider {
     }).take(1);
   }
 
+  store(path, obj) {
+    let myPath = firebase.storage().ref(path);
+    return myPath.putString(obj, 'data_url', {contentType: 'image/jpeg'}).then(function(snapshot) {
+        console.log("Uploaded a data url string");
+        console.log(snapshot.downloadURL);
+        return snapshot;
+    }).catch((error:any)=>{
+        console.log("There was an error");
+        console.log(error);
+        return error;
+    });
+  }
 
+  
 }
