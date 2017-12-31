@@ -75,7 +75,10 @@
     <plugin name="cordova-plugin-device" spec="^1.1.7" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.1.0" />
     <plugin name="cordova-plugin-file" spec="^5.0.0" />
-    <plugin name="cordova-plugin-camera" spec="^3.0.0" />
+    <plugin name="cordova-plugin-camera" spec="^3.0.0">
+        <variable name="CAMERA_USAGE_DESCRIPTION" value="Access to Camera" />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Access to Library" />
+    </plugin>
     <plugin name="cordova-plugin-media-capture" spec="^2.0.0" />
     <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
         <variable name="APP_ID" value="1312020948874676" />

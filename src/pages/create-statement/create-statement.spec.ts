@@ -148,11 +148,15 @@ describe('CreateStatementPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should get image on page load', () => {
-        spyOn(navParams, 'get').and.callThrough();
-        spyOn(camera, 'getPicture').and.callThrough();
+    fit('should ask for image retrieval method on load', async(() => {
+        spyOn(component, 'askForImageRetrievalMethod')
         component.ionViewDidLoad();
-        expect(navParams.get).toHaveBeenCalled();
+        expect(component.askForImageRetrievalMethod).toHaveBeenCalled();
+    }));
+
+    fit('should request Camera to get picture', () => {
+        spyOn(camera, 'getPicture').and.callThrough();
+        component.getPicture();
         expect(camera.getPicture).toHaveBeenCalled();
     });
 
