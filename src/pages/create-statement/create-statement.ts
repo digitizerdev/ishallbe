@@ -158,12 +158,18 @@ export class CreateStatementPage {
   }
 
   publish(statementForm) {
-    return this.uploadPhoto().subscribe(() => {
-      return this.buildStatement().subscribe(() => {
-        console.log("About to push post")
-        return this.firebase.list('posts').push(this.statement)
-      });
-    })
+    return Observable.create((observer) => {
+      return this.uploadPhoto().subscribe(() => {
+        return this.buildStatement().subscribe(() => {
+          console.log("About to push post")
+          return this.firebase.list('posts').push(this.statement).then((token) => {
+            console.log("Got token");
+            console.log(token);
+            observer.next(token);
+          });
+        });
+      })
+    });
   }
 
   uploadPhoto() {
