@@ -40,7 +40,10 @@ export class PhotoPage {
   }
 
   ionViewDidLoad() {
-    this.uid = this.requestUID();
+    this.requestUID().then((uid) => {
+      console.log("Got UID: " + uid)
+      this.uid = uid;
+    })
     this.askForImageRetrievalMethod();
   }
 
