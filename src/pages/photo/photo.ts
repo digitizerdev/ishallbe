@@ -131,22 +131,7 @@ export class PhotoPage {
       console.log("Stored image");
       console.log(snapshot)
       this.imageURL = snapshot.downloadURL;
-      this.updatePhoto();
-    });
-  }
-
-  startLoader() {
-    this.loader = this.loadingCtrl.create({
-      content: 'Please Wait..'
-    });
-    this.loader.present();
-  }
-
-  updatePhoto() {
-    let path = '/users/' + this.uid + '/photo/';
-    this.firebase.object(path).update(this.imageURL).then(() => {
-      this.loader.dismiss();
-      this.navCtrl.pop();
+      this.confirm();
     });
   }
 
@@ -160,6 +145,30 @@ export class PhotoPage {
           observer.next(error);
         });
     });
+  }
+
+
+  confirm() {
+    console.log("Confirming")
+    this.updatePhoto().then(() => {
+      console.log("Finished updating photo")
+      this.loader.dismiss();
+      this.navCtrl.pop();
+    })
+  }
+
+  startLoader() {
+    this.loader = this.loadingCtrl.create({
+      content: 'Please Wait..'
+    });
+    this.loader.present();
+  }
+
+  updatePhoto() {
+    console.log("Updateing photo");
+    let path = '/users/' + this.uid + '/photo/';
+    console.log("Path is " + path);
+    return this.firebase.object(path).update(this.imageURL);
   }
 
 }
