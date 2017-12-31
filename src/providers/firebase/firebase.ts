@@ -91,6 +91,9 @@ export class FirebaseProvider {
   }
 
   store(path, obj) {
+    console.log("Storing image");
+    console.log("Path is " + path);
+    console.log("Object is " + obj);
     let myPath = firebase.storage().ref(path);
     return myPath.putString(obj, 'data_url', {contentType: 'image/jpeg'}).then(function(snapshot) {
         console.log("Uploaded a data url string");

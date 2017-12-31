@@ -119,10 +119,13 @@ export class PhotoPage {
   }
 
   uploadPhoto() {
+    console.log("Uploading photo");
     this.startLoader();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
     let path = 'content/' + this.uid + '/images/profile';        
     this.firebase.store(path, this.image).then((snapshot)=> {
+      console.log("Stored imaged");
+      console.log(snapshot)
       this.imageURL = snapshot.downloadURL;
       this.updatePhoto();
     });
