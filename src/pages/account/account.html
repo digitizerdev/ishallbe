@@ -5,44 +5,53 @@
     </button>
     <ion-title color='primary'>{{title}}</ion-title>
     <ion-buttons end>
-        <button ion-button icon-only (click)="setRootHomePage()">
-          <ion-icon name="ios-home"></ion-icon>
-        </button>
-      </ion-buttons>
+      <button ion-button icon-only (click)="setRootHomePage()">
+        <ion-icon name="ios-home"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <header></header>
   <div text-center padding>
-      <h3>{{name}}</h3>
-      <h4>{{email}}</h4>
+    <h3>{{name}}</h3>
+    <h4>{{email}}</h4>
   </div>
-  <ion-row responsive-sm padding>
+  <ion-row *ngIf="editor" responsive-sm>
+      <ion-col text-center>
+        <button ion-button id="AccountManageButton" (click)="pushManagerPage()" color="secondary" outline round large>Manage</button>
+      </ion-col>
+    </ion-row>
+  <ion-row responsive-sm>
     <ion-col text-center>
       <button ion-button id="AccountViewProfileButton" (click)="setRootProfilePage()" color="primary" round large>View Profile</button>
     </ion-col>
   </ion-row>
-  <br>
-  <ion-row responsive-sm >
+  <ion-row responsive-sm>
     <ion-col text-center>
-      <button ion-button id="AccountUpdateEmailButton" (click)="pushAccountEmailPage()" color="secondary" round small>Update Email</button>
-    </ion-col>
-    <ion-col text-center>
-      <button ion-button id="AccountUpdatePasswordButton" (click)="pushAccountPasswordPage()" color="secondary" round small>Update Password</button>
+      <button ion-button id="AccountContactSupportButton" (click)="pushSupportPage()" color="secondary" round>Contact Support</button>
     </ion-col>
   </ion-row>
   <br>
   <ion-row responsive-sm>
     <ion-col text-center>
-      <button ion-button id="AccountLogoutButton" (click)="logout()" color="primary" round outline>Logout</button>
+      <button ion-button id="AccountUpdateEmailButton" (click)="pushAccountEmailPage()" color="primary" round small outline>Update Email</button>
+    </ion-col>
+    <ion-col text-center>
+      <button ion-button id="AccountUpdatePasswordButton" (click)="pushAccountPasswordPage()" color="primary" round small outline>Update Password</button>
     </ion-col>
   </ion-row>
   <br>
+  <ion-row responsive-sm>
+    <ion-col text-center>
+      <button ion-button id="AccountLogoutButton" (click)="logout()" color="secondary" round outline>Logout</button>
+    </ion-col>
+  </ion-row>
   <br>
   <ion-row responsive-sm>
     <ion-col text-center>
-        <terms-of-service></terms-of-service>        
+      <terms-of-service></terms-of-service>
     </ion-col>
   </ion-row>
 </ion-content>

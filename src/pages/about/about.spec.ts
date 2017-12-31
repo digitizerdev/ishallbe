@@ -1,9 +1,9 @@
 import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { IonicModule, Events, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { IonicModule, Events, NavController, NavParams } from 'ionic-angular';
+import { EmailComposer } from '@ionic-native/email-composer';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { IonicStorageModule, Storage } from '@ionic/storage';
-import { Camera, CameraOptions } from '@ionic-native/camera';
 import { AngularFireModule } from 'angularfire2';
 import { environment } from '../../environments/environment';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
@@ -16,86 +16,65 @@ import { HeaderComponent } from '../../components/header/header';
 import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
 import { TermsOfServiceComponent } from '../../components/terms-of-service/terms-of-service';
 
-import { CreateStatementPage } from './create-statement';
+import { AboutPage } from './about';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-
-import { mockPin } from '../../../test-data/pin/mocks';
-import { mockPost } from '../../../test-data/post/mocks';
 
 import { } from 'jasmine';
 
 import {
     FirebaseProviderMock,
     NavMock,
-    NavParamsMock,
-    ActionSheetControllerMock,
-    CameraMock,
     StorageMock,
     AngularFireDatabaseMock,
-    AngularFireAuthMock
+    AngularFireAuthMock,
+    EmailComposerMock
 } from '../../../test-config/mocks-ionic';
 
 let fixture;
 let component;
 let nav: NavController;
-let navParams: NavParams;
-let action: ActionSheetController;
-let camera: Camera
 let firebase: FirebaseProvider;
 let storage: Storage;
-let afAuth: AngularFireAuth;
 let afData: AngularFireDatabase;
+let afAuth: AngularFireAuth;
+let emailComposer: EmailComposer;
 
 const angularFireAuthStub = {
 };
 
-let pushSpy = jasmine.createSpy("push");
-
-let takeSpy = jasmine.createSpy("take");
-
-let querySpy = jasmine.createSpy("query").and.returnValue({
-    take: takeSpy
-});
-
-let listSpy = jasmine.createSpy("list").and.returnValue({
-    push: pushSpy,
-    take: takeSpy,
-    query: querySpy
-});
+const fakeObjectUpdate = (path: string): Function => {
+    return;
+};
 
 let updateSpy = jasmine.createSpy("update");
 
-let removeSpy = jasmine.createSpy("remove");
-
 let objectSpy = jasmine.createSpy("object").and.returnValue({
-    update: updateSpy,
-    remove: removeSpy
+    update: updateSpy
 });
 
 const angularFireDataStub = {
-    object: objectSpy,
-    list: listSpy,
+    object: objectSpy
 }
 
-describe('CreateStatementPage', () => {
+describe('AboutPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [CreateStatementPage],
+            declarations: [AboutPage],
             imports: [
-                IonicModule.forRoot(CreateStatementPage),
+                IonicModule.forRoot(AboutPage),
                 AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: Storage, useClass: StorageMock },
                 { provide: NavController, useClass: NavMock },
-                { provide: NavParams, useClass: NavParamsMock },
-                { provide: ActionSheetController, useClass: ActionSheetControllerMock },
-                { provide: Camera, useClass: CameraMock },
+                { provide: NavParams, useClass: NavMock },
+                { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireDatabase, useValue: angularFireDataStub },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
+                { provide: EmailComposer, useClass: EmailComposerMock }
             ],
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
@@ -104,58 +83,58 @@ describe('CreateStatementPage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(CreateStatementPage);
+        fixture = TestBed.createComponent(AboutPage);
         component = fixture.componentInstance;
         nav = fixture.componentRef.injector.get(NavController);
-        navParams = fixture.componentRef.injector.get(NavParams);
-        action = fixture.componentRef.injector.get(ActionSheetController);
-        camera = fixture.componentRef.injector.get(Camera);
         storage = fixture.componentRef.injector.get(Storage);
-        firebase = fixture.componentRef.injector.get(FirebaseProvider);
         afAuth = TestBed.get(AngularFireAuth);
         afData = TestBed.get(AngularFireDatabase);
+        emailComposer = TestBed.get(EmailComposer);
     });
 
     afterEach(() => {
         fixture.destroy();
         component = null;
         nav = null;
-        navParams = null;
-        camera = null;
         storage = null;
         firebase = null;
-        afAuth = null;
         afData = null;
+        afAuth = null;
+        updateSpy.calls.reset();
+        objectSpy.calls.reset();
     });
 
     it('should be created', () => {
-        expect(component instanceof CreateStatementPage).toBe(true);
+        expect(component instanceof AboutPage).toBe(true);
     });
 
-    it('should display ion-header', () => {
+    it('should have title called About', () => {
+        expect(component.title).toBe('About');
+    });
+
+    it('should display headshot', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('ion-header'));
+        de = fixture.debugElement.query(By.css('img'));
         el = de.nativeElement.src;
-        expect(el).toBeUndefined();
+        expect(el).toContain('assets/img/headshot.png');
     });
 
-    it('should display header component', () => {
+    it('should display about information', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('header'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
+        de = fixture.debugElement.query(By.css('h5'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('iShallBe is your daily boost ');
     });
 
-    it('should get image on page load', () => {
-        spyOn(navParams, 'get').and.callThrough();
-        spyOn(camera, 'getPicture').and.callThrough();
-        component.ionViewDidLoad();
-        expect(navParams.get).toHaveBeenCalled();
-        expect(camera.getPicture).toHaveBeenCalled();
+    it('should display learn more button', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#LearnMoreButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Learn More');
+        expect(component.openWebsite).toBeDefined();
     });
-
-    
 
 });

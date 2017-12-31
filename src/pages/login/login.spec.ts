@@ -116,13 +116,6 @@ describe('LoginPage', () => {
         expect(component instanceof LoginPage).toBe(true);
     });
 
-    it('should be initialized', () => {
-        expect(component.loginForm).toBeDefined();
-        expect(component.submitted).toBeDefined();
-        expect(component.loader).toBeUndefined();
-        expect(component.uid).toBeUndefined();
-    });
-
     it('should display header component', () => {
         let de: DebugElement;
         let el: HTMLElement;

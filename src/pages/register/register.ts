@@ -136,7 +136,6 @@ export class RegisterPage {
       subTitle: 'Registered',
       buttons: ['OK']
     });
-    alert.present();
   }
 
   startSession() {

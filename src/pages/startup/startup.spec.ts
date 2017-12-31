@@ -36,45 +36,7 @@ let afAuth: AngularFireAuth;
 let isAuth$: Subscription;
 let isAuthRef: boolean;
 
-const credentialsMock = {
-    email: 'abc@123.com',
-    password: 'password'
-  };
-  
-  const userMock = {
-    uid: 'ABC123',
-    email: credentialsMock.email,
-  };
-  
-
-const fakeAuthState = new BehaviorSubject(null);
-
-const fakeSignInHandler = (email, password): Promise<any> => {
-  fakeAuthState.next(userMock);
-  return Promise.resolve(userMock);
-};
-
-const fakeSignOutHandler = (): Promise<any> => {
-  fakeAuthState.next(null);
-  return Promise.resolve();
-};
-
 const angularFireAuthStub = {
-    authState: fakeAuthState,
-    auth: {
-      createUserWithEmailAndPassword: jasmine
-        .createSpy('createUserWithEmailAndPassword')
-        .and
-        .callFake(fakeSignInHandler),
-      signInWithEmailAndPassword: jasmine
-        .createSpy('signInWithEmailAndPassword')
-        .and
-        .callFake(fakeSignInHandler),
-      signOut: jasmine
-        .createSpy('signOut')
-        .and
-        .callFake(fakeSignOutHandler),
-    },
   }
 
 describe('StartupPage', () => {
@@ -116,24 +78,18 @@ describe('StartupPage', () => {
         storage = null;
         firebase = null;        
         afAuth = null;
-        fakeAuthState.next(null);
     });
 
     it('should be created', () => {
         expect(component instanceof StartupPage).toBe(true);
     });
-
-    it('should be initialized', () => {
-        expect(component.page).toBeUndefined();
-        expect(component.session).toBeDefined();
-    });
-
-    it('should load centered icon as startup image', () => {
+    
+    it('should display header component', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('img'));
-        el = de.nativeElement.src
-        expect(el).toContain('assets/img/icon.png');
+        de = fixture.debugElement.query(By.css('header'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 
     it('should load view on entrance', fakeAsync(() => {

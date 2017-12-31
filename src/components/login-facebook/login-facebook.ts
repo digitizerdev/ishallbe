@@ -172,7 +172,6 @@ export class LoginFacebookComponent {
       subTitle: 'Authenticated',
       buttons: ['OK']
     });
-    alert.present();
   }
 
   startSession() {

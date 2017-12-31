@@ -18,29 +18,26 @@ import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 
 import { StartupPage } from '../pages/startup/startup';
 import { LoginPage } from '../pages/login/login';
-import { PasswordResetPage } from '../pages/password-reset/password-reset';
 import { RegisterPage } from '../pages/register/register';
-import { ProfilePage } from '../pages/profile/profile';
-import { EditProfilePage } from '../pages/edit-profile/edit-profile';
-import { PhotoPage } from '../pages/photo/photo';
-import { StatementsPage } from '../pages/statements/statements';
-import { CreateStatementPage } from '../pages/create-statement/create-statement';
-import { AccountPage } from '../pages/account/account';
+import { PasswordResetPage } from '../pages/password-reset/password-reset';
+import { AboutPage } from '../pages/about/about';
+import { SupportPage } from '../pages/support/support';
 import { AccountEmailPage } from '../pages/account-email/account-email';
 import { AccountPasswordPage } from '../pages/account-password/account-password';
-import { SupportPage } from '../pages/support/support';
-import { HomePage } from '../pages/home/home';
-import { PinPage } from '../pages/pin/pin';
+import { AccountPage } from '../pages/account/account';
+import { EditProfilePage } from '../pages/edit-profile/edit-profile';
+import { PhotoPage } from '../pages/photo/photo';
+import { CreateStatementPage } from '../pages/create-statement/create-statement';
+import { StatementsPage } from '../pages/statements/statements';
+import { ProfilePage } from '../pages/profile/profile';
 import { PostPage } from '../pages/post/post';
-import { AboutPage } from '../pages/about/about';
-import { UsersManagerPage } from '../pages/users-manager/users-manager';
-import { UserManagerPage } from '../pages/user-manager/user-manager';
-import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
-import { PostManagerPage } from '../pages/post-manager/post-manager';
-import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
-import { PinManagerPage } from '../pages/pin-manager/pin-manager';
-import { CreatePinPage } from '../pages/create-pin/create-pin';
+import { PinPage } from '../pages/pin/pin';
 import { UserPage } from '../pages/user/user';
+import { HomePage } from '../pages/home/home';
+import { CreatePinPage } from '../pages/create-pin/create-pin';
+import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
+import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
+import { UsersManagerPage } from '../pages/users-manager/users-manager';
 
 import { ComponentsModule } from '../components/components.module';
 
@@ -53,29 +50,26 @@ import * as firebase from 'firebase/app';
     iShallBe,
     StartupPage,
     LoginPage,
+    RegisterPage,    
     PasswordResetPage,  
-    RegisterPage,
-    ProfilePage,
-    PhotoPage,
-    EditProfilePage,
-    StatementsPage,  
-    CreateStatementPage,
-    AccountPage,
+    AboutPage,
+    SupportPage,
     AccountEmailPage,
     AccountPasswordPage,
-    SupportPage,
-    HomePage,
+    AccountPage,
+    PhotoPage,
+    EditProfilePage,
+    CreateStatementPage,
+    StatementsPage,  
+    ProfilePage,
     PinPage,
     PostPage,
-    AboutPage,
-    UsersManagerPage,
-    UserManagerPage,
+    UserPage,
+    HomePage,
     PinsManagerPage,
-    PinManagerPage,
-    PostsManagerPage,
-    PostManagerPage,
     CreatePinPage,
-    UserPage
+    PostsManagerPage,
+    UsersManagerPage
   ],
   imports: [
     BrowserModule,
@@ -89,32 +83,29 @@ import * as firebase from 'firebase/app';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-  iShallBe,
+    iShallBe,
     StartupPage,
     LoginPage,
+    RegisterPage,    
     PasswordResetPage,  
-    RegisterPage,
-    ProfilePage,
-    PhotoPage,
-    EditProfilePage,
-    StatementsPage,
-    CreateStatementPage,  
-    AccountPage,
+    AboutPage,
+    SupportPage,
     AccountEmailPage,
     AccountPasswordPage,
-    SupportPage,
-    HomePage,
+    AccountPage,
+    PhotoPage,
+    EditProfilePage,
+    CreateStatementPage,
+    StatementsPage,  
+    ProfilePage,
     PinPage,
     PostPage,
-    AboutPage,
-    UsersManagerPage,
-    UserManagerPage,
+    UserPage,
+    HomePage,
     PinsManagerPage,
-    PinManagerPage,
-    PostsManagerPage,
-    PostManagerPage,
     CreatePinPage,
-    UserPage
+    PostsManagerPage,
+    UsersManagerPage
   ],
   providers: [
     StatusBar,

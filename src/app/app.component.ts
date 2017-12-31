@@ -8,30 +8,26 @@ import { Observable } from 'rxjs/Rx';
 
 import { StartupPage } from '../pages/startup/startup';
 import { LoginPage } from '../pages/login/login';
-import { PasswordResetPage } from '../pages/password-reset/password-reset';
 import { RegisterPage } from '../pages/register/register';
-import { ProfilePage } from '../pages/profile/profile';
-import { EditProfilePage } from '../pages/edit-profile/edit-profile';
-import { PhotoPage } from '../pages/photo/photo';
-import { StatementsPage } from '../pages/statements/statements';
-import { CreateStatementPage } from '../pages/create-statement/create-statement';
-import { AccountPage } from '../pages/account/account';
+import { PasswordResetPage } from '../pages/password-reset/password-reset';
+import { AboutPage } from '../pages/about/about';
+import { SupportPage } from '../pages/support/support';
 import { AccountEmailPage } from '../pages/account-email/account-email';
 import { AccountPasswordPage } from '../pages/account-password/account-password';
-import { SupportPage } from '../pages/support/support';
-import { HomePage } from '../pages/home/home';
-import { PinPage } from '../pages/pin/pin';
+import { AccountPage } from '../pages/account/account';
+import { EditProfilePage } from '../pages/edit-profile/edit-profile';
+import { PhotoPage } from '../pages/photo/photo';
+import { CreateStatementPage } from '../pages/create-statement/create-statement';
+import { StatementsPage } from '../pages/statements/statements';
+import { ProfilePage } from '../pages/profile/profile';
 import { PostPage } from '../pages/post/post';
-import { AboutPage } from '../pages/about/about';
-import { UsersManagerPage } from '../pages/users-manager/users-manager';
-import { UserManagerPage } from '../pages/user-manager/user-manager';
-import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
-import { PostManagerPage } from '../pages/post-manager/post-manager';
-import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
-import { PinManagerPage } from '../pages/pin-manager/pin-manager';
-import { CreatePinPage } from '../pages/create-pin/create-pin';
+import { PinPage } from '../pages/pin/pin';
 import { UserPage } from '../pages/user/user';
-
+import { HomePage } from '../pages/home/home';
+import { CreatePinPage } from '../pages/create-pin/create-pin';
+import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
+import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
+import { UsersManagerPage } from '../pages/users-manager/users-manager';
 import { ComponentsModule } from '../components/components.module';
 import { HeaderComponent } from '../components/header/header';
 import { TermsOfServiceComponent } from '../components/terms-of-service/terms-of-service';
@@ -70,29 +66,26 @@ export class iShallBe {
     this.pages = [
       { title: 'Startup Page', component: StartupPage },
       { title: 'Login Page', component: LoginPage },
-      { title: 'Password Reset Page', component: PasswordResetPage },
       { title: 'Register Page', component: RegisterPage },
-      { title: 'Profile Page', component: ProfilePage },
-      { title: 'Edit Profile Page', component: EditProfilePage },
-      { title: 'hoto Page', component: PhotoPage },
-      { title: 'Statements Page', component: StatementsPage },
-      { title: 'Create Statement Page', component: CreateStatementPage },
-      { title: 'Account Page', component: AccountPage },
+      { title: 'Password Reset Page', component: PasswordResetPage },
+      { title: 'About Page', component: AboutPage },
+      { title: 'Support Page', component: SupportPage },
       { title: 'Account Email Page', component: AccountEmailPage },
       { title: 'Account Password Page', component: AccountPasswordPage },
-      { title: 'Support Page', component: SupportPage },
-      { title: 'Home Page', component: HomePage },
+      { title: 'Account Page', component: AccountPage },
+      { title: 'Edit Profile Page', component: EditProfilePage },
+      { title: 'Photo Page', component: PhotoPage },
+      { title: 'Create Statement Page', component: CreateStatementPage },
+      { title: 'Statements Page', component: StatementsPage },
+      { title: 'Profile Page', component: ProfilePage },
+      { title: 'User Page', component: UserPage },
       { title: 'Pin Page', component: PinPage },
       { title: 'Post Page', component: PostPage },
-      { title: 'About Page', component: AboutPage },
-      { title: 'Users Manager Page', component: UsersManagerPage },
-      { title: 'User Manager Page', component: UserManagerPage },
-      { title: 'Posts Manager Page', component: PostsManagerPage },
-      { title: 'Post Manager Page', component: PostManagerPage },
-      { title: 'Pins Manager Page', component: PinsManagerPage },
-      { title: 'Pin Manager Page', component: PinManagerPage },
+      { title: 'Home Page', component: HomePage },      
       { title: 'Create Pin Page', component: CreatePinPage },
-      { title: 'User Page', component: UserPage }
+      { title: 'Users Manager Page', component: UsersManagerPage },
+      { title: 'Posts Manager Page', component: PostsManagerPage },
+      { title: 'Pins Manager Page', component: PinsManagerPage }
     ];
 
     this.providers = [
@@ -112,7 +105,7 @@ export class iShallBe {
       },
       {
         title: 'Statements',
-        icon: 'ios-quote',
+        icon: 'ios-body',
         component: StatementsPage
       },
       {

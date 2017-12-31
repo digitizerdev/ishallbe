@@ -7,7 +7,7 @@ import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { IonicStorageModule, } from '@ionic/storage';
-import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, ActionSheetController } from 'ionic-angular';
 import { AngularFireModule } from 'angularfire2';
 import { FirebaseListObservable, FirebaseObjectObservable, AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
@@ -107,7 +107,6 @@ export class FileMock extends File {
   }
 }
 
-
 export class CameraMock extends Camera {
 
   public getPicture(cameraOptions): any {
@@ -116,7 +115,6 @@ export class CameraMock extends Camera {
     });
   }
 }
-
 
 export class EmailComposerMock extends EmailComposer {
   _getPortal(): any { return {} };
@@ -204,6 +202,20 @@ export class NavParamsMock {
   public get(name: string): any {
     return new Promise(function (resolve: Function): void {
       resolve('testNavParamReturnValue');
+    });
+  }
+}
+
+export class ActionSheetControllerMock {
+  public create(name: string): any {
+    return new Promise(function (resolve: Function): void {
+      resolve('testActionSheetControllerValue');
+    });
+  }
+
+  public present(name: string): any {
+    return new Promise(function (resolve: Function): void {
+      resolve('testActionSheetControllerValue');
     });
   }
 }

@@ -16,4 +16,8 @@ export class AboutPage {
   ) {
   }
 
+  openWebsite(){
+    open('https://iShallBe.co');
+  }
+  
 }

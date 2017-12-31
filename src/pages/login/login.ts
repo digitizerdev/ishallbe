@@ -79,7 +79,6 @@ export class LoginPage {
       subTitle: 'Authenticated',
       buttons: ['OK']
     });
-    alert.present();
   }
 
   startSession() {

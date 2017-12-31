@@ -16,7 +16,7 @@ import { HeaderComponent } from '../../components/header/header';
 import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
 import { TermsOfServiceComponent } from '../../components/terms-of-service/terms-of-service';
 
-import { CreateStatementPage } from './create-statement';
+import { PinsManagerPage } from './pins-manager';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -78,13 +78,13 @@ const angularFireDataStub = {
     list: listSpy,
 }
 
-describe('CreateStatementPage', () => {
+describe('PinsManagerPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [CreateStatementPage],
+            declarations: [PinsManagerPage],
             imports: [
-                IonicModule.forRoot(CreateStatementPage),
+                IonicModule.forRoot(PinsManagerPage),
                 AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
@@ -104,7 +104,7 @@ describe('CreateStatementPage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(CreateStatementPage);
+        fixture = TestBed.createComponent(PinsManagerPage);
         component = fixture.componentInstance;
         nav = fixture.componentRef.injector.get(NavController);
         navParams = fixture.componentRef.injector.get(NavParams);
@@ -129,33 +129,11 @@ describe('CreateStatementPage', () => {
     });
 
     it('should be created', () => {
-        expect(component instanceof CreateStatementPage).toBe(true);
-    });
+        expect(component instanceof PinsManagerPage).toBe(true);
+    });    
 
-    it('should display ion-header', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('ion-header'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
+    it('should have title called Manage Pins', () => {
+        expect(component.title).toBe('Manage Pins');
     });
-
-    it('should display header component', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('header'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    it('should get image on page load', () => {
-        spyOn(navParams, 'get').and.callThrough();
-        spyOn(camera, 'getPicture').and.callThrough();
-        component.ionViewDidLoad();
-        expect(navParams.get).toHaveBeenCalled();
-        expect(camera.getPicture).toHaveBeenCalled();
-    });
-
-    
 
 });

@@ -1,5 +1,5 @@
 import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { IonicModule, Events, NavController, NavParams } from 'ionic-angular';
+import { IonicModule, Events, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { IonicStorageModule, Storage } from '@ionic/storage';
@@ -41,6 +41,7 @@ const angularFireAuthStub = {
 import {
     FirebaseProviderMock,
     NavMock,
+    ActionSheetControllerMock,
     StorageMock,
     AngularFireDatabaseMock,
     AngularFireAuthMock
@@ -129,6 +130,17 @@ describe('AccountPage', () => {
         expect(component.requestProfile).toHaveBeenCalled();
     }));
 
+    it('should display manage button if editor', async(() => {
+        component.editor = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#AccountManageButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Manage');
+        expect(component.pushManagerPage).toBeDefined();
+    }));
+
     it('should display view profile button', async(() => {
         let de: DebugElement;
         let el: HTMLElement;
@@ -143,6 +155,15 @@ describe('AccountPage', () => {
         de = fixture.debugElement.query(By.css('#AccountUpdatePasswordButton'));
         el = de.nativeElement.innerHTML
         expect(el).toContain('Update Password');
+    }));
+
+    it('should display contact support button', async(() => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#AccountContactSupportButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Contact Support');
+        expect(component.pushSupportPage).toBeDefined();
     }));
 
     it('should display update email button', async(() => {
