@@ -11,9 +11,10 @@ import { LoginPage } from '../pages/login/login';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
 import { RegisterPage } from '../pages/register/register';
 import { ProfilePage } from '../pages/profile/profile';
-import { ProfileManagerPage } from '../pages/profile-manager/profile-manager';
-import { ProfilePhotoPage } from '../pages/profile-photo/profile-photo';
+import { EditProfilePage } from '../pages/edit-profile/edit-profile';
+import { PhotoPage } from '../pages/photo/photo';
 import { StatementsPage } from '../pages/statements/statements';
+import { CreateStatementPage } from '../pages/create-statement/create-statement';
 import { AccountPage } from '../pages/account/account';
 import { AccountEmailPage } from '../pages/account-email/account-email';
 import { AccountPasswordPage } from '../pages/account-password/account-password';
@@ -28,6 +29,7 @@ import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
 import { PinManagerPage } from '../pages/pin-manager/pin-manager';
+import { CreatePinPage } from '../pages/create-pin/create-pin';
 import { UserPage } from '../pages/user/user';
 
 import { ComponentsModule } from '../components/components.module';
@@ -71,9 +73,10 @@ export class iShallBe {
       { title: 'Password Reset Page', component: PasswordResetPage },
       { title: 'Register Page', component: RegisterPage },
       { title: 'Profile Page', component: ProfilePage },
-      { title: 'Profile Manager Page', component: ProfileManagerPage },
-      { title: 'Profile Photo Page', component: ProfilePhotoPage },
+      { title: 'Edit Profile Page', component: EditProfilePage },
+      { title: 'hoto Page', component: PhotoPage },
       { title: 'Statements Page', component: StatementsPage },
+      { title: 'Create Statement Page', component: CreateStatementPage },
       { title: 'Account Page', component: AccountPage },
       { title: 'Account Email Page', component: AccountEmailPage },
       { title: 'Account Password Page', component: AccountPasswordPage },
@@ -88,6 +91,7 @@ export class iShallBe {
       { title: 'Post Manager Page', component: PostManagerPage },
       { title: 'Pins Manager Page', component: PinsManagerPage },
       { title: 'Pin Manager Page', component: PinManagerPage },
+      { title: 'Create Pin Page', component: CreatePinPage },
       { title: 'User Page', component: UserPage }
     ];
 

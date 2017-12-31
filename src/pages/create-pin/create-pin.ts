@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
- * Generated class for the ProfileManagerPage page.
+ * Generated class for the CreatePinPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -10,16 +10,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-profile-manager',
-  templateUrl: 'profile-manager.html',
+  selector: 'page-create-pin',
+  templateUrl: 'create-pin.html',
 })
-export class ProfileManagerPage {
+export class CreatePinPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfileManagerPage');
+    console.log('ionViewDidLoad CreatePinPage');
   }
 
 }

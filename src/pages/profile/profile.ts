@@ -3,8 +3,8 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import { Storage } from '@ionic/storage';
 
 import { HomePage } from '../home/home';
-import { ProfileManagerPage } from '../profile-manager/profile-manager';
-import { StatementsPage } from '../statements/statements';
+import { EditProfilePage } from '../edit-profile/edit-profile';
+import { CreateStatementPage } from '../create-statement/create-statement';
 import { PostPage } from '../post/post';
 import { AccountPage } from '../account/account';
 
@@ -194,12 +194,12 @@ import { Observable } from 'rxjs/Observable';
     this.navCtrl.setRoot(HomePage);
   }
 
-  pushStatementsPage() {
-    this.navCtrl.push(StatementsPage);
+  pushCreateStatementPage() {
+    this.navCtrl.push(CreateStatementPage);
   }
 
-  pushProfileManagerPage() {
-    this.navCtrl.push(ProfileManagerPage);
+  pushEditProfilePage() {
+    this.navCtrl.push(EditProfilePage);
   }
 
   flaggedMessage() {

@@ -21,9 +21,10 @@ import { LoginPage } from '../pages/login/login';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
 import { RegisterPage } from '../pages/register/register';
 import { ProfilePage } from '../pages/profile/profile';
-import { ProfileManagerPage } from '../pages/profile-manager/profile-manager';
-import { ProfilePhotoPage } from '../pages/profile-photo/profile-photo';
+import { EditProfilePage } from '../pages/edit-profile/edit-profile';
+import { PhotoPage } from '../pages/photo/photo';
 import { StatementsPage } from '../pages/statements/statements';
+import { CreateStatementPage } from '../pages/create-statement/create-statement';
 import { AccountPage } from '../pages/account/account';
 import { AccountEmailPage } from '../pages/account-email/account-email';
 import { AccountPasswordPage } from '../pages/account-password/account-password';
@@ -38,6 +39,7 @@ import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
 import { PinManagerPage } from '../pages/pin-manager/pin-manager';
+import { CreatePinPage } from '../pages/create-pin/create-pin';
 import { UserPage } from '../pages/user/user';
 
 import { ComponentsModule } from '../components/components.module';
@@ -54,9 +56,10 @@ import * as firebase from 'firebase/app';
     PasswordResetPage,  
     RegisterPage,
     ProfilePage,
-    ProfilePhotoPage,
-    ProfileManagerPage,
+    PhotoPage,
+    EditProfilePage,
     StatementsPage,  
+    CreateStatementPage,
     AccountPage,
     AccountEmailPage,
     AccountPasswordPage,
@@ -71,6 +74,7 @@ import * as firebase from 'firebase/app';
     PinManagerPage,
     PostsManagerPage,
     PostManagerPage,
+    CreatePinPage,
     UserPage
   ],
   imports: [
@@ -85,15 +89,16 @@ import * as firebase from 'firebase/app';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    iShallBe,
+  iShallBe,
     StartupPage,
     LoginPage,
     PasswordResetPage,  
     RegisterPage,
     ProfilePage,
-    ProfilePhotoPage,
-    ProfileManagerPage,
-    StatementsPage,  
+    PhotoPage,
+    EditProfilePage,
+    StatementsPage,
+    CreateStatementPage,  
     AccountPage,
     AccountEmailPage,
     AccountPasswordPage,
@@ -108,6 +113,7 @@ import * as firebase from 'firebase/app';
     PinManagerPage,
     PostsManagerPage,
     PostManagerPage,
+    CreatePinPage,
     UserPage
   ],
   providers: [

@@ -70,8 +70,8 @@ export class HomePage {
     this.checkIfProfileBlocked();
     this.startLoader();
     this.timestampFeed().subscribe(() => {
-      if (this.feedTimestamp.day == 'Sunday') { this.sunday = true; }
-      this.loadPins();        
+      if (this.feedTimestamp.day == 'Sunday') { this.sunday = true } 
+      else { this.loadPins(); }
       this.posts = [];
       if (this.postsLoaded || this.postLimit > 1) {
         this.postLimit = 25;

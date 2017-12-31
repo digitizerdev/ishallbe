@@ -110,9 +110,9 @@ export class FileMock extends File {
 
 export class CameraMock extends Camera {
 
-  public open(email): any {
+  public getPicture(cameraOptions): any {
     return new Promise(function (resolve: Function): void {
-      resolve();
+      resolve('image');
     });
   }
 }

@@ -3,6 +3,7 @@ import { IonicModule, Events, NavController, NavParams } from 'ionic-angular';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { IonicStorageModule, Storage } from '@ionic/storage';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 import { AngularFireModule } from 'angularfire2';
 import { environment } from '../../environments/environment';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
@@ -15,15 +16,20 @@ import { HeaderComponent } from '../../components/header/header';
 import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
 import { TermsOfServiceComponent } from '../../components/terms-of-service/terms-of-service';
 
-import { ProfilePhotoPage } from './profile-photo';;
+import { PhotoPage } from './photo';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+
+import { mockPin } from '../../../test-data/pin/mocks';
+import { mockPost } from '../../../test-data/post/mocks';
 
 import { } from 'jasmine';
 
 import {
     FirebaseProviderMock,
     NavMock,
+    NavParamsMock,
+    CameraMock,
     StorageMock,
     AngularFireDatabaseMock,
     AngularFireAuthMock
@@ -32,66 +38,60 @@ import {
 let fixture;
 let component;
 let nav: NavController;
+let navParams: NavParams;
+let camera: Camera
 let firebase: FirebaseProvider;
 let storage: Storage;
 let afAuth: AngularFireAuth;
-let isAuth$: Subscription;
-let isAuthRef: boolean;
+let afData: AngularFireDatabase;
 
-const credentialsMock = {
-    email: 'abc@123.com',
-    password: 'password'
-  };
-  
-  const userMock = {
-    uid: 'ABC123',
-    email: credentialsMock.email,
-  };
-  
-  const fakeAuthState = new BehaviorSubject(null);
-  
-  const fakeSignInHandler = (email, password): Promise<any> => {
-    fakeAuthState.next(userMock);
-    return Promise.resolve(userMock);
-  };
-  
-  const fakeSignOutHandler = (): Promise<any> => {
-    fakeAuthState.next(null);
-    return Promise.resolve();
-  };
-  
-  const angularFireAuthStub = {
-    authState: fakeAuthState,
-    auth: {
-      createUserWithEmailAndPassword: jasmine
-        .createSpy('createUserWithEmailAndPassword')
-        .and
-        .callFake(fakeSignInHandler),
-      signInWithEmailAndPassword: jasmine
-        .createSpy('signInWithEmailAndPassword')
-        .and
-        .callFake(fakeSignInHandler),
-      signOut: jasmine
-        .createSpy('signOut')
-        .and
-        .callFake(fakeSignOutHandler),
-    },
-  };
-describe('ProfilePhotoPage', () => {
+const angularFireAuthStub = {
+};
+
+let pushSpy = jasmine.createSpy("push");
+
+let takeSpy = jasmine.createSpy("take");
+
+let querySpy = jasmine.createSpy("query").and.returnValue({
+    take: takeSpy
+});
+
+let listSpy = jasmine.createSpy("list").and.returnValue({
+    push: pushSpy,
+    take: takeSpy,
+    query: querySpy
+});
+
+let updateSpy = jasmine.createSpy("update");
+
+let removeSpy = jasmine.createSpy("remove");
+
+let objectSpy = jasmine.createSpy("object").and.returnValue({
+    update: updateSpy,
+    remove: removeSpy
+});
+
+const angularFireDataStub = {
+    object: objectSpy,
+    list: listSpy,
+}
+
+describe('PhotoPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ProfilePhotoPage],
+            declarations: [PhotoPage],
             imports: [
-                IonicModule.forRoot(ProfilePhotoPage),
+                IonicModule.forRoot(PhotoPage),
                 AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: Storage, useClass: StorageMock },
                 { provide: NavController, useClass: NavMock },
-                { provide: NavParams, useClass: NavMock },
-                { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
+                { provide: NavParams, useClass: NavParamsMock },
+                { provide: Camera, useClass: CameraMock },
+                { provide: AngularFireDatabase, useValue: angularFireDataStub },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
             ],
             schemas: [
@@ -101,28 +101,31 @@ describe('ProfilePhotoPage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ProfilePhotoPage);
+        fixture = TestBed.createComponent(PhotoPage);
         component = fixture.componentInstance;
         nav = fixture.componentRef.injector.get(NavController);
+        navParams = fixture.componentRef.injector.get(NavParams);
+        camera = fixture.componentRef.injector.get(Camera);
         storage = fixture.componentRef.injector.get(Storage);
         firebase = fixture.componentRef.injector.get(FirebaseProvider);
-        afAuth = TestBed.get(AngularFireAuth);   
+        afAuth = TestBed.get(AngularFireAuth);
+        afData = TestBed.get(AngularFireDatabase);
     });
 
     afterEach(() => {
         fixture.destroy();
         component = null;
         nav = null;
+        navParams = null;
+        camera = null;
         storage = null;
-        firebase = null;        
+        firebase = null;
         afAuth = null;
-        fakeAuthState.next(null);
+        afData = null;
     });
 
     it('should be created', () => {
-        expect(component instanceof ProfilePhotoPage).toBe(true);
+        expect(component instanceof PhotoPage).toBe(true);
     });
-
-    it('')
 
 });
