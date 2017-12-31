@@ -20,7 +20,15 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 export class CreateStatementPage {
   @ViewChild('imageSrc') imageElement: ElementRef;
 
+  statementForm: {
+    title?: string,
+    description?: string
+  } = {};
+  submitted = false;
+  rawTime: any;
   uid: any;
+  profile: any;
+  statement: any;
   loader: any;
   imageMethod: any;
   cameraOptions: any;
@@ -41,17 +49,29 @@ export class CreateStatementPage {
   }
 
   ionViewDidLoad() {
-    this.requestUID().then((uid) => {
-      console.log("Got UID: " + uid)
-      this.uid = uid;
-    })
+    this.rawTime = moment().format('YYYYMMDDmmss');
+    this.loadProfile();
     this.askForImageRetrievalMethod();
+  }
+
+  loadProfile() {
+    this.requestUID().then((uid) => {
+      this.uid = uid;
+      this.requestProfile().subscribe((profile) => {
+        this.profile = profile;
+      });
+    });
   }
 
   requestUID() {
     return this.storage.ready().then(() => {
       return this.storage.get(('uid'));
     });
+  }
+
+  requestProfile() {
+    let path = '/users/' + this.uid;
+    return this.firebase.object(path)
   }
 
   askForImageRetrievalMethod() {
@@ -123,15 +143,65 @@ export class CreateStatementPage {
   }
 
   uploadPhoto() {
-    console.log("Uploading photo");
-    this.startLoader();
-    this.image = this.cropperInstance.getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
-    let path = 'content/' + this.uid + '/images/profile/';
-    this.store(path, this.image).subscribe((snapshot) => {
-      console.log("Stored image");
-      console.log(snapshot)
-      this.imageURL = snapshot.downloadURL;
+    return Observable.create((observer) => {
+      console.log("Uploading photo");
+      this.startLoader();
+      this.image = this.cropperInstance.getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
+      let path = 'content/' + this.uid + '/images/' + this.rawTime;
+      return this.store(path, this.image).subscribe((snapshot) => {
+        console.log("Stored image");
+        console.log(snapshot)
+        this.imageURL = snapshot.downloadURL;
+        observer.next();
+      });
+    });
+  }
 
+  submit(statementForm) {
+    this.submitted = true;
+    this.statementForm = statementForm;
+    if (statementForm.valid) {
+      this.startLoader();
+      return this.publish(statementForm).subscribe((token) => {
+        this.addIDToPost(token).then(() => {
+          this.confirm();          
+        });
+      });
+    }
+  }
+
+  publish(statementForm) {
+    return this.uploadPhoto().subscribe(() => {
+      return this.buildStatement().subscribe(() => {
+        return this.firebase.list('posts').push(this.statement);
+      });
+    })
+  }
+
+  buildStatement() {
+    return Observable.create((observer) => {
+      let time = moment().format('MMMM D h:mma')
+      let date = moment().format('YYYYMMDD');
+      let day = moment().format('dddd');
+      this.statement = {
+        commentCount: 0,
+        content: this.statementForm.description,
+        date: date,
+        face: this.profile.photo,
+        flagged: false,
+        image: true,
+        likeCount: 0,
+        liked: false,
+        name: this.profile.name,
+        onFeed: true,
+        postType: 'image',
+        rawTime: this.rawTime,
+        time: time,
+        title: this.statementForm.title,
+        uid: this.uid,
+        url: this.imageURL
+      }
+      observer.next();
     });
   }
 
@@ -147,11 +217,20 @@ export class CreateStatementPage {
     });
   }
 
+  addIDToPost(token) {
+    let path = 'posts/' + token.key;
+    console.log("Adding ID to post");
+    console.log("Path is " + path);
+    let post = {
+      id: token.key
+    }
+    return this.firebase.object(path).update(post);
+  }
 
   confirm() {
     console.log("Confirming")
     this.updatePhoto().then(() => {
-      console.log("Finished updating photo")
+      console.log("Finished publishing statement")
       this.loader.dismiss();
       this.navCtrl.pop();
     })

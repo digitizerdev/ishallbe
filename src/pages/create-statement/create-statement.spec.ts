@@ -148,18 +148,47 @@ describe('CreateStatementPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should ask for image retrieval method on load', async(() => {
+    fit('should load profile', fakeAsync(() => {
+        spyOn(component, 'requestUID').and.callThrough();
+        spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {}});
+        spyOn(storage, 'ready').and.callThrough();
+        spyOn(storage, 'get').and.callThrough();
+        component.loadProfile();
+        tick();
+        fixture.detectChanges();
+        expect(storage.ready).toHaveBeenCalled();
+        expect(storage.get).toHaveBeenCalled();
+        expect(component.requestUID).toHaveBeenCalled();
+        expect(component.requestProfile).toHaveBeenCalled();
+    }));
+
+    it('should ask for image retrieval method on load', async(() => {
         spyOn(component, 'askForImageRetrievalMethod')
         component.ionViewDidLoad();
         expect(component.askForImageRetrievalMethod).toHaveBeenCalled();
     }));
 
-    fit('should request Camera to get picture', () => {
+    it('should request Camera to get picture', () => {
         spyOn(camera, 'getPicture').and.callThrough();
         component.getPicture();
         expect(camera.getPicture).toHaveBeenCalled();
     });
 
-    
+    it('should display statement form', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('form'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('Submit');
+    });
+
+    it('should submit form', () => {
+        let statementForm = {
+            title: 'testTitle',
+            description: 'testDescription'
+        }
+        component.submit(statementForm);
+        expect(component.submitted).toBeTruthy();
+    });;
 
 });
