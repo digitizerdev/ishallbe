@@ -142,23 +142,6 @@ export class CreateStatementPage {
     });
   }
 
-  uploadPhoto() {
-    return Observable.create((observer) => {
-      console.log("Uploading photo");
-      this.startLoader();
-      this.image = this.cropperInstance.getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
-      let path = 'content/' + this.uid + '/images/' + this.rawTime;
-      console.log("About to store statement");
-      console.log(path);
-      return this.store(path, this.image).subscribe((snapshot) => {
-        console.log("Stored image");
-        console.log(snapshot)
-        this.imageURL = snapshot.downloadURL;
-        observer.next();
-      });
-    });
-  }
-
   submit(statementForm) {
     this.submitted = true;
     this.statementForm = statementForm;
@@ -168,7 +151,7 @@ export class CreateStatementPage {
         console.log("Got publish token");
         console.log(token);
         this.addIDToPost(token).then(() => {
-          this.confirm();          
+          this.confirm();
         });
       });
     }
@@ -177,9 +160,29 @@ export class CreateStatementPage {
   publish(statementForm) {
     return this.uploadPhoto().subscribe(() => {
       return this.buildStatement().subscribe(() => {
-        return this.firebase.list('posts').push(this.statement);
+        console.log("About to push post")
+        return this.firebase.list('posts').push(this.statement)
       });
     })
+  }
+
+  uploadPhoto() {
+    return Observable.create((observer) => {
+      console.log("Uploading photo");
+      this.startLoader();
+      this.image = this.cropperInstance
+      .getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
+      let path = 'content/' + this.uid + '/images/' + this.rawTime;
+      console.log("About to store statement");
+      console.log(path);
+      return this.store(path, this.image).subscribe((snapshot) => {
+        console.log("Stored image");
+        console.log(snapshot)
+        this.imageURL = snapshot.downloadURL;
+        console.log("Image url is " + this.imageURL)
+        observer.next();
+      });
+    });
   }
 
   buildStatement() {
