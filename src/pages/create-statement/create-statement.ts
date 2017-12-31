@@ -165,6 +165,8 @@ export class CreateStatementPage {
     if (statementForm.valid) {
       this.startLoader();
       return this.publish(statementForm).subscribe((token) => {
+        console.log("Got publish token");
+        console.log(token);
         this.addIDToPost(token).then(() => {
           this.confirm();          
         });
