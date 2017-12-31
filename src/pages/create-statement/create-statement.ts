@@ -148,6 +148,8 @@ export class CreateStatementPage {
       this.startLoader();
       this.image = this.cropperInstance.getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
       let path = 'content/' + this.uid + '/images/' + this.rawTime;
+      console.log("About to store statement");
+      console.log(path);
       return this.store(path, this.image).subscribe((snapshot) => {
         console.log("Stored image");
         console.log(snapshot)
