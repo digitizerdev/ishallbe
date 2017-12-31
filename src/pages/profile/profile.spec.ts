@@ -39,40 +39,9 @@ let firebase: FirebaseProvider;
 let storage: Storage;
 let afAuth: AngularFireAuth;
 let afData: AngularFireDatabase;
-let isAuth$: Subscription;
-let isAuthRef: boolean;
-
-const credentialsMock = {
-    email: 'abc@123.com',
-    password: 'password'
-};
-
-const userMock = {
-    uid: 'ABC123',
-    email: credentialsMock.email,
-};
-
-const fakeAuthState = new BehaviorSubject(null);
-
-const fakeSignInHandler = (email, password): Promise<any> => {
-    fakeAuthState.next(userMock);
-    return Promise.resolve(userMock);
-};
-
-const fakeSignOutHandler = (): Promise<any> => {
-    fakeAuthState.next(null);
-    return Promise.resolve();
-};
 
 const angularFireAuthStub = {
-    authState: fakeAuthState,
-    auth: {
-        signInWithEmailAndPassword: jasmine
-            .createSpy('signInWithEmailAndPassword')
-            .and
-            .callFake(fakeSignInHandler)
-    },
-};
+}
 
 let pushSpy = jasmine.createSpy("push");
 
@@ -143,7 +112,6 @@ describe('ProfilePage', () => {
         firebase = null;
         afAuth = null;
         afData = null;
-        fakeAuthState.next(null);
     });
 
     it('should be created', () => {

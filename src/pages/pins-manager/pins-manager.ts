@@ -8,7 +8,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class PinsManagerPage {
   
-  title = 'Pins Manager';
+  title = 'Manage Pins';
   
   constructor(
     public navCtrl: NavController, 

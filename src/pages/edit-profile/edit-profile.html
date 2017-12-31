@@ -1,18 +1,62 @@
-<!--
-  Generated template for the EditProfilePage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>edit-profile</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-
-</ion-content>
+    <ion-navbar color='primary'>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title color='primary'>{{ title }}</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding>
+    <ion-row>
+      <ion-col *ngIf="this.loaded" text-center>
+        <ion-avatar padding-top item-left>
+          <img (click)="pushPhotoPage()" class="avatar" src="{{ profile?.photo }}">
+        </ion-avatar>
+      </ion-col>
+    </ion-row>
+    <form novalidate padding>
+      <ion-list no-lines>
+        <ion-item>
+          <ion-label stacked color="primary">Name: </ion-label>
+          <ion-input [(ngModel)]="editProfileForm.name" name="name" type="text" #name="ngModel" spellcheck="false" autocapitalize="off">
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked color="primary">Bio: </ion-label>
+          <ion-input [(ngModel)]="editProfileForm.bio" name="bio" type="text" #bio="ngModel" spellcheck="false" autocapitalize="off" maxlength="50">
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked color="primary">Instagram: </ion-label>
+          <ion-input [(ngModel)]="editProfileForm.instagram" name="instagram" type="text" #instagram="ngModel" spellcheck="false" autocapitalize="off">
+          </ion-input>
+        </ion-item>
+        <p ion-text [hidden]="instagram.valid || submitted == false" color="danger" padding-left>
+          Instagram is required
+        </p>
+        <ion-item>
+          <ion-label stacked color="primary">Twitter: </ion-label>
+          <ion-input [(ngModel)]="editProfileForm.twitter" name="twitter" type="text" #twitter="ngModel" spellcheck="false" autocapitalize="off">
+          </ion-input>
+        </ion-item>
+        <p ion-text [hidden]="twitter.valid || submitted == false" color="danger" padding-left>
+          Twitter is required
+        </p>
+        <ion-item>
+          <ion-label stacked color="primary">LinkedIn: </ion-label>
+          <ion-input [(ngModel)]="editProfileForm.linkedin" name="linkedin" type="text" #linkedin="ngModel" spellcheck="false" autocapitalize="off">
+          </ion-input>
+        </ion-item>
+        <p ion-text [hidden]="linkedin.valid || submitted == false" color="danger" padding-left>
+          LinkedIn is required
+        </p>
+        <br>
+        <ion-row>
+          <ion-col text-center>
+            <button id="UpdateProfileButton" ion-button (click)="submit(editProfileForm)" type="submit" round large>Update Profile</button>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </form>
+  </ion-content>

@@ -16,7 +16,7 @@ import { HeaderComponent } from '../../components/header/header';
 import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
 import { TermsOfServiceComponent } from '../../components/terms-of-service/terms-of-service';
 
-import { SupportPage } from './support';
+import { EditProfilePage } from './edit-profile';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -59,13 +59,13 @@ const angularFireDataStub = {
     object: objectSpy
 }
 
-describe('SupportPage', () => {
+describe('EditProfilePage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [SupportPage],
+            declarations: [EditProfilePage],
             imports: [
-                IonicModule.forRoot(SupportPage),
+                IonicModule.forRoot(EditProfilePage),
                 AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
@@ -85,7 +85,7 @@ describe('SupportPage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(SupportPage);
+        fixture = TestBed.createComponent(EditProfilePage);
         component = fixture.componentInstance;
         nav = fixture.componentRef.injector.get(NavController);
         storage = fixture.componentRef.injector.get(Storage);
@@ -107,40 +107,50 @@ describe('SupportPage', () => {
     });
 
     it('should be created', () => {
-        expect(component instanceof SupportPage).toBe(true);
+        expect(component instanceof EditProfilePage).toBe(true);
     });
 
     it('should be initialized', () => {
-        expect(component.supportForm).toBeDefined();
-        expect(component.title).toBe('Support');
+        expect(component.editProfileForm).toBeDefined();
+        expect(component.title).toBe('Edit Profile');
     });
 
-    it('should display support form', () => {
+    it('should display edit profile form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Contact Support');
-        expect(el).toContain('subject');
-        expect(el).toContain('body');
+        expect(el).toContain('Update Profile');
     });
 
-    it('should request Email Composer to compose email', () => {
-        spyOn(emailComposer, 'open').and.returnValue({ subscribe: {} });
-        let supportForm = {
-            subject: "testSubject",
-            body: "testBody"
-        }
-        component.composeSupportEmail(supportForm);
+    it('should load profile', fakeAsync(() => {
+        spyOn(component, 'requestUID').and.callThrough();
+        spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {}})
+        spyOn(storage, 'ready').and.callThrough();
+        spyOn(storage, 'get').and.callThrough();
+        component.loadProfile();
+        tick();
         fixture.detectChanges();
-        expect(emailComposer.open).toHaveBeenCalled();;
-    });
+        expect(storage.ready).toHaveBeenCalled();
+        expect(storage.get).toHaveBeenCalled();
+        expect(component.requestUID).toHaveBeenCalled();
+        expect(component.requestProfile).toHaveBeenCalled();
+    }));
 
-    it('should confirm delivery', () => {
-        spyOn(component, 'setRootAccountPage');
-        component.confirmDelivery();
+    it('should submit via Update Profile Button', async(() => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#UpdateProfileButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Update Profile');
+    }));
+
+    it('should request Firebase to update profile', fakeAsync(() => {
+        component.firebase.object('testPath').update('post')
+        tick();
         fixture.detectChanges();
-        expect(component.setRootAccountPage).toHaveBeenCalled();
-    });
+        expect(objectSpy).toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalled();
+    }));
 
 });

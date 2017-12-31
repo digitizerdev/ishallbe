@@ -1,5 +1,5 @@
 import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { IonicModule, Events, NavController, NavParams } from 'ionic-angular';
+import { IonicModule, Events, NavController, NavParams, ActionSheetController} from 'ionic-angular';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { IonicStorageModule, Storage } from '@ionic/storage';
@@ -29,6 +29,7 @@ import {
     FirebaseProviderMock,
     NavMock,
     NavParamsMock,
+    ActionSheetControllerMock,
     CameraMock,
     StorageMock,
     AngularFireDatabaseMock,
@@ -39,6 +40,7 @@ let fixture;
 let component;
 let nav: NavController;
 let navParams: NavParams;
+let action: ActionSheetController;
 let camera: Camera
 let firebase: FirebaseProvider;
 let storage: Storage;
@@ -90,6 +92,7 @@ describe('PhotoPage', () => {
                 { provide: Storage, useClass: StorageMock },
                 { provide: NavController, useClass: NavMock },
                 { provide: NavParams, useClass: NavParamsMock },
+                { provide: ActionSheetController, useClass: ActionSheetControllerMock },
                 { provide: Camera, useClass: CameraMock },
                 { provide: AngularFireDatabase, useValue: angularFireDataStub },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
@@ -105,6 +108,7 @@ describe('PhotoPage', () => {
         component = fixture.componentInstance;
         nav = fixture.componentRef.injector.get(NavController);
         navParams = fixture.componentRef.injector.get(NavParams);
+        action = fixture.componentRef.injector.get(ActionSheetController);
         camera = fixture.componentRef.injector.get(Camera);
         storage = fixture.componentRef.injector.get(Storage);
         firebase = fixture.componentRef.injector.get(FirebaseProvider);
@@ -126,6 +130,11 @@ describe('PhotoPage', () => {
 
     it('should be created', () => {
         expect(component instanceof PhotoPage).toBe(true);
+    });
+
+    fit('should ask for image retrieval method on load', () => {
+        component.ionViewDidLoad();
+        expect(component.getImageRetrievalAsk).toHaveBeenCalled();
     });
 
 });
