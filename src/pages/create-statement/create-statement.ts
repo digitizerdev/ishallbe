@@ -148,7 +148,6 @@ export class CreateStatementPage {
     if (statementForm.valid) {
        this.loader = this.loadingCtrl.create({
         content: 'Please Wait..' });
-      this.loader.first().present();
       return this.publish(statementForm).subscribe((token) => {
         this.addIDToPost(token).then(() => {
           this.loader.dismiss().then(() => { this.navCtrl.pop();});          

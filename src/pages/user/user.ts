@@ -16,7 +16,7 @@ export class UserPage {
 
   user: any;
   uid: any;
-  posts: any[] = [];
+  posts: any;
   loaded = false;
 
   constructor(
@@ -33,6 +33,9 @@ export class UserPage {
       this.user = user;
       if(!this.user.bio) this.addDefaultBio();
       this.loadUserPosts().subscribe((posts) => {
+        if (posts.length = 0) {
+          this.posts = false;
+        }
         this.loaded = true;
         this.presentPosts(posts);
       });

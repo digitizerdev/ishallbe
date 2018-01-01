@@ -9,7 +9,7 @@ import { ProfilePage } from '../profile/profile';
 import { PostPage } from '../post/post';
 import { UserPage } from '../user/user';
 import { LoginPage } from '../login/login';
-import { StatementsPage } from '../statements/statements';
+import { CreateStatementPage } from '../create-statement/create-statement';
 import { PinPage } from '../pin/pin';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -416,8 +416,8 @@ export class HomePage {
     open(url)
   }
 
-  goToStatementsPage() {
-    this.navCtrl.setRoot(StatementsPage);
+  goToCreateStatementsPage() {
+    this.navCtrl.setRoot(CreateStatementPage);
   }
 
   doInfinite(infiniteScroll) {

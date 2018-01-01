@@ -39,39 +39,8 @@ let firebase: FirebaseProvider;
 let storage: Storage;
 let afAuth: AngularFireAuth;
 let afData: AngularFireDatabase;
-let isAuth$: Subscription;
-let isAuthRef: boolean;
-
-const credentialsMock = {
-    email: 'abc@123.com',
-    password: 'password'
-};
-
-const userMock = {
-    uid: 'ABC123',
-    email: credentialsMock.email,
-};
-
-const fakeAuthState = new BehaviorSubject(null);
-
-const fakeSignInHandler = (email, password): Promise<any> => {
-    fakeAuthState.next(userMock);
-    return Promise.resolve(userMock);
-};
-
-const fakeSignOutHandler = (): Promise<any> => {
-    fakeAuthState.next(null);
-    return Promise.resolve();
-};
 
 const angularFireAuthStub = {
-    authState: fakeAuthState,
-    auth: {
-        signInWithEmailAndPassword: jasmine
-            .createSpy('signInWithEmailAndPassword')
-            .and
-            .callFake(fakeSignInHandler)
-    },
 };
 
 let pushSpy = jasmine.createSpy("push");
@@ -143,10 +112,107 @@ describe('StatementsPage', () => {
         firebase = null;
         afAuth = null;
         afData = null;
-        fakeAuthState.next(null);
     });
 
     it('should be created', () => {
         expect(component instanceof StatementsPage).toBe(true);
+    });
+
+    it('should display header component', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('header'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display create statement button', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#CreateStatementButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Create Statement');
+    });
+
+    it('should load profile', fakeAsync(() => {
+        spyOn(component, 'requestUID').and.callThrough();
+        spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {}});
+        spyOn(storage, 'ready').and.callThrough();
+        spyOn(storage, 'get').and.callThrough();
+        component.loadProfile();
+        tick();
+        fixture.detectChanges();
+        expect(storage.ready).toHaveBeenCalled();
+        expect(storage.get).toHaveBeenCalled();
+        expect(component.requestUID).toHaveBeenCalled();
+        expect(component.requestProfile).toHaveBeenCalled();
+    }));
+
+    it('should request user posts from Firebase', () => {
+        spyOn(firebase, 'queriedList').and.returnValue({ subscribe: () => {}});
+        this.uid = 'testUID';
+        component.loadUserPosts();
+        expect(firebase.queriedList).toHaveBeenCalled();
+    });
+
+    it('should request Firebase to check if user already liked post', () => {
+        spyOn(firebase, 'queriedList').and.returnValue({ subscribe: () => { } });
+        component.uid = 'testUID'
+        component.requestPostUserLikerObject(mockPost.mature);
+        expect(firebase.queriedList).toHaveBeenCalled();
+    });
+
+    it('should unlike post on toggle post like if user already liked post', () => {
+        spyOn(component, 'requestPostUserLikerObject').and.returnValue({ subscribe: () => {}});
+        component.togglePostLike(mockPost.mature);
+        expect(component.requestPostUserLikerObject).toHaveBeenCalled();
+    });
+
+    it('should request Firebase to update unliked post', fakeAsync(() => {
+        component.firebase.object('testPath').update('post')
+        tick();
+        fixture.detectChanges();
+        expect(objectSpy).toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalled();
+    }));
+
+    it('should request Firebase to remove liker object from liked post', () => {
+        component.post = mockPost.mature;
+        component.removePostLikerObject(mockPost.mature.likers.testPostLikerID1, mockPost.mature);
+        expect(afData.object).toHaveBeenCalled();
+    });
+
+    it('should like post on toggle post like if user has not already liked post', () => {
+        spyOn(component, 'likePost').and.returnValue({ subscribe: () => {}});        
+        component.togglePostLike(mockPost.new);
+        expect(component.likePost).toHaveBeenCalled();
+    });
+
+    it('should request Firebase to update liked post', fakeAsync(() => {
+        component.firebase.object('testPath').update('post')
+        tick();
+        fixture.detectChanges();
+        expect(objectSpy).toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalled();
+    }));
+
+    it('should request Firebase to push liker object', fakeAsync(() => {
+        component.firebase.list('testPath').push('post')
+        tick();
+        fixture.detectChanges();
+        expect(listSpy).toHaveBeenCalled();
+        expect(pushSpy).toHaveBeenCalled();
+    }));
+
+    it('should request Firebase to update post liker object with id', fakeAsync(() => {
+        component.firebase.object('testPath').update('post')
+        tick();
+        fixture.detectChanges();
+        expect(objectSpy).toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalled();
+    }));
+
+    it('should be able to view post', () => {
+        expect(component.viewPost('testPostID')).toBeUndefined();
     });
 });

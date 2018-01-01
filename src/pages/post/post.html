@@ -14,6 +14,9 @@
       <ion-avatar (click)="viewUser(post.uid)" item-left>
         <img src="{{ post?.face }}">
       </ion-avatar>
+      <div item-right>
+          <ion-icon (click)="removePost(post)" name="close" color="gray" class="delete" *ngIf="mine"></ion-icon>
+        </div>
       <h2 ion-text color="primary" class="post-author">{{ post?.name }}</h2>
       <h2>
         <b>{{ post?.title}}</b>

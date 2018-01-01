@@ -1,3 +1,63 @@
 page-statements {
-
+    .user-posts {
+        border-top: thick solid color($colors, primary);               
+      }
+  
+      .card {
+          border-radius : 15px;
+        }
+  
+      .post-header {
+          background: linear-gradient(to Top, #faf6ed, #fff);        
+        }
+      
+        .full-image {
+          border-top: thick solid color($colors, secondary); 
+          border-bottom: thick solid color($colors, secondary); 
+        }
+      
+        .post-body {
+          border-top: 1px solid $borderColor;
+          border-bottom: 1px solid $borderColor;
+          
+          p {
+            font-size: 0.8em;
+          }
+          
+          a.subdued {
+            color: $textColor;
+            font-size: 0.8em;
+            }
+          }
+        
+        .item-complex{
+            padding-right: 0 !important;
+        }
+  
+        .post-author {
+          align-self: center;
+        }
+      
+        h3.post-author {
+          font-weight: normal;
+        }
+  
+        .post-actions {
+          color: color($colors, gray);
+          font-size: 1.4em;
+          border-top: thin solid color($colors, light-gray);
+          background-color: color($colors, light-green);
+        }
+  
+      .post-content {
+          padding: 5px;
+          color: color($colors, primary);
+          border-bottom: thin color($colors, secondary);  
+          background: linear-gradient(#faf6ed, #fff);
+        }
+      
+      .interactions {
+          color: gray;
+          background-color:#FFF!important;        
+      }
 }

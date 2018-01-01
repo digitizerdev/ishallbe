@@ -22,6 +22,9 @@ import { Observable } from 'rxjs/Observable';
   profile: any;
   posts: any[] = [];
   uid: any;
+  instagram: any;
+  twitter: any;
+  linkedin: any;
 
   constructor(
     public navCtrl: NavController, 
@@ -69,6 +72,11 @@ import { Observable } from 'rxjs/Observable';
     if (!profile.bio) {
       this.addStandardBio(profile);
     }
+    this.instagram = this.profile.instagram;
+    this.twitter = this.profile.twitter;
+    this.linkedin = this.profile.linkedin;
+
+    console.log("Instagram: " + this.instagram);
   } 
 
   addStandardBio(noBioProfile) {
@@ -218,4 +226,20 @@ import { Observable } from 'rxjs/Observable';
   setRootAccountPage() {
     this.navCtrl.setRoot(AccountPage);
   }
+
+  openSocial(socialNetwork) {
+    if (socialNetwork == 'instagram') {
+      let instagramLink = 'https://instagram.com/' + this.instagram;
+      open(instagramLink);
+    }
+    if (socialNetwork == 'twitter') {
+      let twitterLink = 'https://twitter.com/' + this.twitter;
+      open(twitterLink);
+    }
+    if (socialNetwork == 'linkedin') {
+      let linkedinLink = 'https://linkedin.com/in/' + this.linkedin;
+      open(linkedinLink);
+    }
+  }
+
 }

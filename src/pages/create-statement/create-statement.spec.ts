@@ -148,7 +148,7 @@ describe('CreateStatementPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should load profile', fakeAsync(() => {
+    it('should load profile', fakeAsync(() => {
         spyOn(component, 'requestUID').and.callThrough();
         spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {}});
         spyOn(storage, 'ready').and.callThrough();
