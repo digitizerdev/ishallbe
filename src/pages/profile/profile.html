@@ -15,7 +15,7 @@
 <ion-content padding>
   <div text-center>
     <img class="avatar" src="{{ profile?.photo }}">
-    <ion-row text-center padding class="social">
+    <ion-row *ngIf="social" text-center padding class="social">
       <ion-col *ngIf="instagram" (click)="openSocial('instagram')" text-center>
         <ion-icon name="logo-instagram"></ion-icon>
       </ion-col>

@@ -25,6 +25,7 @@ import { Observable } from 'rxjs/Observable';
   instagram: any;
   twitter: any;
   linkedin: any;
+  social = false;
 
   constructor(
     public navCtrl: NavController, 
@@ -75,7 +76,7 @@ import { Observable } from 'rxjs/Observable';
     this.instagram = this.profile.instagram;
     this.twitter = this.profile.twitter;
     this.linkedin = this.profile.linkedin;
-
+    if (this.instagram || this.twitter || this.linkedin) this.social = true;
     console.log("Instagram: " + this.instagram);
   } 
 
