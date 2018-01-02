@@ -149,14 +149,6 @@ describe('AccountPage', () => {
         expect(el).toContain('View Profile');
     }));
 
-    it('should display update password button', async(() => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#AccountUpdatePasswordButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Update Password');
-    }));
-
     it('should display contact support button', async(() => {
         let de: DebugElement;
         let el: HTMLElement;
@@ -166,12 +158,20 @@ describe('AccountPage', () => {
         expect(component.pushSupportPage).toBeDefined();
     }));
 
+    it('should display update password button', async(() => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#AccountUpdatePasswordButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Password');
+    }));
+
     it('should display update email button', async(() => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#AccountUpdateEmailButton'));
         el = de.nativeElement.innerHTML
-        expect(el).toContain('Update Email');
+        expect(el).toContain('Email');
     }));
 
     it('should display logout button', async(() => {

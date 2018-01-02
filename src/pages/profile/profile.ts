@@ -36,7 +36,7 @@ import { Observable } from 'rxjs/Observable';
   ) {
   }
 
-  ionViewDidEnter() {
+  ionViewDidLoad() {
     this.loadProfile();
   }
 
@@ -92,7 +92,7 @@ import { Observable } from 'rxjs/Observable';
     }
     this.profile = profile;
     let path = '/users/' + noBioProfile.uid;
-    this.firebase.object(path).set(profile);
+    this.firebase.object(path).update(profile);
   }
 
   loadUserPosts(uid) {

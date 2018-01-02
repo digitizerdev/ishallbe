@@ -114,9 +114,57 @@ describe('ProfilePage', () => {
         afData = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof ProfilePage).toBe(true);
     });
 
+    it('should display create statement button', async(() => {
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ProfileCreateStatementButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Create Statement');
+    }));
+
+    it('should display edit profile button', async(() => {
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ProfileEditProfileButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Edit Profile');
+    }));
+
+    it('should display manage account button', async(() => {
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ProfileAccountPageButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Manage Account');
+    }));
+
+    it('should load profile', fakeAsync(() => {
+        spyOn(component, 'requestUID').and.callThrough();
+        spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => { } });
+        spyOn(storage, 'ready').and.callThrough();
+        spyOn(storage, 'get').and.callThrough();
+        component.ionViewDidLoad();
+        tick();
+        fixture.detectChanges();
+        expect(storage.ready).toHaveBeenCalled();
+        expect(storage.get).toHaveBeenCalled();
+        expect(component.requestUID).toHaveBeenCalled();
+        expect(component.requestProfile).toHaveBeenCalled();
+    }));
+
+    it('should add standard bio to profile if bio not found', fakeAsync(() => {
+        component.firebase.object('testPath').update('profile')
+        tick();
+        fixture.detectChanges();
+        expect(objectSpy).toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalled();
+    }));
 
 });
