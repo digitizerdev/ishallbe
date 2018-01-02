@@ -162,11 +162,11 @@ describe('CreateStatementPage', () => {
         expect(component.requestProfile).toHaveBeenCalled();
     }));
 
-    it('should ask for image retrieval method on load', async(() => {
-        spyOn(component, 'askForImageRetrievalMethod')
+    it('should ask for image retrieval method on load', () => {
+        spyOn(component, 'askForImageRetrievalMethod');
         component.ionViewDidLoad();
         expect(component.askForImageRetrievalMethod).toHaveBeenCalled();
-    }));
+    });
 
     it('should request Camera to get picture', () => {
         spyOn(camera, 'getPicture').and.callThrough();

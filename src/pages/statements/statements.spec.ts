@@ -139,7 +139,7 @@ describe('StatementsPage', () => {
         spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {}});
         spyOn(storage, 'ready').and.callThrough();
         spyOn(storage, 'get').and.callThrough();
-        component.loadProfile();
+        component.ionViewDidLoad();
         tick();
         fixture.detectChanges();
         expect(storage.ready).toHaveBeenCalled();

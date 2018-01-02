@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 import firebase from 'firebase';
@@ -22,11 +21,11 @@ export class StatementsPage {
   profile: any;
   loaded = false;
   posts: any;
+  noUserStatements: any;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public camera: Camera,
     public storage: Storage,
     public firebase: FirebaseProvider
   ) {
@@ -37,8 +36,8 @@ export class StatementsPage {
       this.loadUserPosts().subscribe((posts) => {
         console.log("All loaded");
         console.log(posts);
-        if (posts.length = 0) {
-          this.posts = false;
+        if (posts.length == 0) {
+          this.noUserStatements = true;
         }
         this.loaded = true;
         console.log("Loaded: " + this.loaded);
@@ -73,6 +72,8 @@ export class StatementsPage {
 
   loadUserPosts() {
     let path = '/posts/'
+    console.log("Path is " + path);
+    console.log("UID is " + this.uid);
     return this.firebase.queriedList(path, 'uid', this.uid);
   }
 
