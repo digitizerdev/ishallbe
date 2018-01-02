@@ -12,43 +12,50 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <header></header>
-  <div text-center padding>
+  <div class="account-details" text-center padding>
     <h3>{{name}}</h3>
-    <h4>{{email}}</h4>
+    <h5>{{email}}</h5>
   </div>
-  <ion-row *ngIf="editor" responsive-sm>
+  <div class="main-buttons">
+    <br>
+    <ion-row *ngIf="editor" responsive-sm>
       <ion-col text-center>
-        <button ion-button id="AccountManageButton" (click)="pushManagerPage()" color="secondary" round>Manage</button>
+        <button ion-button id="AccountManageButton" (click)="pushManagerPage()" color="secondary" round large outline>Management</button>
       </ion-col>
     </ion-row>
-  <ion-row responsive-sm>
+    <ion-row responsive-sm>
+      <ion-col text-center>
+        <button ion-button id="AccountViewProfileButton" (click)="setRootProfilePage()" color="secondary" round large>View Profile</button>
+      </ion-col>
+    </ion-row>
+    <ion-row responsive-sm>
+      <ion-col text-center>
+        <button ion-button id="AccountContactSupportButton" (click)="pushSupportPage()" color="primary" round>Contact Support</button>
+      </ion-col>
+    </ion-row>
+    <br>
+  </div>
+  <ion-row>
     <ion-col text-center>
-      <button ion-button id="AccountViewProfileButton" (click)="setRootProfilePage()" color="primary" round large>View Profile</button>
+      <h6>Update Account</h6>
     </ion-col>
   </ion-row>
   <ion-row responsive-sm>
     <ion-col text-center>
-      <button ion-button id="AccountContactSupportButton" (click)="pushSupportPage()" color="secondary" round>Contact Support</button>
+      <button ion-button id="AccountUpdateEmailButton" (click)="pushAccountEmailPage()" color="secondary" round small>Email</button>
+    </ion-col>
+    <ion-col text-center>
+      <button ion-button id="AccountUpdatePasswordButton" (click)="pushAccountPasswordPage()" color="secondary" round small>Password</button>
     </ion-col>
   </ion-row>
-  <br>
+  <br>  
   <ion-row responsive-sm>
     <ion-col text-center>
-      <button ion-button id="AccountUpdateEmailButton" (click)="pushAccountEmailPage()" color="primary" round small outline>Update Email</button>
-    </ion-col>
-    <ion-col text-center>
-      <button ion-button id="AccountUpdatePasswordButton" (click)="pushAccountPasswordPage()" color="primary" round small outline>Update Password</button>
+      <button ion-button id="AccountLogoutButton" (click)="logout()" color="primary" round outline>Logout</button>
     </ion-col>
   </ion-row>
-  <br>
-  <ion-row responsive-sm>
-    <ion-col text-center>
-      <button ion-button id="AccountLogoutButton" (click)="logout()" color="secondary" round outline>Logout</button>
-    </ion-col>
-  </ion-row>
-  <br>
   <ion-row responsive-sm>
     <ion-col text-center>
       <terms-of-service></terms-of-service>

@@ -103,7 +103,7 @@ import { Observable } from 'rxjs/Observable';
   presentPosts(posts) {
     this.posts = [];
     posts.forEach((post) => {
-      this.requestPostUserLikerObject(post).first().subscribe((liker) => {
+      this.requestPostUserLikerObject(post).subscribe((liker) => {
         if (liker[0]) {
           post.userLiked = true;
         } else {

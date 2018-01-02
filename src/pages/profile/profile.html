@@ -12,10 +12,10 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <div text-center>
+<ion-content>
+  <div text-center class="user-profile" >
     <img class="avatar" src="{{ profile?.photo }}">
-    <ion-row *ngIf="social" text-center padding class="social">
+    <ion-row *ngIf="social" text-center class="social">
       <ion-col *ngIf="instagram" (click)="openSocial('instagram')" text-center>
         <ion-icon name="logo-instagram"></ion-icon>
       </ion-col>
@@ -26,20 +26,21 @@
         <ion-icon name="logo-linkedin"></ion-icon>
       </ion-col>
     </ion-row>
-    <h4>{{ profile?.bio}} </h4>
+    <h5 class="bio" >{{ profile?.bio}} </h5>
+    <br>
   </div>
   <br>
   <ion-row responsive-sm>
     <ion-col text-center>
-      <button ion-button id="ProfileEditProfileButton" (click)="pushEditProfilePage()" color="primary" round large>Edit Profile</button>
+      <button ion-button id="ProfileEditProfileButton" (click)="pushEditProfilePage()" color="secondary" round large>Edit Profile</button>
     </ion-col>
   </ion-row>
   <ion-row responsive-sm padding>
     <ion-col text-center>
-      <button ion-button id="ProfileCreateStatementButton" (click)="pushCreateStatementPage()" color="secondary" round>Create Statement</button>
+      <button ion-button id="ProfileCreateStatementButton" (click)="pushCreateStatementPage()" color="primary" round>Create Statement</button>
     </ion-col>
     <ion-col text-center>
-      <button ion-button id="ProfileAccountPageButton" (click)="setRootAccountPage()" color="secondary" round outline>Manage Account</button>
+      <button ion-button id="ProfileAccountPageButton" (click)="setRootAccountPage()" color="primary" round outline>Manage Account</button>
     </ion-col>
   </ion-row>
 </ion-content>

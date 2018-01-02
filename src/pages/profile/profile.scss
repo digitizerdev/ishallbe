@@ -1,5 +1,9 @@
 page-profile {
 
+    .user-profile {
+      border-bottom: thick solid color($colors, primary);          
+    }
+
     .avatar {
         display: round;
         width: 100%;
@@ -12,69 +16,18 @@ page-profile {
     }
 
     .social {
+      padding-top: 5px;
       color: color($colors, primary);
-      max-width: 40%;
+      font-size: 1.5em;
+      max-width: 50%;
       margin-left: auto ; 
       margin-right: auto;
       text-align: center;      
     }
 
-    .profile-posts {
-        border-top: thick solid color($colors, primary);         
+    .bio {
+      padding-left: 7px;
+      padding-right: 7px;
     }
 
-    .card {
-        border-radius : 15px;
-      }
-
-    .post-header {
-        background: linear-gradient(to Top, #faf6ed, #fff);        
-      }
-    
-      .full-image {
-        border-top: thick solid color($colors, secondary); 
-        border-bottom: thick solid color($colors, secondary); 
-      }
-    
-      .post-body {
-        border-top: 1px solid $borderColor;
-        border-bottom: 1px solid $borderColor;
-        
-        p {
-          font-size: 0.8em;
-        }
-        
-        a.subdued {
-          color: $textColor;
-          font-size: 0.8em;
-          }
-        }
-      
-      .item-complex{
-          padding-right: 0 !important;
-      }
-
-      .post-author {
-        align-self: center;
-      }
-    
-      h3.post-author {
-        font-weight: normal;
-      }
-
-      .post-actions {
-        color: color($colors, gray);
-        font-size: 1.4em;
-        background-color: color($colors, light-green);        
-    }
-
-    .info {
-        padding: 5px;
-        border-bottom: thin color($colors, secondary);  
-        background: linear-gradient(#faf6ed, #fff);
-      }
-    
-    .interactions {
-        background-color:#FFF!important;        
-    }
 }

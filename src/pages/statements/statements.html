@@ -12,15 +12,14 @@
     </ion-navbar>
   </ion-header>
   
-<ion-content padding>
+<ion-content>
   <header></header>
-  <ion-row responsive-sm padding>
+  <ion-row class="create-statement" responsive-sm padding>
       <ion-col text-center>
-        <button ion-button id="CreateStatementButton" (click)="pushCreateStatementPage()" color="primary" round large>Create Statement</button>
+        <button ion-button id="CreateStatementButton" (click)="pushCreateStatementPage()" color="secondary" round large>Create Statement</button>
       </ion-col>
   </ion-row>
   <div *ngIf="loaded" class="user-posts">
-      <br>
       <div *ngIf="noUserStatements" class="posts" padding>
         <ion-row padding text-center>
           <ion-col text-center>

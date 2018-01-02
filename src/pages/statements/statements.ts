@@ -34,14 +34,10 @@ export class StatementsPage {
   ionViewDidLoad() {
     this.loadProfile().subscribe(() => {
       this.loadUserPosts().subscribe((posts) => {
-        console.log("All loaded");
-        console.log(posts);
         if (posts.length == 0) {
           this.noUserStatements = true;
         }
         this.loaded = true;
-        console.log("Loaded: " + this.loaded);
-        console.log("Posts: " + this.posts);
         this.presentPosts(posts);
       });
     })
@@ -72,8 +68,6 @@ export class StatementsPage {
 
   loadUserPosts() {
     let path = '/posts/'
-    console.log("Path is " + path);
-    console.log("UID is " + this.uid);
     return this.firebase.queriedList(path, 'uid', this.uid);
   }
 

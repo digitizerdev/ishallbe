@@ -114,7 +114,9 @@ describe('ProfilePage', () => {
         afData = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof ProfilePage).toBe(true);
     });
+
+
 });
