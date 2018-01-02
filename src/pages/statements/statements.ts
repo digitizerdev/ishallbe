@@ -78,6 +78,7 @@ export class StatementsPage {
   }
 
   presentPosts(posts) {
+    posts.reverse();
     this.posts = [];
     posts.forEach((post) => {
       this.requestPostUserLikerObject(post).subscribe((liker) => {
