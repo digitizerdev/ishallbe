@@ -151,7 +151,7 @@ export class CreateStatementPage {
         content: 'Please Wait..' });
       return this.publish(statementForm).subscribe((token) => {
         this.addIDToPost(token).then(() => {
-          this.loader.dismiss().then(() => { this.navCtrl.setRoot(HomePage);});          
+           this.setRootHomePage();         
         });
       });
     }
@@ -228,6 +228,7 @@ export class CreateStatementPage {
   }
 
   addIDToPost(token) {
+    this.loader.dismiss();
     let path = 'posts/' + token.key;
     let post = {
       id: token.key
