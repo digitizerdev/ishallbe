@@ -143,6 +143,9 @@ export class CreateStatementPage {
   }
 
   submit(statementForm) {
+    if (!this.imageURL) {
+      this.setRootHomePage();
+    }
     this.submitted = true;
     this.startLoader();
     this.statementForm = statementForm;
