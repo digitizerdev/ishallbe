@@ -106,13 +106,10 @@ export class CreateStatementPage {
 
   getPicture() {
     this.camera.getPicture(this.getCameraOptions()).then((image) => {
-      console.log("Got image")
-      console.log(image);
       this.imageElement.nativeElement.src = image;
       this.cropImage();
     }).catch((error) => {
-      console.log("There was an error");
-      console.log(error);
+      this.setRootHomePage();
     });
   }
 
@@ -163,10 +160,7 @@ export class CreateStatementPage {
     return Observable.create((observer) => {
       return this.uploadPhoto().subscribe(() => {
         return this.buildStatement().subscribe(() => {
-          console.log("About to push post")
           return this.firebase.list('posts').push(this.statement).then((token) => {
-            console.log("Got token");
-            console.log(token);
             observer.next(token);
           });
         });
@@ -176,17 +170,11 @@ export class CreateStatementPage {
 
   uploadPhoto() {
     return Observable.create((observer) => {
-      console.log("Uploading photo");
       this.image = this.cropperInstance
         .getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
       let path = 'content/' + this.uid + '/images/' + this.rawTime;
-      console.log("About to store statement");
-      console.log(path);
       return this.store(path, this.image).subscribe((snapshot) => {
-        console.log("Stored image");
-        console.log(snapshot)
         this.imageURL = snapshot.downloadURL;
-        console.log("Image url is " + this.imageURL)
         observer.next();
       });
     });
@@ -233,8 +221,6 @@ export class CreateStatementPage {
 
   addIDToPost(token) {
     let path = 'posts/' + token.key;
-    console.log("Adding ID to post");
-    console.log("Path is " + path);
     let post = {
       id: token.key
     }
