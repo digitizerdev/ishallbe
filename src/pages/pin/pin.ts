@@ -32,6 +32,7 @@ export class PinPage {
   pin: any;
   pinComment: any;
   title: any;
+  mine: any;
 
   constructor(
     public navCtrl: NavController,
@@ -90,6 +91,7 @@ export class PinPage {
     this.requestPin().subscribe((pin) => {
       if (!this.loaded) {
         this.pin = pin;
+        this.checkIfPinMine();                        
         this.title = pin.displayTime;
         this.presentPin(refresh);
       }
@@ -104,6 +106,21 @@ export class PinPage {
   requestPin() {
     let path = '/pins/' + this.pinID;
     return this.firebase.object(path)
+  }
+
+  checkIfPinMine() {
+    console.log("Checking if this pin is mine");
+    if (this.uid == this.pin.uid) {
+      console.log("This pin is mine");
+      this.mine = true;
+    }
+  }
+
+  removePin() {
+    let path = '/pins/' + this.pin.id
+    this.firebase.object(path).remove().then(() => {
+      this.navCtrl.setRoot(ProfilePage);
+    });
   }
 
   presentPin(refresh) {

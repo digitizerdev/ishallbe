@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar color="primary">
     <ion-title>{{title}}</ion-title>
+    <ion-buttons *ngIf="mine" end>
+      <button ion-button icon-only (click)="removePost()">
+        <ion-icon name="ios-close"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content class="container">
