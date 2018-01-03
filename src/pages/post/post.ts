@@ -31,7 +31,7 @@ export class PostPage {
   postID: string;
   post: any;
   postComment: any;
-  mine = false;
+  mine: any;
 
   constructor(
     public navCtrl: NavController,
@@ -90,8 +90,8 @@ export class PostPage {
     this.post = [];
     this.requestPost().subscribe((post) => {
       if (!this.loaded) {
-        this.checkIfPostMine();        
         this.post = post;
+        this.checkIfPostMine();                
         this.presentPost(refresh);
       }
     });
@@ -108,16 +108,17 @@ export class PostPage {
   }
 
   checkIfPostMine() {
+    console.log("Checking if this post is mine");
     if (this.uid == this.post.uid) {
       console.log("This post is mine");
       this.mine = true;
     }
   }
 
-  removePost(post) {
-    let path = '/posts/' + post.id
+  removePost() {
+    let path = '/posts/' + this.post.id
     this.firebase.object(path).remove().then(() => {
-      this.navCtrl.pop();
+      this.navCtrl.setRoot(ProfilePage);
     });
   }
 

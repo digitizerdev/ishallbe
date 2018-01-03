@@ -439,6 +439,15 @@ describe('PostPage', () => {
         expect(component.reportPost).toBeDefined();
     });
 
+
+    it('should request Firebase to remove post', fakeAsync(() => {
+        component.firebase.object('testPath').remove('post')
+        tick();
+        fixture.detectChanges();
+        expect(objectSpy).toHaveBeenCalled();
+        expect(removeSpy).toHaveBeenCalled();
+    }));
+
     it('should be able to view profile', () => {
         expect(component.viewProfile).toBeDefined();
     });

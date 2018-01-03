@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar color="primary">
     <ion-title>iShallBe</ion-title>
+    <ion-buttons *ngIf="mine" end>
+      <button ion-button icon-only (click)="removePost()">
+        <ion-icon name="ios-close"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -14,9 +19,6 @@
       <ion-avatar (click)="viewProfile(post.uid)" item-left>
         <img src="{{ post?.face }}">
       </ion-avatar>
-      <div item-right>
-          <ion-icon (click)="removePost(post)" name="close" color="gray" class="delete" *ngIf="mine"></ion-icon>
-        </div>
       <h2 ion-text color="primary" class="post-author">{{ post?.name }}</h2>
       <h2>
         <b>{{ post?.title}}</b>
@@ -56,7 +58,7 @@
           {{ comment?.likeCount}}
         </a>
         <span class="comment-time">
-          <ion-icon ></ion-icon>
+          <ion-icon></ion-icon>
           {{ comment?.time }}
         </span>
       </ion-item>

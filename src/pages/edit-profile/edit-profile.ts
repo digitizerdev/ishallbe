@@ -49,8 +49,6 @@ export class EditProfilePage {
         this.loaded = true;
         this.profile = profile;
         this.editProfileForm = profile;
-        console.log("Got profile");
-        console.log(profile);
       });
     });
   }
@@ -102,7 +100,6 @@ export class EditProfilePage {
   }
 
   updateUserPosts() {
-    console.log
     this.firebase.queriedList('/posts/', 'uid', this.uid).subscribe((posts) => {
       posts.forEach((post) => {
         post.face = this.profile.photo;
