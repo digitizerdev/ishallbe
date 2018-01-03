@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 
 import { PhotoPage } from '../photo/photo';
+import { ProfilePage } from '../profile/profile';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -37,7 +38,7 @@ export class EditProfilePage {
   ) {
   }
 
-  ionViewDidEnter() {
+  ionViewDidLoad() {
     this.loadProfile();
   }
 
@@ -67,7 +68,7 @@ export class EditProfilePage {
     this.submitted = true;
     this.prepareRequest(form)
     this.requestProfileUpdate().then(() => {
-      this.confirmDelivery();
+      this.updateUserPosts();
     }).catch((error) => {
       this.errorHandler(error);
     });      
@@ -87,11 +88,27 @@ export class EditProfilePage {
     this.loader = this.loadingCtrl.create({
       content: 'Please Wait..'
     });
+    this.loader.present();
   }
 
   requestProfileUpdate() {
+    if ( this.profile.instagram  || this.profile.twitter || this.profile.linkedIn ) {
+      this.profile.social = true;
+    } else this.profile.social = null;
     let path = '/users/' + this.uid;
     return this.firebase.object(path).update(this.profile)
+  }
+
+  updateUserPosts() {
+    this.firebase.queriedList('/posts/', 'uid', this.uid).subscribe((posts) => {
+      posts.forEach((post) => {
+        post.face = this.profile.photo;
+        post.name = this.profile.name;
+        let path = '/posts/' + post.id;
+        this.firebase.object(path).update(post);
+      });
+      this.confirmDelivery();
+    });
   }
 
   confirmDelivery() {
@@ -113,7 +130,7 @@ export class EditProfilePage {
   }
 
   popToProfilePage() {
-    this.navCtrl.pop();
+    this.navCtrl.setRoot(ProfilePage);
   }
 
   errorHandler(error) {

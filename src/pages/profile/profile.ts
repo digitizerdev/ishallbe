@@ -264,7 +264,7 @@ export class ProfilePage {
   }
 
   pushEditProfilePage() {
-    this.navCtrl.setRoot(EditProfilePage);
+    this.navCtrl.push(EditProfilePage);
   }
 
   flaggedMessage() {
