@@ -50,6 +50,8 @@ export class ProfilePage {
   loadProfile() {
     this.requestProfile().subscribe((profile) => {
       this.profile = profile;
+      console.log("Got profile");
+      console.log(this.profile);
       this.checkIfMyProfile();
       this.syncProfile();
       this.loadUserPosts().subscribe((posts) => {
