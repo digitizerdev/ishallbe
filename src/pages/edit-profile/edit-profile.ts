@@ -38,7 +38,7 @@ export class EditProfilePage {
   ) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.loadProfile();
   }
 
@@ -102,9 +102,10 @@ export class EditProfilePage {
   }
 
   updateUserPosts() {
+    console.log
     this.firebase.queriedList('/posts/', 'uid', this.uid).subscribe((posts) => {
       posts.forEach((post) => {
-        post.face = this.profile.photo;
+        post.face = this..photo;
         post.name = this.profile.name;
         let path = '/posts/' + post.id;
         this.firebase.object(path).update(post);
