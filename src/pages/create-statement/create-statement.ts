@@ -147,10 +147,9 @@ export class CreateStatementPage {
     this.startLoader();
     this.statementForm = statementForm;
     if (statementForm.valid) {
-       this.loader = this.loadingCtrl.create({
-        content: 'Please Wait..' });
       return this.publish(statementForm).subscribe((token) => {
         this.addIDToPost(token).then(() => {
+          this.loader.dismiss();
            this.setRootHomePage();         
         });
       });
@@ -228,7 +227,6 @@ export class CreateStatementPage {
   }
 
   addIDToPost(token) {
-    this.loader.dismiss();
     let path = 'posts/' + token.key;
     let post = {
       id: token.key
