@@ -133,10 +133,10 @@ describe('ProfilePage', () => {
     }));
 
     it('should request user posts from Firebase', () => {
-        spyOn(firebase, 'queriedList').and.returnValue({ subscribe: () => {}});
+        spyOn(firebase, 'queriedLimitedList').and.returnValue({ subscribe: () => {}});
         this.uid = 'testUID';
         component.loadUserPosts();
-        expect(firebase.queriedList).toHaveBeenCalled();
+        expect(firebase.queriedLimitedList).toHaveBeenCalled();
     });
 
     it('should request Firebase to check if user already liked post', () => {

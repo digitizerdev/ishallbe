@@ -110,6 +110,9 @@ export class CreateStatementPage {
       console.log(image);
       this.imageElement.nativeElement.src = image;
       this.cropImage();
+    }).catch((error) => {
+      console.log("There was an error");
+      console.log(error);
     });
   }
 
