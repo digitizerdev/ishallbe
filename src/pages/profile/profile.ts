@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 
 import { HomePage } from '../home/home';
 import { EditProfilePage } from '../edit-profile/edit-profile';
-import { CreateStatementPage } from '../create-statement/create-statement';
+import { StatementsPage } from '../statements/statements';
 import { PostPage } from '../post/post';
 import { AccountPage } from '../account/account';
 
@@ -44,8 +44,6 @@ import { Observable } from 'rxjs/Observable';
     return this.requestUID().then((uid) => {
       this.uid = uid;
       return this.requestProfile().subscribe((profile) => {
-        console.log("Got Profile");
-        console.log(profile);
         this.syncProfile(profile);
         return this.loadUserPosts(profile.uid).subscribe((userPosts)=> {
           this.presentPosts(userPosts);
@@ -77,7 +75,6 @@ import { Observable } from 'rxjs/Observable';
     this.twitter = this.profile.twitter;
     this.linkedin = this.profile.linkedin;
     if (this.instagram || this.twitter || this.linkedin) this.social = true;
-    console.log("Instagram: " + this.instagram);
   } 
 
   addStandardBio(noBioProfile) {
@@ -203,8 +200,8 @@ import { Observable } from 'rxjs/Observable';
     this.navCtrl.setRoot(HomePage);
   }
 
-  pushCreateStatementPage() {
-    this.navCtrl.push(CreateStatementPage);
+  pushStatementsPage() {
+    this.navCtrl.push(StatementsPage);
   }
 
   pushEditProfilePage() {

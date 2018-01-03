@@ -120,7 +120,7 @@ describe('SupportPage', () => {
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Contact Support');
+        expect(el).toContain('Contact');
         expect(el).toContain('subject');
         expect(el).toContain('body');
     });

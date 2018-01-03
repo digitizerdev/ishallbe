@@ -4,7 +4,11 @@ page-account {
     }
 
     .main-buttons {
-        border-bottom: thick solid color($colors, primary);                  
+        border-bottom: thin dotted color($colors, gray);                  
+    }
+
+    .update-account {
+        border-bottom: thin dotted color($colors, gray);                  
     }
     
 }

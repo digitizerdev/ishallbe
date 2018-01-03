@@ -112,7 +112,7 @@ describe('EditProfilePage', () => {
 
     it('should be initialized', () => {
         expect(component.editProfileForm).toBeDefined();
-        expect(component.title).toBe('Edit Profile');
+        expect(component.title).toBe('Profile');
     });
 
     it('should display edit profile form', () => {
@@ -120,7 +120,7 @@ describe('EditProfilePage', () => {
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Update Profile');
+        expect(el).toContain('Update');
     });
 
     it('should load profile', fakeAsync(() => {
@@ -135,14 +135,6 @@ describe('EditProfilePage', () => {
         expect(storage.get).toHaveBeenCalled();
         expect(component.requestUID).toHaveBeenCalled();
         expect(component.requestProfile).toHaveBeenCalled();
-    }));
-
-    it('should submit via Update Profile Button', async(() => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#UpdateProfileButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Update Profile');
     }));
 
     it('should request Firebase to update profile', fakeAsync(() => {

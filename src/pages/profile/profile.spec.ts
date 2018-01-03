@@ -118,16 +118,7 @@ describe('ProfilePage', () => {
         expect(component instanceof ProfilePage).toBe(true);
     });
 
-    it('should display create statement button', async(() => {
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#ProfileCreateStatementButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Create Statement');
-    }));
-
-    it('should display edit profile button', async(() => {
+    it('should display profile button', async(() => {
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
@@ -136,13 +127,22 @@ describe('ProfilePage', () => {
         expect(el).toContain('Edit Profile');
     }));
 
-    it('should display manage account button', async(() => {
+    it('should display statements button', async(() => {
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ProfileStatementsButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Statements');
+    }));
+
+    it('should display account button', async(() => {
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#ProfileAccountPageButton'));
         el = de.nativeElement.innerHTML
-        expect(el).toContain('Manage Account');
+        expect(el).toContain('Account');
     }));
 
     it('should load profile', fakeAsync(() => {

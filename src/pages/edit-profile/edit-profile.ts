@@ -17,7 +17,7 @@ export class EditProfilePage {
   loader: any;
   profile: any;
   uid: any;
-  title = 'Edit Profile';
+  title = 'Profile';
   editProfileForm: {
     name?: string,
     bio?: string,

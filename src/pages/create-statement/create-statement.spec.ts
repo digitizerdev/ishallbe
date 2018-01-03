@@ -179,7 +179,7 @@ describe('CreateStatementPage', () => {
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Submit');
+        expect(el).toContain('Publish');
     });
 
     it('should submit form', () => {

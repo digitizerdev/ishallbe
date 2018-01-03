@@ -126,12 +126,12 @@ describe('StatementsPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display create statement button', () => {
+    it('should display create button', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#CreateStatementButton'));
         el = de.nativeElement.innerHTML
-        expect(el).toContain('Create Statement');
+        expect(el).toContain('Create');
     });
 
     it('should load profile', fakeAsync(() => {
@@ -214,5 +214,9 @@ describe('StatementsPage', () => {
 
     it('should be able to view post', () => {
         expect(component.viewPost('testPostID')).toBeUndefined();
+    });
+
+    it('should be able to view user', () => {
+        expect(component.viewUser).toBeDefined();
     });
 });

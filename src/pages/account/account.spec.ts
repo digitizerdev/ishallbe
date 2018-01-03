@@ -146,7 +146,7 @@ describe('AccountPage', () => {
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#AccountViewProfileButton'));
         el = de.nativeElement.innerHTML
-        expect(el).toContain('View Profile');
+        expect(el).toContain('Profile');
     }));
 
     it('should display contact support button', async(() => {
@@ -154,7 +154,7 @@ describe('AccountPage', () => {
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#AccountContactSupportButton'));
         el = de.nativeElement.innerHTML
-        expect(el).toContain('Contact Support');
+        expect(el).toContain('Support');
         expect(component.pushSupportPage).toBeDefined();
     }));
 

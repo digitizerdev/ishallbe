@@ -19,7 +19,7 @@
       <ion-list no-lines>
         <ion-item>
           <ion-label stacked color="primary">Name: </ion-label>
-          <ion-input [(ngModel)]="editProfileForm.name" name="name" type="text" #name="ngModel" spellcheck="false" autocapitalize="off">
+          <ion-input [(ngModel)]="editProfileForm.name" name="name" type="text" #name="ngModel" spellcheck="false" autocapitalize="off" maxlength="12">
           </ion-input>
         </ion-item>
         <ion-item>
@@ -54,7 +54,7 @@
         <br>
         <ion-row>
           <ion-col text-center>
-            <button id="UpdateProfileButton" ion-button (click)="submit(editProfileForm)" type="submit" round large>Update Profile</button>
+            <button id="UpdateProfileButton" ion-button (click)="submit(editProfileForm)" type="submit" round large>Update</button>
           </ion-col>
         </ion-row>
       </ion-list>

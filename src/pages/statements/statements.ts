@@ -6,6 +6,7 @@ import firebase from 'firebase';
 
 import { PostPage } from '../post/post';
 import { HomePage } from '../home/home';
+import { UserPage } from '../user/user';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { CreateStatementPage } from '../create-statement/create-statement';
@@ -167,6 +168,10 @@ export class StatementsPage {
         observer.next(obj)
       });
     });
+  }
+
+  viewUser(uid) {
+    this.navCtrl.push(UserPage, { uid: uid })
   }
 
   viewPost(postID) {
