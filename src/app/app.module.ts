@@ -28,11 +28,9 @@ import { AccountPage } from '../pages/account/account';
 import { EditProfilePage } from '../pages/edit-profile/edit-profile';
 import { PhotoPage } from '../pages/photo/photo';
 import { CreateStatementPage } from '../pages/create-statement/create-statement';
-import { StatementsPage } from '../pages/statements/statements';
 import { ProfilePage } from '../pages/profile/profile';
 import { PostPage } from '../pages/post/post';
 import { PinPage } from '../pages/pin/pin';
-import { UserPage } from '../pages/user/user';
 import { HomePage } from '../pages/home/home';
 import { CreatePinPage } from '../pages/create-pin/create-pin';
 import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
@@ -60,11 +58,9 @@ import * as firebase from 'firebase/app';
     PhotoPage,
     EditProfilePage,
     CreateStatementPage,
-    StatementsPage,  
     ProfilePage,
     PinPage,
     PostPage,
-    UserPage,
     HomePage,
     PinsManagerPage,
     CreatePinPage,
@@ -96,11 +92,9 @@ import * as firebase from 'firebase/app';
     PhotoPage,
     EditProfilePage,
     CreateStatementPage,
-    StatementsPage,  
     ProfilePage,
     PinPage,
     PostPage,
-    UserPage,
     HomePage,
     PinsManagerPage,
     CreatePinPage,

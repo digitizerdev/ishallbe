@@ -7,7 +7,6 @@ import moment from 'moment';
 
 import { ProfilePage } from '../profile/profile';
 import { PostPage } from '../post/post';
-import { UserPage } from '../user/user';
 import { LoginPage } from '../login/login';
 import { CreateStatementPage } from '../create-statement/create-statement';
 import { PinPage } from '../pin/pin';
@@ -408,8 +407,8 @@ export class HomePage {
     this.navCtrl.setRoot(ProfilePage);
   }
 
-  viewUser(uid) {
-    this.navCtrl.push(UserPage, { uid: uid })
+  viewProfile(uid) {
+    this.navCtrl.push(ProfilePage, { uid: uid })
   }
 
   openLink(url) {

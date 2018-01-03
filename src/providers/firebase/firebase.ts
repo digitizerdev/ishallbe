@@ -12,6 +12,8 @@ class Credentials {
 
 @Injectable()
 export class FirebaseProvider {
+
+  profileID: any;
  
   constructor
     (
@@ -86,6 +88,16 @@ export class FirebaseProvider {
       query: {
         orderByChild: fieldName,
         equalTo: fieldValue,
+      }
+    }).take(1);
+  }
+
+  queriedLimitedList(path, fieldName, fieldValue, limit) {
+    return this.afdb.list(path, {
+      query: {
+        orderByChild: fieldName,
+        equalTo: fieldValue,
+        limitToLast: limit        
       }
     }).take(1);
   }

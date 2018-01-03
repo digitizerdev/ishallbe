@@ -439,8 +439,8 @@ describe('PostPage', () => {
         expect(component.reportPost).toBeDefined();
     });
 
-    it('should be able to view user', () => {
-        expect(component.viewUser).toBeDefined();
+    it('should be able to view profile', () => {
+        expect(component.viewProfile).toBeDefined();
     });
 
 });

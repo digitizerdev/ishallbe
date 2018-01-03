@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
-import { UserPage } from '../user/user';
+import { ProfilePage } from '../profile/profile';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -442,8 +442,8 @@ export class PinPage {
     }
     return this.firebase.object(path).update(pin)
   }
-  viewUser(uid) {
-    this.navCtrl.push(UserPage, { uid: uid })
+  viewProfile(uid) {
+    this.navCtrl.push(ProfilePage, { uid: uid })
   }
 
   openLink(url) {

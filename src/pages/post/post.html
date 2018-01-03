@@ -11,7 +11,7 @@
   </ion-refresher>
   <div *ngIf="loaded">
     <ion-item class="post-header">
-      <ion-avatar (click)="viewUser(post.uid)" item-left>
+      <ion-avatar (click)="viewProfile(post.uid)" item-left>
         <img src="{{ post?.face }}">
       </ion-avatar>
       <div item-right>
@@ -40,7 +40,7 @@
         </a>
       </div>
       <ion-item no-lines class="post-comment" *ngFor="let comment of comments">
-        <ion-avatar item-left (click)="viewUser(comment?.user_id)">
+        <ion-avatar item-left (click)="viewProfile(comment?.user_id)">
           <img src="{{ comment?.face }}">
         </ion-avatar>
         <div text-right>

@@ -2,33 +2,37 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
-import { HomePage } from '../home/home';
 import { EditProfilePage } from '../edit-profile/edit-profile';
-import { StatementsPage } from '../statements/statements';
 import { PostPage } from '../post/post';
 import { AccountPage } from '../account/account';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import { Observable } from 'rxjs/Observable';
+import { PACKAGE_ROOT_URL } from '@angular/core/src/application_tokens';
 
 @IonicPage()
 @Component({
   selector: 'page-profile',
   templateUrl: 'profile.html',
 })
-  export class ProfilePage {
+export class ProfilePage {
 
   profile: any;
   posts: any[] = [];
+  postsQuery: any;
+  postLimit: any;
+  loaded: any;
+  postsLoaded: any;
   uid: any;
+  mine: any;
   instagram: any;
   twitter: any;
   linkedin: any;
-  social = false;
+  refreshing: any;
 
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public firebase: FirebaseProvider,
     public navParams: NavParams,
     public alertCtrl: AlertController,
@@ -37,24 +41,66 @@ import { Observable } from 'rxjs/Observable';
   }
 
   ionViewDidLoad() {
-    this.loadProfile();
+    this.postLimit = 1;
+    this.loadUID().subscribe(() => {
+      this.loadProfile();
+    });
   }
 
   loadProfile() {
-    return this.requestUID().then((uid) => {
-      this.uid = uid;
-      return this.requestProfile().subscribe((profile) => {
-        this.syncProfile(profile);
-        return this.loadUserPosts(profile.uid).subscribe((userPosts)=> {
-          this.presentPosts(userPosts);
-        });
+    this.requestProfile().subscribe((profile) => {
+      this.profile = profile;
+      this.checkIfMyProfile();
+      this.syncProfile();
+      this.loadUserPosts().subscribe((posts) => {
+        this.loaded = true;
+        posts.reverse();
+        this.presentPosts(posts);
       });
+    });
+  }
+
+  refreshPage(refresh) {
+    this.refreshing = true;
+    this.posts = [];
+    this.firebase.profileID = this.uid;
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
+  }
+
+  ionViewDidLeave() {
+    if (!this.refreshing) {
+      this.firebase.profileID = null;
+    }
+  }
+
+  loadUID() {
+    return Observable.create((observer) => {
+      this.uid = this.navParams.get('uid')
+      if (this.uid) {
+        observer.next();
+      } else {
+        this.uid = this.firebase.profileID;
+        if (this.uid) {
+          observer.next();
+        } else {
+          return this.requestUID().then((uid) => {
+            this.uid = uid;
+            observer.next();
+          });
+        }
+      }
+    });
+  }
+
+  checkIfMyProfile() {
+    this.requestUID().then((uid) => {
+      if (this.uid == uid) this.mine = true;
     });
   }
 
   requestUID() {
     return this.storage.ready().then(() => {
-      return this.storage.get(('uid'));      
+      return this.storage.get(('uid'));
     });
   }
 
@@ -63,38 +109,36 @@ import { Observable } from 'rxjs/Observable';
     return this.firebase.object(path);
   }
 
-  syncProfile(profile) {
-    this.profile = profile;    
-    if (profile.photo == 'https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png') {
-      profile.photo = 'assets/img/default-profile.png';
+  syncProfile() {
+    if (this.profile.photo == 'https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png') {
+      this.profile.photo = 'assets/img/default-profile.png';
     }
-    if (!profile.bio) {
-      this.addStandardBio(profile);
+    if (!this.profile.bio) {
+      this.addStandardBio();
     }
     this.instagram = this.profile.instagram;
     this.twitter = this.profile.twitter;
     this.linkedin = this.profile.linkedin;
-    if (this.instagram || this.twitter || this.linkedin) this.social = true;
-  } 
+  }
 
-  addStandardBio(noBioProfile) {
+  addStandardBio() {
     let profile = {
-      uid: noBioProfile.uid,
-      name: noBioProfile.name,
-      email: noBioProfile.email,
-      photo: noBioProfile.photo,
-      blocked: noBioProfile.blocked,
-      role: noBioProfile.role,
+      uid: this.profile.uid,
+      name: this.profile.name,
+      email: this.profile.email,
+      photo: this.profile.photo,
+      blocked: this.profile.blocked,
+      role: this.profile.role,
       bio: 'Improving Every Day'
     }
     this.profile = profile;
-    let path = '/users/' + noBioProfile.uid;
+    let path = '/users/' + this.profile.uid;
     this.firebase.object(path).update(profile);
   }
 
-  loadUserPosts(uid) {
+  loadUserPosts() {
     let path = '/posts/'
-    return this.firebase.queriedList(path, 'uid', uid);
+    return this.firebase.queriedLimitedList(path, 'uid', this.uid, this.postLimit);
   }
 
   presentPosts(posts) {
@@ -111,6 +155,29 @@ import { Observable } from 'rxjs/Observable';
         }
         this.posts.push(post);
       });
+    });
+  }
+
+  doInfinite(infiniteScroll) {
+    this.postLimit++;
+    this.loadUserPosts().subscribe((posts) => {
+      if (posts.length < this.postLimit) {
+        this.postsLoaded = true;
+      } else {
+        this.presentNextPost(posts[0]);
+        infiniteScroll.complete();
+      }
+    });
+  }
+
+  presentNextPost(post) {
+    this.requestPostUserLikerObject(post).subscribe((liker) => {
+      if (liker[0]) {
+        post.userLiked = true;
+      } else {
+        post.userLiked = false;
+      }
+      this.posts.push(post);
     });
   }
 
@@ -196,16 +263,8 @@ import { Observable } from 'rxjs/Observable';
     });
   }
 
-  setRootHomePage() {
-    this.navCtrl.setRoot(HomePage);
-  }
-
-  pushStatementsPage() {
-    this.navCtrl.push(StatementsPage);
-  }
-
   pushEditProfilePage() {
-    this.navCtrl.push(EditProfilePage);
+    this.navCtrl.setRoot(EditProfilePage);
   }
 
   flaggedMessage() {
@@ -218,11 +277,7 @@ import { Observable } from 'rxjs/Observable';
   }
 
   viewPost(postID) {
-    this.navCtrl.push(PostPage, {id: postID})    
-  }
-
-  setRootAccountPage() {
-    this.navCtrl.setRoot(AccountPage);
+    this.navCtrl.push(PostPage, { id: postID })
   }
 
   openSocial(socialNetwork) {

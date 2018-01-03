@@ -333,8 +333,8 @@ describe('HomePage', () => {
         expect(component.viewPost('testPostID')).toBeUndefined();
     });
 
-    it('should be able to view user', () => {
-        expect(component.viewUser).toBeDefined();
+    it('should be able to view profile', () => {
+        expect(component.viewProfile).toBeDefined();
     });
 
     it('should be able to open link', () => {

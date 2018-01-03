@@ -27,6 +27,7 @@ import { } from 'jasmine';
 import {
     FirebaseProviderMock,
     NavMock,
+    NavParamsMock,
     StorageMock,
     AngularFireDatabaseMock,
     AngularFireAuthMock
@@ -35,6 +36,7 @@ import {
 let fixture;
 let component;
 let nav: NavController;
+let navParams: NavParamsMock;
 let firebase: FirebaseProvider;
 let storage: Storage;
 let afAuth: AngularFireAuth;
@@ -84,7 +86,7 @@ describe('ProfilePage', () => {
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: Storage, useClass: StorageMock },
                 { provide: NavController, useClass: NavMock },
-                { provide: NavParams, useClass: NavMock },
+                { provide: NavParams, useClass: NavParamsMock },
                 { provide: AngularFireDatabase, useValue: angularFireDataStub },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
             ],
@@ -98,6 +100,7 @@ describe('ProfilePage', () => {
         fixture = TestBed.createComponent(ProfilePage);
         component = fixture.componentInstance;
         nav = fixture.componentRef.injector.get(NavController);
+        navParams = fixture.componentRef.injector.get(NavParams);
         storage = fixture.componentRef.injector.get(Storage);
         firebase = fixture.componentRef.injector.get(FirebaseProvider);
         afAuth = TestBed.get(AngularFireAuth);
@@ -108,6 +111,7 @@ describe('ProfilePage', () => {
         fixture.destroy();
         component = null;
         nav = null;
+        navParams = null;
         storage = null;
         firebase = null;
         afAuth = null;
@@ -118,53 +122,82 @@ describe('ProfilePage', () => {
         expect(component instanceof ProfilePage).toBe(true);
     });
 
-    it('should display profile button', async(() => {
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#ProfileEditProfileButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Edit Profile');
-    }));
-
-    it('should display statements button', async(() => {
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#ProfileStatementsButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Statements');
-    }));
-
-    it('should display account button', async(() => {
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#ProfileAccountPageButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Account');
-    }));
-
-    it('should load profile', fakeAsync(() => {
-        spyOn(component, 'requestUID').and.callThrough();
-        spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => { } });
-        spyOn(storage, 'ready').and.callThrough();
-        spyOn(storage, 'get').and.callThrough();
+    it('should load uid and profile', fakeAsync(() => {
+        spyOn(navParams, 'get')
+        spyOn(component, 'loadProfile').and.returnValue({ subscribe: () => { } });        
         component.ionViewDidLoad();
         tick();
         fixture.detectChanges();
-        expect(storage.ready).toHaveBeenCalled();
-        expect(storage.get).toHaveBeenCalled();
-        expect(component.requestUID).toHaveBeenCalled();
-        expect(component.requestProfile).toHaveBeenCalled();
+        expect(navParams.get).toHaveBeenCalled();
+        expect(component.loadProfile).toHaveBeenCalled();        
     }));
 
-    it('should add standard bio to profile if bio not found', fakeAsync(() => {
-        component.firebase.object('testPath').update('profile')
+    it('should request user posts from Firebase', () => {
+        spyOn(firebase, 'queriedList').and.returnValue({ subscribe: () => {}});
+        this.uid = 'testUID';
+        component.loadUserPosts();
+        expect(firebase.queriedList).toHaveBeenCalled();
+    });
+
+    it('should request Firebase to check if user already liked post', () => {
+        spyOn(firebase, 'queriedList').and.returnValue({ subscribe: () => { } });
+        component.uid = 'testUID'
+        component.requestPostUserLikerObject(mockPost.mature);
+        expect(firebase.queriedList).toHaveBeenCalled();
+    });
+
+    it('should unlike post on toggle post like if user already liked post', () => {
+        spyOn(component, 'requestPostUserLikerObject').and.returnValue({ subscribe: () => {}});
+        component.togglePostLike(mockPost.mature);
+        expect(component.requestPostUserLikerObject).toHaveBeenCalled();
+    });
+
+    it('should request Firebase to update unliked post', fakeAsync(() => {
+        component.firebase.object('testPath').update('post')
         tick();
         fixture.detectChanges();
         expect(objectSpy).toHaveBeenCalled();
         expect(updateSpy).toHaveBeenCalled();
     }));
+
+    it('should request Firebase to remove liker object from liked post', () => {
+        component.post = mockPost.mature;
+        component.removePostLikerObject(mockPost.mature.likers.testPostLikerID1, mockPost.mature);
+        expect(afData.object).toHaveBeenCalled();
+    });
+
+    it('should like post on toggle post like if user has not already liked post', () => {
+        spyOn(component, 'likePost').and.returnValue({ subscribe: () => {}});        
+        component.togglePostLike(mockPost.new);
+        expect(component.likePost).toHaveBeenCalled();
+    });
+
+    it('should request Firebase to update liked post', fakeAsync(() => {
+        component.firebase.object('testPath').update('post')
+        tick();
+        fixture.detectChanges();
+        expect(objectSpy).toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalled();
+    }));
+
+    it('should request Firebase to push liker object', fakeAsync(() => {
+        component.firebase.list('testPath').push('post')
+        tick();
+        fixture.detectChanges();
+        expect(listSpy).toHaveBeenCalled();
+        expect(pushSpy).toHaveBeenCalled();
+    }));
+
+    it('should request Firebase to update post liker object with id', fakeAsync(() => {
+        component.firebase.object('testPath').update('post')
+        tick();
+        fixture.detectChanges();
+        expect(objectSpy).toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalled();
+    }));
+
+    it('should be able to view post', () => {
+        expect(component.viewPost('testPostID')).toBeUndefined();
+    });
 
 });

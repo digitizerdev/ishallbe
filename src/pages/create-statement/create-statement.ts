@@ -95,7 +95,7 @@ export class CreateStatementPage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            this.navCtrl.pop();
+            this.setRootHomePage();
           }
         }
       ]
@@ -236,6 +236,10 @@ export class CreateStatementPage {
       id: token.key
     }
     return this.firebase.object(path).update(post);
+  }
+
+  setRootHomePage() {
+    this.navCtrl.setRoot(HomePage);
   }
 
 }

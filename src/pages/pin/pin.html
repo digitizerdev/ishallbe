@@ -37,7 +37,7 @@
         </a>
       </div>
       <ion-item no-lines class="pin-comment" *ngFor="let comment of comments">
-        <ion-avatar item-left (click)="viewUser(comment?.user_id)">
+        <ion-avatar item-left (click)="viewProfile(comment?.user_id)">
           <img src="{{ comment?.face }}">
         </ion-avatar>
         <div text-right>

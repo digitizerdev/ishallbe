@@ -76,7 +76,7 @@
     </ion-refresher>
     <ion-card id="profilePosts" class="posts" *ngFor="let post of posts">
       <ion-item class="post-header">
-        <ion-avatar (click)="viewUser(post.uid)" padding-top item-left>
+        <ion-avatar (click)="viewProfile(post.uid)" padding-top item-left>
           <img src="{{ post?.face }}">
         </ion-avatar>
         <ion-icon *ngIf="post.flagged" (click)="flaggedMessage()" name="alert" color="danger" item-right></ion-icon>
