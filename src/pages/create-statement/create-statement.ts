@@ -144,6 +144,7 @@ export class CreateStatementPage {
 
   submit(statementForm) {
     this.submitted = true;
+    this.startLoader();
     this.statementForm = statementForm;
     if (statementForm.valid) {
        this.loader = this.loadingCtrl.create({
@@ -156,6 +157,13 @@ export class CreateStatementPage {
     }
   }
 
+  startLoader() {
+    this.loader = this.loadingCtrl.create({
+      content: 'Please Wait..'
+    });
+    this.loader.present();
+  }
+  
   publish(statementForm) {
     return Observable.create((observer) => {
       return this.uploadPhoto().subscribe(() => {

@@ -8,7 +8,7 @@ import firebase from 'firebase';
 import Cropper from 'cropperjs';
 import moment from 'moment';
 
-import { HomePage } from '../home/home';
+import { ProfilePage } from '../profile/profile';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -42,7 +42,6 @@ export class PhotoPage {
 
   ionViewDidLoad() {
     this.requestUID().then((uid) => {
-      console.log("Got UID: " + uid)
       this.uid = uid;
     })
     this.askForImageRetrievalMethod();
@@ -75,7 +74,6 @@ export class PhotoPage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            this.navCtrl.pop();
           }
         }
       ]
@@ -86,8 +84,6 @@ export class PhotoPage {
 
   getPicture() {
     this.camera.getPicture(this.getCameraOptions()).then((image) => {
-      console.log("Got image")
-      console.log(image);
       this.imageElement.nativeElement.src = image;
       this.cropImage();
     });
@@ -123,15 +119,12 @@ export class PhotoPage {
   }
 
   uploadPhoto() {
-    console.log("Uploading photo");
     this.startLoader();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
     let path = 'content/' + this.uid + '/images/profile/';
     this.store(path, this.image).subscribe((snapshot) => {
-      console.log("Stored image");
-      console.log(snapshot)
       this.imageURL = snapshot.downloadURL;
-      this.confirm();
+      this.updateUserPosts();
     });
   }
 
@@ -147,11 +140,20 @@ export class PhotoPage {
     });
   }
 
+  updateUserPosts() {
+    this.firebase.queriedList('/posts/', 'uid', this.uid).subscribe((posts) => {
+      posts.forEach((post) => {
+        post.face = this.imageURL;
+        let path = '/posts/' + post.id;
+        this.firebase.object(path).update(post);
+      });
+      this.confirm();
+    });
+  }
+
 
   confirm() {
-    console.log("Confirming")
     this.updatePhoto().then(() => {
-      console.log("Finished updating photo")
       this.loader.dismiss();
       this.navCtrl.pop();
     })
@@ -165,14 +167,10 @@ export class PhotoPage {
   }
 
   updatePhoto() {
-    console.log("Updateing photo");
     let path = '/users/' + this.uid
-    console.log("Path is " + path);
     let profile = {
       photo: this.imageURL
     }
-    console.log("Profile object is");
-    console.log(profile);
     return this.firebase.object(path).update(profile);
   }
 
