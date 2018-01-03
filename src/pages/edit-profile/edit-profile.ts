@@ -105,7 +105,7 @@ export class EditProfilePage {
     console.log
     this.firebase.queriedList('/posts/', 'uid', this.uid).subscribe((posts) => {
       posts.forEach((post) => {
-        post.face = this..photo;
+        post.face = this.profile.photo;
         post.name = this.profile.name;
         let path = '/posts/' + post.id;
         this.firebase.object(path).update(post);
