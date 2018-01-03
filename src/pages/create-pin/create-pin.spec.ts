@@ -16,7 +16,7 @@ import { HeaderComponent } from '../../components/header/header';
 import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
 import { TermsOfServiceComponent } from '../../components/terms-of-service/terms-of-service';
 
-import { PinsManagerPage } from './pins-manager';
+import { CreatePinPage } from './create-pin';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -78,13 +78,13 @@ const angularFireDataStub = {
     list: listSpy,
 }
 
-describe('PinsManagerPage', () => {
+describe('CreatePinPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [PinsManagerPage],
+            declarations: [CreatePinPage],
             imports: [
-                IonicModule.forRoot(PinsManagerPage),
+                IonicModule.forRoot(CreatePinPage),
                 AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
@@ -104,7 +104,7 @@ describe('PinsManagerPage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(PinsManagerPage);
+        fixture = TestBed.createComponent(CreatePinPage);
         component = fixture.componentInstance;
         nav = fixture.componentRef.injector.get(NavController);
         navParams = fixture.componentRef.injector.get(NavParams);
@@ -129,20 +129,11 @@ describe('PinsManagerPage', () => {
     });
 
     it('should be created', () => {
-        expect(component instanceof PinsManagerPage).toBe(true);
+        expect(component instanceof CreatePinPage).toBe(true);
     });    
 
-    it('should have title called Manage Pins', () => {
-        expect(component.title).toBe('Manage Pins');
+    it('should have title called Create Pin', () => {
+        expect(component.title).toBe('Create Pin');
     });
-
-    fit('should display create pin button', async(() => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#CreatePinButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Create Pin');
-        expect(component.pushCreatePinPage).toBeDefined();
-    }));
 
 });

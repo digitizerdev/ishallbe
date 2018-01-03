@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { CreatePinPage } from '../create-pin/create-pin';
+
 @IonicPage()
 @Component({
   selector: 'page-pins-manager',
@@ -18,6 +20,10 @@ export class PinsManagerPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PinsManagerPage');
+  }
+
+  pushCreatePinPage() {
+    this.navCtrl.push(CreatePinPage);
   }
 
 }

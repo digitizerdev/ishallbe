@@ -147,9 +147,9 @@ export class CreateStatementPage {
       this.setRootHomePage();
     }
     this.submitted = true;
-    this.startLoader();
     this.statementForm = statementForm;
     if (statementForm.valid) {
+      this.startLoader();      
       return this.publish(statementForm).subscribe((token) => {
         this.addIDToPost(token).then(() => {
           this.loader.dismiss();

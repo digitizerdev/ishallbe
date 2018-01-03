@@ -95,19 +95,19 @@ export class AccountPage {
     let actionSheet = this.actionSheetCtrl.create({
       buttons: [
         {
-          text: 'Pins',
+          text: 'Manage Pins',
           handler: () => {
             this.navCtrl.push(PinsManagerPage);
           }
         },
         {
-          text: 'Posts',
+          text: 'Manage Posts',
           handler: () => {
             this.navCtrl.push(PostsManagerPage);
           }
         },
         {
-          text: 'Users',
+          text: 'Manage Users',
           handler: () => {
             this.navCtrl.push(UsersManagerPage);
           }
