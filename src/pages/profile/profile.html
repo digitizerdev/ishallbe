@@ -82,24 +82,29 @@
       </ion-grid>
     </ion-card>
   </div>
-  <ion-infinite-scroll [hidden]="postsLoaded" (ionInfinite)="doInfinite($event)">
-      <ion-infinite-scroll-content loadingSpinner="dots">
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-    <div *ngIf="this.postsLoaded">
-      <ion-row class="posts-loaded">
-        <ion-col text-center>
-          All Posts Loaded
-        </ion-col>
-      </ion-row>
-      <ion-row class="posts-loaded">
-        <ion-col text-center>
-          <img class="footer-image" src="assets/img/icon.png">
-        </ion-col>
-      </ion-row>
-      <ion-row class="footer-bar">
-        <ion-col text-center>
-        </ion-col>
-      </ion-row>
-    </div>
+  <ion-row *ngIf="this.noPosts" responsive-sm>
+    <ion-col text-center>
+      <button ion-button (click)="goToCreateStatementPage()" color="secondary" round>Create Your First Statement</button>
+    </ion-col>
+  </ion-row>
+  <ion-infinite-scroll [hidden]="postsLoaded && !noPosts " (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content loadingSpinner="dots">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <div *ngIf="this.postsLoaded && !noPosts">
+    <ion-row class="posts-loaded">
+      <ion-col text-center>
+        All Posts Loaded
+      </ion-col>
+    </ion-row>
+    <ion-row class="posts-loaded">
+      <ion-col text-center>
+        <img class="footer-image" src="assets/img/icon.png">
+      </ion-col>
+    </ion-row>
+    <ion-row class="footer-bar">
+      <ion-col text-center>
+      </ion-col>
+    </ion-row>
+  </div>
 </ion-content>

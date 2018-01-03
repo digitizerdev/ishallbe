@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 import { EditProfilePage } from '../edit-profile/edit-profile';
 import { PostPage } from '../post/post';
 import { AccountPage } from '../account/account';
+import { CreateStatementPage } from '../create-statement/create-statement';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -20,6 +21,7 @@ export class ProfilePage {
 
   profile: any;
   posts: any[] = [];
+  noPosts: any;
   postsQuery: any;
   postLimit: any;
   loaded: any;
@@ -55,9 +57,14 @@ export class ProfilePage {
       this.checkIfMyProfile();
       this.syncProfile();
       this.loadUserPosts().subscribe((posts) => {
-        this.loaded = true;
+        this.loaded = true;        
+        if (posts.length == 0 ) {
+          console.log("There are no posts");
+          this.noPosts = true;  
+        } else {
         posts.reverse();
-        this.presentPosts(posts);
+        this.presentPosts(posts); 
+        }
       });
     });
   }
@@ -295,6 +302,10 @@ export class ProfilePage {
       let linkedinLink = 'https://linkedin.com/in/' + this.linkedin;
       open(linkedinLink);
     }
+  }
+
+  goToCreateStatementPage() {
+    this.navCtrl.push(CreateStatementPage);
   }
 
 }

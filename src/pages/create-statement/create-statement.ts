@@ -150,7 +150,7 @@ export class CreateStatementPage {
         content: 'Please Wait..' });
       return this.publish(statementForm).subscribe((token) => {
         this.addIDToPost(token).then(() => {
-          this.loader.dismiss().then(() => { this.navCtrl.pop();});          
+          this.loader.dismiss().then(() => { this.navCtrl.setRoot(HomePage);});          
         });
       });
     }
@@ -224,7 +224,7 @@ export class CreateStatementPage {
     let post = {
       id: token.key
     }
-    return this.firebase.object(path).update(post);
+    return this.firebase.object(path).update(post)
   }
 
   setRootHomePage() {
