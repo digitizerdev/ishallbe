@@ -146,8 +146,10 @@ export class CreateStatementPage {
     this.submitted = true;
     this.statementForm = statementForm;
     if (statementForm.valid) {
+      console.log("Statement form valid")
       return this.publish(statementForm).subscribe((token) => {
         this.addIDToPost(token).then(() => {
+          console.log("Setting root to home page")
           this.navCtrl.setRoot(HomePage);
         });
       });
@@ -155,6 +157,7 @@ export class CreateStatementPage {
   }
   
   publish(statementForm) {
+    console.log("Publishing statement")
     return Observable.create((observer) => {
       return this.uploadPhoto().subscribe(() => {
         return this.buildStatement().subscribe(() => {
