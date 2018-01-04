@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ActionSheetController, LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
@@ -39,6 +39,7 @@ export class CreateStatementPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController,
+    public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     public camera: Camera,
     public storage: Storage,
@@ -109,8 +110,7 @@ export class CreateStatementPage {
       this.imageElement.nativeElement.src = image;
       this.cropImage();
     }).catch((error) => {
-      this.navCtrl.setRoot(HomePage);
-
+          this.navCtrl.setRoot(HomePage);
     });
   }
 
@@ -144,7 +144,7 @@ export class CreateStatementPage {
   }
 
   submit(statementForm) {
-    if (!this.imageURL) { this.navCtrl.setRoot(HomePage); }
+    if (!this.imageURL) { this.needImageError(); }
     this.submitted = true;
     this.statementForm = statementForm;
     if (statementForm.valid) {
@@ -155,6 +155,16 @@ export class CreateStatementPage {
         });
       });
     }
+  }
+
+  needImageError() {
+    let alert = this.alertCtrl.create({
+      title: 'Fail',
+      subTitle: 'Please capture or choose image before submitting',
+      buttons: ['OK']
+    });
+    alert.present();
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
   }
 
   startLoader() {
