@@ -94,7 +94,8 @@ export class CreateStatementPage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            this.setRootHomePage();
+            this.navCtrl.setRoot(HomePage);
+
           }
         }
       ]
@@ -108,7 +109,8 @@ export class CreateStatementPage {
       this.imageElement.nativeElement.src = image;
       this.cropImage();
     }).catch((error) => {
-      this.setRootHomePage();
+      this.navCtrl.setRoot(HomePage);
+
     });
   }
 
@@ -142,17 +144,14 @@ export class CreateStatementPage {
   }
 
   submit(statementForm) {
-    if (!this.imageURL) {
-      this.setRootHomePage();
-    }
+    if (!this.imageURL) { this.navCtrl.setRoot(HomePage); }
     this.submitted = true;
     this.statementForm = statementForm;
     if (statementForm.valid) {
       this.startLoader();      
       return this.publish(statementForm).subscribe((token) => {
         this.addIDToPost(token).then(() => {
-          this.loader.dismiss();
-           this.setRootHomePage();         
+          this.navCtrl.setRoot(HomePage);
         });
       });
     }
@@ -170,6 +169,7 @@ export class CreateStatementPage {
       return this.uploadPhoto().subscribe(() => {
         return this.buildStatement().subscribe(() => {
           return this.firebase.list('posts').push(this.statement).then((token) => {
+          this.loader.dismiss();            
             observer.next(token);
           });
         });
@@ -235,9 +235,4 @@ export class CreateStatementPage {
     }
     return this.firebase.object(path).update(post)
   }
-
-  setRootHomePage() {
-    this.navCtrl.setRoot(HomePage);
-  }
-
 }

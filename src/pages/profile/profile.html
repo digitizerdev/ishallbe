@@ -84,7 +84,7 @@
   </div>
   <ion-row *ngIf="this.noPosts" responsive-sm>
     <ion-col text-center>
-      <button ion-button (click)="goToCreateStatementPage()" color="secondary" round>Create Your Statement</button>
+      <button ion-button (click)="goToCreateStatementPage()" color="secondary" round>Create Statement</button>
     </ion-col>
   </ion-row>
   <ion-infinite-scroll [hidden]="postsLoaded && !noPosts " (ionInfinite)="doInfinite($event)">

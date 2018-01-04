@@ -56,9 +56,9 @@ export class LoginFacebookComponent {
         let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(accessToken);
         firebase.auth().signInWithCredential(facebookProviderCredential).then((token) => {
           this.prepCordova(token);
-        });
-      })
-    })
+        }).catch((error) => { this.errorHandler(error)});;
+      }).catch((error) => { this.errorHandler(error)});
+    }).catch((error) => { this.errorHandler(error)});
   }
 
   prepCordova(token) {
