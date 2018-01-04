@@ -186,6 +186,7 @@ export class LoginFacebookComponent {
   }
 
   errorHandler(error) {
+    this.endLoader();
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,
