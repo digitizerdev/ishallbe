@@ -136,7 +136,7 @@ describe('PinsManagerPage', () => {
         expect(component.title).toBe('Manage Pins');
     });
 
-    fit('should display create pin button', async(() => {
+    it('should display create pin button', async(() => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#CreatePinButton'));

@@ -101,7 +101,7 @@ export class iShallBe {
       },
       {
         title: 'Create Statement',
-        icon: 'ios-body',
+        icon: 'ios-camera',
         component: CreateStatementPage
       },
       {

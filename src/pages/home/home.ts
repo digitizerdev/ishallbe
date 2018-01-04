@@ -403,10 +403,6 @@ export class HomePage {
     this.navCtrl.push(PinPage, { id: pinID });
   }
 
-  goToProfilePage() {
-    this.navCtrl.setRoot(ProfilePage);
-  }
-
   viewProfile(uid) {
     this.navCtrl.push(ProfilePage, { uid: uid })
   }
@@ -415,7 +411,7 @@ export class HomePage {
     open(url)
   }
 
-  goToCreateStatementsPage() {
+  goToCreateStatementPage() {
     this.navCtrl.setRoot(CreateStatementPage);
   }
 

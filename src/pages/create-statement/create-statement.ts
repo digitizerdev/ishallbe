@@ -3,8 +3,6 @@ import { IonicPage, NavController, NavParams, ActionSheetController, LoadingCont
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
-import firebase from 'firebase';
-
 import Cropper from 'cropperjs';
 import moment from 'moment';
 
@@ -49,7 +47,8 @@ export class CreateStatementPage {
   }
 
   ionViewDidLoad() {
-    this.rawTime = moment().format('YYYYMMDDmmss');
+    let rawTimeString = moment().format('YYYYMMDDmmss');
+    this.rawTime = parseInt(rawTimeString);
     this.loadProfile();
     this.askForImageRetrievalMethod();
   }

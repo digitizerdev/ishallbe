@@ -132,8 +132,63 @@ describe('CreatePinPage', () => {
         expect(component instanceof CreatePinPage).toBe(true);
     });    
 
-    it('should have title called Create Pin', () => {
-        expect(component.title).toBe('Create Pin');
+    it('should have defined pin form', () => {
+        expect(component.pinForm).toBeDefined();
     });
 
+    it('should display header component', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('header'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should load profile', fakeAsync(() => {
+        spyOn(component, 'requestUID').and.callThrough();
+        spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {}});
+        spyOn(storage, 'ready').and.callThrough();
+        spyOn(storage, 'get').and.callThrough();
+        component.loadProfile();
+        tick();
+        fixture.detectChanges();
+        expect(storage.ready).toHaveBeenCalled();
+        expect(storage.get).toHaveBeenCalled();
+        expect(component.requestUID).toHaveBeenCalled();
+        expect(component.requestProfile).toHaveBeenCalled();
+    }));
+
+    it('should display pin form', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('form'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('Publish');
+    });
+
+    it('should ask for day of week on load', () => {
+        spyOn(component, 'askForDayOfWeek');
+        component.ionViewDidLoad();
+        expect(component.askForDayOfWeek).toHaveBeenCalled();
+    });
+
+    fit('should load next dates', () => {
+        expect(component.findNextSelectedDay).toBeDefined();
+    });
+
+    it('should request Camera to get picture', () => {
+        spyOn(camera, 'getPicture').and.callThrough();
+        component.getPicture();
+        expect(camera.getPicture).toHaveBeenCalled();
+    });
+
+    it('should submit form', () => {
+        let pinForm = {
+            title: 'testTitle',
+            content: 'testContent',
+            url: 'url'
+        }
+        component.submit(pinForm);
+        expect(component.submitted).toBeTruthy();
+    });;
 });
