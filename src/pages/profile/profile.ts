@@ -60,6 +60,7 @@ export class ProfilePage {
         this.loaded = true;        
         if (posts.length == 0 ) {
           console.log("There are no posts");
+          this.postsLoaded = true;
           this.noPosts = true;  
         } else {
         posts.reverse();

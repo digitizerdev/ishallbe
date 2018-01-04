@@ -82,11 +82,18 @@
       </ion-grid>
     </ion-card>
   </div>
-  <ion-row *ngIf="this.noPosts" responsive-sm>
-    <ion-col text-center>
-      <button ion-button (click)="goToCreateStatementPage()" color="secondary" round>Create Statement</button>
-    </ion-col>
-  </ion-row>
+  <div *ngIf="this.noPosts">
+    <ion-row responsive-sm>
+      <ion-col class="no-posts-yet" text-center>
+        <p>No Posts Yet</p>
+      </ion-col>
+    </ion-row>
+    <ion-row  responsive-sm>
+      <ion-col text-center>
+        <button ion-button (click)="goToCreateStatementPage()" color="secondary" round>Create Statement</button>
+      </ion-col>
+    </ion-row>
+  </div>
   <ion-infinite-scroll [hidden]="postsLoaded && !noPosts " (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content loadingSpinner="dots">
     </ion-infinite-scroll-content>
