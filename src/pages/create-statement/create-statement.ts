@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController, LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
@@ -29,7 +29,6 @@ export class CreateStatementPage {
   uid: any;
   profile: any;
   statement: any;
-  loader: any;
   imageMethod: any;
   cameraOptions: any;
   sourceType: any;
@@ -38,12 +37,13 @@ export class CreateStatementPage {
   imageURL: any;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public actionSheetCtrl: ActionSheetController,
-    public camera: Camera,
-    public storage: Storage,
-    public firebase: FirebaseProvider
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private loadingCtrl: LoadingController,
+    private actionSheetCtrl: ActionSheetController,
+    private camera: Camera,
+    private storage: Storage,
+    private firebase: FirebaseProvider
   ) {
   }
 
@@ -94,7 +94,7 @@ export class CreateStatementPage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            this.setRootHomePage();
+            this.navCtrl.setRoot(HomePage);
           }
         }
       ]
@@ -108,7 +108,7 @@ export class CreateStatementPage {
       this.imageElement.nativeElement.src = image;
       this.cropImage();
     }).catch((error) => {
-      this.setRootHomePage();
+      this.navCtrl.setRoot(HomePage);
     });
   }
 
@@ -145,10 +145,14 @@ export class CreateStatementPage {
     this.submitted = true;
     this.statementForm = statementForm;
     if (statementForm.valid) {
+      let loading = this.loadingCtrl.create({
+        content: 'Please Wait..'
+      });
+      loading.present();
       return this.publish(statementForm).subscribe((token) => {
         this.addIDToPost(token).then(() => {
-          this.loader.dismiss();
-           this.setRootHomePage();         
+          loading.dismiss();
+          this.navCtrl.setRoot(HomePage);
         });
       });
     }
@@ -171,6 +175,7 @@ export class CreateStatementPage {
       this.image = this.cropperInstance
         .getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
       let path = 'content/' + this.uid + '/images/' + this.rawTime;
+      console.log
       return this.store(path, this.image).subscribe((snapshot) => {
         this.imageURL = snapshot.downloadURL;
         observer.next();
@@ -223,10 +228,6 @@ export class CreateStatementPage {
       id: token.key
     }
     return this.firebase.object(path).update(post)
-  }
-
-  setRootHomePage() {
-    this.navCtrl.setRoot(HomePage);
   }
 
 }
