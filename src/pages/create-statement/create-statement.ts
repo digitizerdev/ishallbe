@@ -1,8 +1,10 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
+import firebase from 'firebase';
+
 import Cropper from 'cropperjs';
 import moment from 'moment';
 
@@ -39,7 +41,6 @@ export class CreateStatementPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController,
-    public loadingCtrl: LoadingController,
     public camera: Camera,
     public storage: Storage,
     public firebase: FirebaseProvider
@@ -47,8 +48,7 @@ export class CreateStatementPage {
   }
 
   ionViewDidLoad() {
-    let rawTimeString = moment().format('YYYYMMDDmmss');
-    this.rawTime = parseInt(rawTimeString);
+    this.rawTime = moment().format('YYYYMMDDmmss');
     this.loadProfile();
     this.askForImageRetrievalMethod();
   }
@@ -94,8 +94,7 @@ export class CreateStatementPage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            this.navCtrl.setRoot(HomePage);
-
+            this.setRootHomePage();
           }
         }
       ]
@@ -109,7 +108,7 @@ export class CreateStatementPage {
       this.imageElement.nativeElement.src = image;
       this.cropImage();
     }).catch((error) => {
-          this.navCtrl.setRoot(HomePage);
+      this.setRootHomePage();
     });
   }
 
@@ -146,18 +145,16 @@ export class CreateStatementPage {
     this.submitted = true;
     this.statementForm = statementForm;
     if (statementForm.valid) {
-      console.log("Statement form valid")
       return this.publish(statementForm).subscribe((token) => {
         this.addIDToPost(token).then(() => {
-          console.log("Setting root to home page")
-          this.navCtrl.setRoot(HomePage);
+          this.loader.dismiss();
+           this.setRootHomePage();         
         });
       });
     }
   }
-  
+
   publish(statementForm) {
-    console.log("Publishing statement")
     return Observable.create((observer) => {
       return this.uploadPhoto().subscribe(() => {
         return this.buildStatement().subscribe(() => {
@@ -227,4 +224,9 @@ export class CreateStatementPage {
     }
     return this.firebase.object(path).update(post)
   }
+
+  setRootHomePage() {
+    this.navCtrl.setRoot(HomePage);
+  }
+
 }
