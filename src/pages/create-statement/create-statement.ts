@@ -146,7 +146,6 @@ export class CreateStatementPage {
     this.submitted = true;
     this.statementForm = statementForm;
     if (statementForm.valid) {
-      this.startLoader();      
       return this.publish(statementForm).subscribe((token) => {
         this.addIDToPost(token).then(() => {
           this.navCtrl.setRoot(HomePage);
@@ -154,20 +153,12 @@ export class CreateStatementPage {
       });
     }
   }
-
-  startLoader() {
-    this.loader = this.loadingCtrl.create({
-      content: 'Please Wait..'
-    });
-    this.loader.present();
-  }
   
   publish(statementForm) {
     return Observable.create((observer) => {
       return this.uploadPhoto().subscribe(() => {
         return this.buildStatement().subscribe(() => {
           return this.firebase.list('posts').push(this.statement).then((token) => {
-          this.loader.dismiss();            
             observer.next(token);
           });
         });
