@@ -23,7 +23,8 @@
       </ion-col>
     </ion-row>
   </div>
-  <ion-col *ngIf="this.photoUpdated" text-center>
+  <ion-row>
+    <ion-col *ngIf="this.photoUpdated" text-center>
       <ion-avatar padding-top item-left>
         <img (click)="askForImageRetrievalMethod()" class="avatar" src="{{ photo }}">
       </ion-avatar>
