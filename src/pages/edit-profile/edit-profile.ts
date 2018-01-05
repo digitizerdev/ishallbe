@@ -93,7 +93,7 @@ export class EditProfilePage {
     return Observable.create((observer) => {
      return this.firebase.queriedList('/posts/', 'uid', this.uid).subscribe((posts) => {
         posts.forEach((post) => {
-          if (this.photo) post.photo = this.photo;
+          post.face = this.profile.photo
           post.name = this.profile.name;
           let path = '/posts/' + post.id;
           this.firebase.object(path).update(post);
