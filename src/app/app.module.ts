@@ -26,7 +26,6 @@ import { AccountEmailPage } from '../pages/account-email/account-email';
 import { AccountPasswordPage } from '../pages/account-password/account-password';
 import { AccountPage } from '../pages/account/account';
 import { EditProfilePage } from '../pages/edit-profile/edit-profile';
-import { PhotoPage } from '../pages/photo/photo';
 import { CreateStatementPage } from '../pages/create-statement/create-statement';
 import { ProfilePage } from '../pages/profile/profile';
 import { PostPage } from '../pages/post/post';
@@ -55,7 +54,6 @@ import * as firebase from 'firebase/app';
     AccountEmailPage,
     AccountPasswordPage,
     AccountPage,
-    PhotoPage,
     EditProfilePage,
     CreateStatementPage,
     ProfilePage,
@@ -89,7 +87,6 @@ import * as firebase from 'firebase/app';
     AccountEmailPage,
     AccountPasswordPage,
     AccountPage,
-    PhotoPage,
     EditProfilePage,
     CreateStatementPage,
     ProfilePage,

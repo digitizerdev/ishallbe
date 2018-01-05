@@ -28,8 +28,8 @@
     <ion-slides pager class="feature-slides">
       <ion-slide padding *ngFor="let pin of pins">
         <ion-row *ngIf="!pin?.saturday" justify-content-center align-items-center style="height: 100%">
-          <div *ngIf="pin?.short"><br></div>
-          <h4 class="slide-title" [innerHTML]="pin.title"></h4>
+          <div *ngIf="pin?.short"><br><br></div>
+          <h4 class="slide-title" [innerHTML]="pin.title"></h4><br>
           <img class="pin-image" (click)="viewPin(pin.id)" *ngIf="pin?.image" src="{{ pin?.url }}" />
           <h5 class="affirmation" (click)="viewPin(pin.id)" [innerHTML]="pin.content"></h5>              
         </ion-row>

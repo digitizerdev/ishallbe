@@ -16,7 +16,6 @@ import { AccountEmailPage } from '../pages/account-email/account-email';
 import { AccountPasswordPage } from '../pages/account-password/account-password';
 import { AccountPage } from '../pages/account/account';
 import { EditProfilePage } from '../pages/edit-profile/edit-profile';
-import { PhotoPage } from '../pages/photo/photo';
 import { CreateStatementPage } from '../pages/create-statement/create-statement';
 import { ProfilePage } from '../pages/profile/profile';
 import { PostPage } from '../pages/post/post';
@@ -72,7 +71,6 @@ export class iShallBe {
       { title: 'Account Password Page', component: AccountPasswordPage },
       { title: 'Account Page', component: AccountPage },
       { title: 'Edit Profile Page', component: EditProfilePage },
-      { title: 'Photo Page', component: PhotoPage },
       { title: 'Create Statement Page', component: CreateStatementPage },
       { title: 'Profile Page', component: ProfilePage },
       { title: 'Pin Page', component: PinPage },

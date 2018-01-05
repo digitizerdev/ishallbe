@@ -172,7 +172,7 @@ describe('CreatePinPage', () => {
         expect(component.askForDayOfWeek).toHaveBeenCalled();
     });
 
-    fit('should load next dates', () => {
+    it('should load next dates', () => {
         expect(component.findNextSelectedDay).toBeDefined();
     });
 

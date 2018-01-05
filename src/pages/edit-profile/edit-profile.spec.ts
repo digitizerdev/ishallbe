@@ -1,9 +1,10 @@
 import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { IonicModule, Events, NavController, NavParams } from 'ionic-angular';
+import { IonicModule, Events, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { IonicStorageModule, Storage } from '@ionic/storage';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 import { AngularFireModule } from 'angularfire2';
 import { environment } from '../../environments/environment';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
@@ -27,6 +28,7 @@ import {
     NavMock,
     StorageMock,
     AngularFireDatabaseMock,
+    CameraMock,
     AngularFireAuthMock,
     EmailComposerMock
 } from '../../../test-config/mocks-ionic';
@@ -34,6 +36,8 @@ import {
 let fixture;
 let component;
 let nav: NavController;
+let action: ActionSheetController;
+let camera: Camera;
 let firebase: FirebaseProvider;
 let storage: Storage;
 let afData: AngularFireDatabase;
@@ -73,6 +77,7 @@ describe('EditProfilePage', () => {
                 { provide: Storage, useClass: StorageMock },
                 { provide: NavController, useClass: NavMock },
                 { provide: NavParams, useClass: NavMock },
+                { provide: Camera, useClass: CameraMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireDatabase, useValue: angularFireDataStub },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
@@ -88,6 +93,8 @@ describe('EditProfilePage', () => {
         fixture = TestBed.createComponent(EditProfilePage);
         component = fixture.componentInstance;
         nav = fixture.componentRef.injector.get(NavController);
+        action = fixture.componentRef.injector.get(ActionSheetController);
+        camera = fixture.componentRef.injector.get(Camera);
         storage = fixture.componentRef.injector.get(Storage);
         afAuth = TestBed.get(AngularFireAuth);
         afData = TestBed.get(AngularFireDatabase);
@@ -98,6 +105,8 @@ describe('EditProfilePage', () => {
         fixture.destroy();
         component = null;
         nav = null;
+        action = null;
+        camera = null;
         storage = null;
         firebase = null;
         afData = null;
@@ -135,6 +144,22 @@ describe('EditProfilePage', () => {
         expect(storage.get).toHaveBeenCalled();
         expect(component.requestUID).toHaveBeenCalled();
         expect(component.requestProfile).toHaveBeenCalled();
+    }));
+
+    it('should request Camera to get picture', () => {
+        spyOn(camera, 'getPicture').and.callThrough();
+        component.getPicture();
+        expect(camera.getPicture).toHaveBeenCalled();
+    });
+
+    it('should crop photo via Crop Button', async(() => {
+        component.uploadingPhoto = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#CropPhotoButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Crop');
     }));
 
     it('should request Firebase to update profile', fakeAsync(() => {
