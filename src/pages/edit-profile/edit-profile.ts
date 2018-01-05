@@ -113,6 +113,7 @@ export class EditProfilePage {
 
   getPicture() {
     this.camera.getPicture(this.getCameraOptions()).then((image) => {
+      this.cropImage();
       this.imageElement.nativeElement.src = image;
     });
   }
@@ -144,6 +145,9 @@ export class EditProfilePage {
       zoomable: true,
       movable: false
     });
+  }
+
+  updatePhoto() {
     let loading = this.loadingCtrl.create({  content: 'Please Wait..' });
     loading.present();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
