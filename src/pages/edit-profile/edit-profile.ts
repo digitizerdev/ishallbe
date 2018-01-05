@@ -39,6 +39,7 @@ export class EditProfilePage {
   cropperInstance: any;
   image: any;
   updatingPhoto = false;
+  photoUpdated = false;
 
   constructor(
     public navCtrl: NavController,
@@ -143,17 +144,14 @@ export class EditProfilePage {
       zoomable: true,
       movable: false
     });
-  }
-
-  uploadPhoto() {
     let loading = this.loadingCtrl.create({  content: 'Please Wait..' });
     loading.present();
-    this.cropImage();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
     let path = 'content/' + this.uid + '/images/' + this.rawTime;
     this.store(path, this.image).subscribe((snapshot) => {
       this.photo = snapshot.downloadURL;
       this.updatingPhoto = false;
+      this.photoUpdated = true;
       loading.dismiss();
     });
   }
