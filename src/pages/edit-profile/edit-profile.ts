@@ -1,12 +1,9 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController, ActionSheetController } from 'ionic-angular';
-import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 
-import Cropper from 'cropperjs';
-import moment from 'moment';
-
+import { PhotoPage } from '../photo/photo';
 import { ProfilePage } from '../profile/profile';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -17,9 +14,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
   templateUrl: 'edit-profile.html',
 })
 export class EditProfilePage {
-  @ViewChild('imageSrc') imageElement: ElementRef;
-
-  rawTime: any;
+  photo: any;
   submitted = false;
   profile: any;
   uid: any;
@@ -31,15 +26,7 @@ export class EditProfilePage {
     twitter?: string,
     linkedin?: string
   } = {};
-  photo: any;
   loaded: any;
-  imageMethod: any;
-  cameraOptions: any;
-  sourceType: any;
-  cropperInstance: any;
-  image: any;
-  updatingPhoto = false;
-  photoUpdated = false;
 
   constructor(
     public navCtrl: NavController,
@@ -47,14 +34,13 @@ export class EditProfilePage {
     public alertCtrl: AlertController,
     public actionSheetCtrl: ActionSheetController,
     public loadingCtrl: LoadingController,
-    public camera: Camera,
     public storage: Storage,    
     public firebase: FirebaseProvider,
   ) {
   }
 
   ionViewDidLoad() {
-    this.rawTime = moment().format('YYYYMMDDmmss');
+    this.photo = this.navParams.get('photo');
     this.loadProfile();
   }
 
@@ -62,9 +48,9 @@ export class EditProfilePage {
     return this.requestUID().then((uid) => {
       this.uid = uid;
       return this.requestProfile().subscribe((profile) => {
-        this.photo = profile.photo;
-        this.loaded = true;
         this.profile = profile;
+        if (this.photo) this.profile.photo = this.photo;
+        this.loaded = true;
         this.editProfileForm = profile;
       });
     });
@@ -81,107 +67,16 @@ export class EditProfilePage {
     return this.firebase.object(path);
   }
 
-  askForImageRetrievalMethod() {
-    this.updatingPhoto = true;
-    let actionSheet = this.actionSheetCtrl.create({
-      buttons: [
-        {
-          text: 'Camera',
-          handler: () => {
-            this.sourceType = this.camera.PictureSourceType.CAMERA;
-            this.getPicture();
-          }
-        },
-        {
-          text: 'Library',
-          handler: () => {
-            this.sourceType = this.camera.PictureSourceType.PHOTOLIBRARY
-            this.getPicture();
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            this.updatingPhoto = false;
-          }
-        }
-      ]
-    });
-    actionSheet.present();
-  }
-
-  getPicture() {
-    this.camera.getPicture(this.getCameraOptions()).then((image) => {
-      this.cropImage();
-      this.imageElement.nativeElement.src = image;
-    });
-  }
-
-  getCameraOptions() {
-    let cameraOpts: CameraOptions = {
-      quality: 50,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      sourceType: this.sourceType,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      allowEdit: false,
-      correctOrientation: true
-    }
-    return cameraOpts;
-  }
-
-  cropImage() {
-    this.cropperInstance = new Cropper(this.imageElement.nativeElement, {
-      aspectRatio: 3 / 3,
-      dragMode: 'move',
-      modal: true,
-      guides: true,
-      highlight: false,
-      background: false,
-      autoCrop: true,
-      autoCropArea: 0.9,
-      responsive: true,
-      zoomable: true,
-      movable: false
-    });
-  }
-
-  updatePhoto() {
-    let loading = this.loadingCtrl.create({  content: 'Please Wait..' });
-    loading.present();
-    this.image = this.cropperInstance.getCroppedCanvas({ width: 500, height: 500 }).toDataURL('image/jpeg');
-    let path = 'content/' + this.uid + '/images/' + this.rawTime;
-    this.store(path, this.image).subscribe((snapshot) => {
-      this.photo = snapshot.downloadURL;
-      this.updatingPhoto = false;
-      this.photoUpdated = true;
-      loading.dismiss();
-    });
-  }
-
-  store(path, obj) {
-    return Observable.create((observer) => {
-      let myPath = firebase.storage().ref(path);
-      return myPath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
-        then(function (snapshot) {
-          observer.next(snapshot);
-        }).catch((error: any) => {
-          observer.next(error);
-        });
-    });
-  }
-
   submit(form) {
     this.submitted = true;
     this.editProfileForm = form;
     this.profile.email = form.email;
-    let loading = this.loadingCtrl.create({  content: 'Please Wait..' });
+    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
     loading.present();
     this.requestProfileUpdate().then(() => {
       this.updateUserPosts().subscribe(() => {
         loading.dismiss();
-        this.navCtrl.pop();
+        this.navCtrl.setRoot(ProfilePage);
       });
     }).catch((error) => { this.errorHandler(error) });      
   }
@@ -196,9 +91,9 @@ export class EditProfilePage {
 
   updateUserPosts() {
     return Observable.create((observer) => {
-      return this.firebase.queriedList('/posts/', 'uid', this.uid).subscribe((posts) => {
+     return this.firebase.queriedList('/posts/', 'uid', this.uid).subscribe((posts) => {
         posts.forEach((post) => {
-          post.face = this.photo;
+          if (this.photo) post.photo = this.photo;
           post.name = this.profile.name;
           let path = '/posts/' + post.id;
           this.firebase.object(path).update(post);
@@ -216,5 +111,9 @@ export class EditProfilePage {
     });
     alert.present();
   }
-  
+
+  pushPhotoPage() {
+    this.navCtrl.push(PhotoPage);
+  }
+
 }

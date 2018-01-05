@@ -1,6 +1,5 @@
 import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { IonicModule, Events, NavController, NavParams, ActionSheetController } from 'ionic-angular';
-import { EmailComposer } from '@ionic-native/email-composer';
+import { IonicModule, Events, NavController, NavParams, ActionSheetController} from 'ionic-angular';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { IonicStorageModule, Storage } from '@ionic/storage';
@@ -17,71 +16,86 @@ import { HeaderComponent } from '../../components/header/header';
 import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
 import { TermsOfServiceComponent } from '../../components/terms-of-service/terms-of-service';
 
-import { EditProfilePage } from './edit-profile';
+import { PhotoPage } from './photo';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+
+import { mockPin } from '../../../test-data/pin/mocks';
+import { mockPost } from '../../../test-data/post/mocks';
 
 import { } from 'jasmine';
 
 import {
     FirebaseProviderMock,
     NavMock,
+    NavParamsMock,
+    ActionSheetControllerMock,
+    CameraMock,
     StorageMock,
     AngularFireDatabaseMock,
-    CameraMock,
-    AngularFireAuthMock,
-    EmailComposerMock
+    AngularFireAuthMock
 } from '../../../test-config/mocks-ionic';
 
 let fixture;
 let component;
 let nav: NavController;
+let navParams: NavParams;
 let action: ActionSheetController;
-let camera: Camera;
+let camera: Camera
 let firebase: FirebaseProvider;
 let storage: Storage;
-let afData: AngularFireDatabase;
 let afAuth: AngularFireAuth;
-let isAuth$: Subscription;
-let isAuthRef: boolean;
-let emailComposer: EmailComposer;
+let afData: AngularFireDatabase;
 
 const angularFireAuthStub = {
 };
 
-const fakeObjectUpdate = (path: string): Function => {
-    return;
-};
+let pushSpy = jasmine.createSpy("push");
+
+let takeSpy = jasmine.createSpy("take");
+
+let querySpy = jasmine.createSpy("query").and.returnValue({
+    take: takeSpy
+});
+
+let listSpy = jasmine.createSpy("list").and.returnValue({
+    push: pushSpy,
+    take: takeSpy,
+    query: querySpy
+});
 
 let updateSpy = jasmine.createSpy("update");
 
+let removeSpy = jasmine.createSpy("remove");
+
 let objectSpy = jasmine.createSpy("object").and.returnValue({
-    update: updateSpy
+    update: updateSpy,
+    remove: removeSpy
 });
 
 const angularFireDataStub = {
-    object: objectSpy
+    object: objectSpy,
+    list: listSpy,
 }
 
-describe('EditProfilePage', () => {
+describe('PhotoPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [EditProfilePage],
+            declarations: [PhotoPage],
             imports: [
-                IonicModule.forRoot(EditProfilePage),
+                IonicModule.forRoot(PhotoPage),
                 AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: Storage, useClass: StorageMock },
                 { provide: NavController, useClass: NavMock },
-                { provide: NavParams, useClass: NavMock },
+                { provide: NavParams, useClass: NavParamsMock },
+                { provide: ActionSheetController, useClass: ActionSheetControllerMock },
                 { provide: Camera, useClass: CameraMock },
-                { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireDatabase, useValue: angularFireDataStub },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
-                { provide: EmailComposer, useClass: EmailComposerMock }
             ],
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
@@ -90,68 +104,53 @@ describe('EditProfilePage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(EditProfilePage);
+        fixture = TestBed.createComponent(PhotoPage);
         component = fixture.componentInstance;
         nav = fixture.componentRef.injector.get(NavController);
+        navParams = fixture.componentRef.injector.get(NavParams);
         action = fixture.componentRef.injector.get(ActionSheetController);
         camera = fixture.componentRef.injector.get(Camera);
         storage = fixture.componentRef.injector.get(Storage);
+        firebase = fixture.componentRef.injector.get(FirebaseProvider);
         afAuth = TestBed.get(AngularFireAuth);
         afData = TestBed.get(AngularFireDatabase);
-        emailComposer = TestBed.get(EmailComposer);
     });
 
     afterEach(() => {
         fixture.destroy();
         component = null;
         nav = null;
+        navParams = null;
         action = null;
         camera = null;
         storage = null;
         firebase = null;
-        afData = null;
         afAuth = null;
-        updateSpy.calls.reset();
-        objectSpy.calls.reset();
+        afData = null;
     });
 
     it('should be created', () => {
-        expect(component instanceof EditProfilePage).toBe(true);
+        expect(component instanceof PhotoPage).toBe(true);
     });
 
-    it('should be initialized', () => {
-        expect(component.editProfileForm).toBeDefined();
-        expect(component.title).toBe('Profile');
-    });
-
-    it('should display edit profile form', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('form'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Update');
-    });
-
-    it('should load profile', fakeAsync(() => {
-        spyOn(component, 'requestUID').and.callThrough();
-        spyOn(component, 'requestProfile').and.returnValue({ subscribe: () => {}})
-        spyOn(storage, 'ready').and.callThrough();
-        spyOn(storage, 'get').and.callThrough();
-        component.loadProfile();
-        tick();
-        fixture.detectChanges();
-        expect(storage.ready).toHaveBeenCalled();
-        expect(storage.get).toHaveBeenCalled();
-        expect(component.requestUID).toHaveBeenCalled();
-        expect(component.requestProfile).toHaveBeenCalled();
+    it('should ask for image retrieval method on load', async(() => {
+        spyOn(component, 'askForImageRetrievalMethod')
+        component.ionViewDidLoad();
+        expect(component.askForImageRetrievalMethod).toHaveBeenCalled();
     }));
 
-    it('should request Firebase to update profile', fakeAsync(() => {
-        component.firebase.object('testPath').update('post')
-        tick();
-        fixture.detectChanges();
-        expect(objectSpy).toHaveBeenCalled();
-        expect(updateSpy).toHaveBeenCalled();
+    it('should request Camera to get picture', () => {
+        spyOn(camera, 'getPicture').and.callThrough();
+        component.getPicture();
+        expect(camera.getPicture).toHaveBeenCalled();
+    });
+
+    it('should submit via Update Photo Button', async(() => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#UploadPhotoButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Upload Photo');
     }));
 
 });

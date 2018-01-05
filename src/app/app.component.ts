@@ -10,14 +10,15 @@ import { StartupPage } from '../pages/startup/startup';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
-import { AboutPage } from '../pages/about/about';
-import { SupportPage } from '../pages/support/support';
 import { AccountEmailPage } from '../pages/account-email/account-email';
 import { AccountPasswordPage } from '../pages/account-password/account-password';
+import { SupportPage } from '../pages/support/support';
 import { AccountPage } from '../pages/account/account';
+import { AboutPage } from '../pages/about/about';
 import { EditProfilePage } from '../pages/edit-profile/edit-profile';
-import { CreateStatementPage } from '../pages/create-statement/create-statement';
+import { PhotoPage } from '../pages/photo/photo';
 import { ProfilePage } from '../pages/profile/profile';
+import { CreateStatementPage } from '../pages/create-statement/create-statement';
 import { PostPage } from '../pages/post/post';
 import { PinPage } from '../pages/pin/pin';
 import { HomePage } from '../pages/home/home';
@@ -65,16 +66,17 @@ export class iShallBe {
       { title: 'Login Page', component: LoginPage },
       { title: 'Register Page', component: RegisterPage },
       { title: 'Password Reset Page', component: PasswordResetPage },
-      { title: 'About Page', component: AboutPage },
       { title: 'Support Page', component: SupportPage },
       { title: 'Account Email Page', component: AccountEmailPage },
       { title: 'Account Password Page', component: AccountPasswordPage },
       { title: 'Account Page', component: AccountPage },
+      { title: 'About Page', component: AboutPage },    
       { title: 'Edit Profile Page', component: EditProfilePage },
-      { title: 'Create Statement Page', component: CreateStatementPage },
+      { title: 'Photo Page', component: PhotoPage },
       { title: 'Profile Page', component: ProfilePage },
-      { title: 'Pin Page', component: PinPage },
+      { title: 'Create Statement Page', component: CreateStatementPage },
       { title: 'Post Page', component: PostPage },
+      { title: 'Pin Page', component: PinPage },
       { title: 'Home Page', component: HomePage },      
       { title: 'Create Pin Page', component: CreatePinPage },
       { title: 'Users Manager Page', component: UsersManagerPage },

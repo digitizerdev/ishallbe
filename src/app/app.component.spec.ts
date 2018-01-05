@@ -103,8 +103,8 @@ describe('iShallBe App Component', () => {
     expect(component.menuPages.length).toBe(5);
   })
 
-  it('should have 19 pages', () => {
-    expect(component.pages.length).toBe(19);
+  it('should have 20 pages', () => {
+    expect(component.pages.length).toBe(20);
   });
 
   it('should have 3 components', () => {

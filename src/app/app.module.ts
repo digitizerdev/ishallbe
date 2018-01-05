@@ -20,14 +20,15 @@ import { StartupPage } from '../pages/startup/startup';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
-import { AboutPage } from '../pages/about/about';
-import { SupportPage } from '../pages/support/support';
 import { AccountEmailPage } from '../pages/account-email/account-email';
 import { AccountPasswordPage } from '../pages/account-password/account-password';
+import { SupportPage } from '../pages/support/support';
 import { AccountPage } from '../pages/account/account';
+import { AboutPage } from '../pages/about/about';
 import { EditProfilePage } from '../pages/edit-profile/edit-profile';
-import { CreateStatementPage } from '../pages/create-statement/create-statement';
+import { PhotoPage } from '../pages/photo/photo';
 import { ProfilePage } from '../pages/profile/profile';
+import { CreateStatementPage } from '../pages/create-statement/create-statement';
 import { PostPage } from '../pages/post/post';
 import { PinPage } from '../pages/pin/pin';
 import { HomePage } from '../pages/home/home';
@@ -49,19 +50,20 @@ import * as firebase from 'firebase/app';
     LoginPage,
     RegisterPage,    
     PasswordResetPage,  
-    AboutPage,
-    SupportPage,
     AccountEmailPage,
     AccountPasswordPage,
+    SupportPage,
     AccountPage,
+    AboutPage,
     EditProfilePage,
-    CreateStatementPage,
+    PhotoPage,
     ProfilePage,
-    PinPage,
+    CreateStatementPage,
     PostPage,
+    PinPage,
     HomePage,
-    PinsManagerPage,
     CreatePinPage,
+    PinsManagerPage,
     PostsManagerPage,
     UsersManagerPage
   ],
@@ -82,19 +84,20 @@ import * as firebase from 'firebase/app';
     LoginPage,
     RegisterPage,    
     PasswordResetPage,  
-    AboutPage,
-    SupportPage,
     AccountEmailPage,
     AccountPasswordPage,
+    SupportPage,
     AccountPage,
+    AboutPage,
     EditProfilePage,
-    CreateStatementPage,
+    PhotoPage,
     ProfilePage,
-    PinPage,
+    CreateStatementPage,
     PostPage,
+    PinPage,
     HomePage,
-    PinsManagerPage,
     CreatePinPage,
+    PinsManagerPage,
     PostsManagerPage,
     UsersManagerPage
   ],
