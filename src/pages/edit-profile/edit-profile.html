@@ -9,13 +9,13 @@
 
 <ion-content padding>
   <ion-row>
-    <ion-col *ngIf="this.loaded && !this.uploadingPhoto" text-center>
+    <ion-col *ngIf="this.loaded && !this.updatingPhoto" text-center>
       <ion-avatar padding-top item-left>
         <img (click)="askForImageRetrievalMethod()" class="avatar" src="{{ photo }}">
       </ion-avatar>
     </ion-col>
   </ion-row>
-  <div *ngIf="this.uploadingPhoto" text-center>
+  <div *ngIf="this.updatingPhoto" text-center>
     <img #imageSrc/>
     <ion-row>
       <ion-col text-center>

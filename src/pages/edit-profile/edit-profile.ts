@@ -38,7 +38,7 @@ export class EditProfilePage {
   sourceType: any;
   cropperInstance: any;
   image: any;
-  uploadingPhoto = false;
+  updatingPhoto = false;
 
   constructor(
     public navCtrl: NavController,
@@ -81,6 +81,7 @@ export class EditProfilePage {
   }
 
   askForImageRetrievalMethod() {
+    this.updatingPhoto = true;
     let actionSheet = this.actionSheetCtrl.create({
       buttons: [
         {
@@ -101,7 +102,7 @@ export class EditProfilePage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            console.log("Cancel clicked");
+            this.updatingPhoto = false;
           }
         }
       ]
@@ -145,7 +146,6 @@ export class EditProfilePage {
   }
 
   uploadPhoto() {
-    this.uploadingPhoto = true;
     let loading = this.loadingCtrl.create({  content: 'Please Wait..' });
     loading.present();
     this.cropImage();
@@ -153,7 +153,7 @@ export class EditProfilePage {
     let path = 'content/' + this.uid + '/images/' + this.rawTime;
     this.store(path, this.image).subscribe((snapshot) => {
       this.photo = snapshot.downloadURL;
-      this.uploadingPhoto = false;
+      this.updatingPhoto = false;
       loading.dismiss();
     });
   }
