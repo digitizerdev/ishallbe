@@ -1,45 +1,52 @@
 <ion-header>
-    <ion-navbar color="primary">
-      <ion-title>{{title}}</ion-title>
-      <ion-buttons *ngIf="mine" end>
-        <button ion-button icon-only (click)="removePost()">
-          <ion-icon name="ios-close"></ion-icon>
-        </button>
-      </ion-buttons>
-    </ion-navbar>
-  </ion-header>
-  <ion-content class="container">
-    <ion-refresher (ionRefresh)="loadPin($event)">
-      <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
-      </ion-refresher-content>
-    </ion-refresher>
-    <header></header>
-    <div *ngIf="loaded">
-      <div text-center>
-        <ion-row text-center no-padding-bottom class="pin-title">
-          <ion-col>
-            <h2>{{pin?.title}}</h2>
-          </ion-col>
-        </ion-row>
-        <iframe *ngIf="pin?.video" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
-        <ion-row class="affirmation" *ngIf="!pin?.image">
-          <ion-col no-padding text-center>
-            <h4 *ngIf="!pin?.image" padding>{{ pin?.content}}</h4>
-            <button *ngIf="pin?.tuesday" (click)="openLink(pin.url)" text-center ion-button small round>
-              <ion-icon name="play"></ion-icon>
-            </button>
-          </ion-col>
-        </ion-row>
-        <div class="info">
-          <a (click)="togglePinLike(pin)" class="subdued">
-            <ion-icon name="thumbs-up" color="secondary" *ngIf="likedPin"></ion-icon>
-            <ion-icon name="thumbs-up" color="gray" *ngIf="!likedPin"></ion-icon>
-            {{ pin?.likeCount}}
-          </a>
-          <a class="subdued">
-            <ion-icon name="chatboxes" color="primary"></ion-icon>
-            {{ pin?.commentCount}}
-          </a>
+  <ion-navbar color="primary">
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons *ngIf="mine" end>
+      <button ion-button icon-only (click)="removePost()">
+        <ion-icon name="ios-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content class="container">
+  <ion-refresher (ionRefresh)="loadPin($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <header></header>
+  <div *ngIf="loaded">
+    <div text-center>
+      <ion-row text-center no-padding-bottom class="pin-title">
+        <ion-col>
+          <h2>{{pin?.title}}</h2>
+        </ion-col>
+      </ion-row>
+      <iframe *ngIf="pin?.video" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
+      <ion-row class="affirmation" *ngIf="!pin?.image">
+        <ion-col no-padding text-center>
+          <h4 *ngIf="!pin?.image" padding>{{ pin?.content}}</h4>
+          <button *ngIf="pin?.tuesday" (click)="openLink(pin.url)" text-center ion-button small round>
+            <ion-icon name="play"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+      <div class="info">
+        <a (click)="togglePinLike(pin)" class="subdued">
+          <ion-icon name="thumbs-up" color="secondary" *ngIf="likedPin"></ion-icon>
+          <ion-icon name="thumbs-up" color="gray" *ngIf="!likedPin"></ion-icon>
+          {{ pin?.likeCount}}
+        </a>
+        <a class="subdued">
+          <ion-icon name="chatboxes" color="primary"></ion-icon>
+          {{ pin?.commentCount}}
+        </a>
+      </div>
+      <ion-item no-lines class="pin-comment" *ngFor="let comment of comments">
+        <ion-avatar item-left (click)="viewProfile(comment?.user_id)">
+          <img src="{{ comment?.face }}">
+        </ion-avatar>
+        <div text-right>
+          <ion-icon (click)="deleteComment(comment)" name="close" color="gray" class="delete" *ngIf="comment?.mine"></ion-icon>
         </div>
         <ion-item no-lines class="pin-comment" *ngFor="let comment of comments">
           <ion-avatar item-left (click)="viewProfile(comment?.user_id)">

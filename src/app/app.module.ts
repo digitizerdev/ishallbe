@@ -100,7 +100,7 @@ import * as firebase from 'firebase/app';
     CreatePinPage,
     PinsManagerPage,
     PostsManagerPage,
-    UsersManagerPage
+    UsersManagerPage,
   ],
   providers: [
     StatusBar,

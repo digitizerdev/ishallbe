@@ -22,6 +22,7 @@
         <resource-file src="google-services.json" target="app/google-services.json" />
     </platform>
     <platform name="ios">
+        <resource-file src="GoogleService-Info.plist" target="GoogleService-Info.plist" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
@@ -57,6 +58,7 @@
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
+    <preference name="YouTubeDataApiKey" value="AIzaSyA7_EM6y5R8S9EtLWp-JPFA43utaui3-vo" />
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
@@ -97,4 +99,5 @@
         <variable name="UPDATE_API" value="https://api.ionicjs.com" />
         <variable name="MAX_STORE" value="2" />
     </plugin>
+    <plugin name="cordova-plugin-youtube-video-player" spec="^1.0.6" />
 </widget>
