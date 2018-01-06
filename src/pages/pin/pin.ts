@@ -34,6 +34,7 @@ export class PinPage {
   pinComment: any;
   title: any;
   mine: any;
+  video: any;
 
   constructor(
     public navCtrl: NavController,
@@ -93,6 +94,7 @@ export class PinPage {
     this.requestPin().subscribe((pin) => {
       if (!this.loaded) {
         this.pin = pin;
+        if (pin.video) this.video = pin.youtubeEmbed;
         this.checkIfPinMine();                        
         this.title = pin.displayTime;
         this.presentPin(refresh);
