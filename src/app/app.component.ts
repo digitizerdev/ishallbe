@@ -1,5 +1,5 @@
 import { NgModule, Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
@@ -51,12 +51,13 @@ export class iShallBe {
   managerPages: Array<{ title: string, icon: string, component: any }>;
 
   constructor(
-    public platform: Platform,
-    public statusBar: StatusBar,
-    public splashScreen: SplashScreen,
-    public firebase: FirebaseProvider,
-    public storage: Storage,
-    public push: Push
+    private platform: Platform,
+    private statusBar: StatusBar,
+    private splashScreen: SplashScreen,
+    private alertCtrl: AlertController,
+    private firebase: FirebaseProvider,
+    private storage: Storage,
+    private push: Push
   ) {
     this.rootPage = StartupPage;
     platform.ready();
@@ -70,14 +71,14 @@ export class iShallBe {
       { title: 'Account Email Page', component: AccountEmailPage },
       { title: 'Account Password Page', component: AccountPasswordPage },
       { title: 'Account Page', component: AccountPage },
-      { title: 'About Page', component: AboutPage },    
+      { title: 'About Page', component: AboutPage },
       { title: 'Edit Profile Page', component: EditProfilePage },
       { title: 'Photo Page', component: PhotoPage },
       { title: 'Profile Page', component: ProfilePage },
       { title: 'Create Statement Page', component: CreateStatementPage },
       { title: 'Post Page', component: PostPage },
       { title: 'Pin Page', component: PinPage },
-      { title: 'Home Page', component: HomePage },      
+      { title: 'Home Page', component: HomePage },
       { title: 'Create Pin Page', component: CreatePinPage },
       { title: 'Users Manager Page', component: UsersManagerPage },
       { title: 'Posts Manager Page', component: PostsManagerPage },
@@ -118,9 +119,9 @@ export class iShallBe {
     ]
 
     this.components = [
-      { title: 'Header Component', component: HeaderComponent },      
+      { title: 'Header Component', component: HeaderComponent },
       { title: 'Terms of Service Component', component: TermsOfServiceComponent },
-      { title: 'Login Facebook Component', component: LoginFacebookComponent },      
+      { title: 'Login Facebook Component', component: LoginFacebookComponent },
     ]
   }
 
@@ -128,33 +129,48 @@ export class iShallBe {
     this.platform.ready().then(() => {
       console.log("Platform ready");
       this.splashScreen.hide();
-      this.initPushNotifications();
+      this.initPushNotification();
     });
   }
 
-  initPushNotifications(){
+  initPushNotification() {
     if (!this.platform.is('cordova')) {
+      console.warn("Push notifications not initialized. Cordova is not available - Run in physical device");
       return;
     }
+
+    this.push.hasPermission()
+      .then((res: any) => {
+
+        if (res.isEnabled) {
+          console.log('We have permission to send push notifications');
+        } else {
+          console.log('We do not have permission to send push notifications');
+        }
+
+      });
+
+    // to init
     const options: PushOptions = {
       android: {},
       ios: {
-          alert: 'true',
-          badge: true,
-          sound: 'false'
+        alert: 'true',
+        badge: true,
+        sound: 'false',
+
       },
       windows: {},
       browser: {
-          pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+        pushServiceURL: 'http://push.api.phonegap.com/v1/push'
       }
-   };
+    };
 
-    const pushObject: PushObject = this.push.init(options);    
+    const pushObject: PushObject = this.push.init(options);
 
     pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
-    
+
     pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
-    
+
     pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
   }
 
