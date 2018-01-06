@@ -21,7 +21,7 @@
           <h2>{{pin?.title}}</h2>
         </ion-col>
       </ion-row>
-      <img *ngIf="pin?.image" class="full-image" src="{{ pin?.url }}" (click)="openLink(pin.link)">
+      <img *ngIf="pin?.image" class="full-image" src="{{ pin?.url }}" (click)="playYoutube(pin.youtubeID)">
       <ion-row class="affirmation" *ngIf="!pin?.image">
         <ion-col no-padding text-center>
           <h4 *ngIf="!pin?.image" padding>{{ pin?.content}}</h4>

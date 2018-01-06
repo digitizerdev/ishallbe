@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
 
 import { ProfilePage } from '../profile/profile';
 
@@ -38,6 +39,7 @@ export class PinPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertCtrl: AlertController,
+    private youtube: YoutubeVideoPlayer,
     public storage: Storage,
     public firebase: FirebaseProvider
   ) {
@@ -465,5 +467,11 @@ export class PinPage {
 
   openLink(url) {
     open(url)
+  }
+
+  playYoutube(id) {
+    console.log("Playing youtube");
+    console.log("ID is " + id);
+    this.youtube.openVideo(id);
   }
 }

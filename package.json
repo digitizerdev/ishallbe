@@ -87,6 +87,11 @@
   },
   "version": "1.1.0",
   "description": "If You Speak It, It Shall Be!",
+  "cordovaPlugins": [
+    {
+      "locator": "phonegap-plugin-push"
+    }
+  ],
   "cordova": {
     "plugins": {
       "ionic-plugin-keyboard": {},
@@ -123,10 +128,5 @@
   },
   "config": {
     "ionic_purge_unused_fonts": false
-  },
-  "cordovaPlugins": [
-    {
-      "locator": "phonegap-plugin-push"
-    }
-  ]
+  }
 }

@@ -84,7 +84,7 @@ export class iShallBe {
     ];
 
     this.providers = [
-      { title: 'Firebase Provider', component: FirebaseProvider },
+      { title: 'Firebase Provider', component: FirebaseProvider }
     ]
 
     this.menuPages = [
@@ -112,8 +112,7 @@ export class iShallBe {
         title: 'Account',
         icon: 'ios-contact',
         component: AccountPage
-      },
-
+      }
     ]
 
     this.components = [
