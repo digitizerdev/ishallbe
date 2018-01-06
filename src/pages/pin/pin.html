@@ -21,7 +21,7 @@
           <h2>{{pin?.title}}</h2>
         </ion-col>
       </ion-row>
-      <iframe *ngIf="pin?.video" width="100%" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
+      <iframe *ngIf="pin?.video" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
       <ion-row class="affirmation" *ngIf="!pin?.image">
         <ion-col no-padding text-center>
           <h4 *ngIf="!pin?.image" padding>{{ pin?.content}}</h4>
