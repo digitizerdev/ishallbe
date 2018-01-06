@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, Platform } from 'ionic-angular';
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { Storage } from '@ionic/storage';
 import { Moment, lang } from 'moment';
 import { Observable } from 'rxjs/Observable';
@@ -34,12 +35,14 @@ export class HomePage {
   postsLoaded: any;
 
   constructor(
+    private platform: Platform,
     private navCtrl: NavController,
     private navParams: NavParams,
     private firebase: FirebaseProvider,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private storage: Storage,
+    private push: Push
   ) {
   }
 
@@ -51,6 +54,7 @@ export class HomePage {
       this.uid = uid;
       this.loadHome();
     });
+    this.initPushNotification();
   }
 
   requestUID() {
@@ -439,5 +443,47 @@ export class HomePage {
       }
       this.posts.push(post);
     });
+  }
+
+  initPushNotification() {
+    if (!this.platform.is('cordova')) {
+      console.warn("Push notifications not initialized. Cordova is not available - Run in physical device");
+      return;
+    }
+
+    this.push.hasPermission()
+      .then((res: any) => {
+
+        if (res.isEnabled) {
+          
+          console.log('We have permission to send push notifications');
+        } else {
+          console.log('We do not have permission to send push notifications');
+        }
+
+      });
+
+    // to init
+    const options: PushOptions = {
+      android: {},
+      ios: {
+        alert: 'true',
+        badge: true,
+        sound: 'false',
+
+      },
+      windows: {},
+      browser: {
+        pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+      }
+    };
+
+    const pushObject: PushObject = this.push.init(options);
+
+    pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
+
+    pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
+
+    pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
   }
 }

@@ -3,7 +3,6 @@ import { Nav, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
-import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { Observable } from 'rxjs/Rx';
 
 import { StartupPage } from '../pages/startup/startup';
@@ -57,7 +56,6 @@ export class iShallBe {
     private alertCtrl: AlertController,
     private firebase: FirebaseProvider,
     private storage: Storage,
-    private push: Push
   ) {
     this.rootPage = StartupPage;
     platform.ready();
@@ -129,52 +127,8 @@ export class iShallBe {
     this.platform.ready().then(() => {
       console.log("Platform ready");
       this.splashScreen.hide();
-      this.initPushNotification();
     });
   }
-
-  initPushNotification() {
-    if (!this.platform.is('cordova')) {
-      console.warn("Push notifications not initialized. Cordova is not available - Run in physical device");
-      return;
-    }
-
-    this.push.hasPermission()
-      .then((res: any) => {
-
-        if (res.isEnabled) {
-          
-          console.log('We have permission to send push notifications');
-        } else {
-          console.log('We do not have permission to send push notifications');
-        }
-
-      });
-
-    // to init
-    const options: PushOptions = {
-      android: {},
-      ios: {
-        alert: 'true',
-        badge: true,
-        sound: 'false',
-
-      },
-      windows: {},
-      browser: {
-        pushServiceURL: 'http://push.api.phonegap.com/v1/push'
-      }
-    };
-
-    const pushObject: PushObject = this.push.init(options);
-
-    pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
-
-    pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
-
-    pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
-  }
-
 
   openPage(page) {
     this.nav.setRoot(page.component);
