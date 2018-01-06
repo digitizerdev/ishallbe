@@ -48,41 +48,34 @@
         <div text-right>
           <ion-icon (click)="deleteComment(comment)" name="close" color="gray" class="delete" *ngIf="comment?.mine"></ion-icon>
         </div>
-        <ion-item no-lines class="pin-comment" *ngFor="let comment of comments">
-          <ion-avatar item-left (click)="viewProfile(comment?.user_id)">
-            <img src="{{ comment?.face }}">
-          </ion-avatar>
-          <div text-right>
-            <ion-icon (click)="deleteComment(comment)" name="close" color="gray" class="delete" *ngIf="comment?.mine"></ion-icon>
-          </div>
-          <h3 ion-text color="primary" class="pin-author">
-            {{ comment?.name }}
-          </h3>
-          <p class="comment-content" text-wrap>{{ comment?.content}}</p>
-          <a (click)="toggleCommentLike(comment)" class="subdued like-count">
-            <ion-icon name="heart" color="love" *ngIf="comment?.userLiked"></ion-icon>
-            <ion-icon name="heart-outline" color="gray" *ngIf="!comment?.userLiked"></ion-icon>
-            {{ comment?.likeCount}}
-          </a>
-          <span class="comment-time">
-            <ion-icon></ion-icon>
-            {{ comment?.time }}
-          </span>
-        </ion-item>
-      </div>
-      <form #commentForm="ngForm" novalidate>
-        <ion-list>
-          <ion-item class="add-comment" no-lines>
-            <ion-label floating color="primary">Add: </ion-label>
-            <ion-input [(ngModel)]="commentForm.comment" name="comment" type="text" #comment="ngModel" spellcheck="false" autocapitalize="off"
-              required>
-            </ion-input>
-          </ion-item>
-          <p ion-text [hidden]="comment.valid || submitted == false" color="danger" padding-left>
-            Comment is required
-          </p>
-          <button class="submit-button" ion-button (click)="submit(commentForm)" color="primary" type="submit" block>Comment</button>
-        </ion-list>
-      </form>
+        <h3 ion-text color="primary" class="pin-author">
+          {{ comment?.name }}
+        </h3>
+        <p class="comment-content" text-wrap>{{ comment?.content}}</p>
+        <a (click)="toggleCommentLike(comment)" class="subdued like-count">
+          <ion-icon name="heart" color="love" *ngIf="comment?.userLiked"></ion-icon>
+          <ion-icon name="heart-outline" color="gray" *ngIf="!comment?.userLiked"></ion-icon>
+          {{ comment?.likeCount}}
+        </a>
+        <span class="comment-time">
+          <ion-icon></ion-icon>
+          {{ comment?.time }}
+        </span>
+      </ion-item>
     </div>
-  </ion-content>
+    <form #commentForm="ngForm" novalidate>
+      <ion-list>
+        <ion-item class="add-comment" no-lines>
+          <ion-label floating color="primary">Add: </ion-label>
+          <ion-input [(ngModel)]="commentForm.comment" name="comment" type="text" #comment="ngModel" spellcheck="false" autocapitalize="off"
+            required>
+          </ion-input>
+        </ion-item>
+        <p ion-text [hidden]="comment.valid || submitted == false" color="danger" padding-left>
+          Comment is required
+        </p>
+        <button class="submit-button" ion-button (click)="submit(commentForm)" color="primary" type="submit" block>Comment</button>
+      </ion-list>
+    </form>
+  </div>
+</ion-content>
