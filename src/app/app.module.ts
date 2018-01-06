@@ -38,7 +38,7 @@ import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
 import { UsersManagerPage } from '../pages/users-manager/users-manager';
 
 import { ComponentsModule } from '../components/components.module';
-
+import { YoutubePipe } from '../pipes/youtube/youtube';
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
 import * as firebase from 'firebase/app';
@@ -65,7 +65,8 @@ import * as firebase from 'firebase/app';
     CreatePinPage,
     PinsManagerPage,
     PostsManagerPage,
-    UsersManagerPage
+    UsersManagerPage,
+    YoutubePipe
   ],
   imports: [
     BrowserModule,
