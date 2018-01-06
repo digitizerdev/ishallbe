@@ -125,14 +125,8 @@ export class iShallBe {
 
   platformReady() {
     this.platform.ready().then(() => {
-      console.log("Platform ready");
       this.splashScreen.hide();
     });
   }
-
-  openPage(page) {
-    this.nav.setRoot(page.component);
-  }
-
 }
 

@@ -453,17 +453,10 @@ export class HomePage {
 
     this.push.hasPermission()
       .then((res: any) => {
-
-        if (res.isEnabled) {
-          
-          console.log('We have permission to send push notifications');
-        } else {
-          console.log('We do not have permission to send push notifications');
-        }
-
+        if (res.isEnabled) { console.log('We have permission to send push notifications');
+        } else { console.log('We do not have permission to send push notifications'); }
       });
 
-    // to init
     const options: PushOptions = {
       android: {},
       ios: {
@@ -480,10 +473,10 @@ export class HomePage {
 
     const pushObject: PushObject = this.push.init(options);
 
-    pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
-
-    pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
-
-    pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+    pushObject.on('registration').subscribe((data: any) => {
+      console.log('device token -> ' + data.registrationId);
+    }, err => {
+      console.log('error in device registration:', err);
+    });
   }
 }
