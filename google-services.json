@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "881822459028",
+    "firebase_url": "https://ishallbe-de9a3.firebaseio.com",
+    "project_id": "ishallbe-de9a3",
+    "storage_bucket": "ishallbe-de9a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881822459028:android:58c20c02735f7e42",
+        "android_client_info": {
+          "package_name": "co.ishallbe.ishallbe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "881822459028-o2s4gaba963pagt85l6obtk8efa2lij4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7_EM6y5R8S9EtLWp-JPFA43utaui3-vo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

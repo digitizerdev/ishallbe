@@ -30,7 +30,7 @@
     "@ionic-native/facebook": "4.4.2",
     "@ionic-native/file": "4.4.2",
     "@ionic-native/media-capture": "4.4.2",
-    "@ionic-native/push": "4.4.2",
+    "@ionic-native/push": "^4.4.2",
     "@ionic-native/splash-screen": "4.4.2",
     "@ionic-native/status-bar": "4.4.2",
     "@ionic/storage": "^2.0.1",
@@ -120,5 +120,10 @@
   },
   "config": {
     "ionic_purge_unused_fonts": false
-  }
+  },
+  "cordovaPlugins": [
+    {
+      "locator": "phonegap-plugin-push"
+    }
+  ]
 }
