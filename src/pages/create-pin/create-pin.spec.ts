@@ -166,12 +166,6 @@ describe('CreatePinPage', () => {
         expect(el).toContain('Publish');
     });
 
-    it('should ask for day of week on load', () => {
-        spyOn(component, 'askForDayOfWeek');
-        component.ionViewDidLoad();
-        expect(component.askForDayOfWeek).toHaveBeenCalled();
-    });
-
     it('should load next dates', () => {
         expect(component.findNextSelectedDay).toBeDefined();
     });
