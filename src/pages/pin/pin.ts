@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { ProfilePage } from '../profile/profile';
-import { YoutubePipe } from '../../pipes/youtube/youtube'
-
+  
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import moment from 'moment';

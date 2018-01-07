@@ -111,12 +111,12 @@ describe('iShallBe App Component', () => {
     expect(component.components.length).toBe(3);
   });
 
-  it('should enable push notifications', fakeAsync(() => {
-    expect(component.initPushNotifications).toBeDefined();
-  }));
-
   it('should initialize with startup page as root page', () => {
     expect(component['rootPage']).toBe(StartupPage);
+  });
+
+  it('should be able to open page', () => {
+    expect(component.openPage).toBeDefined();
   });
 
 });

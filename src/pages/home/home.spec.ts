@@ -10,6 +10,7 @@ import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
 
 import { HeaderComponent } from '../../components/header/header';
 import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
@@ -27,6 +28,7 @@ import { } from 'jasmine';
 import {
     FirebaseProviderMock,
     NavMock,
+    PushMock,
     StorageMock,
     AngularFireDatabaseMock,
     AngularFireAuthMock
@@ -35,6 +37,7 @@ import {
 let fixture;
 let component;
 let nav: NavController;
+let push: PushMock;
 let firebase: FirebaseProvider;
 let storage: Storage;
 let afAuth: AngularFireAuth;
@@ -116,6 +119,7 @@ describe('HomePage', () => {
                 { provide: Storage, useClass: StorageMock },
                 { provide: NavController, useClass: NavMock },
                 { provide: NavParams, useClass: NavMock },
+                { provide: Push, useClass: PushMock },
                 { provide: AngularFireDatabase, useValue: angularFireDataStub },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
             ],
@@ -129,6 +133,7 @@ describe('HomePage', () => {
         fixture = TestBed.createComponent(HomePage);
         component = fixture.componentInstance;
         nav = fixture.componentRef.injector.get(NavController);
+        push = fixture.componentRef.injector.get(Push);
         storage = fixture.componentRef.injector.get(Storage);
         firebase = fixture.componentRef.injector.get(FirebaseProvider);
         afAuth = TestBed.get(AngularFireAuth);
@@ -139,6 +144,7 @@ describe('HomePage', () => {
         fixture.destroy();
         component = null;
         nav = null;
+        push = null;
         storage = null;
         firebase = null;
         afAuth = null;

@@ -127,5 +127,10 @@ export class iShallBe {
       this.splashScreen.hide();
     });
   }
+  
+  openPage(page) {
+    this.nav.setRoot(page.component);
+  }
+  
 }
 

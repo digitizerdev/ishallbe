@@ -11,6 +11,8 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { YoutubePipe } from '../../pipes/youtube/youtube';
+import { DomSanitizer } from '@angular/platform-browser';
 import { HeaderComponent } from '../../components/header/header';
 import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
 import { TermsOfServiceComponent } from '../../components/terms-of-service/terms-of-service';
@@ -29,7 +31,7 @@ import {
     NavParamsMock,
     StorageMock,
     AngularFireDatabaseMock,
-    AngularFireAuthMock
+    AngularFireAuthMock,
 } from '../../../test-config/mocks-ionic';
 
 let fixture;
@@ -42,6 +44,8 @@ let afData: AngularFireDatabase;
 let afAuth: AngularFireAuth;
 let isAuth$: Subscription;
 let isAuthRef: boolean;
+let pipe: YoutubePipe
+let dom: DomSanitizer;
 
 const credentialsMock = {
     email: 'abc@123.com',
@@ -107,10 +111,10 @@ describe('PinPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [PinPage],
+            declarations: [PinPage, YoutubePipe],
             imports: [
                 IonicModule.forRoot(PinPage),
-                AngularFireModule.initializeApp(environment.firebase)
+                AngularFireModule.initializeApp(environment.firebase),
             ],
             providers: [
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
@@ -135,6 +139,7 @@ describe('PinPage', () => {
         firebase = fixture.componentRef.injector.get(FirebaseProvider);
         afData = TestBed.get(AngularFireDatabase);
         afAuth = TestBed.get(AngularFireAuth);
+        pipe = new YoutubePipe(dom);
     });
 
     afterEach(() => {
@@ -142,6 +147,7 @@ describe('PinPage', () => {
         component = null;
         nav = null;
         navParams = null;
+        pipe = null;
         storage = null;
         firebase = null;
         afAuth = null;

@@ -7,6 +7,7 @@ import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { IonicStorageModule, } from '@ionic/storage';
+import { YoutubePipe } from '../src/pipes/youtube/youtube';
 import { NavController, NavParams, AlertController, LoadingController, ActionSheetController } from 'ionic-angular';
 import { AngularFireModule } from 'angularfire2';
 import { FirebaseListObservable, FirebaseObjectObservable, AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
@@ -123,6 +124,12 @@ export class EmailComposerMock extends EmailComposer {
     return new Promise(function (resolve: Function): void {
       resolve();
     });
+  }
+}
+
+export class YoutubePipeMock extends YoutubePipe {
+  hide() {
+    return;
   }
 }
 
