@@ -4,7 +4,12 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>{{title}}</ion-title>
+    <ion-title color='primary'>{{viewTitle}}</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="pushCreatePinPage()">
+          <ion-icon name="ios-add-circle-outline"></ion-icon>
+        </button>
+      </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -18,9 +23,4 @@
   step="30"
   class="calendar">
   </calendar>
-  <ion-row responsive-sm>
-    <ion-col text-center>
-      <button ion-button id="CreatePinButton" (click)="pushCreatePinPage()" color="secondary" round>Create Pin</button>
-    </ion-col>
-  </ion-row>
 </ion-content>

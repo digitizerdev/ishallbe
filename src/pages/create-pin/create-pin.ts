@@ -54,7 +54,12 @@ export class CreatePinPage {
   ionViewDidLoad() {
     this.timeStampPage();
     this.loadProfile();
-    this.askForDayOfWeek();
+    let day = this.navParams.get('selectedDay');
+    console.log("Got day");
+    console.log("Day is " + day);
+    this.dayOfWeek = moment(day).format('dddd');
+    console.log("Day of week is " + this.dayOfWeek);
+    //this.askForDayOfWeek();
   }
 
   timeStampPage() {

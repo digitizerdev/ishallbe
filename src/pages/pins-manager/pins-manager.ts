@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import * as moment from 'moment';
 
 import { CreatePinPage } from '../create-pin/create-pin';
 
@@ -10,7 +11,6 @@ import { CreatePinPage } from '../create-pin/create-pin';
 })
 export class PinsManagerPage {
   
-  title = 'Manage Pins';
   eventSource = [];
   viewTitle: string;
   selectedDay = new Date();
@@ -26,23 +26,21 @@ export class PinsManagerPage {
   ) {
   }
 
-  ionViewDidLoad() {
-  }
-
   onViewTitleChanged(title) {
-
+    this.viewTitle = title;
   }
 
   onTimeSelected(ev) {
-
+    this.selectedDay = ev.selectedTime;
   }
 
   onEventSelected(event) {
-
+    let start = moment(event.startTime).format('LLLL');
+    let end = moment(event.endTime).format('LLLL');
   }
-  
+
   pushCreatePinPage() {
-    this.navCtrl.push(CreatePinPage);
+    this.navCtrl.push(CreatePinPage, {selectedDay: this.selectedDay});
   }
 
 }
