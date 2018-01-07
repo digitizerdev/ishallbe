@@ -15,6 +15,7 @@ import { AngularFireModule, FirebaseApp } from 'angularfire2';
 import { environment } from '../environments/environment';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
+import { NgCalendarModule } from 'ionic2-calendar';
 
 import { StartupPage } from '../pages/startup/startup';
 import { LoginPage } from '../pages/login/login';
@@ -76,7 +77,8 @@ import * as firebase from 'firebase/app';
     ComponentsModule,
     AngularFireModule.initializeApp(environment.firebase), 
     AngularFireAuthModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    NgCalendarModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -127,12 +127,6 @@ export class EmailComposerMock extends EmailComposer {
   }
 }
 
-export class YoutubePipeMock extends YoutubePipe {
-  hide() {
-    return;
-  }
-}
-
 export class PushMock extends Push {
   hide() {
     return;
