@@ -11,7 +11,15 @@ import { CreatePinPage } from '../create-pin/create-pin';
 export class PinsManagerPage {
   
   title = 'Manage Pins';
-  
+  eventSource = [];
+  viewTitle: string;
+  selectedDay = new Date();
+
+  calendar = {
+    mode: 'month',
+    currentDate: this.selectedDay
+  }
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams
@@ -19,9 +27,20 @@ export class PinsManagerPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PinsManagerPage');
   }
 
+  onViewTitleChanged(title) {
+
+  }
+
+  onTimeSelected(ev) {
+
+  }
+
+  onEventSelected(event) {
+
+  }
+  
   pushCreatePinPage() {
     this.navCtrl.push(CreatePinPage);
   }
