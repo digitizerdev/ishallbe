@@ -1,10 +1,11 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ActionSheetController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, ActionSheetController, Platform } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 import Cropper from 'cropperjs';
 import moment from 'moment';
+import firebase from 'firebase';
 
 import { PinsManagerPage } from '../pins-manager/pins-manager';
 
@@ -23,7 +24,7 @@ export class CreatePinPage {
   profile: any;
   pinForm: {
     title?: string,
-    description?: string,
+    content?: string,
     url?: string,
     youtubeEmbedLink?: string
   } = {};
@@ -42,12 +43,15 @@ export class CreatePinPage {
   imageURL: any;
   selectedDay: any;
   formTitle: any;
+  pin: any;
+  short = false;
 
   constructor(
     private platform: Platform,
     private navCtrl: NavController,
     private navParams: NavParams,
     private actionSheetCtrl: ActionSheetController,
+    private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private camera: Camera,
     private storage: Storage,
@@ -61,16 +65,9 @@ export class CreatePinPage {
     this.timeStampPage();
     this.setPinTitle();
     if (this.dayOfWeek == 'Monday') {
-      this.createVideoPin();
+      this.getPicture();
       this.monday = true
-    } else {
-      if (this.dayOfWeek == 'Tuesday') {
-        this.createMusicPin();
-        this.tuesday = true
-      } else {
-        this.createTextPin();
-      }
-    }
+    } else { if (this.dayOfWeek == 'Tuesday') this.tuesday = true }
   }
 
   timeStampPage() {
@@ -81,6 +78,7 @@ export class CreatePinPage {
     console.log("Display time is " + this.displayTime);
     this.date = moment(this.selectedDay).format('YYYYMMDD');
     console.log("This date is " + this.date);
+    this.rawTime = moment().format('YYYYMMDDmmss');
   }
 
   setPinTitle() {
@@ -112,23 +110,6 @@ export class CreatePinPage {
   requestProfile() {
     let path = '/users/' + this.uid;
     return this.firebase.object(path)
-  }
-
-
-  createVideoPin() {
-    console.log("Creating video pin");
-    console.log("Day is " + this.dayOfWeek);
-    this.getPicture();
-  }
-
-  createMusicPin() {
-    console.log("Creating music pin");
-    console.log("Day is " + this.dayOfWeek);
-  }
-
-  createTextPin() {
-    console.log("Creating text pin");
-    console.log("Day is " + this.dayOfWeek);
   }
 
   getPicture() {
@@ -176,8 +157,188 @@ export class CreatePinPage {
 
   submit(pinForm) {
     this.submitted = true;
-    if (pinForm.valid) {
-
+    this.pinForm = pinForm;
+    if (this.monday && (!pinForm.title || !pinForm.youtubeEmbedLink)) {
+      this.errorHandler();
+    } else {
+      if (this.tuesday && (!pinForm.title || !pinForm.content || !pinForm.url)) {
+        this.errorHandler();
+      } else {
+        if (!pinForm.title || !pinForm.content) {
+          this.errorHandler();
+        } else this.forkDayToCreatePin();
+      }
     }
+  }
+
+  forkDayToCreatePin() {
+    if (this.monday) { this.createMondayPin() } else {
+      if (this.tuesday) { this.createTuesdayPin() } else {
+        this.createOtherPin();
+      }
+    }
+  }
+
+  createMondayPin() {
+    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+    loading.present();
+    this.uploadPhoto().subscribe(() => {
+      this.buildMondayPin().subscribe(() => {
+        this.firebase.list('pins').push(this.pin).then((token) => {
+          this.addIDToPin(token).then(() => {
+            loading.dismiss();
+            this.navCtrl.setRoot(PinsManagerPage);
+          });
+        })
+      });
+    });
+  }
+
+  uploadPhoto() {
+    return Observable.create((observer) => {
+      this.image = this.cropperInstance
+        .getCroppedCanvas({ width: 480, height: 320 }).toDataURL('image/jpeg');
+      let path = 'content/' + this.uid + '/images/' + this.rawTime;
+      return this.store(path, this.image).subscribe((snapshot) => {
+        this.imageURL = snapshot.downloadURL;
+        observer.next();
+      });
+    });
+  }
+
+  store(path, obj) {
+    return Observable.create((observer) => {
+      let myPath = firebase.storage().ref(path);
+      return myPath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
+        then(function (snapshot) {
+          observer.next(snapshot);
+        }).catch((error: any) => {
+          observer.next(error);
+        });
+    });
+  }
+
+  buildMondayPin() {
+    return Observable.create((observer) => {
+      this.pin = {
+        commentCount: 0,
+        date: this.date,
+        day: this.day,
+        displayTime: this.displayTime,
+        monday: true,
+        face: this.profile.photo,
+        image: true,
+        video: true,
+        likeCount: 0,
+        liked: false,
+        name: this.profile.name,
+        rawTime: this.rawTime,
+        title: this.pinForm.title,
+        uid: this.uid,
+        url: this.imageURL,
+        youtubeEmbedLink: this.pinForm.youtubeEmbedLink,
+        startTime: this.selectedDay,
+        endTime: this.selectedDay,
+        allDay: true
+      }
+      observer.next();
+    });
+  }
+
+  createTuesdayPin() {
+    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+    loading.present();
+    this.buildTuesdayPin().subscribe(() => {
+      this.firebase.list('pins').push(this.pin).then((token) => {
+        this.addIDToPin(token).then(() => {
+          loading.dismiss();
+          this.navCtrl.setRoot(PinsManagerPage);
+        });
+      })
+    });
+  }
+
+  buildTuesdayPin() {
+    if (this.pinForm.content.length < 150 ) this.short = true;
+    return Observable.create((observer) => {
+      this.pin = {
+        short: this.short,
+        commentCount: 0,
+        content: this.pinForm.content,
+        date: this.date,
+        day: this.day,
+        displayTime: this.displayTime,
+        tuesday: true,
+        face: this.profile.photo,
+        text: true,
+        likeCount: 0,
+        liked: false,
+        name: this.profile.name,
+        rawTime: this.rawTime,
+        title: this.pinForm.title,
+        uid: this.uid,
+        url: this.pinForm.url,
+        startTime: this.selectedDay,
+        endTime: this.selectedDay,
+        allDay: true
+      }
+      observer.next();
+    });
+  }
+
+  createOtherPin() {
+    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+    loading.present();
+    this.buildOtherPin().subscribe(() => {
+      this.firebase.list('pins').push(this.pin).then((token) => {
+        this.addIDToPin(token).then(() => {
+          loading.dismiss();
+          this.navCtrl.setRoot(PinsManagerPage);
+        });
+      })
+    });
+  }
+
+  buildOtherPin() {
+    if (this.pinForm.content.length < 150 ) this.short = true;
+    return Observable.create((observer) => {
+      this.pin = {
+        short: this.short,
+        commentCount: 0,
+        content: this.pinForm.content,
+        date: this.date,
+        day: this.day,
+        displayTime: this.displayTime,
+        face: this.profile.photo,
+        text: true,
+        likeCount: 0,
+        liked: false,
+        name: this.profile.name,
+        rawTime: this.rawTime,
+        title: this.pinForm.title,
+        uid: this.uid,
+        startTime: this.selectedDay,
+        endTime: this.selectedDay,
+        allDay: true
+      }
+      observer.next();
+    });
+  }
+
+  addIDToPin(token) {
+    let path = 'pins/' + token.key;
+    let post = {
+      id: token.key
+    }
+    return this.firebase.object(path).update(post)
+  }
+
+  errorHandler() {
+    let alert = this.alertCtrl.create({
+      title: 'Fail',
+      subTitle: "Please fill out all fields",
+      buttons: ['OK']
+    });
+    alert.present();
   }
 }
