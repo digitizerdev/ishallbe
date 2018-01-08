@@ -21,11 +21,11 @@ export class PinsManagerPage {
   feedTimestamp: any;
   pins: any;
   pinsQuery: any;
-
   calendar = {
     mode: 'month',
     currentDate: this.selectedDay
   }
+  pin: any;
 
   constructor(
     private navCtrl: NavController,
@@ -99,7 +99,7 @@ export class PinsManagerPage {
         {
           text: 'Open',
           handler: () => {
-            this.navCtrl.push(PinPage, {id: event.id})
+            this.navCtrl.push(PinPage, { id: event.id })
           }
         }
       ]
@@ -108,7 +108,52 @@ export class PinsManagerPage {
   }
 
   pushCreatePinPage() {
-    this.navCtrl.push(CreatePinPage, { selectedDay: this.selectedDay });
+    this.checkForExistingPin().subscribe((existingPin) => {
+      if (existingPin) {
+        console.log("There is an existing pin");
+        this.displayExistingPinAlert();
+      } else {
+        this.navCtrl.push(CreatePinPage, { selectedDay: this.selectedDay });
+      }
+    });
+  }
+
+  checkForExistingPin() {
+    let selectedDate = moment(this.selectedDay).format('YYYYMMDD');
+    console.log("Selected date is " + selectedDate);
+    return Observable.create((observer) => {
+      return this.firebase.queriedList('/pins', 'date', selectedDate).subscribe((pin) => {
+        console.log("Got pin");
+        console.log(pin);
+        if (pin.length == 0) {
+          observer.next(false)
+        } else {
+          observer.next(true);
+        }
+      });
+    });
+  }
+
+  displayExistingPinAlert() {
+    let alert = this.alertCtrl.create({
+      title: "Warning: There is an existing pin",
+      message: "Would you like to continue?",
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this.navCtrl.push(CreatePinPage, { selectedDay: this.selectedDay });
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
 }

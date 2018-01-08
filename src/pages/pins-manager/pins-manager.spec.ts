@@ -140,4 +140,10 @@ describe('PinsManagerPage', () => {
         expect(component.loadPins).toHaveBeenCalled();
     });
 
+    it('should check for pin before creating pin', () => {
+        spyOn(component, 'checkForExistingPin').and.returnValue({ subscribe: () => {}});
+        component.pushCreatePinPage();
+        expect(component.checkForExistingPin).toHaveBeenCalled();
+    });
+
 });
