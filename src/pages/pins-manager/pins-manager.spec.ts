@@ -130,8 +130,14 @@ describe('PinsManagerPage', () => {
         afData = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof PinsManagerPage).toBe(true);
     });    
+
+    fit('should load pins on load', () => {
+        spyOn(component, 'loadPins').and.returnValue({ subscribe: () => {}});
+        component.ionViewDidLoad();
+        expect(component.loadPins).toHaveBeenCalled();
+    });
 
 });

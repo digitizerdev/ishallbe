@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
+import { Observable } from 'rxjs/Observable';
 
 import { CreatePinPage } from '../create-pin/create-pin';
 
@@ -24,6 +25,33 @@ export class PinsManagerPage {
     public navCtrl: NavController, 
     public navParams: NavParams
   ) {
+  }
+
+  ionViewDidLoad() {
+    this.loadPins().subscribe((event) => {
+      console.log("Got event");
+      console.log(event);
+      let calendarEvents = this.eventSource;
+      calendarEvents.push(event);
+      console.log("Calendar events is " );
+      console.log(calendarEvents);
+      this.eventSource = [];
+      setTimeout(() => {
+        this.eventSource = calendarEvents;
+      })
+    });
+  }
+
+  loadPins() {
+    return Observable.create((observer) => {
+      let myTestEvent = {
+        title: "Test Event",
+        startTime: new Date(),
+        endTime: new Date(),
+        allDay: true
+      }
+      observer.next(myTestEvent);
+    });
   }
 
   onViewTitleChanged(title) {
