@@ -165,7 +165,7 @@ export class CreatePinPage {
       if (this.tuesday && (!pinForm.title || !pinForm.content || !pinForm.url)) {
         this.errorHandler();
       } else {
-        if (!pinForm.title || !pinForm.content) {
+        if (!this.monday && (!pinForm.title || !pinForm.content)) {
           this.errorHandler();
         } else this.forkDayToCreatePin();
       }

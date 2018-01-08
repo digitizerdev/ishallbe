@@ -108,11 +108,11 @@ export class FirebaseProvider {
     let path = queryParameters.path;
     let limitToLast = queryParameters.limitToLast;
     let fieldName = queryParameters.fieldName;
-    let startAt = queryParameters.startAt;
+    let endAt = queryParameters.endAt;
     return this.afdb.list(path, {
       query: {
         orderByValue: fieldName,
-        startAt: startAt,
+        endAt: endAt,
         limitToLast: limitToLast       
       }
     }).take(1);
