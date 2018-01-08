@@ -185,6 +185,8 @@ export class CreatePinPage {
     loading.present();
     this.uploadPhoto().subscribe(() => {
       this.buildMondayPin().subscribe(() => {
+        console.log("This pin is " );
+        console.log(this.pin);
         this.firebase.list('pins').push(this.pin).then((token) => {
           this.addIDToPin(token).then(() => {
             loading.dismiss();
@@ -250,6 +252,8 @@ export class CreatePinPage {
     let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
     loading.present();
     this.buildTuesdayPin().subscribe(() => {
+      console.log("This pin is " );
+      console.log(this.pin);
       this.firebase.list('pins').push(this.pin).then((token) => {
         this.addIDToPin(token).then(() => {
           loading.dismiss();
@@ -291,6 +295,8 @@ export class CreatePinPage {
     let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
     loading.present();
     this.buildOtherPin().subscribe(() => {
+      console.log("This pin is " );
+      console.log(this.pin);
       this.firebase.list('pins').push(this.pin).then((token) => {
         this.addIDToPin(token).then(() => {
           loading.dismiss();
