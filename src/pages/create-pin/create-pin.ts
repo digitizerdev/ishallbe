@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ActionSheetController, Platform } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
@@ -44,6 +44,7 @@ export class CreatePinPage {
   formTitle: any;
 
   constructor(
+    private platform: Platform,
     private navCtrl: NavController,
     private navParams: NavParams,
     private actionSheetCtrl: ActionSheetController,
@@ -59,10 +60,16 @@ export class CreatePinPage {
     this.selectedDay = this.navParams.get('selectedDay');
     this.timeStampPage();
     this.setPinTitle();
-    if (this.dayOfWeek == 'Monday') { this.createVideoPin() } else {
-      if (this.dayOfWeek == 'Tuesday') { this.createMusicPin() } else {
+    if (this.dayOfWeek == 'Monday') {
+      this.createVideoPin();
+      this.monday = true
+    } else {
+      if (this.dayOfWeek == 'Tuesday') {
+        this.createMusicPin();
+        this.tuesday = true
+      } else {
         this.createTextPin();
-      } 
+      }
     }
   }
 
@@ -77,26 +84,14 @@ export class CreatePinPage {
   }
 
   setPinTitle() {
-    if (this.dayOfWeek == 'Monday') {
-      this.formTitle = "Motivational Monday";
-      this.monday = true }
-    if (this.dayOfWeek == 'Tuesday') {
-      this.formTitle = "Tuesday's Tune of the Day" 
-      this.tuesday = true; }
+    if (this.dayOfWeek == 'Monday') this.formTitle = "Motivational Monday"
+    if (this.dayOfWeek == 'Tuesday') this.formTitle = "Tuesday's Tune of the Day"
     if (this.dayOfWeek == 'Wednesday') this.formTitle = "Wise Words Wednesday";
     if (this.dayOfWeek == 'Thursday') this.formTitle = "Treat Yourself Thursday";
     if (this.dayOfWeek == 'Friday') this.formTitle = "Faith Over Fear Friday";
     if (this.dayOfWeek == 'Saturday') this.formTitle = "Happy Saturday!";
-    let form = {
-      title: this.formTitle,
-      content: "",
-      url: "",
-      youtubeEmbedLink: ""
-    }
+    let form = { title: this.formTitle, content: "", url: "", youtubeEmbedLink: "" }
     this.pinForm = form;
-    console.log("Pin form title is " + this.formTitle);
-    console.log("Updated pin form is " );
-    console.log(this.pinForm);
   }
 
   loadProfile() {
@@ -123,6 +118,7 @@ export class CreatePinPage {
   createVideoPin() {
     console.log("Creating video pin");
     console.log("Day is " + this.dayOfWeek);
+    this.getPicture();
   }
 
   createMusicPin() {
@@ -140,7 +136,12 @@ export class CreatePinPage {
       this.imageElement.nativeElement.src = image;
       this.cropImage();
     }).catch((error) => {
-      this.navCtrl.setRoot(PinsManagerPage);
+      console.log("Error getting picture");
+      console.log(error);
+      if (this.platform.is('cordova')) {
+        console.log("This is not a cordova platform")
+        this.navCtrl.setRoot(PinsManagerPage);
+      }
     });
   }
 
