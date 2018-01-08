@@ -439,7 +439,6 @@ describe('PostPage', () => {
         expect(component.reportPost).toBeDefined();
     });
 
-
     it('should request Firebase to remove post', fakeAsync(() => {
         component.firebase.object('testPath').remove('post')
         tick();

@@ -222,6 +222,7 @@ export class CreatePinPage {
   }
 
   buildMondayPin() {
+    let time = this.selectedDay.toISOString();
     return Observable.create((observer) => {
       this.pin = {
         commentCount: 0,
@@ -240,8 +241,8 @@ export class CreatePinPage {
         uid: this.uid,
         url: this.imageURL,
         youtubeEmbedLink: this.pinForm.youtubeEmbedLink,
-        startTime: this.selectedDay,
-        endTime: this.selectedDay,
+        startTime: time,
+        endTime: time,
         allDay: true
       }
       observer.next();
@@ -264,6 +265,7 @@ export class CreatePinPage {
   }
 
   buildTuesdayPin() {
+    let time = this.selectedDay.toISOString();
     if (this.pinForm.content.length < 150 ) this.short = true;
     return Observable.create((observer) => {
       this.pin = {
@@ -283,8 +285,8 @@ export class CreatePinPage {
         title: this.pinForm.title,
         uid: this.uid,
         url: this.pinForm.url,
-        startTime: this.selectedDay,
-        endTime: this.selectedDay,
+        startTime: time,
+        endTime: time,
         allDay: true
       }
       observer.next();
