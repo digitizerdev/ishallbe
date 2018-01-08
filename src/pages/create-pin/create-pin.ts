@@ -74,11 +74,12 @@ export class CreatePinPage {
     console.log("Day is " + this.selectedDay);
     this.dayOfWeek = moment(this.selectedDay).format('dddd');
     console.log("Day of week is " + this.dayOfWeek);
-    this.displayTime = moment(this.selectedDay).format('MMM d YYYY');
+    this.displayTime = moment(this.selectedDay).format('ll');
     console.log("Display time is " + this.displayTime);
-    this.date = moment(this.selectedDay).format('YYYYMMDD');
+    this.date = moment(this.selectedDay).format('l');
     console.log("This date is " + this.date);
     this.rawTime = moment().format('YYYYMMDDmmss');
+    console.log("Raw time is " + this.rawTime);
   }
 
   setPinTitle() {
