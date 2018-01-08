@@ -18,27 +18,30 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 export class CreatePinPage {
   @ViewChild('imageSrc') imageElement: ElementRef;
 
+  title: string;
   uid: any;
   profile: any;
   pinForm: {
     title?: string,
     description?: string,
-    url?: string
+    url?: string,
+    youtubeEmbedLink?: string
   } = {};
   monday = false;
-  url = false;
+  tuesday: any;
   submitted = false;
   rawTime: any;
   day: any;
   date: any;
   dayOfWeek: any;
-  daySelected = false;
-  loader: any;
+  displayTime: any;
   imageMethod: any;
   cameraOptions: any;
   cropperInstance: any;
   image: any;
   imageURL: any;
+  selectedDay: any;
+  formTitle: any;
 
   constructor(
     private navCtrl: NavController,
@@ -52,22 +55,48 @@ export class CreatePinPage {
   }
 
   ionViewDidLoad() {
-    this.timeStampPage();
     this.loadProfile();
-    let day = this.navParams.get('selectedDay');
-    console.log("Got day");
-    console.log("Day is " + day);
-    this.dayOfWeek = moment(day).format('dddd');
-    console.log("Day of week is " + this.dayOfWeek);
-    //this.askForDayOfWeek();
+    this.selectedDay = this.navParams.get('selectedDay');
+    this.timeStampPage();
+    this.setPinTitle();
+    if (this.dayOfWeek == 'Monday') { this.createVideoPin() } else {
+      if (this.dayOfWeek == 'Tuesday') { this.createMusicPin() } else {
+        this.createTextPin();
+      } 
+    }
   }
 
   timeStampPage() {
-    let rawTimeString = moment().format('YYYYMMDDmmss');
-    this.rawTime = parseInt(rawTimeString);
-    this.day = moment().format('dddd');
-    let dateString = moment().format('YYYYMMDD');
-    this.date = parseInt(dateString);
+    console.log("Day is " + this.selectedDay);
+    this.dayOfWeek = moment(this.selectedDay).format('dddd');
+    console.log("Day of week is " + this.dayOfWeek);
+    this.displayTime = moment(this.selectedDay).format('MMM d YYYY');
+    console.log("Display time is " + this.displayTime);
+    this.date = moment(this.selectedDay).format('YYYYMMDD');
+    console.log("This date is " + this.date);
+  }
+
+  setPinTitle() {
+    if (this.dayOfWeek == 'Monday') {
+      this.formTitle = "Motivational Monday";
+      this.monday = true }
+    if (this.dayOfWeek == 'Tuesday') {
+      this.formTitle = "Tuesday's Tune of the Day" 
+      this.tuesday = true; }
+    if (this.dayOfWeek == 'Wednesday') this.formTitle = "Wise Words Wednesday";
+    if (this.dayOfWeek == 'Thursday') this.formTitle = "Treat Yourself Thursday";
+    if (this.dayOfWeek == 'Friday') this.formTitle = "Faith Over Fear Friday";
+    if (this.dayOfWeek == 'Saturday') this.formTitle = "Happy Saturday!";
+    let form = {
+      title: this.formTitle,
+      content: "",
+      url: "",
+      youtubeEmbedLink: ""
+    }
+    this.pinForm = form;
+    console.log("Pin form title is " + this.formTitle);
+    console.log("Updated pin form is " );
+    console.log(this.pinForm);
   }
 
   loadProfile() {
@@ -90,100 +119,20 @@ export class CreatePinPage {
     return this.firebase.object(path)
   }
 
-  askForDayOfWeek() {
-    let actionSheet = this.actionSheetCtrl.create({
-      buttons: [
-        {
-          text: 'Monday',
-          handler: () => {
-            this.monday = true;
-            this.url = true;
-            this.dayOfWeek = 'Monday';
-            this.daySelected = true;
-            this.createImagePin();
-          }
-        },
-        {
-          text: 'Tuesday',
-          handler: () => {
-            this.url = true;
-            this.dayOfWeek = 'Tuesday'
-            this.daySelected = true;
-            this.createMusicPin();
-          }
-        },
-        {
-          text: 'Wednesday',
-          handler: () => {
-            this.dayOfWeek = 'Wednesday'
-            this.daySelected = true;
-            this.createTextPin();
-          }
-        },
-        {
-          text: 'Thursday',
-          handler: () => {
-            this.dayOfWeek = 'Thursday'
-            this.daySelected = true;
-            this.createTextPin();
-          }
-        },
-        {
-          text: 'Friday',
-          handler: () => {
-            this.dayOfWeek = 'Friday'
-            this.daySelected = true;
-            this.createTextPin();
-          }
-        },
-        {
-          text: 'Saturday',
-          handler: () => {
-            this.dayOfWeek = 'Saturday'
-            this.daySelected = true;
-            this.createTextPin();
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            this.navCtrl.pop();
-          }
-        }
-      ]
-    });
-    actionSheet.present();
-  }
 
-  findNextSelectedDay() {
-    console.log("Finding next selected day");
-    console.log("The current date is " + this.date);
-    for (let x = 1; x++; x < 8) {
-      let day = moment().add(x, 'days').calendar();
-      console.log("Next day is " + day);
-      if (day == this.dayOfWeek) {
-        console.log("Found next " + this.dayOfWeek);
-      }
-    }
-  }
-
-  createImagePin() {
-    console.log("Creating image pin");
+  createVideoPin() {
+    console.log("Creating video pin");
     console.log("Day is " + this.dayOfWeek);
-    this.findNextSelectedDay();
   }
 
   createMusicPin() {
     console.log("Creating music pin");
     console.log("Day is " + this.dayOfWeek);
-    this.findNextSelectedDay();
   }
 
   createTextPin() {
     console.log("Creating text pin");
     console.log("Day is " + this.dayOfWeek);
-    this.findNextSelectedDay();
   }
 
   getPicture() {

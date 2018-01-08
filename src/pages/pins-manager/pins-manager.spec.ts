@@ -140,9 +140,11 @@ describe('PinsManagerPage', () => {
         expect(component.loadPins).toHaveBeenCalled();
     });
 
-    it('should check for pin before creating pin', () => {
+    it('should check for pin and Sunday before creating pin', () => {
+        spyOn(component, 'sunday');
         spyOn(component, 'checkForExistingPin').and.returnValue({ subscribe: () => {}});
         component.pushCreatePinPage();
+        expect(component.sunday).toHaveBeenCalled();
         expect(component.checkForExistingPin).toHaveBeenCalled();
     });
 

@@ -158,16 +158,20 @@ describe('CreatePinPage', () => {
         expect(component.requestProfile).toHaveBeenCalled();
     }));
 
+    fit('should load page', () => {
+        spyOn(component, 'timeStampPage');
+        spyOn(component, 'setPinTitle');
+        component.ionViewDidLoad();
+        expect(component.timeStampPage).toHaveBeenCalled();
+        expect(component.setPinTitle).toHaveBeenCalled();
+    });
+
     it('should display pin form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Publish');
-    });
-
-    it('should load next dates', () => {
-        expect(component.findNextSelectedDay).toBeDefined();
+        expect(el).toContain('Create');
     });
 
     it('should request Camera to get picture', () => {

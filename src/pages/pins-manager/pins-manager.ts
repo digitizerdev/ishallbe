@@ -108,23 +108,31 @@ export class PinsManagerPage {
   }
 
   pushCreatePinPage() {
-    this.checkForExistingPin().subscribe((existingPin) => {
-      if (existingPin) {
-        console.log("There is an existing pin");
-        this.displayExistingPinAlert();
-      } else {
-        this.navCtrl.push(CreatePinPage, { selectedDay: this.selectedDay });
-      }
-    });
+    if (!this.sunday()) {
+      this.checkForExistingPin().subscribe((existingPin) => {
+        if (existingPin) {
+          this.displayExistingPinAlert();
+        } else {
+          this.navCtrl.push(CreatePinPage, { selectedDay: this.selectedDay });
+        }
+      });
+    }
+  }
+
+  sunday() {
+    let selectedDate = moment(this.selectedDay).format('dddd');
+    if (selectedDate == 'Sunday') {
+      this.sundayPinError();
+      return true;
+    } else {
+      return false;
+    }
   }
 
   checkForExistingPin() {
     let selectedDate = moment(this.selectedDay).format('YYYYMMDD');
-    console.log("Selected date is " + selectedDate);
     return Observable.create((observer) => {
       return this.firebase.queriedList('/pins', 'date', selectedDate).subscribe((pin) => {
-        console.log("Got pin");
-        console.log(pin);
         if (pin.length == 0) {
           observer.next(false)
         } else {
@@ -132,6 +140,15 @@ export class PinsManagerPage {
         }
       });
     });
+  }
+
+  sundayPinError() {
+    let alert = this.alertCtrl.create({
+      title: 'Error: No Sunday Pins Available',
+      subTitle: 'Please submit a feature request to create a pin for Sunday',
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
   displayExistingPinAlert() {

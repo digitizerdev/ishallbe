@@ -92,7 +92,7 @@ export class PinPage {
     this.requestPin().subscribe((pin) => {
       if (!this.loaded) {
         this.pin = pin;
-        if (pin.video) this.video = pin.youtubeEmbed;
+        if (pin.video) this.video = pin.youtubeEmbedLink;
         this.checkIfPinMine();                        
         this.title = pin.displayTime;
         this.presentPin(refresh);

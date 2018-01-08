@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>Create Pin</ion-title>
+    <ion-title color='primary'>{{displayTime}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -16,52 +16,36 @@
     <img *ngIf="postImage" width="80%" border="black" border-width="2px" class="full-image" [src]="postImage">
     <br>
   </div>
-  <form #pinForm="ngForm" novalidate>
-    <ion-list no-lines radio-group>
-      <ion-item *ngIf="this.daySelected">
-        <ion-label>Tuesdsay, January 10th 2017</ion-label>
-        <ion-radio value="friends" checked></ion-radio>
-      </ion-item>
-      <ion-item *ngIf="this.daySelected">
-        <ion-label>Tuesdsay, January 17th 2017</ion-label>
-        <ion-radio value="family"></ion-radio>
-      </ion-item>
-      <ion-item *ngIf="this.daySelected">
-        <ion-label>Tuesdsay, January 24th 2017</ion-label>
-        <ion-radio value="enemies"></ion-radio>
-      </ion-item>
-      <br>
-      <ion-item>
-        <ion-label stacked color="primary">Title</ion-label>
-        <ion-input [(ngModel)]="pinForm.title" name="title" type="text" #title="ngModel" spellcheck="false" autocapitalize="off"
-          required maxlength="20">
-        </ion-input>
-      </ion-item>
-      <p ion-text [hidden]="title.valid || submitted == false" color="danger" padding-left>
-        Title is required
-      </p>
-      <ion-item>
-        <ion-label stacked color="primary">Content</ion-label>
-        <ion-input [(ngModel)]="pinForm.content" name="content" type="text" #content="ngModel" required>
-        </ion-input>
-      </ion-item>
-      <p ion-text [hidden]="content.valid || submitted == false" color="danger" padding-left>
-        Content is required
-      </p>
-      <ion-item *ngIf="this.url">
-        <ion-label stacked color="primary">URL</ion-label>
-        <ion-input [(ngModel)]="pinForm.url" name="url" type="text" #content="ngModel" required>
-        </ion-input>
-      </ion-item>
-      <p ion-text [hidden]="url.valid || submitted == false || url == false" color="danger" padding-left>
-          URL is required
-        </p>
-      <br>
-      <ion-row>
-        <ion-col text-center>
-          <button id="PinSubmitButton" ion-button (click)="submit(pinForm)" type="submit" round large>Publish</button>
-        </ion-col>
-      </ion-row>
-    </ion-list>
+  <form novalidate>
+    <ion-item no-lines>
+      <ion-label stacked color="primary">Title</ion-label>
+      <ion-input [(ngModel)]="pinForm.title" name="title" type="text" #title="ngModel" spellcheck="false" autocapitalize="off"
+        required maxlength="40">
+      </ion-input>
+    </ion-item>
+    <p ion-text [hidden]="title.valid || submitted == false" color="danger" padding-left>
+      Title is required
+    </p>
+    <ion-item *ngIf="!this.monday" no-lines>
+      <ion-label stacked color="primary">Content</ion-label>
+      <ion-input [(ngModel)]="pinForm.content" name="content" type="text" #content="ngModel">
+      </ion-input>
+    </ion-item>
+    <ion-item *ngIf="this.tuesday" no-lines>
+      <ion-label stacked color="primary">Media URL</ion-label>
+      <ion-input [(ngModel)]="pinForm.url" name="url" type="text" #url="ngModel">
+      </ion-input>
+    </ion-item>
+    <ion-item *ngIf="this.monday" no-lines>
+      <ion-label stacked color="primary">YouTube Embed Link</ion-label>
+      <ion-input [(ngModel)]="pinForm.youtubeEmbedLink" name="youtubeEmbedLink" type="text" #youtubeEmbedLink="ngModel">
+      </ion-input>
+    </ion-item>
+    <br>
+    <ion-row>
+      <ion-col text-center>
+        <button id="PinSubmitButton" ion-button (click)="submit(pinForm)" type="submit" round large>Create Pin</button>
+      </ion-col>
+    </ion-row>
   </form>
 </ion-content>
