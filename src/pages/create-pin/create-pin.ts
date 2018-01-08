@@ -187,7 +187,7 @@ export class CreatePinPage {
       this.buildMondayPin().subscribe(() => {
         console.log("This pin is " );
         console.log(this.pin);
-        this.firebase.list('pins').push(this.pin).then((token) => {
+        this.firebase.list('testPins').push(this.pin).then((token) => {
           this.addIDToPin(token).then(() => {
             loading.dismiss();
             this.navCtrl.setRoot(PinsManagerPage);
@@ -226,7 +226,7 @@ export class CreatePinPage {
       this.pin = {
         commentCount: 0,
         date: this.date,
-        day: this.day,
+        day: this.dayOfWeek,
         displayTime: this.displayTime,
         monday: true,
         face: this.profile.photo,
@@ -254,7 +254,7 @@ export class CreatePinPage {
     this.buildTuesdayPin().subscribe(() => {
       console.log("This pin is " );
       console.log(this.pin);
-      this.firebase.list('pins').push(this.pin).then((token) => {
+      this.firebase.list('testPins').push(this.pin).then((token) => {
         this.addIDToPin(token).then(() => {
           loading.dismiss();
           this.navCtrl.setRoot(PinsManagerPage);
@@ -271,7 +271,7 @@ export class CreatePinPage {
         commentCount: 0,
         content: this.pinForm.content,
         date: this.date,
-        day: this.day,
+        day: this.dayOfWeek,
         displayTime: this.displayTime,
         tuesday: true,
         face: this.profile.photo,
@@ -297,7 +297,7 @@ export class CreatePinPage {
     this.buildOtherPin().subscribe(() => {
       console.log("This pin is " );
       console.log(this.pin);
-      this.firebase.list('pins').push(this.pin).then((token) => {
+      this.firebase.list('testPins').push(this.pin).then((token) => {
         this.addIDToPin(token).then(() => {
           loading.dismiss();
           this.navCtrl.setRoot(PinsManagerPage);
@@ -308,13 +308,15 @@ export class CreatePinPage {
 
   buildOtherPin() {
     if (this.pinForm.content.length < 150 ) this.short = true;
+    let time = this.selectedDay.toISOString();
+    console.log("Updated time is " + time);
     return Observable.create((observer) => {
       this.pin = {
         short: this.short,
         commentCount: 0,
         content: this.pinForm.content,
         date: this.date,
-        day: this.day,
+        day: this.dayOfWeek,
         displayTime: this.displayTime,
         face: this.profile.photo,
         text: true,
@@ -324,8 +326,8 @@ export class CreatePinPage {
         rawTime: this.rawTime,
         title: this.pinForm.title,
         uid: this.uid,
-        startTime: this.selectedDay,
-        endTime: this.selectedDay,
+        startTime: time,
+        endTime: time,
         allDay: true
       }
       observer.next();
@@ -333,7 +335,7 @@ export class CreatePinPage {
   }
 
   addIDToPin(token) {
-    let path = 'pins/' + token.key;
+    let path = 'testPins/' + token.key;
     let post = {
       id: token.key
     }

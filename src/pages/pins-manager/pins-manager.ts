@@ -37,6 +37,8 @@ export class PinsManagerPage {
 
   ionViewDidLoad() {
     this.loadPins().subscribe((pins) => {
+      console.log("Loaded pins");
+      console.log(pins);
       let calendarEvents = this.eventSource;
       pins.forEach((pin) => {
         pin.startTime = new Date(pin.startTime);
@@ -65,7 +67,7 @@ export class PinsManagerPage {
   preparePinsRequest() {
     return Observable.create((observer) => {
       let queryParameters = {
-        path: '/pins/',
+        path: '/testPins/',
         orderByValue: 'date',
         limitToLast: 60
       }
@@ -130,9 +132,9 @@ export class PinsManagerPage {
   }
 
   checkForExistingPin() {
-    let selectedDate = moment(this.selectedDay).format('YYYYMMDD');
+    let selectedDate = moment(this.selectedDay).format('l');
     return Observable.create((observer) => {
-      return this.firebase.queriedList('/pins', 'date', selectedDate).subscribe((pin) => {
+      return this.firebase.queriedList('/testPins', 'date', selectedDate).subscribe((pin) => {
         if (pin.length == 0) {
           observer.next(false)
         } else {

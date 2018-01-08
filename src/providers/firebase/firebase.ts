@@ -101,5 +101,21 @@ export class FirebaseProvider {
       }
     }).take(1);
   }
+
+  queriedRangeList(queryParameters) {
+    console.log("Query parameters are ");
+    console.log(queryParameters);
+    let path = queryParameters.path;
+    let limitToLast = queryParameters.limitToLast;
+    let fieldName = queryParameters.fieldName;
+    let startAt = queryParameters.startAt;
+    return this.afdb.list(path, {
+      query: {
+        orderByValue: fieldName,
+        startAt: startAt,
+        limitToLast: limitToLast       
+      }
+    }).take(1);
+  }
   
 }

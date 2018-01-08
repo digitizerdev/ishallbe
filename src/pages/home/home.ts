@@ -47,6 +47,7 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
+    console.log("Loaded home page");
     this.pinsLoaded = false;
     this.postLimit = 1;
     this.postsLoaded = false;
@@ -108,6 +109,8 @@ export class HomePage {
       this.preparePinsRequest().subscribe((queryParameters) => {
         this.pinsQuery = queryParameters;
         this.requestPins().subscribe((pins) => {
+          console.log("Got pins");
+          console.log(pins);
           this.pinsLoaded = true;
           this.presentPins(pins);
         });
@@ -116,10 +119,12 @@ export class HomePage {
   }
 
   preparePinsRequest() {
+    let date = moment().format('l');
     return Observable.create((observer) => {
       let queryParameters = {
-        path: '/pins/',
+        path: '/testPins/',
         orderByValue: 'date',
+        endAt: date,
         limitToLast: this.feedTimestamp.dayNumber
       }
       observer.next(queryParameters)
@@ -127,7 +132,7 @@ export class HomePage {
   }
 
   requestPins() {
-    return this.firebase.limitedList(this.pinsQuery);
+    return this.firebase.queriedRangeList(this.pinsQuery);
   }
 
   presentPins(pins) {
