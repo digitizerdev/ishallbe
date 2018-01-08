@@ -134,7 +134,7 @@ describe('PinsManagerPage', () => {
         expect(component instanceof PinsManagerPage).toBe(true);
     });    
 
-    fit('should load pins on load', () => {
+    it('should load pins on load', () => {
         spyOn(component, 'loadPins').and.returnValue({ subscribe: () => {}});
         component.ionViewDidLoad();
         expect(component.loadPins).toHaveBeenCalled();

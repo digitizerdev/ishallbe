@@ -9,5 +9,15 @@ page-pins-manager {
           font-size: .9em;
         }
     }
+
+    .monthview-primary-with-event {
+        background-color: color($colors, secondary) !important;
+        color: white !important; 
+    }
+
+    .monthview-selected {
+        background-color: color($colors, primary) !important;
+        color: white !important;
+    }
         
 }

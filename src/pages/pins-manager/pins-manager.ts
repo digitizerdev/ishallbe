@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 
 import { CreatePinPage } from '../create-pin/create-pin';
+import { PinPage } from '../pin/pin';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -36,20 +37,12 @@ export class PinsManagerPage {
 
   ionViewDidLoad() {
     this.loadPins().subscribe((pins) => {
-      console.log("Got pins");
-      console.log(pins);
       let calendarEvents = this.eventSource;
       pins.forEach((pin) => {
-        console.log("Got pin");
-        console.log(pin);
         pin.startTime = new Date(pin.startTime);
-        console.log("New start time is " + pin.starTime);
         pin.endTime = new Date(pin.endTime);
-        console.log("New end time is " + pin.endTime);
         calendarEvents.push(pin);
       });
-      console.log("Calendar events is ");
-      console.log(calendarEvents);
       this.eventSource = [];
       setTimeout(() => {
         this.eventSource = calendarEvents;
@@ -95,7 +88,7 @@ export class PinsManagerPage {
   onEventSelected(event) {
     let alert = this.alertCtrl.create({
       title: event.title,
-      message: 'Open Pin?',
+      message: event.content,
       buttons: [
         {
           text: 'Cancel',
@@ -104,8 +97,9 @@ export class PinsManagerPage {
           }
         },
         {
-          text: 'Confirm',
+          text: 'Open',
           handler: () => {
+            this.navCtrl.push(PinPage, {id: event.id})
           }
         }
       ]
