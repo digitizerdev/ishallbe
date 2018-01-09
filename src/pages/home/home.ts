@@ -92,11 +92,12 @@ export class HomePage {
   }
 
   timestampFeed() {
-    console.log("Tuesday test");
     return Observable.create((observer) => {
       let time = moment().format('MMMM D h:mma')
-      let date = moment().format('YYYYMMDD');
-      let day = moment().format('dddd');
+      let dateString = moment().format('YYYYMMDD');
+      let date = parseInt(dateString);
+      let dayString = moment().format('dddd');
+      let day = parseInt(dayString);
       let dayNumberString = moment().format('d');
       let dayNumber = parseInt(dayNumberString);
       this.feedTimestamp = { time: time, date: date, day: day, dayNumber: dayNumber }
@@ -120,15 +121,13 @@ export class HomePage {
   }
 
   preparePinsRequest() {
-    let endAt = Date();
-    console.log("End at date is " + endAt);
+    let startAt = this.feedTimestamp.date - (this.feedTimestamp.dayNumber - 1)
     return Observable.create((observer) => {
       let queryParameters = {
         path: '/pins/',
-        orderByChild: 'date',
-        endAt: "1/8/2018",
-        startAt: "1/11/2018",
-        limitToLast: 4
+        orderByChild: 'rawTime',
+        startAt: startAt,
+        endAt: this.feedTimestamp.date,
       }
       observer.next(queryParameters)
     });
@@ -139,6 +138,7 @@ export class HomePage {
   }
 
   presentPins(pins) {
+    pins.reverse();
     this.pins = pins;
     this.pins.forEach((pin) => {
       this.requestPinUserLikerObject(pin).subscribe((liker) => {

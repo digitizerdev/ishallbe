@@ -35,7 +35,10 @@
         <ion-row *ngIf="!pin?.saturday" justify-content-center align-items-center style="height: 100%">
           <h4 class="slide-title" [innerHTML]="pin.title"></h4><br>
           <img class="pin-image" (click)="viewPin(pin.id)" *ngIf="pin?.image" src="{{ pin?.url }}" />
-          <h5 class="affirmation" (click)="viewPin(pin.id)" [innerHTML]="pin.content"></h5>              
+          <h5 class="affirmation" (click)="viewPin(pin.id)" [innerHTML]="pin.content"></h5> 
+          <button *ngIf="pin?.tuesday" (click)="openLink(pin.url)" text-center ion-button small round>
+            <ion-icon name="play"></ion-icon>
+          </button>             
         </ion-row>
         <div *ngIf="!pin?.saturday" class="pin-interaction-counts" (click)="viewPin(pin.id)">
           <p>

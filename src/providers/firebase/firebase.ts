@@ -106,14 +106,14 @@ export class FirebaseProvider {
     console.log("Query parameters are ");
     console.log(queryParameters);
     let path = queryParameters.path;
-    let limitToLast = queryParameters.limitToLast;
     let orderByChild = queryParameters.orderByChild;
+    let startAt = queryParameters.startAt;
     let endAt = queryParameters.endAt;
     return this.afdb.list(path, {
       query: {
-        orderByChild: 'date',
-        endAt: "1/8/2018",
-        limitToFirst: 4
+        orderByChild: orderByChild,
+        endAt: endAt,
+        startAt: startAt,
       }
     }).take(1);
   }
