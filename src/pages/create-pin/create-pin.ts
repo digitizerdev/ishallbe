@@ -78,7 +78,7 @@ export class CreatePinPage {
     console.log("Display time is " + this.displayTime);
     this.date = moment(this.selectedDay).format('l');
     console.log("This date is " + this.date);
-    this.rawTime = moment().format('YYYYMMDDmmss');
+    this.rawTime = moment(this.selectedDay).format('YYYYMMDD');
     console.log("Raw time is " + this.rawTime);
   }
 
@@ -292,10 +292,8 @@ export class CreatePinPage {
 
   buildTuesdayPin() {
     let time = this.selectedDay.toISOString();
-    if (this.pinForm.content.length < 150 ) this.short = true;
     return Observable.create((observer) => {
       this.pin = {
-        short: this.short,
         commentCount: 0,
         content: this.pinForm.content,
         date: this.date,
