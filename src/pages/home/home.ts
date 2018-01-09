@@ -92,6 +92,7 @@ export class HomePage {
   }
 
   timestampFeed() {
+    console.log("Tuesday test");
     return Observable.create((observer) => {
       let time = moment().format('MMMM D h:mma')
       let date = moment().format('YYYYMMDD');
@@ -119,13 +120,15 @@ export class HomePage {
   }
 
   preparePinsRequest() {
-    let date = moment().format('l');
+    let endAt = Date();
+    console.log("End at date is " + endAt);
     return Observable.create((observer) => {
       let queryParameters = {
-        path: '/testPins/',
-        orderByValue: 'date',
-        endAt: date,
-        limitToLast: this.feedTimestamp.dayNumber
+        path: '/pins/',
+        orderByChild: 'date',
+        endAt: "1/8/2018",
+        startAt: "1/11/2018",
+        limitToLast: 4
       }
       observer.next(queryParameters)
     });

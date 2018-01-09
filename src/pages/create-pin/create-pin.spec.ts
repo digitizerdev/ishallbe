@@ -158,7 +158,7 @@ describe('CreatePinPage', () => {
         expect(component.requestProfile).toHaveBeenCalled();
     }));
 
-    fit('should load page', () => {
+    it('should load page', () => {
         spyOn(component, 'timeStampPage');
         spyOn(component, 'setPinTitle');
         component.ionViewDidLoad();
@@ -184,9 +184,11 @@ describe('CreatePinPage', () => {
         let pinForm = {
             title: 'testTitle',
             content: 'testContent',
-            url: 'url'
         }
+        component.pinForm = pinForm;
+        spyOn(component, 'checkForExistingPin').and.returnValue({ subscribe: () => {}});
         component.submit(pinForm);
         expect(component.submitted).toBeTruthy();
+        expect(component.checkForExistingPin).toHaveBeenCalled();
     });;
 });

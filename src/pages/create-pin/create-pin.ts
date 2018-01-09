@@ -167,9 +167,35 @@ export class CreatePinPage {
       } else {
         if (!this.monday && (!pinForm.title || !pinForm.content)) {
           this.errorHandler();
-        } else this.forkDayToCreatePin();
+        } else {
+          this.checkForExistingPin().subscribe((pin) => {
+            console.log("Found pin");
+            console.log(pin);
+            if (pin) {
+              let path = '/pins/' + pin[0].id
+              this.firebase.object(path).remove().then(() => {
+                this.forkDayToCreatePin();
+              });
+            } else {
+              this.forkDayToCreatePin();
+            }
+          });
+        }
       }
     }
+  }
+
+  checkForExistingPin() {
+    let selectedDate = moment(this.selectedDay).format('l');
+    return Observable.create((observer) => {
+      return this.firebase.queriedList('/pins', 'date', selectedDate).subscribe((pin) => {
+        if (pin.length == 0) {
+          observer.next(false)
+        } else {
+          observer.next(pin);
+        }
+      });
+    });
   }
 
   forkDayToCreatePin() {
@@ -187,7 +213,7 @@ export class CreatePinPage {
       this.buildMondayPin().subscribe(() => {
         console.log("This pin is " );
         console.log(this.pin);
-        this.firebase.list('testPins').push(this.pin).then((token) => {
+        this.firebase.list('pins').push(this.pin).then((token) => {
           this.addIDToPin(token).then(() => {
             loading.dismiss();
             this.navCtrl.setRoot(PinsManagerPage);
@@ -255,7 +281,7 @@ export class CreatePinPage {
     this.buildTuesdayPin().subscribe(() => {
       console.log("This pin is " );
       console.log(this.pin);
-      this.firebase.list('testPins').push(this.pin).then((token) => {
+      this.firebase.list('pins').push(this.pin).then((token) => {
         this.addIDToPin(token).then(() => {
           loading.dismiss();
           this.navCtrl.setRoot(PinsManagerPage);
@@ -297,9 +323,7 @@ export class CreatePinPage {
     let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
     loading.present();
     this.buildOtherPin().subscribe(() => {
-      console.log("This pin is " );
-      console.log(this.pin);
-      this.firebase.list('testPins').push(this.pin).then((token) => {
+      this.firebase.list('pins').push(this.pin).then((token) => {
         this.addIDToPin(token).then(() => {
           loading.dismiss();
           this.navCtrl.setRoot(PinsManagerPage);
@@ -337,7 +361,7 @@ export class CreatePinPage {
   }
 
   addIDToPin(token) {
-    let path = 'testPins/' + token.key;
+    let path = 'pins/' + token.key;
     let post = {
       id: token.key
     }

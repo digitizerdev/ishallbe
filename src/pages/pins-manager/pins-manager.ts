@@ -67,7 +67,7 @@ export class PinsManagerPage {
   preparePinsRequest() {
     return Observable.create((observer) => {
       let queryParameters = {
-        path: '/testPins/',
+        path: '/pins/',
         orderByValue: 'date',
         limitToLast: 60
       }
@@ -134,7 +134,7 @@ export class PinsManagerPage {
   checkForExistingPin() {
     let selectedDate = moment(this.selectedDay).format('l');
     return Observable.create((observer) => {
-      return this.firebase.queriedList('/testPins', 'date', selectedDate).subscribe((pin) => {
+      return this.firebase.queriedList('/pins', 'date', selectedDate).subscribe((pin) => {
         if (pin.length == 0) {
           observer.next(false)
         } else {
