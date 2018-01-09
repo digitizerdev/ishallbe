@@ -195,9 +195,9 @@ describe('HomePage', () => {
     })
 
     it('should request Firebase to load pins', () => {
-        spyOn(firebase, 'limitedList').and.returnValue({ subscribe: () => { } });
+        spyOn(firebase, 'queriedRangeList').and.returnValue({ subscribe: () => { } });
         component.requestPins();
-        expect(firebase.limitedList).toHaveBeenCalled();
+        expect(firebase.queriedRangeList).toHaveBeenCalled();
     });
 
     it('should request Firebase Provider to check if user already liked pin', () => {

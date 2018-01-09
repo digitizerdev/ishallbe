@@ -171,7 +171,7 @@ describe('CreatePinPage', () => {
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Create');
+        expect(el).toContain('Create Pin');
     });
 
     it('should request Camera to get picture', () => {
