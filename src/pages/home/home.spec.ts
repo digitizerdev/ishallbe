@@ -164,27 +164,11 @@ describe('HomePage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should request uid from Storage before loading home when view entered', fakeAsync(() => {
-        spyOn(component, 'requestUID').and.callThrough();
-        spyOn(storage, 'ready').and.callThrough();
-        spyOn(storage, 'get').and.callThrough();
-        spyOn(component, 'loadHome');
-        component.ionViewDidLoad();
-        tick();
-        fixture.detectChanges();
-        expect(component.requestUID).toHaveBeenCalled();        
-        expect(storage.ready).toHaveBeenCalled();
-        expect(storage.get).toHaveBeenCalled();
-        expect(component.loadHome).toHaveBeenCalled();
-    }));
-
     it('should load home', () => {
         spyOn(component, 'timestampFeed').and.returnValue({ subscribe: () => {}});
-        spyOn(component, 'checkIfProfileBlocked');
         spyOn(component, 'startLoader');
         component.loadHome();
         expect(component.timestampFeed).toHaveBeenCalled();
-        expect(component.checkIfProfileBlocked).toHaveBeenCalled();
         expect(component.startLoader).toHaveBeenCalled();
     });
 
