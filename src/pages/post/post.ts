@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { ProfilePage } from '../profile/profile';
+import { HomePage } from '../home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -118,7 +119,7 @@ export class PostPage {
   removePost() {
     let path = '/posts/' + this.post.id
     this.firebase.object(path).remove().then(() => {
-      this.navCtrl.setRoot(ProfilePage);
+      this.navCtrl.setRoot(ProfilePage);  
     });
   }
 
@@ -435,8 +436,13 @@ export class PostPage {
         {
           text: 'Confirm',
           handler: () => {
-            this.flagPost().then(() => {
-              this.removeFromFeed();
+            this.post;
+            this.removeFromFeed().then(() => {
+              this.flagPost().then((token) => {
+                this.addIDToFlaggedPost(token).then(() => {
+                  this.navCtrl.setRoot(HomePage);
+                });
+              });
             });
           }
         }
@@ -446,15 +452,21 @@ export class PostPage {
   }
 
   flagPost() {
-    let path = "/flagged/"
+    let path = "/flagged/posts"
+    this.post.flagged = true;
+    this.post.onFeed = false;
     return this.firebase.list(path).push(this.post);
   }
 
   removeFromFeed() {
     let path = "/posts/" + this.post.id;
+    return this.firebase.object(path).remove();
+  }
+
+  addIDToFlaggedPost(token) {
+    let path = 'flagged/posts/' + token.key;
     let post = {
-      flagged: true,
-      onFeed: false
+      flaggedID: token.key
     }
     return this.firebase.object(path).update(post)
   }

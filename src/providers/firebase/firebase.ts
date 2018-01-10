@@ -117,5 +117,7 @@ export class FirebaseProvider {
       }
     }).take(1);
   }
+
+  queriedRa
   
 }

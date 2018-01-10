@@ -32,7 +32,7 @@
                 <br><br>
               </ion-col>
             </ion-row>
-        <ion-row *ngIf="!pin?.saturday" justify-content-center align-items-center style="height: 100%">
+        <ion-row justify-content-center align-items-center style="height: 100%">
           <h4 class="slide-title" [innerHTML]="pin.title"></h4><br>
           <img class="pin-image" (click)="viewPin(pin.id)" *ngIf="pin?.image" src="{{ pin?.url }}" />
           <h5 class="affirmation" (click)="viewPin(pin.id)" [innerHTML]="pin.content"></h5> 
@@ -40,7 +40,7 @@
             <ion-icon name="play"></ion-icon>
           </button>             
         </ion-row>
-        <div *ngIf="!pin?.saturday" class="pin-interaction-counts" (click)="viewPin(pin.id)">
+        <div class="pin-interaction-counts" (click)="viewPin(pin.id)">
           <p>
             <a *ngIf="pin.likeCount > 1 || pin.likeCount == 0" class="subdued">{{ pin?.likeCount}} Likes</a>
             <a *ngIf="pin.likeCount == 1" class="subdued">{{ pin?.likeCount}} Like</a>
@@ -48,7 +48,7 @@
             <a *ngIf="pin.commentCount == 1" class="subdued" margin-left>{{ pin?.commentCount}} Comment</a>
           </p>
         </div>
-        <ion-grid *ngIf="!pin?.saturday" class="pin-actions">
+        <ion-grid class="pin-actions">
           <ion-row >
             <ion-col width-50 text-center (click)="togglePinLike(pin)">
               <ion-icon name="thumbs-up" color="primary" *ngIf="pin?.userLiked"></ion-icon>
@@ -60,13 +60,6 @@
           </ion-row>
         </ion-grid>
         <br>
-        <ion-row *ngIf="pin?.saturday">
-          <ion-col text-center>
-              <h1 class="slide-title" [innerHTML]="pin.title"></h1>
-              <div class="saturday-icon"><b><ion-icon  name="ios-arrow-round-forward"></ion-icon></b></div>
-              <h2 class="affirmation" [innerHTML]="pin.content"></h2>      
-          </ion-col>
-        </ion-row>
       </ion-slide>
     </ion-slides>
   </div>
@@ -86,7 +79,6 @@
         <ion-avatar (click)="viewProfile(post.uid)" padding-top item-left>
           <img src="{{ post?.face }}">
         </ion-avatar>
-        <ion-icon *ngIf="post.flagged" (click)="flaggedMessage()" name="alert" color="danger" item-right></ion-icon>
         <h2 padding-top ion-text color="primary" class="post-author">{{ post?.name }}</h2>
         <h3>
           <b>{{ post?.title}}</b>

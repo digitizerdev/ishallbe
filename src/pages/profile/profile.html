@@ -32,6 +32,29 @@
     </ion-row>
     <h5 class="bio">{{ profile?.bio}} </h5>
   </div>
+  <div class="user-posts">
+    <ion-card class="posts" *ngFor="let flaggedPost of flaggedPosts">
+      <ion-item class="post-header">
+        <ion-avatar padding-top item-left>
+          <img src="{{ flaggedPost?.face }}">
+        </ion-avatar>
+        <ion-icon (click)="flaggedMessage(flaggedPost)" name="alert" color="danger" item-right></ion-icon>
+        <h2 padding-top ion-text color="primary" class="post-author">{{ flaggedPost?.name }}</h2>
+        <h3>
+          <b>{{ flaggedPost?.title}}</b>
+        </h3>
+        <span class="post-time">
+          {{ flaggedPost?.time }}
+        </span>
+      </ion-item>
+      <div text-center >
+        <img class="full-image" src="{{ flaggedPost?.url }}">
+        <div class="post-content">
+          <h2 text-center padding>{{ flaggedPost?.content}}</h2>
+        </div>
+      </div>
+    </ion-card>
+  </div>
   <div *ngIf="loaded" class="user-posts">
     <br>
     <div *ngIf="noUserPosts" class="posts" padding>
@@ -46,7 +69,6 @@
         <ion-avatar padding-top item-left>
           <img src="{{ post?.face }}">
         </ion-avatar>
-        <ion-icon *ngIf="post.flagged" (click)="flaggedMessage()" name="alert" color="danger" item-right></ion-icon>
         <h2 padding-top ion-text color="primary" class="post-author">{{ post?.name }}</h2>
         <h3>
           <b>{{ post?.title}}</b>
@@ -82,23 +104,23 @@
       </ion-grid>
     </ion-card>
   </div>
-  <div *ngIf="this.noPosts">
+  <div *ngIf="this.noPosts && !flaggedPostsLoaded">
     <ion-row responsive-sm>
       <ion-col class="no-posts-yet" text-center>
         <p>No Posts Yet</p>
       </ion-col>
     </ion-row>
-    <ion-row  responsive-sm>
+    <ion-row responsive-sm *ngIf="!flaggedPostsLoaded">
       <ion-col text-center>
         <button ion-button (click)="goToCreateStatementPage()" color="secondary" round>Create Statement</button>
       </ion-col>
     </ion-row>
   </div>
-  <ion-infinite-scroll [hidden]="postsLoaded && !noPosts " (ionInfinite)="doInfinite($event)">
+  <ion-infinite-scroll [hidden]="postsLoaded || noPosts || flaggedPostsLoaded" (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content loadingSpinner="dots">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
-  <div *ngIf="this.postsLoaded && !noPosts">
+  <div *ngIf="this.postsLoaded && !noPosts && !flaggedPostsLoaded">
     <ion-row class="posts-loaded">
       <ion-col text-center>
         All Posts Loaded

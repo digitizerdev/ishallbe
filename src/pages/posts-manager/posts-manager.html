@@ -7,6 +7,64 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-
+<ion-content>
+  <header></header>
+  <ion-row>
+    <ion-col text-center>
+      <h2>Reported Posts</h2>
+    </ion-col>
+  </ion-row>
+  <div class="flagged-posts" *ngIf="this.thereAreFlaggedPosts">
+    <ion-list>
+      <ion-item (click)="viewPost(flaggedPost.id)" *ngFor="let flaggedPost of flaggedPosts">
+        <ion-row text-center>
+          <ion-col>
+            {{ flaggedPost.title }}
+          </ion-col>
+          <ion-col>
+            <button id="RestorePostButton" ion-button (click)="restorePost(flaggedPost)" color="primary" round>Restore Post</button>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div class="flagged-posts" *ngIf="!this.thereAreFlaggedPosts">
+    <ion-row>
+      <ion-col text-center>
+        <h6>There are no reported posts</h6>
+      </ion-col>
+    </ion-row>
+  </div>
+  <ion-searchbar (ionInput)="getPosts($event)"></ion-searchbar>
+  <ion-list>
+    <ion-card id="profilePosts" class="posts" *ngFor="let post of posts">
+      <ion-item class="post-header">
+        <ion-avatar (click)="viewProfile(post.uid)" padding-top item-left>
+          <img src="{{ post?.face }}">
+        </ion-avatar>
+        <ion-icon *ngIf="post.flagged" (click)="flaggedMessage()" name="alert" color="danger" item-right></ion-icon>
+        <h2 padding-top ion-text color="primary" class="post-author">{{ post?.name }}</h2>
+        <h3>
+          <b>{{ post?.title}}</b>
+        </h3>
+        <span class="post-time">
+          {{ post?.time }}
+        </span>
+      </ion-item>
+      <div text-center (click)="viewPost(post.$key)">
+        <img class="full-image" src="{{ post?.url }}">
+        <div class="post-content">
+          <h2 text-center padding>{{ post?.content}}</h2>
+        </div>
+        <div (click)="viewPost(post?.$key)" class="interactions" padding-left>
+          <a *ngIf="post.likeCount > 1 || post.likeCount == 0" class="subdued">{{ post?.likeCount}} Likes</a>
+          <a *ngIf="post.likeCount == 1" class="subdued">{{ post?.likeCount}} Like</a>
+          <a *ngIf="post.commentCount > 1 || post.commentCount == 0" class="subdued" margin-left>{{ post?.commentCount}} Comments</a>
+          <a *ngIf="post.commentCount == 1" class="subdued" margin-left>{{ post?.commentCount}} Comment</a>
+          <br>
+          <br>
+        </div>
+      </div>
+    </ion-card>
+  </ion-list>
 </ion-content>

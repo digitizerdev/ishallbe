@@ -6,11 +6,11 @@ import { EditProfilePage } from '../edit-profile/edit-profile';
 import { PostPage } from '../post/post';
 import { AccountPage } from '../account/account';
 import { CreateStatementPage } from '../create-statement/create-statement';
+import { SupportPage } from '../support/support';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import { Observable } from 'rxjs/Observable';
-import { PACKAGE_ROOT_URL } from '@angular/core/src/application_tokens';
 
 @IonicPage()
 @Component({
@@ -26,19 +26,21 @@ export class ProfilePage {
   postLimit: any;
   loaded: any;
   postsLoaded: any;
+  flaggedPosts: any[] = [];
+  flaggedPostsLoaded = false;
   uid: any;
-  mine: any;
+  mine = false;
   instagram: any;
   twitter: any;
   linkedin: any;
   refreshing: any;
 
   constructor(
-    public navCtrl: NavController,
-    public firebase: FirebaseProvider,
-    public navParams: NavParams,
-    public alertCtrl: AlertController,
-    public storage: Storage
+    private navCtrl: NavController,
+    private firebase: FirebaseProvider,
+    private navParams: NavParams,
+    private alertCtrl: AlertController,
+    private storage: Storage
   ) {
   }
 
@@ -54,17 +56,22 @@ export class ProfilePage {
       this.profile = profile;
       console.log("Got profile");
       console.log(this.profile);
-      this.checkIfMyProfile();
+      this.checkIfMyProfile().subscribe((mine) => {
+        if (mine) {
+          this.mine = true;
+          this.checkForFlaggedPosts();
+        }
+      });
       this.syncProfile();
       this.loadUserPosts().subscribe((posts) => {
-        this.loaded = true;        
-        if (posts.length == 0 ) {
+        this.loaded = true;
+        if (posts.length == 0) {
           console.log("There are no posts");
           this.postsLoaded = true;
-          this.noPosts = true;  
+          this.noPosts = true;
         } else {
-        posts.reverse();
-        this.presentPosts(posts); 
+          posts.reverse();
+          this.presentPosts(posts);
         }
       });
     });
@@ -103,8 +110,30 @@ export class ProfilePage {
   }
 
   checkIfMyProfile() {
-    this.requestUID().then((uid) => {
-      if (this.uid == uid) this.mine = true;
+    return Observable.create((observer) => {
+      this.requestUID().then((uid) => {
+        if (this.uid == uid) {
+          observer.next(true);
+        } else {
+          observer.next(false);
+        }
+      });
+    });
+  }
+
+  checkForFlaggedPosts() {
+    console.log("Checking for flagged posts");
+    this.firebase.queriedList('flagged/posts', 'uid', this.uid).subscribe((flaggedPosts) => {
+      if (flaggedPosts.length > 0) {
+        console.log("I have at least one reported post");
+        console.log(flaggedPosts);
+        flaggedPosts.forEach((flaggedPost) => {
+          console.log("Pushing reported post");
+          console.log(flaggedPost);
+          this.flaggedPosts.push(flaggedPost);
+        });
+        this.flaggedPostsLoaded = true;
+      }
     });
   }
 
@@ -163,7 +192,10 @@ export class ProfilePage {
         if (post.face == 'https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png') {
           post.face = 'assets/img/default-profile.png';
         }
-        this.posts.push(post);
+        console.log(post);
+        if (post.onFeed || this.mine) {
+          this.posts.push(post);
+        }
       });
     });
   }
@@ -187,7 +219,10 @@ export class ProfilePage {
       } else {
         post.userLiked = false;
       }
-      this.posts.push(post);
+      console.log(post);
+      if (post.onFeed || this.mine) {
+        this.posts.push(post);
+      }
     });
   }
 
@@ -277,13 +312,41 @@ export class ProfilePage {
     this.navCtrl.push(EditProfilePage);
   }
 
-  flaggedMessage() {
+  flaggedMessage(flaggedPost) {
     let alert = this.alertCtrl.create({
-      title: 'Flagged Post',
-      subTitle: 'Please contact support to address content',
-      buttons: ['Dismiss']
+      title: 'Reported Statement',
+      message: 'Please contact support to restore this post or delete to create another statement',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+            this.removePost(flaggedPost)
+          }
+        },
+        {
+          text: 'Contact',
+          handler: () => {
+            this.navCtrl.setRoot(SupportPage);
+          }
+        }
+      ]
     });
     alert.present();
+  }
+
+  removePost(flaggedPost) {
+    console.log("Removing flagged post");
+    console.log(flaggedPost);
+    let path = '/flagged/posts/' + flaggedPost.flaggedID
+    this.firebase.object(path).remove().then(() => {
+      this.navCtrl.setRoot(ProfilePage);
+    });
   }
 
   viewPost(postID) {

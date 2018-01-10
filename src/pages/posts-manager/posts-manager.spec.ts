@@ -130,10 +130,40 @@ describe('PostsManagerPage', () => {
 
     it('should be created', () => {
         expect(component instanceof PostsManagerPage).toBe(true);
-    });    
-
-    it('should have title called Manage Posts', () => {
-        expect(component.title).toBe('Manage Posts');
+    });   
+    
+    it('should display header component', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('header'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
+
+    it('should have title called Posts Manager', () => {
+        expect(component.title).toBe('Posts Manager');
+    });
+
+    it('should display reported posts', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('h2'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Reported Posts')
+    });
+
+    it('should load flagged posts on view load', () => {
+        spyOn(component, 'loadFlaggedPosts').and.returnValue({ subscribe: () => {}});
+        component.ionViewDidLoad();
+        expect(component.loadFlaggedPosts).toHaveBeenCalled();
+    });
+
+    it('should restore post', fakeAsync(() => {
+        component.firebase.list('testPath').push('post')
+        tick();
+        fixture.detectChanges();
+        expect(listSpy).toHaveBeenCalled();
+        expect(pushSpy).toHaveBeenCalled();
+    }));
 
 });
