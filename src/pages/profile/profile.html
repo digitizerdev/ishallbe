@@ -9,6 +9,11 @@
         <ion-icon name="ios-options"></ion-icon>
       </button>
     </ion-buttons>
+    <ion-buttons *ngIf="editor" end>
+        <button ion-button icon-only (click)="blockUser()">
+          <ion-icon name="ios-flag"></ion-icon>
+        </button>
+      </ion-buttons>
   </ion-navbar>
 </ion-header>
 

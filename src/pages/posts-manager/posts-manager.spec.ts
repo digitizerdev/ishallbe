@@ -144,18 +144,20 @@ describe('PostsManagerPage', () => {
         expect(component.title).toBe('Posts Manager');
     });
 
-    it('should display reported posts', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('h2'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Reported Posts')
-    });
-
     it('should load flagged posts on view load', () => {
         spyOn(component, 'loadFlaggedPosts').and.returnValue({ subscribe: () => {}});
         component.ionViewDidLoad();
         expect(component.loadFlaggedPosts).toHaveBeenCalled();
+    });
+
+    it('should display reported posts if there are any', () => {
+        component.thereAreFlaggedPosts = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('h3'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Reported Posts')
     });
 
     it('should restore post', fakeAsync(() => {

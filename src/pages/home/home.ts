@@ -53,7 +53,9 @@ export class HomePage {
     this.postsLoaded = false;
     this.requestUID().then((uid) => {
       this.uid = uid;
-      this.loadHome();
+      this.checkIfProfileBlocked().subscribe(() => {
+        this.loadHome();
+      })
     });
     this.initPushNotification();
   }
@@ -71,7 +73,6 @@ export class HomePage {
   }
 
   loadHome() {
-    this.checkIfProfileBlocked();
     this.startLoader();
     this.timestampFeed().subscribe(() => {
       if (this.feedTimestamp.day == 'Sunday') { this.sunday = true } 
@@ -234,10 +235,14 @@ export class HomePage {
   }
 
   checkIfProfileBlocked() {
-    this.requestProfile().subscribe((profile) => {
-      if (profile.blocked) {
-        this.handleBlocked();
-      }
+    return Observable.create((observer) => {
+      return this.requestProfile().subscribe((profile) => {
+        if (profile.blocked) {
+          this.handleBlocked();
+        } else {
+          observer.next()
+        }
+      });
     });
   }
 
@@ -287,6 +292,8 @@ export class HomePage {
 
   handleBlocked() {
     this.navCtrl.setRoot(LoginPage);
+    this.firebase.logOut();
+    this.storage.clear();
     this.presentBlocked();
   }
 
@@ -296,7 +303,7 @@ export class HomePage {
       message: 'This account has been blocked',
       buttons: [
         {
-          text: 'Okay',
+          text: 'Ok',
         }
       ]
     });

@@ -34,9 +34,6 @@ export class PostsManagerPage {
   loadFlaggedPosts() {
     let path = 'flagged/posts';
     this.firebase.list(path).subscribe((flaggedPosts) => {
-      console.log("Got flagged posts");
-      console.log(flaggedPosts);
-      console.log("There are flagged posts " + this.thereAreFlaggedPosts)
       if (flaggedPosts.length > 0) {
         this.flaggedPosts = flaggedPosts;
         this.thereAreFlaggedPosts = true;
@@ -45,8 +42,6 @@ export class PostsManagerPage {
   }
 
   restorePost(post) {
-    console.log("Restoring post");
-    console.log("post");
     post.onFeed = true;
     post.flagged = false;
     post.flaggedId = null;
@@ -62,8 +57,6 @@ export class PostsManagerPage {
   getPosts(searchbar) {
     let search = searchbar.srcElement.value;
     this.firebase.queriedList('posts', 'title', search).subscribe((posts) => {
-      console.log("Got posts");
-      console.log(posts);
       if (posts.length > 0) {
         this.posts = []
         this.posts = posts;

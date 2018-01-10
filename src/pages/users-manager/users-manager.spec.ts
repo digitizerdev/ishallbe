@@ -131,9 +131,40 @@ describe('UsersManagerPage', () => {
     it('should be created', () => {
         expect(component instanceof UsersManagerPage).toBe(true);
     });  
+
+    it('should display header component', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('header'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
     
-    it('should have title called Manage Users', () => {
-        expect(component.title).toBe('Manage Users');
+    it('should have title called Users Manager', () => {
+        expect(component.title).toBe('Users Manager');
     });
 
+    it('should load blocked users on view load', () => {
+        spyOn(component, 'loadBlockedUsers').and.returnValue({ subscribe: () => {}});
+        component.ionViewDidLoad();
+        expect(component.loadBlockedUsers).toHaveBeenCalled();
+    });
+
+    it('should display blocked users if there are any', () => {
+        component.thereAreBlockedUsers = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('h3'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Blocked Users')
+    });
+
+    it('should unblock user', fakeAsync(() => {
+        component.firebase.list('testPath').push('user')
+        tick();
+        fixture.detectChanges();
+        expect(listSpy).toHaveBeenCalled();
+        expect(pushSpy).toHaveBeenCalled();
+    }));
 });

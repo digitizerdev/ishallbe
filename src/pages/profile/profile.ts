@@ -34,6 +34,7 @@ export class ProfilePage {
   twitter: any;
   linkedin: any;
   refreshing: any;
+  editor = false;
 
   constructor(
     private navCtrl: NavController,
@@ -60,6 +61,8 @@ export class ProfilePage {
         if (mine) {
           this.mine = true;
           this.checkForFlaggedPosts();
+        } else {
+          this.checkIfEditor();
         }
       });
       this.syncProfile();
@@ -134,6 +137,15 @@ export class ProfilePage {
         });
         this.flaggedPostsLoaded = true;
       }
+    });
+  }
+
+  checkIfEditor() {
+    this.requestUID().then((uid) => {
+      let path = 'users/' + uid
+      this.firebase.object(path).subscribe((user) => {
+        if (user.editor) this.editor = true;
+      });
     });
   }
 
@@ -372,4 +384,25 @@ export class ProfilePage {
     this.navCtrl.push(CreateStatementPage);
   }
 
+  blockUser() {
+    console.log("Block user clicked");
+    this.profile.blocked = true;
+    let path = '/users/' + this.uid;
+    this.firebase.object(path).update(this.profile).then(() => {
+      this.firebase.list('flagged/users').push(this.profile).then((token) => {
+        this.addIDToFlaggedUser(token).then(() => {
+          this.navCtrl.setRoot(AccountPage);
+        });
+      });
+    });
+  }
+
+  addIDToFlaggedUser(token) {
+    let path = 'flagged/users/' + token.key;
+    let post = {
+      flaggedID: token.key
+    }
+    return this.firebase.object(path).update(post)
+  }
+  
 }
