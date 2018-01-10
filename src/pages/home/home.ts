@@ -53,11 +53,20 @@ export class HomePage {
     this.postsLoaded = false;
     this.requestUID().then((uid) => {
       this.uid = uid;
+      if (!this.uid) {
+        this.logout();
+      }
       this.checkIfProfileBlocked().subscribe(() => {
         this.loadHome();
       })
     });
     this.initPushNotification();
+  }
+
+  logout() {
+    this.firebase.logOut();
+    this.storage.clear();
+    this.navCtrl.setRoot(LoginPage);
   }
 
   requestUID() {
