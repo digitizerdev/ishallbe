@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="co.ishallbe.ishallbe" version="1.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="co.ishallbe.ishallbe" version="1.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>iShallBe</name>
     <description>
       If You Speak It, It Shall Be!
@@ -83,7 +83,11 @@
         <variable name="CAMERA_USAGE_DESCRIPTION" value="Access to Camera" />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Access to Library" />
     </plugin>
-    <plugin name="cordova-plugin-media-capture" spec="^2.0.0" />
+    <plugin name="cordova-plugin-media-capture" spec="^2.0.0">
+        <variable name="CAMERA_USAGE_DESCRIPTION" value="Access to Camera" />
+        <variable name="MICROPHONE_USAGE_DESCRIPTION" value="Access to Microphone" />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Access to Photo Library" />
+    </plugin>
     <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
         <variable name="APP_ID" value="1312020948874676" />
         <variable name="APP_NAME" value="iShallBe" />
