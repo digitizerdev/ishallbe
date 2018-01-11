@@ -16,7 +16,7 @@
   </ion-row>
   <div *ngIf="this.thereAreFlaggedPosts" class="flagged-posts">
     <ion-list>
-      <ion-item (click)="viewPost(flaggedPost.id)" *ngFor="let flaggedPost of flaggedPosts">
+      <ion-item (click)="viewPost(flaggedPost.flaggedID)" *ngFor="let flaggedPost of flaggedPosts">
         <ion-row text-center>
           <ion-col>
             {{ flaggedPost.title }}

@@ -52,7 +52,7 @@ export class PostPage {
   }
 
   setFlags() {
-    this.loaded = false;    
+    this.loaded = false;
     this.likedPost = false;
     this.submitted = false;
     this.refreshing = false;
@@ -90,9 +90,21 @@ export class PostPage {
     this.postID = this.navParams.get('id');
     this.post = [];
     this.requestPost().subscribe((post) => {
+      console.log("Got post");
+      console.log(post);
+      if (!post.$value) {
+        console.log("Requesting flagged post");
+        this.requestFlaggedPost().subscribe((post) => {
+          console.log("Got flagged post");
+          console.log(post);
+          this.post = post;
+          this.checkIfPostMine();
+          this.presentPost(refresh);
+        });
+      }
       if (!this.loaded) {
         this.post = post;
-        this.checkIfPostMine();                
+        this.checkIfPostMine();
         this.presentPost(refresh);
       }
     });
@@ -108,6 +120,11 @@ export class PostPage {
     return this.firebase.object(path)
   }
 
+  requestFlaggedPost() {
+    let path = 'flagged/posts/' + this.postID;
+    return this.firebase.object(path)
+  }
+
   checkIfPostMine() {
     console.log("Checking if this post is mine");
     if (this.uid == this.post.uid) {
@@ -119,7 +136,7 @@ export class PostPage {
   removePost() {
     let path = '/posts/' + this.post.id
     this.firebase.object(path).remove().then(() => {
-      this.navCtrl.setRoot(ProfilePage);  
+      this.navCtrl.setRoot(ProfilePage);
     });
   }
 
@@ -153,7 +170,7 @@ export class PostPage {
 
   requestComments() {
     if (this.post.comments) {
-      this.post.comments = [];                    
+      this.post.comments = [];
       this.comments = [];
       let path = 'posts/' + this.post.id + '/comments/';
       this.firebase.orderedList(path, 'rawTime').subscribe((comments) => {
@@ -341,7 +358,7 @@ export class PostPage {
     if (comment.userLiked) {
       if (comment.likeCount == 0) {
         comment.liked = false;
-      }        
+      }
       this.unlikeComment(comment).subscribe(() => {
         this.requestCommentUserLikerObject(comment).subscribe((liker) => {
           this.removeCommentLikerObject(liker[0]).then(() => {
@@ -353,7 +370,7 @@ export class PostPage {
       this.likeComment(comment).subscribe(() => {
         this.pushCommentLikerObject(comment).then((liker) => {
           this.addIDToCommentLike(liker.key, comment);
-          comment.userLiked = true;          
+          comment.userLiked = true;
         });
       });
     }
@@ -361,7 +378,7 @@ export class PostPage {
 
   unlikeComment(comment) {
     return Observable.create((observer) => {
-      comment.likeCount--;      
+      comment.likeCount--;
       let myComment = {
         likeCount: comment.likeCount
       }
@@ -470,7 +487,7 @@ export class PostPage {
     }
     return this.firebase.object(path).update(post)
   }
-  
+
   viewProfile(uid) {
     this.navCtrl.push(ProfilePage, { uid: uid })
   }
