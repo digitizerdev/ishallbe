@@ -106,7 +106,11 @@
         "CAMERA_USAGE_DESCRIPTION": "Access to Camera",
         "PHOTOLIBRARY_USAGE_DESCRIPTION": "Access to Library"
       },
-      "cordova-plugin-media-capture": {},
+      "cordova-plugin-media-capture": {
+        "CAMERA_USAGE_DESCRIPTION": "Access to Camera",
+        "MICROPHONE_USAGE_DESCRIPTION": "Access to Microphone",
+        "PHOTOLIBRARY_USAGE_DESCRIPTION": "Access to Photo Library"
+      },
       "cordova-plugin-facebook4": {
         "APP_ID": "1312020948874676",
         "APP_NAME": "iShallBe"
