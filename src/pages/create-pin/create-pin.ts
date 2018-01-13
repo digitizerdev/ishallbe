@@ -78,7 +78,8 @@ export class CreatePinPage {
     console.log("Display time is " + this.displayTime);
     this.date = moment(this.selectedDay).format('l');
     console.log("This date is " + this.date);
-    this.rawTime = moment(this.selectedDay).format('YYYYMMDD');
+    let rawTimeString = moment(this.selectedDay).format('YYYYMMDD');
+    this.rawTime = parseInt(rawTimeString);
     console.log("Raw time is " + this.rawTime);
   }
 
