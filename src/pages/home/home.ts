@@ -106,8 +106,8 @@ export class HomePage {
       let time = moment().format('MMMM D h:mma')
       let dateString = moment().format('YYYYMMDD');
       let date = parseInt(dateString);
-      let dayString = moment().format('dddd');
-      let day = parseInt(dayString);
+      let day = moment().format('dddd');
+      console.log("Today is " + day);
       let dayNumberString = moment().format('d');
       let dayNumber = parseInt(dayNumberString);
       this.feedTimestamp = { time: time, date: date, day: day, dayNumber: dayNumber }
