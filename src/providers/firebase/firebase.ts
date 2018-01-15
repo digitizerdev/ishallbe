@@ -18,7 +18,7 @@ export class FirebaseProvider {
   constructor
     (
     public afdb: AngularFireDatabase,
-    private afAuth: AngularFireAuth,
+    public afAuth: AngularFireAuth,
   ) {
   }
 
