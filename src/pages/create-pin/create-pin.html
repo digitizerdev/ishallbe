@@ -33,12 +33,12 @@
     </ion-item>
     <ion-item *ngIf="this.tuesday" no-lines>
       <ion-label stacked color="primary">Media URL</ion-label>
-      <ion-input [(ngModel)]="pinForm.url" name="url" type="text" #url="ngModel">
+      <ion-input [(ngModel)]="pinForm.url" name="url" placeholder="image.png" type="text" #url="ngModel">
       </ion-input>
     </ion-item>
     <ion-item *ngIf="this.monday" no-lines>
       <ion-label stacked color="primary">YouTube Embed Link</ion-label>
-      <ion-input [(ngModel)]="pinForm.youtubeEmbedLink" name="youtubeEmbedLink" type="text" #youtubeEmbedLink="ngModel">
+      <ion-input [(ngModel)]="pinForm.youtubeEmbedLink" name="youtubeEmbedLink" placeholder="https://youtube.com/embed/VIDEOID" type="text" #youtubeEmbedLink="ngModel">
       </ion-input>
     </ion-item>
     <br>

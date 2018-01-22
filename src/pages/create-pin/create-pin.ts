@@ -130,7 +130,6 @@ export class CreatePinPage {
 
   getCameraOptions() {
     let cameraOpts: CameraOptions = {
-      quality: 50,
       destinationType: this.camera.DestinationType.FILE_URI,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
       encodingType: this.camera.EncodingType.JPEG,
@@ -143,7 +142,6 @@ export class CreatePinPage {
 
   cropImage() {
     this.cropperInstance = new Cropper(this.imageElement.nativeElement, {
-      aspectRatio: 3 / 2,
       dragMode: 'move',
       modal: true,
       guides: true,
