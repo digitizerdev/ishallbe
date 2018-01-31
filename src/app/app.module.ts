@@ -27,7 +27,6 @@ import { SupportPage } from '../pages/support/support';
 import { AccountPage } from '../pages/account/account';
 import { AboutPage } from '../pages/about/about';
 import { EditProfilePage } from '../pages/edit-profile/edit-profile';
-import { PhotoPage } from '../pages/photo/photo';
 import { ProfilePage } from '../pages/profile/profile';
 import { CreateStatementPage } from '../pages/create-statement/create-statement';
 import { PostPage } from '../pages/post/post';
@@ -37,6 +36,9 @@ import { CreatePinPage } from '../pages/create-pin/create-pin';
 import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
 import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
 import { UsersManagerPage } from '../pages/users-manager/users-manager';
+import { CreateGoalPage } from '../pages/create-goal/create-goal';
+import { ExplorePage } from '../pages/explore/explore';
+import { GoalsPage } from '../pages/goals/goals';
 
 import { ComponentsModule } from '../components/components.module';
 import { YoutubePipe } from '../pipes/youtube/youtube';
@@ -57,7 +59,6 @@ import * as firebase from 'firebase/app';
     AccountPage,
     AboutPage,
     EditProfilePage,
-    PhotoPage,
     ProfilePage,
     CreateStatementPage,
     PostPage,
@@ -67,6 +68,9 @@ import * as firebase from 'firebase/app';
     PinsManagerPage,
     PostsManagerPage,
     UsersManagerPage,
+    CreateGoalPage,
+    ExplorePage,
+    GoalsPage,
     YoutubePipe
   ],
   imports: [
@@ -93,7 +97,6 @@ import * as firebase from 'firebase/app';
     AccountPage,
     AboutPage,
     EditProfilePage,
-    PhotoPage,
     ProfilePage,
     CreateStatementPage,
     PostPage,
@@ -103,6 +106,9 @@ import * as firebase from 'firebase/app';
     PinsManagerPage,
     PostsManagerPage,
     UsersManagerPage,
+    CreateGoalPage,
+    ExplorePage,
+    GoalsPage,
   ],
   providers: [
     StatusBar,

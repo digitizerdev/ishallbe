@@ -15,7 +15,6 @@ import { SupportPage } from '../pages/support/support';
 import { AccountPage } from '../pages/account/account';
 import { AboutPage } from '../pages/about/about';
 import { EditProfilePage } from '../pages/edit-profile/edit-profile';
-import { PhotoPage } from '../pages/photo/photo';
 import { ProfilePage } from '../pages/profile/profile';
 import { CreateStatementPage } from '../pages/create-statement/create-statement';
 import { PostPage } from '../pages/post/post';
@@ -25,10 +24,15 @@ import { CreatePinPage } from '../pages/create-pin/create-pin';
 import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
 import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
 import { UsersManagerPage } from '../pages/users-manager/users-manager';
+import { CreateGoalPage } from '../pages/create-goal/create-goal';
+import { ExplorePage } from '../pages/explore/explore';
+import { GoalsPage } from '../pages/goals/goals';
+
 import { ComponentsModule } from '../components/components.module';
 import { HeaderComponent } from '../components/header/header';
 import { TermsOfServiceComponent } from '../components/terms-of-service/terms-of-service';
 import { LoginFacebookComponent } from '../components/login-facebook/login-facebook';
+import { MediaComponent } from '../components/media/media';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
@@ -71,7 +75,6 @@ export class iShallBe {
       { title: 'Account Page', component: AccountPage },
       { title: 'About Page', component: AboutPage },
       { title: 'Edit Profile Page', component: EditProfilePage },
-      { title: 'Photo Page', component: PhotoPage },
       { title: 'Profile Page', component: ProfilePage },
       { title: 'Create Statement Page', component: CreateStatementPage },
       { title: 'Post Page', component: PostPage },
@@ -80,11 +83,21 @@ export class iShallBe {
       { title: 'Create Pin Page', component: CreatePinPage },
       { title: 'Users Manager Page', component: UsersManagerPage },
       { title: 'Posts Manager Page', component: PostsManagerPage },
-      { title: 'Pins Manager Page', component: PinsManagerPage }
+      { title: 'Pins Manager Page', component: PinsManagerPage },
+      { title: 'Create Goal Page', component: CreateGoalPage },
+      { title: 'Explore Page', component: ExplorePage },
+      { title: 'Goals Page', component: GoalsPage }
     ];
 
     this.providers = [
       { title: 'Firebase Provider', component: FirebaseProvider }
+    ];
+
+    this.components = [
+      { title: 'Header Component', component: HeaderComponent },
+      { title: 'Terms of Service Component', component: TermsOfServiceComponent },
+      { title: 'Login Facebook Component', component: LoginFacebookComponent },
+      { title: 'Media Component', component: MediaComponent }
     ]
 
     this.menuPages = [
@@ -113,13 +126,8 @@ export class iShallBe {
         icon: 'ios-contact',
         component: AccountPage
       }
-    ]
+    ];
 
-    this.components = [
-      { title: 'Header Component', component: HeaderComponent },
-      { title: 'Terms of Service Component', component: TermsOfServiceComponent },
-      { title: 'Login Facebook Component', component: LoginFacebookComponent },
-    ]
   }
 
   platformReady() {

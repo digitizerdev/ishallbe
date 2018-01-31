@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams, AlertController, LoadingController
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 
-import { PhotoPage } from '../photo/photo';
 import { ProfilePage } from '../profile/profile';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -113,7 +112,6 @@ export class EditProfilePage {
   }
 
   pushPhotoPage() {
-    this.navCtrl.push(PhotoPage);
   }
 
 }

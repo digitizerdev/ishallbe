@@ -103,12 +103,12 @@ describe('iShallBe App Component', () => {
     expect(component.menuPages.length).toBe(5);
   })
 
-  it('should have 20 pages', () => {
-    expect(component.pages.length).toBe(20);
+  it('should have 24 pages', () => {
+    expect(component.pages.length).toBe(22);
   });
 
-  it('should have 3 components', () => {
-    expect(component.components.length).toBe(3);
+  it('should have 4 components', () => {
+    expect(component.components.length).toBe(4);
   });
 
   it('should initialize with startup page as root page', () => {
