@@ -18,13 +18,22 @@
     <h3>{{name}}</h3>
     <h5>{{email}}</h5>
   </div>
-  <div class="main-buttons">
+  <div *ngIf="editor" id="Manager" class="main-buttons">
+    <ion-row responsive-sm id="AccountStaging">
+      <ion-col text-center>
+          Staging
+      </ion-col>
+    </ion-row>
     <br>
-    <ion-row *ngIf="editor" responsive-sm>
+    <ion-row responsive-sm>
       <ion-col text-center>
         <button ion-button id="AccountManageButton" (click)="pushManagerPage()" color="primary" round>Management</button>
       </ion-col>
     </ion-row>
+    <br>
+  </div>
+  <br>
+  <div class="main-buttons">
     <ion-row responsive-sm>
       <ion-col text-center>
         <button ion-button id="AccountViewProfileButton" (click)="setRootProfilePage()" color="secondary" round>Profile</button>
@@ -41,7 +50,7 @@
         <p>Update Account</p>
       </ion-col>
     </ion-row>
-    <ion-row  responsive-sm>
+    <ion-row responsive-sm>
       <ion-col text-center>
         <button ion-button id="AccountUpdateEmailButton" (click)="pushAccountEmailPage()" color="primary" round small>Email</button>
       </ion-col>

@@ -135,6 +135,16 @@ describe('AccountPage', () => {
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#AccountStaging'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('Staging');
+    }));
+
+    fit('should display ionic pro staging panel if editor', async(() => {
+        component.editor = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#AccountManageButton'));
         el = de.nativeElement.innerHTML
         expect(el).toContain('Manage');
