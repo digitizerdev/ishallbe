@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, Platform, Events } from 'ionic-angular';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { Storage } from '@ionic/storage';
 import { Moment, lang } from 'moment';
@@ -41,6 +41,7 @@ export class HomePage {
     private firebase: FirebaseProvider,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
+    private events: Events,
     private storage: Storage,
     private push: Push
   ) {
@@ -246,6 +247,11 @@ export class HomePage {
   checkIfProfileBlocked() {
     return Observable.create((observer) => {
       return this.requestProfile().subscribe((profile) => {
+        console.log(profile);
+        if (profile.editor) {
+          console.log("EDITOR")
+          this.events.publish('editor:login');
+        }
         if (profile.blocked) {
           this.handleBlocked();
         } else {

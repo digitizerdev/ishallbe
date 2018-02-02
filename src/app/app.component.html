@@ -1,24 +1,37 @@
 <ion-menu [content]="content">
-    <ion-content class="menu-left">
-      <div text-center>
-        <a menuClose>
-          <br>
-          <br>
-          <br>
-          <img width="75%" src="assets/img/icon.png">
-          <br>
-          <br>
-          <br>
-        </a>
-      </div>
-  
-      <ion-list class="list-full-border" >
-        <button menuClose ion-item *ngFor="let p of menuPages" (click)="openPage(p)">
+  <ion-content>
+    <div text-center>
+      <a menuClose>
+        <br>
+        <header></header>
+        <br>
+      </a>
+    </div>
+    <div>
+      <ion-list class="list-full-border">
+        <button class="menu-pages" menuClose ion-item *ngFor="let p of exploreMenuPages" (click)="openPage(p)">
           <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>
           {{ p.title }}
         </button>
       </ion-list>
-    </ion-content>
-  
-  </ion-menu>
+    </div>
+    <div>
+      <ion-list class="list-full-border">
+        <button class="menu-pages" menuClose ion-item *ngFor="let p of engageMenuPages" (click)="openPage(p)">
+          <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>
+          {{ p.title }}
+        </button>
+      </ion-list>
+    </div>
+    <div *ngIf="editor">
+      <ion-list class="list-full-border">
+        <button class="menu-pages" menuClose ion-item *ngFor="let p of editorMenuPages" (click)="openPage(p)">
+          <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>
+          {{ p.title }}
+        </button>
+      </ion-list>
+    </div>
+  </ion-content>
+
+</ion-menu>
 <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

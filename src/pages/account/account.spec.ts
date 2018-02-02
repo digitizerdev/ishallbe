@@ -140,7 +140,7 @@ describe('AccountPage', () => {
         expect(el).toContain('Staging');
     }));
 
-    fit('should display ionic pro staging panel if editor', async(() => {
+    it('should display ionic pro staging panel if editor', async(() => {
         component.editor = true;
         fixture.detectChanges();
         let de: DebugElement;

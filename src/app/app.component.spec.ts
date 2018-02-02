@@ -89,34 +89,42 @@ describe('iShallBe App Component', () => {
     firebaseSpy = null;
   });
 
-  it('should be created', (done) => {
+  fit('should be created', (done) => {
     expect(component instanceof iShallBe).toBe(true);
     const promise = new Promise((res, rej) => res());
     promise.then(done).catch(done.fail);
   });
 
-  it('should have 1 provider', () => {
+  fit('should have 1 provider', () => {
     expect(component.providers.length).toBe(1);
   });
 
-  it('should have 5 menu pages', () => {
-    expect(component.menuPages.length).toBe(5);
-  })
-
-  it('should have 24 pages', () => {
-    expect(component.pages.length).toBe(22);
-  });
-
-  it('should have 4 components', () => {
+  fit('should have 4 components', () => {
     expect(component.components.length).toBe(4);
   });
 
-  it('should initialize with startup page as root page', () => {
+  fit('should have 24 pages', () => {
+    expect(component.pages.length).toBe(22);
+  });
+
+  fit('should have 5 menu pages', () => {
+    expect(component.menuPages.length).toBe(5);
+  })
+
+  fit('should have 3 editor menu pages', () => {
+    expect(component.editorMenuPages.length).toBe(3);
+  });
+
+  fit('should initialize with startup page as root page', () => {
     expect(component['rootPage']).toBe(StartupPage);
   });
 
-  it('should be able to open page', () => {
+  fit('should be able to open page', () => {
     expect(component.openPage).toBeDefined();
+  });
+
+  fit('should listen to editor login', () => {
+    expect(component.listenToEditorLogin).toBeDefined();
   });
 
 });

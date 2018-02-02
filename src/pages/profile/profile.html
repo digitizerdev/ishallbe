@@ -5,15 +5,10 @@
     </button>
     <ion-title color='primary'>{{ profile?.name }}</ion-title>
     <ion-buttons *ngIf="mine" end>
-      <button ion-button icon-only (click)="pushEditProfilePage()">
-        <ion-icon name="ios-options"></ion-icon>
+      <button ion-button icon-only (click)="setRootHomePage()">
+        <ion-icon name="ios-home"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-buttons *ngIf="editor" end>
-        <button ion-button icon-only (click)="blockUser()">
-          <ion-icon name="ios-flag"></ion-icon>
-        </button>
-      </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -24,6 +19,19 @@
   </ion-refresher>
   <div text-center padding class="user-profile">
     <img class="avatar" src="{{ profile?.photo }}">
+    <ion-row *ngIf="editor && !mine">
+      <ion-col>
+        <button ion-button id="BlockUserButton" (click)="blockUser()" color="danger" >BLOCK USER</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="mine">
+      <ion-col>
+        <button ion-button id="AccountViewProfileButton" (click)="pushEditProfilePage()" color="primary" small>EDIT PROFILE</button>
+      </ion-col>
+      <ion-col>
+        <button ion-button id="AccountViewProfileButton" (click)="pushAccountPage()" color="primary" small>ACCOUNT</button>
+      </ion-col>
+    </ion-row>
     <ion-row *ngIf="profile?.social" text-center class="social">
       <ion-col *ngIf="instagram" (click)="openSocial('instagram')" text-center>
         <ion-icon name="logo-instagram"></ion-icon>
@@ -52,7 +60,7 @@
           {{ flaggedPost?.time }}
         </span>
       </ion-item>
-      <div text-center >
+      <div text-center>
         <img class="full-image" src="{{ flaggedPost?.url }}">
         <div class="post-content">
           <h2 text-center padding>{{ flaggedPost?.content}}</h2>

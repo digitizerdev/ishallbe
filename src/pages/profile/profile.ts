@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage';
 import { EditProfilePage } from '../edit-profile/edit-profile';
 import { PostPage } from '../post/post';
 import { AccountPage } from '../account/account';
-import { CreateStatementPage } from '../create-statement/create-statement';
+import { HomePage } from '../home/home';
 import { SupportPage } from '../support/support';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -35,6 +35,7 @@ export class ProfilePage {
   linkedin: any;
   refreshing: any;
   editor = false;
+  managing = false
 
   constructor(
     private navCtrl: NavController,
@@ -43,6 +44,10 @@ export class ProfilePage {
     private alertCtrl: AlertController,
     private storage: Storage
   ) {
+  }
+
+  ionViewDidEnter() {
+    this.managing = this.navParams.get('managing');
   }
 
   ionViewDidLoad() {
@@ -55,8 +60,7 @@ export class ProfilePage {
   loadProfile() {
     this.requestProfile().subscribe((profile) => {
       this.profile = profile;
-      console.log("Got profile");
-      console.log(this.profile);
+      if (profile.editor) this.editor = true;
       this.checkIfMyProfile().subscribe((mine) => {
         if (mine) {
           this.mine = true;
@@ -380,21 +384,34 @@ export class ProfilePage {
     }
   }
 
-  goToCreateStatementPage() {
-    this.navCtrl.push(CreateStatementPage);
-  }
-
   blockUser() {
-    console.log("Block user clicked");
-    this.profile.blocked = true;
-    let path = '/users/' + this.uid;
-    this.firebase.object(path).update(this.profile).then(() => {
-      this.firebase.list('flagged/users').push(this.profile).then((token) => {
-        this.addIDToFlaggedUser(token).then(() => {
-          this.navCtrl.setRoot(AccountPage);
-        });
-      });
+    let alert = this.alertCtrl.create({
+      title: 'Confirmation',
+      message: 'Are you sure you want to block this user?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            let path = '/users/' + this.uid;
+            this.firebase.object(path).update(this.profile).then(() => {
+              this.firebase.list('flagged/users').push(this.profile).then((token) => {
+                this.addIDToFlaggedUser(token).then(() => {
+                  this.profile.blocked = true;
+                  this.navCtrl.setRoot(AccountPage);
+                });
+              });
+            });
+          }
+        }
+      ]
     });
+    alert.present();
   }
 
   addIDToFlaggedUser(token) {
@@ -404,5 +421,16 @@ export class ProfilePage {
     }
     return this.firebase.object(path).update(post)
   }
-  
+
+  setRootHomePage() {
+    this.navCtrl.setRoot(HomePage);
+  }
+
+  pushSupportPage() {
+    this.navCtrl.push(SupportPage);
+  }
+
+  pushAccountPage() {
+    this.navCtrl.push(AccountPage);
+  }
 }

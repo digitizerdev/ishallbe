@@ -1,5 +1,5 @@
 import { NgModule, Component, ViewChild } from '@angular/core';
-import { Nav, Platform, AlertController } from 'ionic-angular';
+import { Nav, Platform, AlertController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
@@ -50,19 +50,23 @@ export class iShallBe {
   pages: Array<{ title: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
   components: Array<{ title: string, component: any }>;
-  menuPages: Array<{ title: string, icon: string, component: any }>;
-  managerPages: Array<{ title: string, icon: string, component: any }>;
+  exploreMenuPages: Array<{ title: string, icon: string, component: any }>;
+  engageMenuPages: Array<{ title: string, icon: string, component: any }>;
+  editorMenuPages: Array<{ title: string, icon: string, component: any }>;
+  editor = false;
 
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
     private alertCtrl: AlertController,
+    private events: Events,
     private firebase: FirebaseProvider,
     private storage: Storage,
   ) {
     this.rootPage = StartupPage;
     platform.ready();
+    this.listenToEditorEvent();
 
     this.pages = [
       { title: 'Startup Page', component: StartupPage },
@@ -100,7 +104,7 @@ export class iShallBe {
       { title: 'Media Component', component: MediaComponent }
     ]
 
-    this.menuPages = [
+    this.exploreMenuPages = [
       {
         title: 'Home',
         icon: 'ios-home',
@@ -112,20 +116,46 @@ export class iShallBe {
         component: AboutPage
       },
       {
+        title: 'Explore',
+        icon: 'globe',
+        component: ExplorePage
+      }
+    ];
+
+    this.engageMenuPages = [
+      {
+        title: 'Create Goal',
+        icon: 'ios-microphone',
+        component: CreateGoalPage
+      },
+      {
         title: 'Create Statement',
         icon: 'ios-camera',
         component: CreateStatementPage
       },
       {
-        title: 'Profile',
+        title: 'Manage Profile',
         icon: 'ios-person',
         component: ProfilePage
       },
+    ];  
+
+    this.editorMenuPages = [
       {
-        title: 'Account',
-        icon: 'ios-contact',
-        component: AccountPage
-      }
+        title: 'Manage Pins',
+        icon: 'ios-albums',
+        component: PinsManagerPage
+      },
+      {
+        title: 'Manage Posts',
+        icon: 'ios-images',
+        component: PostsManagerPage
+      },
+      {
+        title: 'Manage Users',
+        icon: 'ios-people',
+        component: UsersManagerPage
+      },
     ];
 
   }
@@ -138,6 +168,13 @@ export class iShallBe {
   
   openPage(page) {
     this.nav.setRoot(page.component);
+  }
+
+  listenToEditorEvent() {
+    this.events.subscribe('editor:login', () => { 
+      console.log("Editor login");
+      this.editor = true; 
+    });
   }
   
 }
