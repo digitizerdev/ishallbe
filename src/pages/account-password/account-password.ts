@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
-import { FirebaseProvider } from '../../providers/firebase/firebase';
-
 import { Observable } from 'rxjs/Observable';
+
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()
 @Component({
@@ -13,14 +13,14 @@ import { Observable } from 'rxjs/Observable';
 export class AccountPasswordPage {
 
   updatePasswordForm: {
-    password?: string;
+    password?: string
   } = {};
   submitted = false;
-  loader: any;
-  title = 'Update Password';
+  user: any;
+
 
   constructor(
-    private navCtrl: NavController, 
+    private navCtrl: NavController,
     private navParams: NavParams,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
@@ -31,36 +31,24 @@ export class AccountPasswordPage {
   submit(updatePasswordForm) {
     this.submitted = true;
     if (updatePasswordForm.valid) {
-      this.startLoader();
+      let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+      loading.present();
       return this.updatePassword(updatePasswordForm).subscribe(() => {
-          this.confirmDelivery();   
-        });
-    }    
-  }
-
-  startLoader() {
-    this.loader = this.loadingCtrl.create({
-      content: 'Please Wait..'
-    });
-    this.loader.present();
+        this.navCtrl.pop();
+        loading.dismiss();
+        this.presentConfirmationAlert();
+      }, error => {
+        this.errorHandler(error); loading.dismiss();
+      });
+    };
   }
 
   updatePassword(updatePasswordForm) {
     return Observable.create((observer) => {
-      return this.firebase.account().updatePassword(updatePasswordForm.password).then(()=> {
+      return this.firebase.afa.auth.currentUser.updatePassword(updatePasswordForm.password).then(() => {
         observer.next();
-      }, (error) => { this.errorHandler(error); });
+      }, (error) => { observer.error(error) });
     });
-  }
-
-  confirmDelivery() {
-    this.endLoader();
-    this.presentConfirmationAlert();
-    this.popToAccountPage();
-  }
-
-  endLoader() {
-    this.loader.dismiss();
   }
 
   presentConfirmationAlert() {
@@ -72,12 +60,7 @@ export class AccountPasswordPage {
     alert.present();
   }
 
-  popToAccountPage() {
-    this.navCtrl.pop();
-  }
-
   errorHandler(error) {
-    this.endLoader();
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,

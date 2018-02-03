@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { FirebaseListObservable, FirebaseObjectObservable, AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
+import { Events } from 'ionic-angular';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+
+import { User } from '../../../test-data/users/model';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/take';
 
 class Credentials {
   email: string;
@@ -13,17 +15,52 @@ class Credentials {
 @Injectable()
 export class FirebaseProvider {
 
-  profileID: any;
- 
-  constructor
-    (
-    public afdb: AngularFireDatabase,
-    public afAuth: AngularFireAuth,
+  private userDoc: AngularFirestoreDocument<User>;
+  user: Observable<User>;
+  uid: any;
+  session: any;
+  loaded: any
+  hasSeenTutorial = false;
+
+  constructor(
+    public events: Events,
+    public afs: AngularFirestore,
+    public afa: AngularFireAuth
   ) {
+      this.checkForSession();
+  }
+
+  checkForSession() {
+    if (!this.loaded) {
+      this.sessionExists().subscribe((session) => {
+        if (session) { 
+          this.session = true;
+          this.events.publish('user:login');
+        } else {
+          this.session = false;
+          this.events.publish('user:logout');
+        }
+        this.loaded = true;
+      });
+    }
+  }
+
+  sessionExists() {
+    return Observable.create((observer) => {
+      return this.afa.authState.subscribe((session) => {
+        if (session) { observer.next(true);
+        } else { observer.next(false) }
+      });
+    });
+  }
+
+  loadUser() {
+    let path = "users/" + this.afa.auth.currentUser.uid;
+    return this.afs.doc(path);
   }
 
   register(credentials: Credentials) {
-    return this.afAuth.auth
+    return this.afa.auth
       .createUserWithEmailAndPassword(
         credentials.email,
         credentials.password,
@@ -31,7 +68,7 @@ export class FirebaseProvider {
   }
 
   logIn(credentials: Credentials) {
-    return this.afAuth.auth
+    return this.afa.auth
       .signInWithEmailAndPassword(
         credentials.email,
         credentials.password,
@@ -39,85 +76,7 @@ export class FirebaseProvider {
   }
 
   logOut() {
-    return this.afAuth.auth
+    return this.afa.auth
       .signOut();
   }
-
-  sendPasswordResetEmail(email: string) {
-    return this.afAuth.auth.sendPasswordResetEmail(
-      email
-    );
-  }
-  
-  resetPassword(email) {
-    return this.afAuth.auth.sendPasswordResetEmail(email)    
-  }
-
-  account() {
-    return this.afAuth.auth.currentUser;
-  }
-
-  object(path): FirebaseObjectObservable<any> {
-    return this.afdb.object(path)
-  }
-
-  list(path): FirebaseListObservable<any> {
-    return this.afdb.list(path)
-  }
-
-  limitedList(queryParameters) {
-    let path = queryParameters.path;
-    let limit = queryParameters.limitToLast;
-    return this.afdb.list(path, {
-      query: {
-        limitToLast: limit
-      }
-    }).take(1);
-  }
-
-  orderedList(path, fieldName) {
-    return this.afdb.list(path, {
-      query: {
-        orderByValue: fieldName
-      },
-    }).take(1);
-  }
-
-  queriedList(path, fieldName, fieldValue) {
-    return this.afdb.list(path, {
-      query: {
-        orderByChild: fieldName,
-        equalTo: fieldValue,
-      }
-    }).take(1);
-  }
-
-  queriedLimitedList(path, fieldName, fieldValue, limit) {
-    return this.afdb.list(path, {
-      query: {
-        orderByChild: fieldName,
-        equalTo: fieldValue,
-        limitToLast: limit        
-      }
-    }).take(1);
-  }
-
-  queriedRangeList(queryParameters) {
-    console.log("Query parameters are ");
-    console.log(queryParameters);
-    let path = queryParameters.path;
-    let orderByChild = queryParameters.orderByChild;
-    let startAt = queryParameters.startAt;
-    let endAt = queryParameters.endAt;
-    return this.afdb.list(path, {
-      query: {
-        orderByChild: orderByChild,
-        endAt: endAt,
-        startAt: startAt,
-      }
-    }).take(1);
-  }
-
-  queriedRa
-  
 }

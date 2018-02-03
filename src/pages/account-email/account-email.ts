@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+
 import { Observable } from 'rxjs/Observable';
-import { Storage } from '@ionic/storage';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -13,89 +13,63 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 export class AccountEmailPage {
 
   updateEmailForm: {
-    email?: string;
+    email?: string
   } = {};
   submitted = false;
-  loader: any;
-  title = 'Update Email';
-  uid: any;
-  profile: any;
+  user: any;
+
 
   constructor(
-    private navCtrl: NavController, 
+    private navCtrl: NavController,
     private navParams: NavParams,
     private loadingCtrl: LoadingController,
-    private storage: Storage,
     private alertCtrl: AlertController,
     private firebase: FirebaseProvider
   ) {
   }
 
-  ionViewDidEnter() {
-    this.loadAccount();
+  ionViewDidLoad() {
+    this.loadUser();
   }
 
-  loadAccount() {
-    this.requestUID().then((uid) => {
-      this.uid = uid;
-      this.requestProfile().subscribe((profile) => {
-        this.profile = profile;
-      });
-    });
+  loadUser() {
+    let user = this.firebase.loadUser();
+    user.valueChanges().subscribe((user) => {
+      this.user = user;
+    })
   }
-
-  requestUID() {
-    return this.storage.ready().then(() => {
-      return this.storage.get(('uid'));      
-    });
-  }
-
-  requestProfile() {
-    let path = '/users/' + this.uid;
-    return this.firebase.object(path)
-  } 
 
   submit(updateEmailForm) {
     this.submitted = true;
     if (updateEmailForm.valid) {
-      this.startLoader();
+      let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+      loading.present();
       return this.updateEmail(updateEmailForm).subscribe(() => {
-        return this.updateProfile().then(() => {
-          this.confirmDelivery();   
+        return this.updateUser().then(() => {
+          this.navCtrl.pop();
+          loading.dismiss();
+          this.presentConfirmationAlert();
+        }, error => {
+          this.errorHandler(error); loading.dismiss();
         });
-      });
-    }    
-  }
-
-  startLoader() {
-    this.loader = this.loadingCtrl.create({
-      content: 'Please Wait..'
-    });
-    this.loader.present();
+      }, error => {
+        this.errorHandler(error); loading.dismiss();
+      })
+    };
   }
 
   updateEmail(updateEmailForm) {
     return Observable.create((observer) => {
-      return this.firebase.account().updateEmail(updateEmailForm.email).then(()=> {
-        this.profile.email = updateEmailForm.email;        
+      return this.firebase.afa.auth.currentUser.updateEmail(updateEmailForm.email).then(() => {
+        this.user.email = updateEmailForm.email;
         observer.next();
-      }, (error) => { this.errorHandler(error); });
+      }, (error) => { observer.error(error) });
     });
   }
 
-  updateProfile() {
-    let path = '/users/' + this.uid;
-    return this.firebase.object(path).update(this.profile);
-  }
-
-  confirmDelivery() {
-    this.endLoader();
-    this.presentConfirmationAlert();
-    this.popToAccountPage();
-  }
-
-  endLoader() {
-    this.loader.dismiss();
+  updateUser() {
+    let path = '/users/' + this.user.uid
+    return this.firebase.afs.doc(path).update(this.user);
   }
 
   presentConfirmationAlert() {
@@ -107,12 +81,7 @@ export class AccountEmailPage {
     alert.present();
   }
 
-  popToAccountPage() {
-    this.navCtrl.pop();
-  }
-
   errorHandler(error) {
-    this.endLoader();
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,

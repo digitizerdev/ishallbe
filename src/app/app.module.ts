@@ -11,10 +11,10 @@ import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { IonicStorageModule, Storage } from '@ionic/storage';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireModule, FirebaseApp } from 'angularfire2';
-import { environment } from '../environments/environment';
-import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';import { environment } from '../environments/environment';
 import { NgCalendarModule } from 'ionic2-calendar';
 
 import { StartupPage } from '../pages/startup/startup';
@@ -43,8 +43,6 @@ import { GoalsPage } from '../pages/goals/goals';
 import { ComponentsModule } from '../components/components.module';
 import { YoutubePipe } from '../pipes/youtube/youtube';
 import { FirebaseProvider } from '../providers/firebase/firebase';
-
-import * as firebase from 'firebase/app';
 
 @NgModule({
   declarations: [
@@ -80,8 +78,8 @@ import * as firebase from 'firebase/app';
     HttpModule,
     ComponentsModule,
     AngularFireModule.initializeApp(environment.firebase), 
+    AngularFirestoreModule,
     AngularFireAuthModule,
-    AngularFireDatabaseModule,
     NgCalendarModule
   ],
   bootstrap: [IonicApp],

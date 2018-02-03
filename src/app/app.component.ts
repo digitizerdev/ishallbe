@@ -2,7 +2,6 @@ import { NgModule, Component, ViewChild } from '@angular/core';
 import { Nav, Platform, AlertController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Rx';
 
 import { StartupPage } from '../pages/startup/startup';
@@ -62,11 +61,9 @@ export class iShallBe {
     private alertCtrl: AlertController,
     private events: Events,
     private firebase: FirebaseProvider,
-    private storage: Storage,
   ) {
     this.rootPage = StartupPage;
     platform.ready();
-    this.listenToEditorEvent();
 
     this.pages = [
       { title: 'Startup Page', component: StartupPage },
@@ -168,13 +165,6 @@ export class iShallBe {
   
   openPage(page) {
     this.nav.setRoot(page.component);
-  }
-
-  listenToEditorEvent() {
-    this.events.subscribe('editor:login', () => { 
-      console.log("Editor login");
-      this.editor = true; 
-    });
   }
   
 }

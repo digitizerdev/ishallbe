@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, ActionSheetController } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+
 import { Observable } from 'rxjs/Observable';
 
 import { ProfilePage } from '../profile/profile';
@@ -13,11 +13,9 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
   templateUrl: 'edit-profile.html',
 })
 export class EditProfilePage {
+
+  user: any;
   photo: any;
-  submitted = false;
-  profile: any;
-  uid: any;
-  title = 'Profile';
   editProfileForm: {
     name?: string,
     bio?: string,
@@ -25,78 +23,106 @@ export class EditProfilePage {
     twitter?: string,
     linkedin?: string
   } = {};
-  loaded: any;
+  submitted = false;
+  loaded = false;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public alertCtrl: AlertController,
-    public actionSheetCtrl: ActionSheetController,
-    public loadingCtrl: LoadingController,
-    public storage: Storage,    
-    public firebase: FirebaseProvider,
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
+    private firebase: FirebaseProvider
   ) {
   }
 
   ionViewDidLoad() {
     this.photo = this.navParams.get('photo');
-    this.loadProfile();
+    this.loadUser().subscribe((user) => {
+      this.user = user;
+      if (this.photo) this.user.photo = this.photo;
+      this.loadProfileForm().subscribe(() => {
+        this.loaded = true;
+      })
+    });
   }
 
-  loadProfile() {
-    return this.requestUID().then((uid) => {
-      this.uid = uid;
-      return this.requestProfile().subscribe((profile) => {
-        this.profile = profile;
-        if (this.photo) this.profile.photo = this.photo;
-        this.loaded = true;
-        this.editProfileForm = profile;
+  loadUser() {
+    return Observable.create((observer: any) => {
+      let user = this.firebase.loadUser();
+      user.valueChanges().subscribe((user) => {
+        observer.next(user);
       });
     });
   }
 
-  requestUID() {
-    return this.storage.ready().then(() => {
-      return this.storage.get(('uid'));      
+  loadProfileForm() {
+    return Observable.create((observer: any) => {
+      if (!this.user.social) {
+        this.editProfileForm.instagram = "";
+        this.editProfileForm.twitter = "";
+        this.editProfileForm.linkedin = "";
+      } else {
+        this.editProfileForm.instagram = this.user.social.instagram;
+        this.editProfileForm.twitter = this.user.social.twitter;
+        this.editProfileForm.linkedin = this.user.social.linkedin;
+      }
+      this.editProfileForm.name = this.user.name;
+      this.editProfileForm.bio = this.user.bio
+      observer.next();
     });
-  }
-
-  requestProfile() {
-    let path = '/users/' + this.uid;
-    return this.firebase.object(path);
   }
 
   submit(form) {
     this.submitted = true;
     this.editProfileForm = form;
-    this.profile.email = form.email;
     let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
     loading.present();
-    this.requestProfileUpdate().then(() => {
-      this.updateUserPosts().subscribe(() => {
+    this.updateUser().then(() => {
+      this.updateUserCollaborations().subscribe(() => {
         loading.dismiss();
         this.navCtrl.setRoot(ProfilePage);
       });
-    }).catch((error) => { this.errorHandler(error) });      
+    }).catch((error) => { this.errorHandler(error) });
   }
 
-  requestProfileUpdate() {
-    if ( this.profile.instagram  || this.profile.twitter || this.profile.linkedIn ) {
-      this.profile.social = true;
-    } else this.profile.social = null;
-    let path = '/users/' + this.uid;
-    return this.firebase.object(path).update(this.profile)
+  updateUser() {
+      this.user.name = this.editProfileForm.name;
+      this.user.social = {
+        linkedin: this.editProfileForm.linkedin,
+        twitter: this.editProfileForm.twitter,
+        instagram: this.editProfileForm.instagram
+      };
+      this.user.bio = this.editProfileForm.bio;
+      let path = "users/" + this.user.uid;
+      return this.firebase.afs.doc(path).update(this.user);
   }
 
-  updateUserPosts() {
+  updateUserCollaborations() {
     return Observable.create((observer) => {
-     return this.firebase.queriedList('/posts/', 'uid', this.uid).subscribe((posts) => {
-        posts.forEach((post) => {
-          post.face = this.profile.photo
-          post.name = this.profile.name;
-          let path = '/posts/' + post.id;
-          this.firebase.object(path).update(post);
-        });
+      let path = 'users/' + this.user.uid + "/collaborations";
+      let userCollaborations = this.firebase.afs.collection(path);
+      let count = 0;
+      userCollaborations.valueChanges().subscribe((myCollaborations) => {
+        if (myCollaborations.length > 0) {
+          myCollaborations.forEach((collaboration) => {
+            return this.updateCollaborator(collaboration).subscribe(() => {
+              count++;
+              if (count == myCollaborations.length) observer.next();
+            });
+          });
+        } else observer.next();
+      });
+    });
+  }
+
+  updateCollaborator(collaboration) {
+    return Observable.create((observer) => {
+      let collaborator = {
+        name: this.user.name,
+        photo: this.user.photo,
+      }
+      let path = "collaborations/" + collaboration.collaborationId + "/collaborators/" + this.user.uid;
+      return this.firebase.afs.doc(path).update(collaborator).then(() => {
         observer.next();
       });
     });
@@ -109,9 +135,6 @@ export class EditProfilePage {
       buttons: ['OK']
     });
     alert.present();
-  }
-
-  pushPhotoPage() {
   }
 
 }

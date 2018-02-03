@@ -3,21 +3,17 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
-import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
-import { IonicStorageModule, } from '@ionic/storage';
-import { YoutubePipe } from '../src/pipes/youtube/youtube';
-import { NavController, NavParams, AlertController, LoadingController, ActionSheetController } from 'ionic-angular';
-import { AngularFireModule } from 'angularfire2';
-import { FirebaseListObservable, FirebaseObjectObservable, AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
+import { EmailComposer } from '@ionic-native/email-composer';
+import { IonicStorageModule } from '@ionic/storage';
+import { HomePage } from '../src/pages/home/home';
+import { NavController, NavParams, ActionSheetController, AlertController, LoadingController } from 'ionic-angular';
+import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection, AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
 
 export class PlatformMock {
-
   public ready(): Promise<string> {
     return new Promise((resolve) => {
       resolve('READY');
@@ -82,6 +78,16 @@ export class PlatformMock {
   }
 }
 
+export class DeepLinkerMock {
+
+}
+
+export class StorageMock extends IonicStorageModule {
+  styleDefault() {
+    return;
+  }
+}
+
 export class StatusBarMock extends StatusBar {
   styleDefault() {
     return;
@@ -95,8 +101,6 @@ export class SplashScreenMock extends SplashScreen {
 }
 
 export class FacebookMock extends Facebook {
-  _getPortal(): any { return {} };
-
   hide() {
     return;
   }
@@ -108,62 +112,12 @@ export class FileMock extends File {
   }
 }
 
-export class CameraMock extends Camera {
-
-  public getPicture(cameraOptions): any {
-    return new Promise(function (resolve: Function): void {
-      resolve('image');
-    });
-  }
-}
-
-export class EmailComposerMock extends EmailComposer {
-  _getPortal(): any { return {} };
-
-  public open(email): any {
-    return new Promise(function (resolve: Function): void {
-      resolve();
-    });
-  }
-}
-
 export class PushMock extends Push {
   hide() {
     return;
   }
 }
 
-export class StorageMock extends IonicStorageModule {
-
-  public ready(): any {
-    return new Promise(function (resolve: Function): void {
-      resolve(true);
-    });
-  }
-
-  public get(name: string) {
-
-    if (name = 'session') {
-      return new Promise(function (resolve: Function): void {
-        resolve(true);
-      });
-    }
-
-    if (name = 'failSession') {
-      return new Promise(function (resolve: Function): void {
-        resolve(true);
-      });
-    }
-
-  }
-
-  public set(name: string, value: any): any {
-    return new Promise(function (resolve: Function): void {
-      resolve();
-    });
-  }
-
-}
 export class NavMock {
 
   public pop(): any {
@@ -196,7 +150,6 @@ export class NavMock {
 
   public unregisterChildNav(nav: any) {
   }
-
 }
 
 export class NavParamsMock {
@@ -217,9 +170,6 @@ export class ActionSheetControllerMock extends ActionSheetController {
   }
 }
 
-export class DeepLinkerMock {
-
-}
 
 export class AlertControllerMock extends AlertController {
   public _getPortal(): any {
@@ -242,8 +192,7 @@ export class LoadingControllerMock {
   _getPortal(): any { return {} };
   create(options?: any) {
     return new LoadingMock()
-  };
-
+  }; 
 }
 
 class LoadingMock {
@@ -252,55 +201,41 @@ class LoadingMock {
   dismissAll() { };
 }
 
+export class EventsMock {
+  _getPortal(): any { return {} };
+  
+  public publish(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+}
+
 export class FirebaseProviderMock extends FirebaseProvider {
   styleDefault() {
     return;
   }
 
-}
-
-export class AngularFireDatabaseMock extends AngularFireDatabaseModule {
-  public profile(): any {
-    return {
-      update(object) {
-        return;
-      }
-    }
-  }
-
-  public object(path: string): Observable<any> {
-    return Observable.of({
-      update(obj: any): Observable<any> {
-        return Observable.of('true');
-      }
-    })
-  }
-}
-
-export class AngularFireAuthMock extends AngularFireAuthModule {
-
-  public auth(): any {
-    return {
-      signInWithEmailAndPassword(email, password) {
-        let token = {
-          uid: 'testUID'
-        }
-        return token;
-      },
-
-      currentUser(): any {
-        return {
-          updateEmail(email): any {
-            return;
-          }
-        }
-      }
-    }
-  }
-}
-
-export class FirebaseAppMock extends AngularFireModule {
-  hide() {
+  checkForSession() {
     return;
+  }
+}
+
+export class CameraMock extends Camera {
+
+  public getPicture(cameraOptions): any {
+    return new Promise(function (resolve: Function): void {
+      resolve('image');
+    });
+  }
+}
+
+export class EmailComposerMock extends EmailComposer {
+  _getPortal(): any { return {} };
+
+  public open(email): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
   }
 }

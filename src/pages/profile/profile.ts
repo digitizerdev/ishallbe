@@ -1,16 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
-
-import { EditProfilePage } from '../edit-profile/edit-profile';
-import { PostPage } from '../post/post';
-import { AccountPage } from '../account/account';
-import { HomePage } from '../home/home';
-import { SupportPage } from '../support/support';
-
-import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
+
+import { EditProfilePage } from '../edit-profile/edit-profile';
+
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()
 @Component({
@@ -19,308 +14,31 @@ import { Observable } from 'rxjs/Observable';
 })
 export class ProfilePage {
 
-  profile: any;
-  posts: any[] = [];
-  noPosts: any;
-  postsQuery: any;
-  postLimit: any;
-  loaded: any;
-  postsLoaded: any;
-  flaggedPosts: any[] = [];
-  flaggedPostsLoaded = false;
-  uid: any;
+  user: any;
   mine = false;
-  instagram: any;
-  twitter: any;
-  linkedin: any;
-  refreshing: any;
-  editor = false;
-  managing = false
+  loaded = false;
 
   constructor(
-    private navCtrl: NavController,
-    private firebase: FirebaseProvider,
+    private navCtrl: NavController, 
     private navParams: NavParams,
-    private alertCtrl: AlertController,
-    private storage: Storage
+    private firebase: FirebaseProvider
   ) {
   }
 
-  ionViewDidEnter() {
-    this.managing = this.navParams.get('managing');
-  }
-
   ionViewDidLoad() {
-    this.postLimit = 1;
-    this.loadUID().subscribe(() => {
-      this.loadProfile();
+    this.loadUser().subscribe(() => {
     });
   }
 
-  loadProfile() {
-    this.requestProfile().subscribe((profile) => {
-      this.profile = profile;
-      if (profile.editor) this.editor = true;
-      this.checkIfMyProfile().subscribe((mine) => {
-        if (mine) {
-          this.mine = true;
-          this.checkForFlaggedPosts();
-        } else {
-          this.checkIfEditor();
-        }
-      });
-      this.syncProfile();
-      this.loadUserPosts().subscribe((posts) => {
+  loadUser() {
+    return Observable.create((observer) => {
+      let user = this.firebase.loadUser();
+      return user.valueChanges().subscribe((user) => {
+        this.user = user;
+        if (this.user.uid == this.firebase.afa.auth.currentUser.uid) this.mine = true;
         this.loaded = true;
-        if (posts.length == 0) {
-          console.log("There are no posts");
-          this.postsLoaded = true;
-          this.noPosts = true;
-        } else {
-          posts.reverse();
-          this.presentPosts(posts);
-        }
-      });
-    });
-  }
-
-  refreshPage(refresh) {
-    this.refreshing = true;
-    this.posts = [];
-    this.firebase.profileID = this.uid;
-    this.navCtrl.setRoot(this.navCtrl.getActive().component);
-  }
-
-  ionViewDidLeave() {
-    if (!this.refreshing) {
-      this.firebase.profileID = null;
-    }
-  }
-
-  loadUID() {
-    return Observable.create((observer) => {
-      this.uid = this.navParams.get('uid')
-      if (this.uid) {
         observer.next();
-      } else {
-        this.uid = this.firebase.profileID;
-        if (this.uid) {
-          observer.next();
-        } else {
-          return this.requestUID().then((uid) => {
-            this.uid = uid;
-            observer.next();
-          });
-        }
-      }
-    });
-  }
-
-  checkIfMyProfile() {
-    return Observable.create((observer) => {
-      this.requestUID().then((uid) => {
-        if (this.uid == uid) {
-          observer.next(true);
-        } else {
-          observer.next(false);
-        }
-      });
-    });
-  }
-
-  checkForFlaggedPosts() {
-    console.log("Checking for flagged posts");
-    this.firebase.queriedList('flagged/posts', 'uid', this.uid).subscribe((flaggedPosts) => {
-      if (flaggedPosts.length > 0) {
-        console.log("I have at least one reported post");
-        console.log(flaggedPosts);
-        flaggedPosts.forEach((flaggedPost) => {
-          console.log("Pushing reported post");
-          console.log(flaggedPost);
-          this.flaggedPosts.push(flaggedPost);
-        });
-        this.flaggedPostsLoaded = true;
-      }
-    });
-  }
-
-  checkIfEditor() {
-    this.requestUID().then((uid) => {
-      let path = 'users/' + uid
-      this.firebase.object(path).subscribe((user) => {
-        if (user.editor) this.editor = true;
-      });
-    });
-  }
-
-  requestUID() {
-    return this.storage.ready().then(() => {
-      return this.storage.get(('uid'));
-    });
-  }
-
-  requestProfile() {
-    let path = '/users/' + this.uid;
-    return this.firebase.object(path);
-  }
-
-  syncProfile() {
-    if (this.profile.photo == 'https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png') {
-      this.profile.photo = 'assets/img/default-profile.png';
-    }
-    if (!this.profile.bio) {
-      this.addStandardBio();
-    }
-    this.instagram = this.profile.instagram;
-    this.twitter = this.profile.twitter;
-    this.linkedin = this.profile.linkedin;
-  }
-
-  addStandardBio() {
-    let profile = {
-      uid: this.profile.uid,
-      name: this.profile.name,
-      email: this.profile.email,
-      photo: this.profile.photo,
-      blocked: this.profile.blocked,
-      role: this.profile.role,
-      bio: 'Improving Every Day'
-    }
-    this.profile = profile;
-    let path = '/users/' + this.profile.uid;
-    this.firebase.object(path).update(profile);
-  }
-
-  loadUserPosts() {
-    let path = '/posts/'
-    return this.firebase.queriedLimitedList(path, 'uid', this.uid, this.postLimit);
-  }
-
-  presentPosts(posts) {
-    this.posts = [];
-    posts.forEach((post) => {
-      this.requestPostUserLikerObject(post).subscribe((liker) => {
-        if (liker[0]) {
-          post.userLiked = true;
-        } else {
-          post.userLiked = false;
-        }
-        if (post.face == 'https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png') {
-          post.face = 'assets/img/default-profile.png';
-        }
-        console.log(post);
-        if (post.onFeed || this.mine) {
-          this.posts.push(post);
-        }
-      });
-    });
-  }
-
-  doInfinite(infiniteScroll) {
-    this.postLimit++;
-    this.loadUserPosts().subscribe((posts) => {
-      if (posts.length < this.postLimit) {
-        this.postsLoaded = true;
-      } else {
-        this.presentNextPost(posts[0]);
-        infiniteScroll.complete();
-      }
-    });
-  }
-
-  presentNextPost(post) {
-    this.requestPostUserLikerObject(post).subscribe((liker) => {
-      if (liker[0]) {
-        post.userLiked = true;
-      } else {
-        post.userLiked = false;
-      }
-      console.log(post);
-      if (post.onFeed || this.mine) {
-        this.posts.push(post);
-      }
-    });
-  }
-
-  togglePostLike(post) {
-    if (post.userLiked) {
-      this.requestPostUserLikerObject(post).subscribe((liker) => {
-        this.removePostLikerObject(liker[0], post).then(() => {
-          if (post.likeCount == 1) {
-            this.unflagPostLike(post);
-          }
-          this.unlikePost(post);
-        });
-      });
-    } else {
-      this.likePost(post).subscribe(() => {
-        this.pushPostLikerObject(post).then((postLikeProps) => {
-          let postLikerID = postLikeProps.key;
-          this.addIDToPostLikerObject(postLikerID, post);
-        });
-      });
-    }
-  }
-
-  requestPostUserLikerObject(post) {
-    let path = 'posts/' + post.id + '/likers/';
-    return this.firebase.queriedList(path, 'uid', this.uid);
-  }
-
-  removePostLikerObject(liker, post) {
-    let path = 'posts/' + post.id + '/likers/' + liker.id;
-    return this.firebase.object(path).remove();;
-  }
-
-  unlikePost(myPost) {
-    myPost.userLiked = false;
-    let likeCount = --myPost.likeCount;
-    let post = {
-      "likeCount": likeCount
-    }
-    let path = 'posts/' + myPost.id;
-    return this.firebase.object(path).update(post);
-  }
-
-  unflagPostLike(myPost) {
-    let post = {
-      "liked": false,
-    }
-    let path = 'posts/' + myPost.id;
-    return this.firebase.object(path).update(post);
-  }
-
-  pushPostLikerObject(myPost) {
-    let path = 'posts/' + myPost.id + '/likers/';
-    let likerObject = {
-      "post": myPost.id,
-      "uid": this.uid
-    }
-    return this.firebase.list(path).push(likerObject);
-  }
-
-  addIDToPostLikerObject(postLikerID, myPost) {
-    let path = '/posts/' + myPost.id + '/likers/' + postLikerID;
-    let liker = {
-      id: postLikerID
-    }
-    return this.firebase.object(path).update(liker);
-  }
-
-  likePost(myPost) {
-    return Observable.create((observer) => {
-      myPost.liked = true;
-      myPost.userLiked = true;
-      let likeCount = ++myPost.likeCount;
-      let liked = true;
-      let post = {
-        "likeCount": likeCount,
-        "liked": liked
-      }
-      let path = 'posts/' + myPost.id;
-      return this.firebase.object(path).update(post).then((obj) => {
-        observer.next(obj)
-      });
+      })
     });
   }
 
@@ -328,109 +46,20 @@ export class ProfilePage {
     this.navCtrl.push(EditProfilePage);
   }
 
-  flaggedMessage(flaggedPost) {
-    let alert = this.alertCtrl.create({
-      title: 'Reported Statement',
-      message: 'Please contact support to restore this post or delete to create another statement',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-          }
-        },
-        {
-          text: 'Delete',
-          handler: () => {
-            this.removePost(flaggedPost)
-          }
-        },
-        {
-          text: 'Contact',
-          handler: () => {
-            this.navCtrl.setRoot(SupportPage);
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
-  removePost(flaggedPost) {
-    console.log("Removing flagged post");
-    console.log(flaggedPost);
-    let path = '/flagged/posts/' + flaggedPost.flaggedID
-    this.firebase.object(path).remove().then(() => {
-      this.navCtrl.setRoot(ProfilePage);
-    });
-  }
-
-  viewPost(postID) {
-    this.navCtrl.push(PostPage, { id: postID })
-  }
 
   openSocial(socialNetwork) {
     if (socialNetwork == 'instagram') {
-      let instagramLink = 'https://instagram.com/' + this.instagram;
+      let instagramLink = 'https://instagram.com/' + this.user.social.instagram;
       open(instagramLink);
     }
     if (socialNetwork == 'twitter') {
-      let twitterLink = 'https://twitter.com/' + this.twitter;
+      let twitterLink = 'https://twitter.com/' + this.user.social.twitter;
       open(twitterLink);
     }
     if (socialNetwork == 'linkedin') {
-      let linkedinLink = 'https://linkedin.com/in/' + this.linkedin;
+      let linkedinLink = 'https://linkedin.com/in/' + this.user.social.linkedin;
       open(linkedinLink);
     }
   }
 
-  blockUser() {
-    let alert = this.alertCtrl.create({
-      title: 'Confirmation',
-      message: 'Are you sure you want to block this user?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-          }
-        },
-        {
-          text: 'Confirm',
-          handler: () => {
-            let path = '/users/' + this.uid;
-            this.firebase.object(path).update(this.profile).then(() => {
-              this.firebase.list('flagged/users').push(this.profile).then((token) => {
-                this.addIDToFlaggedUser(token).then(() => {
-                  this.profile.blocked = true;
-                  this.navCtrl.setRoot(AccountPage);
-                });
-              });
-            });
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
-  addIDToFlaggedUser(token) {
-    let path = 'flagged/users/' + token.key;
-    let post = {
-      flaggedID: token.key
-    }
-    return this.firebase.object(path).update(post)
-  }
-
-  setRootHomePage() {
-    this.navCtrl.setRoot(HomePage);
-  }
-
-  pushSupportPage() {
-    this.navCtrl.push(SupportPage);
-  }
-
-  pushAccountPage() {
-    this.navCtrl.push(AccountPage);
-  }
 }

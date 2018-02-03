@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, Platform } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, Platform, Events } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
-import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 import firebase from 'firebase';
 
@@ -16,103 +15,113 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 export class LoginFacebookComponent {
 
   uid: any;
-  loader: any;
-  data: any;
+  authToken: any;
+  user: any;
+  registering = false;
 
   constructor(
-    public firebase: FirebaseProvider,
-    public navCtrl: NavController,
-    public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController,
-    public platform: Platform,
-    public facebook: Facebook,
-    public storage: Storage,
+    private firebase: FirebaseProvider,
+    private navCtrl: NavController,
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
+    private events: Events,
+    private platform: Platform,
+    private facebook: Facebook,
   ) {
   }
 
   authenticate() {
-    this.viaCordova(this.platform.is('cordova'))
-    this.startLoader();
+    this.determineAuthType(this.platform.is('cordova'))
   }
 
-  startLoader() {
-    this.loader = this.loadingCtrl.create({
-      content: 'Please Wait..'
-    });
-    this.loader.present();
-  }
-
-  viaCordova(cordova) {
+  determineAuthType(cordova) {
     if (cordova) {
-      this.cordova();
-    } else {
-      this.browser();
-    }
+      this.cordovaAuth();
+    } else { this.browserAuth(); }
   }
 
-  cordova() {
+  cordovaAuth() {
     this.facebook.login(['email', 'public_profile']).then((token) => {
       this.facebook.getAccessToken().then((accessToken) => {
         let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(accessToken);
         firebase.auth().signInWithCredential(facebookProviderCredential).then((token) => {
-          this.prepCordova(token);
-        }).catch((error) => { this.errorHandler(error)});;
-      }).catch((error) => { this.errorHandler(error)});
-    }).catch((error) => { this.errorHandler(error)});
+          this.unpackageCordovaAuthToken(token);
+        }).catch((error) => { this.errorHandler(error) });;
+      }).catch((error) => { this.errorHandler(error) });
+    }).catch((error) => { this.errorHandler(error) });
   }
 
-  prepCordova(token) {
+  unpackageCordovaAuthToken(token) {
     this.uid = token.uid;
-    this.data = token.providerData[0];
-    let photoURL = "https://graph.facebook.com/" + token.providerData[0].uid + "/picture?type=large";      
+    this.authToken = token.providerData[0];
+    let photoURL = "https://graph.facebook.com/" + token.providerData[0].uid + "/picture?type=large";
     let data = {
       "name": token.providerData[0].displayName,
       "email": token.providerData[0].email,
-      "photo": photoURL,   
+      "photo": photoURL,
     }
-    this.data = data;    
-    this.checkForExistingProfile();
+    this.authToken = data;
+    this.loadUser();
   }
 
-  browser() {
-    firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((token)=> {
-      this.prepBrowser(token);
+  browserAuth() {
+    firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((token) => {
+      this.unpackageBrowserAuthToken(token);
     });
   }
 
-  prepBrowser(token) {
-    let photoURL = "https://graph.facebook.com/" + token.user.providerData[0].uid + "/picture?type=large";      
+  unpackageBrowserAuthToken(token) {
+    this.uid = token.user.uid;
+    let photoURL = "https://graph.facebook.com/" + token.user.providerData[0].uid + "/picture?type=large";
     let data = {
       "name": token.user.displayName,
       "email": token.user.email,
-      "photo": photoURL,   
+      "photo": photoURL,
     }
-    this.data = data; 
-    this.uid = token.user.uid;
-    this.checkForExistingProfile();
+    this.authToken = data;
+    this.loadUser();
   }
 
-  checkForExistingProfile() {
-    this.requestProfile(this.uid).subscribe((profile) => {
-      if (profile) {
-        this.confirmDelivery();
-      } else {
-       this.registerUser(); 
-      }
-    })
-  }
-
-  registerUser() {
-    this.presentEULA().subscribe((accepted) => {
-      if (accepted) {
-        this.createProfile();
-      }
+  loadUser() {
+    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+    loading.present();
+    this.checkForExistingUser().subscribe((user) => {
+      if (user) { this.login(); loading.dismiss() }
+      else {
+        this.registerUser().subscribe(() => {
+          this.login(); loading.dismiss();
+        }, error => {
+          this.firebase.afa.auth.signOut();
+          this.navCtrl.setRoot(this.navCtrl.getActive().component);
+          loading.dismiss();
+        })
+      };
     });
   }
 
-  requestProfile(uid) {
-    let path = '/users/' + uid;
-    return this.firebase.object(path)
+  login() {
+    this.events.publish('user:login');
+    this.navCtrl.setRoot(HomePage)
+  }
+
+  checkForExistingUser() {
+    return Observable.create((observer) => {
+      let path = '/users/' + this.uid;
+      this.user = this.firebase.afs.doc(path);
+      return this.user.valueChanges().subscribe((user) => {
+        if (!this.registering) observer.next(user);
+      })
+    });
+  }
+
+  registerUser() {
+    this.registering = true;
+    return Observable.create((observer) => {
+      return this.presentEULA().subscribe((accepted) => {
+        if (accepted) this.createUser().then(() => { observer.next(); });
+        else observer.error();
+      });
+    });
   }
 
   presentEULA() {
@@ -140,53 +149,24 @@ export class LoginFacebookComponent {
     });
   }
 
-  createProfile() {
-    let path = '/users/' + this.uid;
-    let profile = {
+  createUser() {
+    let user = {
       "uid": this.uid,
-      "name": this.data.name,
-      "email": this.data.email,
-      "photo": this.data.photo,
-      "role": "contributor",
-      "blocked": false
+      "name": this.authToken.name,
+      "email": this.authToken.email,
+      "photo": this.authToken.photo,
+      "blocked": false,
+      "roles": {
+        "subscriber": true,
+        "partner": false,
+        "contractor": false
+      }
     }
-    this.firebase.object(path).set(profile).then(() => {
-      this.confirmDelivery();
-    })
-  }
-
-  confirmDelivery() {
-    this.endLoader();
-    this.presentConfirmationAlert();
-    this.startSession();     
-    this.setRootHomePage();
-  }
-
-  endLoader() {
-    this.loader.dismiss();
-  }
-
-  presentConfirmationAlert() {
-    let alert = this.alertCtrl.create({
-      title: '',
-      subTitle: 'Authenticated',
-      buttons: ['OK']
-    });
-  }
-
-  startSession() {
-    let uid = this.uid;
-    this.storage.set('uid', uid);
-    this.storage.set('session', true);
-    this.setRootHomePage();
-  }
-
-  setRootHomePage() {
-    this.navCtrl.setRoot(HomePage);
+    let path = 'users/' + this.uid;
+    return this.firebase.afs.doc(path).set(user)
   }
 
   errorHandler(error) {
-    this.endLoader();
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,
@@ -194,4 +174,5 @@ export class LoginFacebookComponent {
     });
     alert.present();
   }
+
 }
