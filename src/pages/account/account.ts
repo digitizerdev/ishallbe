@@ -57,7 +57,7 @@ export class AccountPage {
   logout() {
     this.firebase.logOut();
     this.firebase.hasSeenTutorial = true;
-    this.navCtrl.setRoot(HomePage);
+    this.navCtrl.setRoot(LoginPage);
   }
 
   setRootLoginPage() {

@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { Observable } from 'rxjs/Observable';
 
 import { EditProfilePage } from '../edit-profile/edit-profile';
+import { AccountPage } from '../account/account';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -26,8 +27,6 @@ export class ProfilePage {
   }
 
   ionViewDidLoad() {
-    this.loadUser().subscribe(() => {
-    });
   }
 
   loadUser() {
@@ -42,11 +41,6 @@ export class ProfilePage {
     });
   }
 
-  pushEditProfilePage() {
-    this.navCtrl.push(EditProfilePage);
-  }
-
-
   openSocial(socialNetwork) {
     if (socialNetwork == 'instagram') {
       let instagramLink = 'https://instagram.com/' + this.user.social.instagram;
@@ -60,6 +54,14 @@ export class ProfilePage {
       let linkedinLink = 'https://linkedin.com/in/' + this.user.social.linkedin;
       open(linkedinLink);
     }
+  }
+
+  pushEditProfilePage() {
+    this.navCtrl.push(EditProfilePage);
+  }
+
+  pushAccountPage() {
+    this.navCtrl.push(AccountPage);
   }
 
 }

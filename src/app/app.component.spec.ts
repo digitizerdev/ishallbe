@@ -91,24 +91,44 @@ describe('iShallBe Component', () => {
     afs = null;
   });
 
-  it('should be created', () => {
+  fit('should be created', () => {
     expect(component instanceof iShallBe).toBe(true);
   });
 
-  it('should have 22 pages', () => {
-    expect(component.pages.length).toBe(22);
+  fit('should have explore menu with three pages', () => {
+   expect(component.exploreMenuPages.length).toBe(3);
   });
 
-  it('should have 1 provider', () => {
+  fit('should have editor menu with three pages', () => {
+    expect(component.engageMenuPages.length).toBe(3);
+  });
+
+  fit('should have editor menu with three pages', () => {
+    expect(component.editorMenuPages.length).toBe(3);
+  });
+
+  fit('should have 1 provider', () => {
     expect(component.providers.length).toBe(1);
   });
 
-  it('should have 4 components', () => {
-    expect(component.components.length).toBe(4);
+  fit('should have 22 pages', () => {
+    expect(component.pages.length).toBe(22);
   });
 
-  it('should initialize root page to StartupPage', () => {
+  fit('should initialize root page to StartupPage', () => {
     expect(component['rootPage']).toBe(StartupPage);
   });
 
+  fit('should be able to ready platform', () => {
+    expect(component.platformReady).toBeDefined();
+  });
+
+  fit('should be able to open a page', () => {
+    expect(component.openPage).toBeDefined();
+  });
+
+  fit('should listen to editor login', () => {
+    expect(component.listenToEditorLogin).toBeDefined();
+  });
+  
 });

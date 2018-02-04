@@ -27,12 +27,6 @@ import { CreateGoalPage } from '../pages/create-goal/create-goal';
 import { ExplorePage } from '../pages/explore/explore';
 import { GoalsPage } from '../pages/goals/goals';
 
-import { ComponentsModule } from '../components/components.module';
-import { HeaderComponent } from '../components/header/header';
-import { TermsOfServiceComponent } from '../components/terms-of-service/terms-of-service';
-import { LoginFacebookComponent } from '../components/login-facebook/login-facebook';
-import { MediaComponent } from '../components/media/media';
-
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
 export interface PageInterface {
@@ -48,7 +42,6 @@ export class iShallBe {
   rootPage: any;
   pages: Array<{ title: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
-  components: Array<{ title: string, component: any }>;
   exploreMenuPages: Array<{ title: string, icon: string, component: any }>;
   engageMenuPages: Array<{ title: string, icon: string, component: any }>;
   editorMenuPages: Array<{ title: string, icon: string, component: any }>;
@@ -64,42 +57,6 @@ export class iShallBe {
   ) {
     this.rootPage = StartupPage;
     platform.ready();
-
-    this.pages = [
-      { title: 'Startup Page', component: StartupPage },
-      { title: 'Login Page', component: LoginPage },
-      { title: 'Register Page', component: RegisterPage },
-      { title: 'Password Reset Page', component: PasswordResetPage },
-      { title: 'Support Page', component: SupportPage },
-      { title: 'Account Email Page', component: AccountEmailPage },
-      { title: 'Account Password Page', component: AccountPasswordPage },
-      { title: 'Account Page', component: AccountPage },
-      { title: 'About Page', component: AboutPage },
-      { title: 'Edit Profile Page', component: EditProfilePage },
-      { title: 'Profile Page', component: ProfilePage },
-      { title: 'Create Statement Page', component: CreateStatementPage },
-      { title: 'Post Page', component: PostPage },
-      { title: 'Pin Page', component: PinPage },
-      { title: 'Home Page', component: HomePage },
-      { title: 'Create Pin Page', component: CreatePinPage },
-      { title: 'Users Manager Page', component: UsersManagerPage },
-      { title: 'Posts Manager Page', component: PostsManagerPage },
-      { title: 'Pins Manager Page', component: PinsManagerPage },
-      { title: 'Create Goal Page', component: CreateGoalPage },
-      { title: 'Explore Page', component: ExplorePage },
-      { title: 'Goals Page', component: GoalsPage }
-    ];
-
-    this.providers = [
-      { title: 'Firebase Provider', component: FirebaseProvider }
-    ];
-
-    this.components = [
-      { title: 'Header Component', component: HeaderComponent },
-      { title: 'Terms of Service Component', component: TermsOfServiceComponent },
-      { title: 'Login Facebook Component', component: LoginFacebookComponent },
-      { title: 'Media Component', component: MediaComponent }
-    ]
 
     this.exploreMenuPages = [
       {
@@ -155,6 +112,35 @@ export class iShallBe {
       },
     ];
 
+    this.providers = [
+      { title: 'Firebase Provider', component: FirebaseProvider }
+    ];
+
+    this.pages = [
+      { title: 'Startup Page', component: StartupPage },
+      { title: 'Login Page', component: LoginPage },
+      { title: 'Register Page', component: RegisterPage },
+      { title: 'Password Reset Page', component: PasswordResetPage },
+      { title: 'Support Page', component: SupportPage },
+      { title: 'Account Email Page', component: AccountEmailPage },
+      { title: 'Account Password Page', component: AccountPasswordPage },
+      { title: 'Account Page', component: AccountPage },
+      { title: 'About Page', component: AboutPage },
+      { title: 'Edit Profile Page', component: EditProfilePage },
+      { title: 'Profile Page', component: ProfilePage },
+      { title: 'Create Statement Page', component: CreateStatementPage },
+      { title: 'Post Page', component: PostPage },
+      { title: 'Pin Page', component: PinPage },
+      { title: 'Home Page', component: HomePage },
+      { title: 'Create Pin Page', component: CreatePinPage },
+      { title: 'Users Manager Page', component: UsersManagerPage },
+      { title: 'Posts Manager Page', component: PostsManagerPage },
+      { title: 'Pins Manager Page', component: PinsManagerPage },
+      { title: 'Create Goal Page', component: CreateGoalPage },
+      { title: 'Explore Page', component: ExplorePage },
+      { title: 'Goals Page', component: GoalsPage }
+    ];
+    
   }
 
   platformReady() {
@@ -167,5 +153,8 @@ export class iShallBe {
     this.nav.setRoot(page.component);
   }
   
+  listenToEditorLogin() {
+
+  }
 }
 

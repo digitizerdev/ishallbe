@@ -21,10 +21,10 @@
     <img class="avatar" src="{{ profile?.photo }}">
     <ion-row *ngIf="editor && !mine">
       <ion-col>
-        <button ion-button id="BlockUserButton" (click)="blockUser()" color="danger" >BLOCK USER</button>
+        <button ion-button id="BlockUserButton" (click)="blockUser()" color="danger">BLOCK USER</button>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="mine">
+    <ion-row>
       <ion-col>
         <button ion-button id="AccountViewProfileButton" (click)="pushEditProfilePage()" color="primary" small>EDIT PROFILE</button>
       </ion-col>
