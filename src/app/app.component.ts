@@ -40,11 +40,11 @@ export class iShallBe {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any;
-  pages: Array<{ title: string, component: any }>;
-  providers: Array<{ title: string, component: any }>;
   exploreMenuPages: Array<{ title: string, icon: string, component: any }>;
   engageMenuPages: Array<{ title: string, icon: string, component: any }>;
   editorMenuPages: Array<{ title: string, icon: string, component: any }>;
+  providers: Array<{ title: string, component: any }>;
+  pages: Array<{ title: string, component: any }>;
   editor = false;
 
   constructor(
@@ -154,7 +154,7 @@ export class iShallBe {
   }
   
   listenToEditorLogin() {
-
+    this.events.subscribe('login: editor', () => { this.editor = true });
   }
 }
 

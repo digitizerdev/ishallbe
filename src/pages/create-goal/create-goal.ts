@@ -1,13 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the CreateGoalPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-create-goal',
@@ -15,7 +8,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class CreateGoalPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  createGoalForm: {
+    subject?: string;
+    body?: string, 
+  } = {};    
+  submitted = false;
+
+  constructor(
+    private navCtrl: NavController, 
+    private navParams: NavParams
+  ) {
   }
 
   ionViewDidLoad() {
