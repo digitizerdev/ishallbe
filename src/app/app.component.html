@@ -12,6 +12,7 @@
         <button class="menu-pages" menuClose ion-item *ngFor="let p of exploreMenuPages" (click)="openPage(p)">
           <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>
           {{ p.title }}
+          <ion-icon color="gray" item-right name="ios-arrow-forward"></ion-icon>
         </button>
       </ion-list>
     </div>
@@ -20,6 +21,7 @@
         <button class="menu-pages" menuClose ion-item *ngFor="let p of engageMenuPages" (click)="openPage(p)">
           <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>
           {{ p.title }}
+          <ion-icon color="gray" item-right name="ios-arrow-forward"></ion-icon>
         </button>
       </ion-list>
     </div>
@@ -28,6 +30,7 @@
         <button class="menu-pages" menuClose ion-item *ngFor="let p of editorMenuPages" (click)="openPage(p)">
           <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>
           {{ p.title }}
+          <ion-icon color="gray" item-right name="ios-arrow-forward"></ion-icon>
         </button>
       </ion-list>
     </div>

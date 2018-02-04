@@ -1,46 +1,50 @@
 <ion-content center padding>
   <header></header>
-  <br>
-  <br>
-  <login-facebook></login-facebook>
-  <br>
+  <ion-row>
+    <ion-col text-center>
+      <login-facebook></login-facebook>
+    </ion-col>
+  </ion-row>
   <br>
   <div>
     <form class="main" #loginForm="ngForm" novalidate>
-      <ion-list  no-lines>
+      <ion-list no-lines>
+        <div class="inputs">
         <ion-item>
-          <ion-label stacked color="primary">Email</ion-label>
-          <ion-input [(ngModel)]="loginForm.email" name="email" type="email" #email="ngModel" spellcheck="false" autocapitalize="off"
+          <ion-input [(ngModel)]="loginForm.email" name="email" placeholder="E-mail" type="email" #email="ngModel" spellcheck="false" autocapitalize="off"
             required>
           </ion-input>
         </ion-item>
         <p ion-text [hidden]="email.valid || submitted == false" color="danger" padding-left>
           Email is required
         </p>
+        <br>
         <ion-item>
-          <ion-label stacked color="primary">Password</ion-label>
-          <ion-input [(ngModel)]="loginForm.password" name="password" type="password" #password="ngModel" required>
+          <ion-input [(ngModel)]="loginForm.password" name="password" placeholder="Password"  type="password" #password="ngModel" required>
           </ion-input>
         </ion-item>
         <p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>
           Password is required
         </p>
+      </div>
         <br>
         <ion-row>
           <ion-col text-center>
-            <button id="LoginWithEmailButton" ion-button (click)="submit(loginForm)" type="submit" round large>Login with Email</button>
+            <button id="LoginWithEmailButton" ion-button (click)="submit(loginForm)" type="submit" icon-start round large>
+              <ion-icon name="mail"></ion-icon> LOGIN</button>
           </ion-col>
         </ion-row>
       </ion-list>
     </form>
   </div>
+  <br>
   <ion-row responsive-sm>
     <ion-col text-center>
-      <button ion-button id="LoginRegisterButton" (click)="pushRegisterPage()" color="secondary" round outline small>Register</button>
+      <button ion-button id="RegisterButton" (click)="setRootRegisterPage()" color="secondary" round>REGISTER</button>
     </ion-col>
     <ion-col text-center>
-      <button ion-button id="LoginForgotPasswordButton" (click)="pushPasswordResetPage()" color="secondary" round outline small>Forgot Password?</button>
+      <br>
+      <div id="ForgotPasswordLink" (click)="setRootPasswordResetPage()">Forgot Password?</div>
     </ion-col>
   </ion-row>
-  <terms-of-service></terms-of-service>
 </ion-content>

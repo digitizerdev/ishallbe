@@ -65,12 +65,12 @@ export class LoginPage {
     alert.present();
   }
 
-  goToRegisterPage() {
+  setRootRegisterPage() {
     this.navCtrl.setRoot(RegisterPage);
   }
 
-  pushPasswordResetPage() {
-    this.navCtrl.push(PasswordResetPage);
+  setRootPasswordResetPage() {
+    this.navCtrl.setRoot(PasswordResetPage);
   }
 
 }

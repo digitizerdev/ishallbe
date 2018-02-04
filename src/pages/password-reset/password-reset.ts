@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
-
 import { Observable } from 'rxjs/Observable';
+
+import { LoginPage } from '../login/login';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -65,6 +66,10 @@ export class PasswordResetPage {
       buttons: ['OK']
     });
     alert.present();
+  }
+
+  setRootLoginPage() {
+    this.navCtrl.setRoot(LoginPage);
   }
 
 }

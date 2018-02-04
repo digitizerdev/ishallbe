@@ -112,7 +112,7 @@ export class RegisterPage {
     alert.present();
   }
 
-  goToLoginPage() {
+  setRootLoginPage() {
     this.navCtrl.setRoot(LoginPage);
   }
 }
