@@ -18,27 +18,26 @@ import * as firebase from 'firebase/app';import { environment } from '../environ
 import { NgCalendarModule } from 'ionic2-calendar';
 
 import { StartupPage } from '../pages/startup/startup';
-import { LoginPage } from '../pages/login/login';
-import { RegisterPage } from '../pages/register/register';
+import { SignupPage } from '../pages/signup/signup';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
-import { AccountEmailPage } from '../pages/account-email/account-email';
-import { AccountPasswordPage } from '../pages/account-password/account-password';
-import { SupportPage } from '../pages/support/support';
-import { AccountPage } from '../pages/account/account';
+import { LoginPage } from '../pages/login/login';
 import { AboutPage } from '../pages/about/about';
-import { EditProfilePage } from '../pages/edit-profile/edit-profile';
+import { SupportPage } from '../pages/support/support';
+import { EmailUpdatePage } from '../pages/email-update/email-update';
+import { PasswordUpdatePage } from '../pages/password-update/password-update';
+import { AccountPage } from '../pages/account/account';
+import { ProfileUpdatePage } from '../pages/profile-update/profile-update';
+import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
+import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
 import { ProfilePage } from '../pages/profile/profile';
-import { CreateStatementPage } from '../pages/create-statement/create-statement';
 import { PostPage } from '../pages/post/post';
-import { PinPage } from '../pages/pin/pin';
+import { ExplorePage } from '../pages/explore/explore';
 import { HomePage } from '../pages/home/home';
-import { CreatePinPage } from '../pages/create-pin/create-pin';
+import { TutorialPage } from '../pages/tutorial/tutorial';
+import { PinCreatorPage } from '../pages/pin-creator/pin-creator';
 import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
 import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
 import { UsersManagerPage } from '../pages/users-manager/users-manager';
-import { CreateGoalPage } from '../pages/create-goal/create-goal';
-import { ExplorePage } from '../pages/explore/explore';
-import { GoalsPage } from '../pages/goals/goals';
 
 import { ComponentsModule } from '../components/components.module';
 import { YoutubePipe } from '../pipes/youtube/youtube';
@@ -48,27 +47,26 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
   declarations: [
     iShallBe,
     StartupPage,
+    SignupPage,
+    PasswordResetPage,
     LoginPage,
-    RegisterPage,    
-    PasswordResetPage,  
-    AccountEmailPage,
-    AccountPasswordPage,
-    SupportPage,
-    AccountPage,
     AboutPage,
-    EditProfilePage,
+    SupportPage,
+    EmailUpdatePage,
+    PasswordUpdatePage,
+    AccountPage,
+    ProfileUpdatePage,
+    StatementCreatorPage,
+    GoalCreatorPage,
     ProfilePage,
-    CreateStatementPage,
     PostPage,
-    PinPage,
+    ExplorePage,
     HomePage,
-    CreatePinPage,
+    TutorialPage,
+    PinCreatorPage,
     PinsManagerPage,
     PostsManagerPage,
     UsersManagerPage,
-    CreateGoalPage,
-    ExplorePage,
-    GoalsPage,
     YoutubePipe
   ],
   imports: [
@@ -86,27 +84,26 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
   entryComponents: [
     iShallBe,
     StartupPage,
+    SignupPage,
+    PasswordResetPage,
     LoginPage,
-    RegisterPage,    
-    PasswordResetPage,  
-    AccountEmailPage,
-    AccountPasswordPage,
-    SupportPage,
-    AccountPage,
     AboutPage,
-    EditProfilePage,
+    SupportPage,
+    EmailUpdatePage,
+    PasswordUpdatePage,
+    AccountPage,
+    ProfileUpdatePage,
+    StatementCreatorPage,
+    GoalCreatorPage,
     ProfilePage,
-    CreateStatementPage,
     PostPage,
-    PinPage,
+    ExplorePage,
     HomePage,
-    CreatePinPage,
+    TutorialPage,
+    PinCreatorPage,
     PinsManagerPage,
     PostsManagerPage,
     UsersManagerPage,
-    CreateGoalPage,
-    ExplorePage,
-    GoalsPage,
   ],
   providers: [
     StatusBar,

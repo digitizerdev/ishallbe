@@ -5,8 +5,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
-import { AccountEmailPage } from '../account-email/account-email';
-import { AccountPasswordPage } from '../account-password/account-password';;
+import { EmailUpdatePage } from '../email-update/email-update';
+import { PasswordUpdatePage } from '../password-update/password-update';;
 import { ProfilePage } from '../profile/profile';
 import { SupportPage } from '../support/support';
 
@@ -42,12 +42,12 @@ export class AccountPage {
    })
   }
 
-  pushAccountEmailPage() {
-    this.navCtrl.push(AccountEmailPage);
+  pushEmailUpdatePage() {
+    this.navCtrl.push(EmailUpdatePage);
   }
 
-  pushAccountPasswordPage() {
-    this.navCtrl.push(AccountPasswordPage);
+  pushPasswordUpdatePage() {
+    this.navCtrl.push(PasswordUpdatePage);
   }
 
   setRootProfilePage() {

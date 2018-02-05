@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 
 import { Observable } from 'rxjs/Observable';
 
-import { EditProfilePage } from '../edit-profile/edit-profile';
+import { ProfileUpdatePage } from '../profile-update/profile-update';
 import { AccountPage } from '../account/account';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -56,8 +56,8 @@ export class ProfilePage {
     }
   }
 
-  pushEditProfilePage() {
-    this.navCtrl.push(EditProfilePage);
+  pushProfileUpdatePage() {
+    this.navCtrl.push(ProfileUpdatePage);
   }
 
   pushAccountPage() {

@@ -5,27 +5,26 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Observable } from 'rxjs/Rx';
 
 import { StartupPage } from '../pages/startup/startup';
-import { LoginPage } from '../pages/login/login';
-import { RegisterPage } from '../pages/register/register';
+import { SignupPage } from '../pages/signup/signup';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
-import { AccountEmailPage } from '../pages/account-email/account-email';
-import { AccountPasswordPage } from '../pages/account-password/account-password';
-import { SupportPage } from '../pages/support/support';
-import { AccountPage } from '../pages/account/account';
+import { LoginPage } from '../pages/login/login';
 import { AboutPage } from '../pages/about/about';
-import { EditProfilePage } from '../pages/edit-profile/edit-profile';
+import { SupportPage } from '../pages/support/support';
+import { EmailUpdatePage } from '../pages/email-update/email-update';
+import { PasswordUpdatePage } from '../pages/password-update/password-update';
+import { AccountPage } from '../pages/account/account';
+import { ProfileUpdatePage } from '../pages/profile-update/profile-update';
+import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
+import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
 import { ProfilePage } from '../pages/profile/profile';
-import { CreateStatementPage } from '../pages/create-statement/create-statement';
 import { PostPage } from '../pages/post/post';
-import { PinPage } from '../pages/pin/pin';
+import { ExplorePage } from '../pages/explore/explore';
 import { HomePage } from '../pages/home/home';
-import { CreatePinPage } from '../pages/create-pin/create-pin';
+import { TutorialPage } from '../pages/tutorial/tutorial';
+import { PinCreatorPage } from '../pages/pin-creator/pin-creator';
 import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
 import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
 import { UsersManagerPage } from '../pages/users-manager/users-manager';
-import { CreateGoalPage } from '../pages/create-goal/create-goal';
-import { ExplorePage } from '../pages/explore/explore';
-import { GoalsPage } from '../pages/goals/goals';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
@@ -80,12 +79,12 @@ export class iShallBe {
       {
         title: 'Create Goal',
         icon: 'ios-microphone',
-        component: CreateGoalPage
+        component: GoalCreatorPage
       },
       {
         title: 'Create Statement',
         icon: 'ios-camera',
-        component: CreateStatementPage
+        component: StatementCreatorPage
       },
       {
         title: 'Manage Profile',
@@ -118,27 +117,25 @@ export class iShallBe {
 
     this.pages = [
       { title: 'Startup Page', component: StartupPage },
+      { title: 'Signup Page', component: SignupPage },
+      { title: 'Support Page', component: SupportPage },      
       { title: 'Login Page', component: LoginPage },
-      { title: 'Register Page', component: RegisterPage },
-      { title: 'Password Reset Page', component: PasswordResetPage },
-      { title: 'Support Page', component: SupportPage },
-      { title: 'Account Email Page', component: AccountEmailPage },
-      { title: 'Account Password Page', component: AccountPasswordPage },
-      { title: 'Account Page', component: AccountPage },
       { title: 'About Page', component: AboutPage },
-      { title: 'Edit Profile Page', component: EditProfilePage },
+      { title: 'Support Page', component: SupportPage },
+      { title: 'Update Email Page', component: EmailUpdatePage },
+      { title: 'Update Password Page', component: PasswordUpdatePage },
+      { title: 'Account Page', component: AccountPage },
+      { title: 'Edit Profile Page', component: ProfileUpdatePage },
+      { title: 'Create Statement Page', component: StatementCreatorPage },
+      { title: 'Create Goal Page', component: GoalCreatorPage },
       { title: 'Profile Page', component: ProfilePage },
-      { title: 'Create Statement Page', component: CreateStatementPage },
       { title: 'Post Page', component: PostPage },
-      { title: 'Pin Page', component: PinPage },
-      { title: 'Home Page', component: HomePage },
-      { title: 'Create Pin Page', component: CreatePinPage },
-      { title: 'Users Manager Page', component: UsersManagerPage },
-      { title: 'Posts Manager Page', component: PostsManagerPage },
-      { title: 'Pins Manager Page', component: PinsManagerPage },
-      { title: 'Create Goal Page', component: CreateGoalPage },
       { title: 'Explore Page', component: ExplorePage },
-      { title: 'Goals Page', component: GoalsPage }
+      { title: 'Home Page', component: HomePage },
+      { title: 'Create Pin Page', component: PinCreatorPage },
+      { title: 'Pins Manager Page', component: PinsManagerPage },
+      { title: 'Posts Manager Page', component: PostsManagerPage },
+      { title: 'Users Manager Page', component: UsersManagerPage },
     ];
     
   }
