@@ -6,37 +6,35 @@
     </ion-col>
   </ion-row>
   <br>
-  <div>
-    <form class="main" #loginForm="ngForm" novalidate>
-      <ion-list no-lines>
-        <div class="inputs">
-        <ion-item>
-          <ion-input [(ngModel)]="loginForm.email" name="email" placeholder="E-mail" type="email" #email="ngModel" spellcheck="false" autocapitalize="off"
-            required>
+  <form #loginForm="ngForm" novalidate>
+    <ion-list no-lines>
+      <div>
+        <ion-item class="authForm">
+          <ion-input [(ngModel)]="loginForm.email" name="email" placeholder="E-mail" type="email" #email="ngModel" spellcheck="false"
+            autocapitalize="off" required>
           </ion-input>
         </ion-item>
         <p ion-text [hidden]="email.valid || submitted == false" color="danger" padding-left>
           Email is required
         </p>
         <br>
-        <ion-item>
-          <ion-input [(ngModel)]="loginForm.password" name="password" placeholder="Password"  type="password" #password="ngModel" required>
+        <ion-item class="authForm">
+          <ion-input [(ngModel)]="loginForm.password" name="password" placeholder="Password" type="password" #password="ngModel" required>
           </ion-input>
         </ion-item>
         <p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>
           Password is required
         </p>
       </div>
-        <br>
-        <ion-row>
-          <ion-col text-center>
-            <button id="LoginWithEmailButton" ion-button (click)="submit(loginForm)" type="submit" icon-start round large>
-              <ion-icon name="mail"></ion-icon> LOGIN</button>
-          </ion-col>
-        </ion-row>
-      </ion-list>
-    </form>
-  </div>
+      <br>
+      <ion-row>
+        <ion-col text-center>
+          <button id="LoginWithEmailButton" ion-button (click)="submit(loginForm)" type="submit" icon-start round large>
+            <ion-icon name="mail"></ion-icon> LOGIN</button>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+  </form>
   <br>
   <ion-row responsive-sm>
     <ion-col text-center>

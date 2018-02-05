@@ -1,7 +1,23 @@
 page-login {
-
+    .authForm {
+        background: rgba(255, 255, 255, 0.35);
+        border-radius: 30px;
+        height: 60px !important;
+        padding: 0 20px;
+        font-size: 1.25em !important;
+        border: 1px solid transparent;
+        max-width: 500px;
+        margin: auto;
+        text-align: center;
+    }
     .item-input {
         background-color: #FFF;
         border-radius: 30px;
+        border: 1px solid transparent;
+    }
+    .item-inner,
+    ion-item {
+        border-bottom-color: transparent !important;
+        box-shadow: none !important;
     }
 }
