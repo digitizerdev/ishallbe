@@ -1,32 +1,32 @@
-export interface Pin {
+export interface Goal {
   comments: [{
     id: string,
-    pinId: string,
+    goalId: string,
     content: string,
     liked: boolean,
-    likeCount: number,
+    likeCount: number
     user: {
       uid: string,
       name: string,
-      photo: string,
+      photo: string
     },
     timestamp: {
       rawdate: number,
       displayDate: string,
       rawTime: number,
-      displayTime: string,
+      displayTime: string
     }
   }],
-  likers: [{
+  partner: [{
     id: string,
-    pinId: string,
+    goalId: string,
     user: {
       uid: string,
       name: string,
       photo: string,
     },
     timestamp: {
-      rawdate: number,
+      rawDate: number,
       displayDate: string,
       rawTime: number,
       displayTime: string,
@@ -39,22 +39,22 @@ export interface Pin {
   liked: boolean,
   likeCount: number,
   commentCount: number,
+  mediaUrl: string,
   media: {
     image: boolean,
     audio: boolean,
     video: boolean
   },
-  mediaUrl: string,
   user: {
     uid: string,
     name: string,
-    photo: string,
+    photo: string
   },
   timestamp: {
     rawDate: number,
     displayDate: string,
     rawTime: number,
-    displayTime: string,
+    displayTime: string
   }
 }
 

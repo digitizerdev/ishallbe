@@ -1,25 +1,25 @@
-export interface Pin {
+export interface Statement {
   comments: [{
     id: string,
-    pinId: string,
+    statementId: string,
     content: string,
     liked: boolean,
-    likeCount: number,
+    likeCount: number
     user: {
       uid: string,
       name: string,
-      photo: string,
+      photo: string
     },
     timestamp: {
       rawdate: number,
       displayDate: string,
       rawTime: number,
-      displayTime: string,
+      displayTime: string
     }
   }],
   likers: [{
     id: string,
-    pinId: string,
+    statementId: string,
     user: {
       uid: string,
       name: string,
@@ -34,27 +34,27 @@ export interface Pin {
   }],
   id: string,
   title: string,
-  content: string,
+  image: string,
   flagged: boolean,
   liked: boolean,
   likeCount: number,
   commentCount: number,
+  mediaUrl: string,
   media: {
     image: boolean,
     audio: boolean,
     video: boolean
   },
-  mediaUrl: string,
   user: {
     uid: string,
     name: string,
-    photo: string,
+    photo: string
   },
   timestamp: {
     rawDate: number,
     displayDate: string,
     rawTime: number,
-    displayTime: string,
+    displayTime: string
   }
 }
 

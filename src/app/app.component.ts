@@ -132,6 +132,7 @@ export class iShallBe {
       { title: 'Post Page', component: PostPage },
       { title: 'Explore Page', component: ExplorePage },
       { title: 'Home Page', component: HomePage },
+      { title: 'Tutorial Page', component: TutorialPage },
       { title: 'Create Pin Page', component: PinCreatorPage },
       { title: 'Pins Manager Page', component: PinsManagerPage },
       { title: 'Posts Manager Page', component: PostsManagerPage },

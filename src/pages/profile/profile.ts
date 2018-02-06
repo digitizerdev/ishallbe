@@ -15,29 +15,42 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 })
 export class ProfilePage {
 
+  uid: any;
   user: any;
   mine = false;
   loaded = false;
 
   constructor(
-    private navCtrl: NavController, 
+    private navCtrl: NavController,
     private navParams: NavParams,
     private firebase: FirebaseProvider
   ) {
   }
 
   ionViewDidLoad() {
+    this.myProfile().subscribe((mine) => {
+      if (mine) {
+        this.user = this.firebase.user;
+        this.mine = true;
+        this.loaded = true;
+      } else this.loadUser();
+    });
+  }
+
+  myProfile() {
+    return Observable.create((observer) => {
+      this.uid = this.navParams.get('uid');
+      if (!this.uid) observer.next(true);
+        else observer.next(false);
+    });
   }
 
   loadUser() {
-    return Observable.create((observer) => {
-      let user = this.firebase.loadUser();
-      return user.valueChanges().subscribe((user) => {
-        this.user = user;
-        if (this.user.uid == this.firebase.afa.auth.currentUser.uid) this.mine = true;
-        this.loaded = true;
-        observer.next();
-      })
+    let path = "users/" + this.uid;
+    this.user = this.firebase.afs.doc(path);
+    this.user.valueChanges().subscribe((user) => {
+      this.user = user;
+      this.loaded = true;
     });
   }
 

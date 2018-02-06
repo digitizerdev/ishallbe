@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>{{title}}</ion-title>
+    <ion-title color='primary'>ACCOUNT</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="setRootHomePage()">
         <ion-icon name="ios-home"></ion-icon>
@@ -14,9 +14,8 @@
 
 <ion-content>
   <header></header>
-  <div class="account-details" text-center padding>
-    <h3>{{name}}</h3>
-    <h5>{{email}}</h5>
+  <div class="account-details" text-center>
+    <h5 padding>{{user?.email}}</h5>
   </div>
   <div class="main-buttons">
     <br>

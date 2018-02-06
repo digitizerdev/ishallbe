@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>{{ profile?.name }}</ion-title>
+    <ion-title color='primary'>{{ user?.name }}</ion-title>
     <ion-buttons *ngIf="mine" end>
       <button ion-button icon-only (click)="setRootHomePage()">
         <ion-icon name="ios-home"></ion-icon>
@@ -18,7 +18,7 @@
     </ion-refresher-content>
   </ion-refresher>
   <div text-center padding class="user-profile">
-    <img class="avatar" src="{{ profile?.photo }}">
+    <img class="avatar" src="{{ user?.photo }}">
     <ion-row *ngIf="editor && !mine">
       <ion-col>
         <button ion-button id="BlockUserButton" (click)="blockUser()" color="danger">BLOCK USER</button>
@@ -32,7 +32,7 @@
         <button ion-button id="AccountViewProfileButton" (click)="pushAccountPage()" color="primary" small round>ACCOUNT</button>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="profile?.social" text-center class="social">
+    <ion-row *ngIf="user?.social" text-center class="social">
       <ion-col *ngIf="instagram" (click)="openSocial('instagram')" text-center>
         <ion-icon name="logo-instagram"></ion-icon>
       </ion-col>
@@ -43,7 +43,7 @@
         <ion-icon name="logo-linkedin"></ion-icon>
       </ion-col>
     </ion-row>
-    <h5 class="bio">{{ profile?.bio}} </h5>
+    <h5 class="bio">{{ user?.bio}} </h5>
   </div>
   <div class="user-posts">
     <ion-card class="posts" *ngFor="let flaggedPost of flaggedPosts">

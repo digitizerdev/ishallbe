@@ -90,7 +90,7 @@ export class SignupPage {
   }
 
   register(signupForm) {
-    return this.firebase.register(signupForm).then((token) => {
+    return this.firebase.afa.auth.createUserWithEmailAndPassword(signupForm.email, signupForm.password).then((token) => {
       this.uid = token.uid
       this.profile.uid = token.uid
       return this.createUser().then(() => {

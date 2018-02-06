@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController, LoadingController
 import { Observable } from 'rxjs/Observable';
 
 import { PasswordResetPage } from '../password-reset/password-reset';
-import { RegisterPage } from '../register/register';
+import { SignupPage } from '../signup/signup';
 import { HomePage } from '../home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -44,8 +44,7 @@ export class LoginPage {
 
   authenticate(loginForm) {
     return Observable.create((observer) => {
-      return this.firebase.logIn(loginForm).then((token)=> {
-        this.firebase.uid = token.uid;
+      return this.firebase.afa.auth.signInWithEmailAndPassword(loginForm.email, loginForm.password).then((token)=> {
         this.uid = token.uid;              
         observer.next(token);
       }, (error) => {
@@ -65,8 +64,8 @@ export class LoginPage {
     alert.present();
   }
 
-  setRootRegisterPage() {
-    this.navCtrl.setRoot(RegisterPage);
+  setRootSignupPage() {
+    this.navCtrl.setRoot(SignupPage);
   }
 
   setRootPasswordResetPage() {

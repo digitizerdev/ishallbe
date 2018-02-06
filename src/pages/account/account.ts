@@ -20,8 +20,6 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 export class AccountPage {
 
   user: any;
-  name: any;
-  email: any;
 
   constructor(
     public navCtrl: NavController,
@@ -31,15 +29,7 @@ export class AccountPage {
   }
 
   ionViewDidLoad() {
-    this.loadUser();
-  }
-
-  loadUser() {
-   this.user = this.firebase.loadUser()
-   this.user.valueChanges().subscribe((user) => {
-     this.name = user.name;
-     this.email = user.email;
-   })
+    this.user = this.firebase.user;
   }
 
   pushEmailUpdatePage() {
@@ -55,7 +45,7 @@ export class AccountPage {
   }
 
   logout() {
-    this.firebase.logOut();
+    this.firebase.afa.auth.signOut();
     this.firebase.hasSeenTutorial = true;
     this.navCtrl.setRoot(LoginPage);
   }

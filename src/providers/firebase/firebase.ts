@@ -3,8 +3,6 @@ import { Events } from 'ionic-angular';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
-import { User } from '../../../test-data/users/model';
-
 import { Observable } from 'rxjs/Observable';
 
 class Credentials {
@@ -15,9 +13,8 @@ class Credentials {
 @Injectable()
 export class FirebaseProvider {
 
-  private userDoc: AngularFirestoreDocument<User>;
-  user: Observable<User>;
-  uid: any;
+  userDoc: any;
+  user: any;
   session: any;
   loaded: any
   hasSeenTutorial = false;
@@ -34,6 +31,7 @@ export class FirebaseProvider {
     if (!this.loaded) {
       this.sessionExists().subscribe((session) => {
         if (session) { 
+          this.loadUser();
           this.session = true;
           this.events.publish('user:login');
         } else {
@@ -56,27 +54,9 @@ export class FirebaseProvider {
 
   loadUser() {
     let path = "users/" + this.afa.auth.currentUser.uid;
-    return this.afs.doc(path);
-  }
-
-  register(credentials: Credentials) {
-    return this.afa.auth
-      .createUserWithEmailAndPassword(
-        credentials.email,
-        credentials.password,
-      );
-  }
-
-  logIn(credentials: Credentials) {
-    return this.afa.auth
-      .signInWithEmailAndPassword(
-        credentials.email,
-        credentials.password,
-      );
-  }
-
-  logOut() {
-    return this.afa.auth
-      .signOut();
+    this.userDoc = this.afs.doc(path);
+    this.userDoc.valueChanges().subscribe((user) => {
+      this.user = user;
+    });
   }
 }
