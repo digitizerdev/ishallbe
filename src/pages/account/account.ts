@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 
@@ -24,6 +24,7 @@ export class AccountPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public events: Events,
     public firebase: FirebaseProvider,
   ) {
   }
@@ -45,6 +46,7 @@ export class AccountPage {
   }
 
   logout() {
+    this.events.publish('logout');
     this.firebase.afa.auth.signOut();
     this.firebase.hasSeenTutorial = true;
     this.navCtrl.setRoot(LoginPage);

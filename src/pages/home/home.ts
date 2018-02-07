@@ -9,8 +9,6 @@ import moment from 'moment';
 import { ProfilePage } from '../profile/profile';
 import { PostPage } from '../post/post';
 import { LoginPage } from '../login/login';
-import { CreateStatementPage } from '../create-statement/create-statement';
-import { PinPage } from '../pin/pin';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 

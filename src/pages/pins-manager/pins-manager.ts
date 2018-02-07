@@ -3,9 +3,6 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 
-import { CreatePinPage } from '../create-pin/create-pin';
-import { PinPage } from '../pin/pin';
-
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()

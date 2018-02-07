@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import moment from 'moment';
 
 import { HomePage } from '../home/home';
 import { LoginPage } from '../login/login';
@@ -21,6 +22,10 @@ export class SignupPage {
   submitted = false;
   uid: any;
   profile: any;
+  rawDate: number;
+  displayDate: string;
+  rawTime: number;
+  displayTime: string;
 
   constructor(
     private navCtrl: NavController,
@@ -29,6 +34,19 @@ export class SignupPage {
     private loadingCtrl: LoadingController,
     private firebase: FirebaseProvider,
   ) {
+  }
+
+  ionViewDidLoad() {
+    this.timeStampPage();
+  }
+
+  timeStampPage() {
+    let rawDateString = moment().format('YYYYMMDD');
+    this.rawDate = parseInt(rawDateString);
+    this.displayDate = moment().format('MMM D, YYYY');
+    let rawTimeString = moment().format('YYYYMMDDhhmmss');
+    this.rawTime = parseInt(rawTimeString);
+    this.displayTime = moment().format('h:mma');
   }
 
   submit(signupForm) {
@@ -82,9 +100,14 @@ export class SignupPage {
       blocked: false,
       uid: "default",
       roles: {
-        subscriber: true,
-        partner: false,
-        contractor: false
+        contributor: true,
+        editor: false
+      },
+      timestamp: {
+        rawDate: this.rawDate,
+        displayDate: this.displayDate,
+        rawTime: this.rawTime,
+        displayTime: this.displayTime
       }
     }
   }

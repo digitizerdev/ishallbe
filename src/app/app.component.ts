@@ -56,6 +56,7 @@ export class iShallBe {
   ) {
     this.rootPage = StartupPage;
     platform.ready();
+    this.listenToAuthEvents();
 
     this.exploreMenuPages = [
       {
@@ -151,8 +152,9 @@ export class iShallBe {
     this.nav.setRoot(page.component);
   }
   
-  listenToEditorLogin() {
+  listenToAuthEvents() {
     this.events.subscribe('login: editor', () => { this.editor = true });
+    this.events.subscribe('logout', () => { this.editor = false });
   }
 }
 

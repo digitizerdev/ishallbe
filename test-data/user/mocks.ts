@@ -16,10 +16,9 @@ export const freshUser: User = {
     editor: false
   },
   timestamp: {
-    joinDate: 20180116,
-    displayJoinDate: "January 16th, 2018",
-    lastActiveDate: 20180116,
-    displayLastActiveDate: "January 16th, 2018"
+    rawDate: 20180116,
+    displayDate: "Jan 16 2018",
+    rawTime: 20180116121212,
+    displayTime: "12:12pm"
   }
-
 }

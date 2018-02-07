@@ -15,9 +15,9 @@ export interface User {
         editor: boolean
     },
     timestamp: {
-        joinDate: number,
-        displayJoinDate: string,
-        lastActiveDate: number,
-        displayLastActiveDate: string
+        rawDate: number,
+        displayDate: string,
+        rawTime: number,
+        displayTime: string,
     }
 }
