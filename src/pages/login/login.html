@@ -1,12 +1,12 @@
 <ion-content center padding>
   <header></header>
-  <ion-row>
-    <ion-col text-center>
-      <login-facebook></login-facebook>
-    </ion-col>
-  </ion-row>
-  <br>
   <form #loginForm="ngForm" novalidate padding>
+    <ion-row>
+      <ion-col text-center>
+        <login-facebook></login-facebook>
+      </ion-col>
+    </ion-row>
+    <br>
     <ion-list no-lines>
       <div>
         <ion-item class="authForm">
@@ -34,13 +34,13 @@
       </ion-row>
     </ion-list>
     <ion-row responsive-sm>
-        <ion-col text-center>
-          <button ion-button id="SignupButton" (click)="setRootSignupPage()" color="secondary" round strong>SIGNUP</button>
-        </ion-col>
-        <ion-col text-center>
-          <br>
-          <div id="ForgotPasswordLink" (click)="setRootPasswordResetPage()">Forgot Password?</div>
-        </ion-col>
-      </ion-row>
+      <ion-col text-center>
+        <button ion-button id="SignupButton" (click)="setRootSignupPage()" color="secondary" round strong>SIGNUP</button>
+      </ion-col>
+      <ion-col text-center>
+        <br>
+        <div id="ForgotPasswordLink" (click)="setRootPasswordResetPage()">Forgot Password?</div>
+      </ion-col>
+    </ion-row>
   </form>
 </ion-content>

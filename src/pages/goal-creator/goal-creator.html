@@ -6,13 +6,12 @@
     <ion-title color='primary'>GOAL</ion-title>
   </ion-navbar>
 </ion-header>
-
 <ion-content padding>
   <header></header>
   <form #createGoalForm="ngForm" novalidate padding>
     <ion-row>
       <ion-col text-center>
-        <button id="SpeakButton" ion-button (click)="record()" color="danger" icon-start round large strong>
+        <button id="SpeakButton" ion-button (click)="record()" color="danger" icon-start round block large strong>
           <ion-icon name="ios-microphone"></ion-icon>
           SPEAK IT
         </button>
@@ -20,8 +19,8 @@
     </ion-row>
     <br>
     <ion-item class="appForm">
-      <ion-input class="myItem" placeholder="Goal Title" [(ngModel)]="createGoalForm.title" name="title" type="text" #title="ngModel" spellcheck="false"
-        autocapitalize="off" required>
+      <ion-input class="myItem" placeholder="Goal Title" [(ngModel)]="createGoalForm.title" name="title" type="text" #title="ngModel"
+        spellcheck="false" autocapitalize="off" required>
       </ion-input>
     </ion-item>
     <p ion-text [hidden]="title.valid || submitted == false" color="danger" padding-left>

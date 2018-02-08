@@ -11,38 +11,35 @@
   <form novalidate padding>
     <ion-list no-lines>
       <ion-item class="appForm">
-        <ion-label text-left padding-left>Name:</ion-label>
-        <ion-input [(ngModel)]="editProfileForm.name" name="name" type="text" #name="ngModel" spellcheck="false"
-          autocapitalize="off" maxlength="16">
+        <ion-label text-left>Name:</ion-label>
+        <ion-input [(ngModel)]="editProfileForm.name" name="name" type="text" #name="ngModel" spellcheck="false" autocapitalize="off"
+          maxlength="16">
         </ion-input>
       </ion-item>
       <br>
       <ion-item class="appForm">
-          <ion-label text-left padding-left>LinkedIn:</ion-label>
-        <ion-input [(ngModel)]="editProfileForm.linkedin" name="linkedin" type="text" #linkedin="ngModel"
-          spellcheck="false" autocapitalize="off">
+        <ion-label text-left>LinkedIn:</ion-label>
+        <ion-input [(ngModel)]="editProfileForm.linkedin" name="linkedin" type="text" #linkedin="ngModel" spellcheck="false" autocapitalize="off">
           <ion-icon name="logo-linkedin"></ion-icon>
         </ion-input>
       </ion-item>
       <br>
       <ion-item class="appForm">
-          <ion-label text-left padding-left>Twitter:</ion-label>
-        <ion-input [(ngModel)]="editProfileForm.twitter" name="twitter" type="text" #twitter="ngModel" spellcheck="false"
-          autocapitalize="off">
+        <ion-label text-left>Twitter:</ion-label>
+        <ion-input [(ngModel)]="editProfileForm.twitter" name="twitter" type="text" #twitter="ngModel" spellcheck="false" autocapitalize="off">
         </ion-input>
       </ion-item>
       <br>
       <ion-item class="appForm">
-          <ion-label text-left padding-left>Instagram:</ion-label>
-        <ion-input [(ngModel)]="editProfileForm.instagram" name="instagram" type="text" #instagram="ngModel"
-          spellcheck="false" autocapitalize="off">
+        <ion-label text-left>Instagram:</ion-label>
+        <ion-input [(ngModel)]="editProfileForm.instagram" name="instagram" type="text" #instagram="ngModel" spellcheck="false" autocapitalize="off">
         </ion-input>
       </ion-item>
       <br>
       <ion-item class="appFormTextArea">
-          <ion-label text-left padding-left>Bio:</ion-label>
-        <ion-textarea [attr.rows]="4" autosize [(ngModel)]="editProfileForm.bio" name="bio" type="text" #bio="ngModel"
-          spellcheck="false" autocapitalize="off" maxlength="250">
+        <ion-label text-leftt>Bio:</ion-label>
+        <ion-textarea [attr.rows]="4" autosize [(ngModel)]="editProfileForm.bio" name="bio" type="text" #bio="ngModel" spellcheck="false"
+          autocapitalize="off" maxlength="250">
         </ion-textarea>
       </ion-item>
       <br>
