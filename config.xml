@@ -119,7 +119,7 @@
     <plugin name="phonegap-plugin-push" spec="^2.1.3">
         <variable name="SENDER_ID" value="1:881822459028:android:58c20c02735f7e42" />
     </plugin>
-    <plugin name="cordova-plugin-email-composer" spec="^0.8.14" />
+    <plugin name="cordova-plugin-email-composer" spec="^0.8.15" />
     <plugin name="cordova-plugin-ionic" spec="^2.0.4">
         <variable name="APP_ID" value="69d144ed" />
         <variable name="CHANNEL_NAME" value="Master" />
