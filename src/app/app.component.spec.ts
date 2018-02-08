@@ -39,7 +39,7 @@ describe('iShallBe Component', () => {
   let push: Push;
   let firebase: FirebaseProvider;
   let afa: AngularFireAuth;
-  let afs: AngularFirestore; 
+  let afs: AngularFirestore;
 
   const angularFireAuthStub = {
   };
@@ -86,7 +86,7 @@ describe('iShallBe Component', () => {
     statusBar = null;
     splashScreen = null;
     push = null;
-    firebase = null;    
+    firebase = null;
     afa = null;
     afs = null;
   });
@@ -96,7 +96,7 @@ describe('iShallBe Component', () => {
   });
 
   fit('should have explore menu with three pages', () => {
-   expect(component.exploreMenuPages.length).toBe(3);
+    expect(component.exploreMenuPages.length).toBe(3);
   });
 
   fit('should have editor menu with three pages', () => {
@@ -111,8 +111,8 @@ describe('iShallBe Component', () => {
     expect(component.providers.length).toBe(1);
   });
 
-  fit('should have 20 pages', () => {
-    expect(component.pages.length).toBe(20);
+  fit('should have 21 pages', () => {
+    expect(component.pages.length).toBe(21);
   });
 
   fit('should initialize root page to StartupPage', () => {
@@ -127,8 +127,8 @@ describe('iShallBe Component', () => {
     expect(component.openPage).toBeDefined();
   });
 
-  fit('should listen to editor login', () => {
-    expect(component.listenToEditorLogin).toBeDefined();
+  fit('should listen to auth events', () => {
+    expect(component.listenToAuthEvents).toBeDefined();
   });
-  
+
 });

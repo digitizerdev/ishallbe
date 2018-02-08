@@ -56,14 +56,8 @@ export class FirebaseProvider {
     let path = "users/" + this.afa.auth.currentUser.uid;
     this.userDoc = this.afs.doc(path);
     this.userDoc.valueChanges().subscribe((user) => {
+      if (user.roles.editor) { this.events.publish("login: editor")};
       this.user = user;
-      console.log(this.user);
-      if (this.user.roles.editor) {
-        console.log("Editor login");
-        this.events.publish('login: editor');
-      } else {
-        console.log("Contributor login");
-      }
     });
   }
 

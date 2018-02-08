@@ -20,7 +20,7 @@ import { environment } from '../../environments/environment';
 
 import { LoginFacebookComponent } from '../login-facebook/login-facebook';
 
-import { freshContractor } from '../../../test-data/users/mocks';
+import { freshUser } from '../../../test-data/user/mocks';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -138,7 +138,7 @@ describe('LoginFacebookComponent', () => {
 
     it('should check for existing user', () => {
         component.uid = 'testUID';
-        component.user = freshContractor;
+        component.user = freshUser;
         spyOn(component, 'checkForExistingUser').and.returnValue({ subscribe: () => {}});
         component.loadUser();
         expect(component.checkForExistingUser).toHaveBeenCalled();
