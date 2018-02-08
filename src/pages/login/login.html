@@ -6,7 +6,7 @@
     </ion-col>
   </ion-row>
   <br>
-  <form #loginForm="ngForm" novalidate>
+  <form #loginForm="ngForm" novalidate padding>
     <ion-list no-lines>
       <div>
         <ion-item class="authForm">
@@ -29,20 +29,18 @@
       <br>
       <ion-row>
         <ion-col text-center>
-          <button id="EmailLoginButton" ion-button (click)="submit(loginForm)" type="submit" icon-start round large>
-            <ion-icon name="mail"></ion-icon> LOGIN</button>
+          <button id="EmailLoginButton" ion-button (click)="submit(loginForm)" type="submit" round block large strong> LOGIN</button>
         </ion-col>
       </ion-row>
     </ion-list>
+    <ion-row responsive-sm>
+        <ion-col text-center>
+          <button ion-button id="SignupButton" (click)="setRootSignupPage()" color="secondary" round strong>SIGNUP</button>
+        </ion-col>
+        <ion-col text-center>
+          <br>
+          <div id="ForgotPasswordLink" (click)="setRootPasswordResetPage()">Forgot Password?</div>
+        </ion-col>
+      </ion-row>
   </form>
-  <br>
-  <ion-row responsive-sm>
-    <ion-col text-center>
-      <button ion-button id="SignupButton" (click)="setRootSignupPage()" color="secondary" round>SIGNUP</button>
-    </ion-col>
-    <ion-col text-center>
-      <br>
-      <div id="ForgotPasswordLink" (click)="setRootPasswordResetPage()">Forgot Password?</div>
-    </ion-col>
-  </ion-row>
 </ion-content>

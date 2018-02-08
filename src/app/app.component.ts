@@ -61,7 +61,7 @@ export class iShallBe {
     this.exploreMenuPages = [
       {
         title: 'Home',
-        icon: 'ios-home',
+        icon: 'md-home',
         component: HomePage
       },
       {
@@ -71,7 +71,7 @@ export class iShallBe {
       },
       {
         title: 'Explore',
-        icon: 'globe',
+        icon: 'md-globe',
         component: ExplorePage
       }
     ];

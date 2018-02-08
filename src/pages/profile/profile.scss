@@ -3,7 +3,6 @@ page-profile {
     .user-profile {
       border-bottom: thick solid color($colors, primary);
       background: color($colors, light-yellow);
-      color: color($colors, primary);       
     }
 
     .avatar {
@@ -14,8 +13,8 @@ page-profile {
         margin-right: auto;
         max-width: 170px;
         border-radius: 50%;
-        border: thin solid color($colors, light-gray);
-    }
+
+      }
 
     .social {
       padding-top: 5px;

@@ -1,21 +1,22 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the StatementCreatorPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-statement-creator',
   templateUrl: 'statement-creator.html',
 })
 export class StatementCreatorPage {
+ createGoalForm: {
+    title?: string;
+    description?: string, 
+  } = {};    
+  submitted = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    private navCtrl: NavController, 
+    private navParams: NavParams
+  ) {
   }
 
   ionViewDidLoad() {

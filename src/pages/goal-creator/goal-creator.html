@@ -1,18 +1,48 @@
-<!--
-  Generated template for the GoalCreatorPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>goal-creator</ion-title>
+  <ion-navbar color='primary'>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title color='primary'>GOAL</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
-
+  <header></header>
+  <form #createGoalForm="ngForm" novalidate padding>
+    <ion-row>
+      <ion-col text-center>
+        <button id="SpeakButton" ion-button (click)="record()" color="danger" icon-start round large strong>
+          <ion-icon name="ios-microphone"></ion-icon>
+          SPEAK IT
+        </button>
+      </ion-col>
+    </ion-row>
+    <br>
+    <ion-item class="appForm">
+      <ion-input class="myItem" placeholder="Goal Title" [(ngModel)]="createGoalForm.title" name="title" type="text" #title="ngModel" spellcheck="false"
+        autocapitalize="off" required>
+      </ion-input>
+    </ion-item>
+    <p ion-text [hidden]="title.valid || submitted == false" color="danger" padding-left>
+      Goal Title is required
+    </p>
+    <br>
+    <ion-item class="appFormTextArea">
+      <ion-textarea [attr.rows]="4" autosize placeholder="Goal Description" [(ngModel)]="createGoalForm.description" name="description"
+        type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" required>
+      </ion-textarea>
+    </ion-item>
+    <p ion-text [hidden]="description.valid || submitted == false" color="danger" padding-left>
+      Goal Description is required
+    </p>
+    <br>
+    <ion-row>
+      <ion-col text-center class="submit">
+        <button id="CreateGoalButton" ion-button (click)="submit(createGoalForm)" color="primary" round block large strong>
+          CREATE
+        </button>
+      </ion-col>
+    </ion-row>
+  </form>
 </ion-content>

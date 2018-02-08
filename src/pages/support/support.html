@@ -1,37 +1,41 @@
 <ion-header>
-  <ion-navbar color='primary'>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title color='primary'>{{title}}</ion-title>
-  </ion-navbar>
+    <ion-navbar color='primary'>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title color='primary'>SUPPORT</ion-title>
+    </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <header></header>
-  <br>
-  <form class="main" #supportForm="ngForm" novalidate>
-      <ion-list no-lines>
-        <ion-item>
-          <ion-label stacked color="primary">Subject</ion-label>
-          <ion-input [(ngModel)]="supportForm.subject" name="subject" type="text" #subject="ngModel" spellcheck="false" autocapitalize="off"
-            required>
-          </ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label stacked color="primary">Body</ion-label>
-            <ion-input [(ngModel)]="supportForm.body" name="body" type="text" #subject="ngModel" spellcheck="false" autocapitalize="off"
-              required>
+    <header></header>
+    <br>
+    <form #supportForm="ngForm" novalidate padding>
+        <ion-item class="appForm">
+            <ion-input class="myItem" placeholder="Subject" [(ngModel)]="supportForm.subject" name="subject" type="text" #subject="ngModel"
+                spellcheck="false" autocapitalize="off" required>
             </ion-input>
-          </ion-item>
+        </ion-item>
+        <p ion-text [hidden]="subject.valid || submitted == false" color="danger" padding-left>
+            Subject is required
+        </p>
+        <br>
+        <ion-item class="appFormTextArea">
+            <ion-textarea [attr.rows]="4" autosize placeholder="Body" [(ngModel)]="supportForm.body" name="body" type="text-area" #body="ngModel"
+                spellcheck="false" autocapitalize="off" required>
+            </ion-textarea>
+        </ion-item>
+        <p ion-text [hidden]="body.valid || submitted == false" color="danger" padding-left>
+            Body is required
+        </p>
         <br>
         <ion-row>
-          <ion-col text-center>
-            <button id="SupportContactButton" ion-button (click)="submit(supportForm)" type="submit" round large>Contact</button>
-          </ion-col>
+            <ion-col text-center class="submit">
+                <button id="SupportButton" ion-button (click)="submit(supportForm)" color="primary" round block large strong>
+                    SEND EMAIL
+                </button>
+            </ion-col>
         </ion-row>
-      </ion-list>
-      <br>
-      <h5 text-center> Email us directly at info@ishallbe.co</h5>
+        <h5 padding id="SupportDirectEmail" text-center> Email us directly at <a href="mailto:info@ishallbe.co">info@ishallbe.co</a></h5>
     </form>
 </ion-content>

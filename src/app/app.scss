@@ -1,21 +1,19 @@
 .list-full-border {
-  border-top: thick solid color($colors, primary);
-  border-bottom: thick solid color($colors, primary);
-
-  .item {
-    border-top: thin solid $borderColor;
-
-    .item-inner {
-      border: none;
+    border-top: thick solid color($colors, primary);
+    border-bottom: thick solid color($colors, primary);
+    .item {
+        border-top: thin solid $borderColor;
+        .item-inner {
+            border: none;
+        }
     }
-  }
 }
-
 .menu-pages {
-  background: color($colors, light-yellow);
+    background: color($colors, light-yellow);
 }
-
-.editor{
-  color: color($colors, primary);  
+.editor {
+    color: color($colors, primary);
 }
-
+.ios .menu-icon {
+  padding-left: 25%;
+}

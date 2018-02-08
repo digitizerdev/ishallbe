@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, Platform } from 'ionic-angular';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { AccountPage } from '../account/account';
 
@@ -14,39 +14,42 @@ export class SupportPage {
     subject?: string;
     body?: string;
   } = {};
-  title = 'Support';
+  submitted = false;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
+    private platform: Platform,
     private emailComposer: EmailComposer
   ) {
   }
 
   submit(supportForm) {
-    return this.composeSupportEmail(supportForm).then(() => {
-      this.confirmDelivery();
-    });
+    this.submitted = true;
+    if (supportForm.valid) {
+      if (this.platform.is('cordova')) {
+        return this.sendEmail(supportForm).then(() => {
+          this.navCtrl.setRoot(AccountPage);
+        }, error => {
+          this.errorHandler(error);
+        });
+      } else {
+        let path = "mailto:info@ishallbe.co?subject=" + supportForm.subject + "&body=" + supportForm.body;
+        open(path)
+      }
+    }
   }
 
-  composeSupportEmail(supportForm) {
+  sendEmail(supportForm) {
     let email = {
-      to: 'iShallBe17@gmail.com',
+      to: 'info@ishallbe.co',
       subject: supportForm.subject,
       body: supportForm.body,
       isHtml: true
     };
     return this.emailComposer.open(email)
-  }
-
-  confirmDelivery() {
-    this.setRootAccountPage();
-  }
-
-  setRootAccountPage() {
-    this.navCtrl.setRoot(AccountPage);
   }
 
   errorHandler(error) {
@@ -57,5 +60,4 @@ export class SupportPage {
     });
     alert.present();
   }
-
 }

@@ -6,7 +6,7 @@
     <ion-title color='primary'>{{ user?.name }}</ion-title>
     <ion-buttons *ngIf="mine" end>
       <button ion-button icon-only (click)="setRootHomePage()">
-        <ion-icon name="ios-home"></ion-icon>
+        <ion-icon name="md-home"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -19,31 +19,31 @@
   </ion-refresher>
   <div text-center padding class="user-profile">
     <img class="avatar" src="{{ user?.photo }}">
-    <ion-row *ngIf="editor && !mine">
-      <ion-col>
-        <button ion-button id="BlockUserButton" (click)="blockUser()" color="danger">BLOCK USER</button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <button ion-button id="AccountViewProfileButton" (click)="pushEditProfilePage()" color="primary" small round>EDIT PROFILE</button>
-      </ion-col>
-      <ion-col>
-        <button ion-button id="AccountViewProfileButton" (click)="pushAccountPage()" color="primary" small round>ACCOUNT</button>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="user?.social" text-center class="social">
-      <ion-col *ngIf="instagram" (click)="openSocial('instagram')" text-center>
+    <ion-row *ngIf="this.user?.social" text-center class="social">
+      <ion-col *ngIf="this.user?.social.instagram" (click)="openSocial('instagram')" text-center>
         <ion-icon name="logo-instagram"></ion-icon>
       </ion-col>
-      <ion-col *ngIf="twitter" text-center (click)="openSocial('twitter')">
+      <ion-col *ngIf="this.user?.social.twitter" text-center (click)="openSocial('twitter')">
         <ion-icon name="logo-twitter"></ion-icon>
       </ion-col>
-      <ion-col *ngIf="linkedin" text-center (click)="openSocial('linkedin')">
+      <ion-col *ngIf="this.user?.social.linkedin" text-center (click)="openSocial('linkedin')">
         <ion-icon name="logo-linkedin"></ion-icon>
       </ion-col>
     </ion-row>
     <h5 class="bio">{{ user?.bio}} </h5>
+    <ion-row>
+      <ion-col>
+        <button ion-button id="AccountViewProfileButton" (click)="pushProfileUpdatePage()" color="primary" small round strong>UPDATE PROFILE</button>
+      </ion-col>
+      <ion-col>
+        <button ion-button id="AccountViewProfileButton" (click)="pushAccountPage()" color="primary" small round strong>ACCOUNT</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="editor && !mine">
+      <ion-col>
+        <button ion-button id="BlockUserButton" (click)="blockUser()" color="danger" strong>BLOCK USER</button>
+      </ion-col>
+    </ion-row>
   </div>
   <div class="user-posts">
     <ion-card class="posts" *ngFor="let flaggedPost of flaggedPosts">

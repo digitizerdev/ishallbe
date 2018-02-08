@@ -6,7 +6,7 @@
       </ion-col>
     </ion-row>
     <br>
-    <form #registerForm="ngForm" novalidate>
+    <form #registerForm="ngForm" novalidate padding>
       <ion-list no-lines>
         <ion-item class="authForm">
           <ion-input [(ngModel)]="registerForm.name" name="name" placeholder="Name" type="text" #name="ngModel" required maxlength="16">
@@ -34,17 +34,17 @@
         <br>
         <ion-row>
           <ion-col text-center>
-            <button id="RegisterButton" ion-button (click)="submit(registerForm)" type="submit" icon-start round large> <ion-icon name="mail"></ion-icon> SIGNUP</button>
+            <button id="RegisterButton" ion-button (click)="submit(registerForm)" type="submit" round block large strong> SIGNUP</button>
           </ion-col>
         </ion-row>
       </ion-list>
+      <ion-row responsive-sm>
+          <ion-col text-center>
+            <button ion-button id="RegisterLoginButton" (click)="setRootLoginPage()" color="secondary" round strong>Login</button>
+          </ion-col>
+          <ion-col text-center>
+              <terms-of-service></terms-of-service>
+          </ion-col>
+        </ion-row>
     </form>
-    <ion-row responsive-sm>
-      <ion-col text-center>
-        <button ion-button id="RegisterLoginButton" (click)="setRootLoginPage()" color="secondary" round>Login</button>
-      </ion-col>
-      <ion-col text-center>
-          <terms-of-service></terms-of-service>
-      </ion-col>
-    </ion-row>
   </ion-content>

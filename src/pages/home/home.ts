@@ -47,4 +47,8 @@ export class HomePage {
 
   ionViewDidLoad() {
   }
+
+  setRootProfilePage() {
+    this.navCtrl.setRoot(ProfilePage);
+  }
 }

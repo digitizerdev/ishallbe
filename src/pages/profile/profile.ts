@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 
 import { Observable } from 'rxjs/Observable';
 
+import { HomePage } from '../home/home';
 import { ProfileUpdatePage } from '../profile-update/profile-update';
 import { AccountPage } from '../account/account';
 
@@ -28,21 +29,15 @@ export class ProfilePage {
   }
 
   ionViewDidLoad() {
-    this.myProfile().subscribe((mine) => {
-      if (mine) {
-        this.user = this.firebase.user;
-        this.mine = true;
-        this.loaded = true;
-      } else this.loadUser();
-    });
-  }
-
-  myProfile() {
-    return Observable.create((observer) => {
-      this.uid = this.navParams.get('uid');
-      if (!this.uid) observer.next(true);
-        else observer.next(false);
-    });
+    this.uid = this.navParams.get('uid');
+    if (!this.uid) {
+      this.user = this.firebase.user;
+      console.log(this.user);
+      this.mine = true;
+      this.loaded = true;
+    } else {
+      this.loadUser();
+    }
   }
 
   loadUser() {
@@ -75,6 +70,10 @@ export class ProfilePage {
 
   pushAccountPage() {
     this.navCtrl.push(AccountPage);
+  }
+
+  setRootHomePage() {
+    this.navCtrl.setRoot(HomePage);
   }
 
 }
