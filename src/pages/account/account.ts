@@ -20,6 +20,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 export class AccountPage {
 
   user: any;
+  editor = false;
 
   constructor(
     public navCtrl: NavController,
@@ -31,6 +32,7 @@ export class AccountPage {
 
   ionViewDidLoad() {
     this.user = this.firebase.user;
+    if (this.user.roles.editor) this.editor = true;
   }
 
   pushEmailUpdatePage() {
