@@ -2,6 +2,8 @@ import { NgModule, Component, ViewChild } from '@angular/core';
 import { Nav, Platform, AlertController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Pro } from '@ionic/pro';
+
 import { Observable } from 'rxjs/Rx';
 
 import { StartupPage } from '../pages/startup/startup';
@@ -28,8 +30,9 @@ import { UsersManagerPage } from '../pages/users-manager/users-manager';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
-export interface PageInterface {
-}
+  public deployChannel = "";
+  public isStaging = false;
+  public downloadProgress = 0;
 
 @Component({
   templateUrl: 'app.component.html',
@@ -55,7 +58,7 @@ export class iShallBe {
     private firebase: FirebaseProvider,
   ) {
     this.rootPage = StartupPage;
-    platform.ready();
+    platform.ready()
     this.listenToAuthEvents();
 
     this.exploreMenuPages = [
@@ -144,6 +147,8 @@ export class iShallBe {
 
   platformReady() {
     this.platform.ready().then(() => {
+      console.log("Platform ready");
+      this.checkChannel();
       this.splashScreen.hide();
     });
   }
@@ -155,6 +160,63 @@ export class iShallBe {
   listenToAuthEvents() {
     this.events.subscribe('login: editor', () => { this.editor = true });
     this.events.subscribe('logout', () => { this.editor = false });
+  }
+
+ async checkChannel() {
+   console.log("Checking for channel");
+    try {
+      const res = await Pro.deploy.info();
+      this.deployChannel = res.channel;
+      this.isStaging = (this.deployChannel === 'Staging');
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async toggleStaging() {
+    const config = {
+      channel: (this.isStaging ? 'Staging' : 'Master')
+    }
+      console.log("Channel is " + config.channel);
+    try {
+      await Pro.deploy.init(config);
+      await this.checkChannel();
+      await this.performAutomaticUpdate();
+    } catch (err) {
+      console.error(err);
+    }
+
+  }
+
+  async performAutomaticUpdate() {
+    console.log("Performing automatic update");
+    try {
+      const resp = await Pro.deploy.checkAndApply(true, function(progress){
+          this.downloadProgress = progress;
+      });
+      if (resp.update){
+        console.log("UPDATE AVAILABLE");
+      }else{
+        console.log("NO UPDATE AVAILABLE");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async performManualUpdate() {
+    try {
+      const haveUpdate = await Pro.deploy.check();
+      if (haveUpdate){
+        this.downloadProgress = 0;
+        await Pro.deploy.download((progress) => {
+          this.downloadProgress = progress;
+        })
+        await Pro.deploy.extract();
+        await Pro.deploy.redirect();
+      }
+    } catch (err) {
+    }
   }
 }
 
