@@ -30,14 +30,14 @@ import { UsersManagerPage } from '../pages/users-manager/users-manager';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
-  public deployChannel = "";
-  public isStaging = false;
-  public downloadProgress = 0;
-
 @Component({
   templateUrl: 'app.component.html',
 })
 export class iShallBe {
+
+  public deployChannel = "";
+  public isStaging = false;
+  public downloadProgress = 0;
 
   @ViewChild(Nav) nav: Nav;
 
