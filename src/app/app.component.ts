@@ -58,9 +58,11 @@ export class iShallBe {
     private firebase: FirebaseProvider,
   ) {
     this.rootPage = StartupPage;
-    platform.ready()
+    platform.ready().then(() => {
+      statusBar.styleDefault();
+      splashScreen.hide();
+      });
     this.listenToAuthEvents();
-
     this.exploreMenuPages = [
       {
         title: 'Home',
@@ -143,14 +145,6 @@ export class iShallBe {
       { title: 'Users Manager Page', component: UsersManagerPage },
     ];
     
-  }
-
-  platformReady() {
-    this.platform.ready().then(() => {
-      console.log("Platform ready");
-      this.checkChannel();
-      this.splashScreen.hide();
-    });
   }
   
   openPage(page) {
