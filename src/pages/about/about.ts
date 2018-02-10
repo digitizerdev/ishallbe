@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 @IonicPage()
 @Component({
@@ -11,13 +12,14 @@ export class AboutPage {
   title = 'About';
 
   constructor(
-    public navCtrl: NavController, 
-    public navParams: NavParams
+    private navCtrl: NavController, 
+    private navParams: NavParams,
+    private iab: InAppBrowser
   ) {
   }
 
   openLink(){
-    open('https://iShallBe.co', '_system');
+    const browser = this.iab.create('https://iShallBe.co', '_system');
   }
   
 }
