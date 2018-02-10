@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 
 import { LoginPage } from '../login/login';

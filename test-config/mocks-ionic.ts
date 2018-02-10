@@ -6,7 +6,6 @@ import { Camera } from '@ionic-native/camera';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { IonicStorageModule } from '@ionic/storage';
 import { HomePage } from '../src/pages/home/home';
 import { NavController, NavParams, ActionSheetController, AlertController, LoadingController } from 'ionic-angular';
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection, AngularFirestoreModule } from 'angularfire2/firestore';
@@ -80,12 +79,6 @@ export class PlatformMock {
 
 export class DeepLinkerMock {
 
-}
-
-export class StorageMock extends IonicStorageModule {
-  styleDefault() {
-    return;
-  }
 }
 
 export class StatusBarMock extends StatusBar {

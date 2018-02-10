@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController, Platform, Events } from 'ionic-angular';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
-import { Storage } from '@ionic/storage';
 import { Moment, lang } from 'moment';
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
@@ -40,7 +39,6 @@ export class HomePage {
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private events: Events,
-    private storage: Storage,
     private push: Push
   ) {
   }

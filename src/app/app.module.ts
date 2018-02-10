@@ -1,8 +1,9 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { HttpModule } from '@angular/http';
-import { iShallBe } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { Pro } from '@ionic/pro';
+import { iShallBe } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -10,12 +11,13 @@ import { Camera } from '@ionic-native/camera';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
-import { IonicStorageModule, Storage } from '@ionic/storage';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireModule, FirebaseApp } from 'angularfire2';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';import { environment } from '../environments/environment';
+import * as firebase from 'firebase/app';
 import { NgCalendarModule } from 'ionic2-calendar';
+
+import { environment } from '../environments/environment';
 
 import { StartupPage } from '../pages/startup/startup';
 import { SignupPage } from '../pages/signup/signup';
@@ -41,7 +43,12 @@ import { UsersManagerPage } from '../pages/users-manager/users-manager';
 
 import { ComponentsModule } from '../components/components.module';
 import { YoutubePipe } from '../pipes/youtube/youtube';
+
 import { FirebaseProvider } from '../providers/firebase/firebase';
+
+Pro.init('69d144ed', {
+  appVersion: '1.2.0'
+});
 
 @NgModule({
   declarations: [
@@ -72,7 +79,6 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
   imports: [
     BrowserModule,
     IonicModule.forRoot(iShallBe, {}, { links: [] }),
-    IonicStorageModule.forRoot(),
     HttpModule,
     ComponentsModule,
     AngularFireModule.initializeApp(environment.firebase), 

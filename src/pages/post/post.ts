@@ -9,7 +9,6 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 import moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
-import { Storage } from '@ionic/storage/es2015/storage';
 
 @IonicPage()
 @Component({
