@@ -59,6 +59,8 @@ export class iShallBe {
   ) {
     this.rootPage = StartupPage;
     platform.ready().then(() => {
+      console.log("Platform ready");
+      this.checkChannel();
       statusBar.styleDefault();
       splashScreen.hide();
       });
