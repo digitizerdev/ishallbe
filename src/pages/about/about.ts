@@ -16,8 +16,8 @@ export class AboutPage {
   ) {
   }
 
-  openWebsite(){
-    open('https://iShallBe.co');
+  openLink(){
+    open('https://iShallBe.co', '_system');
   }
   
 }

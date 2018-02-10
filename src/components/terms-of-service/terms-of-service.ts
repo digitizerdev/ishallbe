@@ -9,4 +9,7 @@ export class TermsOfServiceComponent {
   constructor() {
   }
 
+  openLink() {
+    open('https://google.com', '_system');
+  }
 }

@@ -164,6 +164,7 @@ export class iShallBe {
       const res = await Pro.deploy.info();
       this.deployChannel = res.channel;
       this.isStaging = (this.deployChannel === 'Staging');
+      console.log("Deploy channel is "+  this.deployChannel)
     } catch (err) {
       console.error(err);
     }
