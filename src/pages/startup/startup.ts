@@ -16,10 +16,6 @@ export class StartupPage {
 
   session = false;
 
-  public deployChannel = "";
-  public isStaging = false;
-  public downloadProgress = 0;
-
   constructor
     (
     private navCtrl: NavController,
