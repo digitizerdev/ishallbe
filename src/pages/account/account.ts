@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, Platform } from 'ionic-angular';
+import { Pro } from '@ionic/pro';
+
 import { Observable } from 'rxjs/Observable';
 
 import { LoginPage } from '../login/login';
@@ -22,16 +24,53 @@ export class AccountPage {
   editor = false;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public events: Events,
-    public firebase: FirebaseProvider,
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private events: Events,
+    private platform: Platform,
+    private firebase: FirebaseProvider,
   ) {
   }
 
   ionViewDidLoad() {
     this.user = this.firebase.user;
-    if (this.user.roles.editor) this.editor = true;
+    if (this.user.roles.editor) {
+      this.editor = true;
+      if (this.platform.is('cordova')) {
+        this.initDeploy().then(() => {
+          this.checkForBetaUpdate();
+        });
+      }
+    }
+  }
+
+  initDeploy() {
+    console.log("Initializing Deploy");
+    const config = {
+      'appId': '69d144ed',
+      'channel': 'Beta'
+    }
+    return Pro.deploy.init(config);
+  }
+
+  checkForBetaUpdate() {
+    return Observable.create((observer) => {
+      console.log("Deploying auto update");
+      Pro.deploy.check().then((haveUpdate) => {
+        if (haveUpdate) {
+          console.log("UPDATE AVAILABLE");
+          /*           Pro.deploy.download().then(() => {
+                      Pro.deploy.extract().then(() => {
+                        console.log("REDIRECTING");
+                        Pro.deploy.redirect();
+                      });
+                    }) */
+        } else {
+          console.log("NO UPDATE AVAILABLE");
+          observer.next();
+        }
+      });
+    });
   }
 
   pushEmailUpdatePage() {

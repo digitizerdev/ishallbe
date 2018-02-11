@@ -34,10 +34,6 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
 })
 export class iShallBe {
 
-  public deployChannel = "";
-  public isBeta = false;
-  public downloadProgress = 0;
-
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any;
