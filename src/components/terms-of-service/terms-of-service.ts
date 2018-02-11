@@ -8,13 +8,12 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 export class TermsOfServiceComponent {
 
   constructor(
-    private iab: InAppBrowser
+    public iab: InAppBrowser
   ) {
   }
 
   openLink() {
-    const browser = this.iab.create('https://docs.wixstatic.com/ugd/7905e6_240379278fa1486d8954001723621f33.pdf', '_system');
+    this.iab.create('https://docs.wixstatic.com/ugd/7905e6_240379278fa1486d8954001723621f33.pdf', '_system');
   }
-
 
 }

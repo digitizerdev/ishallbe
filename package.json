@@ -30,7 +30,7 @@
     "@ionic-native/email-composer": "^4.5.2",
     "@ionic-native/facebook": "4.4.2",
     "@ionic-native/file": "4.4.2",
-    "@ionic-native/in-app-browser": "^4.5.2",
+    "@ionic-native/in-app-browser": "^4.5.3",
     "@ionic-native/push": "4.4.2",
     "@ionic-native/splash-screen": "4.4.2",
     "@ionic-native/status-bar": "4.4.2",
@@ -47,7 +47,7 @@
     "cordova-plugin-email-composer": "^0.8.15",
     "cordova-plugin-facebook4": "^1.9.1",
     "cordova-plugin-file": "^5.0.0",
-    "cordova-plugin-inappbrowser": "^2.0.1",
+    "cordova-plugin-inappbrowser": "^2.0.2",
     "cordova-plugin-ionic": "^2.0.4",
     "cordova-plugin-media-capture": "^2.0.0",
     "cordova-plugin-splashscreen": "^4.1.0",
@@ -131,7 +131,8 @@
         "WARN_DEBUG": "true",
         "UPDATE_API": "https://api.ionicjs.com",
         "MAX_STORE": "2"
-      }
+      },
+      "cordova-plugin-inappbrowser": {}
     },
     "platforms": [
       "ios"

@@ -128,5 +128,6 @@
         <variable name="UPDATE_API" value="https://api.ionicjs.com" />
         <variable name="MAX_STORE" value="2" />
     </plugin>
+    <plugin name="cordova-plugin-inappbrowser" spec="^2.0.2" />
     <engine name="ios" spec="4.5.4" />
 </widget>

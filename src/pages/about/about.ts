@@ -9,17 +9,15 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 })
 export class AboutPage {
 
-  title = 'About';
-
   constructor(
     private navCtrl: NavController, 
     private navParams: NavParams,
-    private iab: InAppBrowser
+    public iab: InAppBrowser
   ) {
   }
 
   openLink(){
-    const browser = this.iab.create('https://iShallBe.co', '_system');
+    this.iab.create('https://iShallBe.co', '_system');
   }
   
 }

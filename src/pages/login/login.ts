@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Observable } from 'rxjs/Observable';
 
 import { PasswordResetPage } from '../password-reset/password-reset';
@@ -65,7 +66,11 @@ export class LoginPage {
   }
 
   setRootSignupPage() {
-    this.navCtrl.setRoot(SignupPage);
+    console.log("About to set root to Signup Page");
+    this.navCtrl.setRoot(SignupPage).catch((error) => {
+      console.log("Error");
+      console.log(error);
+    });
   }
 
   setRootPasswordResetPage() {
