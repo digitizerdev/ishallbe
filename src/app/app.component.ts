@@ -150,11 +150,10 @@ export class iShallBe {
   platformReady() {
     this.platform.ready().then(() => {
       console.log("Platform ready");
-      this.checkForUserSession();
-      if (this.platform.is('cordova')) this.toggleBeta();
-        else console.log("NOT CORDOVA");
+      if (this.platform.is('cordova')) {
+        this.deployAutoUpdate().subscribe(() => { this.checkForUserSession(); });
+      } else this.checkForUserSession();
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
     });
   }
 
@@ -165,9 +164,10 @@ export class iShallBe {
 
   checkForUserSession() {
     if (this.firebase.session) this.inSession();
-     else {
+    else {
       this.firebase.sessionExists().subscribe((session) => {
         if (session) this.inSession();
+        else this.splashScreen.hide();
       });
     }
   }
@@ -175,64 +175,22 @@ export class iShallBe {
   inSession() {
     this.session = true;
     this.nav.setRoot(HomePage);
+    this.splashScreen.hide();
   }
 
-  async toggleBeta() {
-    const config = {
-      channel: (this.isBeta ? 'Beta' : 'Production')
-    }
-    console.log("Channel is " + config.channel);
-    try {
-      await Pro.deploy.init(config);
-      await this.checkChannel();
-      await this.performAutomaticUpdate();
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async checkChannel() {
-    console.log("Checking for channel");
-    try {
-      const res = await Pro.deploy.info();
-      console.log(res);
-      this.deployChannel = res.channel;
-      this.isBeta = (this.deployChannel === 'Beta');
-      console.log("Deploy channel is " + this.deployChannel)
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async performAutomaticUpdate() {
-    console.log("Performing automatic update");
-    try {
-      const resp = await Pro.deploy.checkAndApply(true, function (progress) {
+  deployAutoUpdate() {
+    return Observable.create((observer) => {
+      console.log("Deploying auto update");
+      Pro.deploy.checkAndApply(true, function (progress) {
         this.downloadProgress = progress;
+      }).then((resp) => {
+        observer.next(resp);
+        console.log(resp);
+      }).catch((error) => {
+        observer.next(error);
+        console.error(error);
       });
-      if (resp.update) {
-        console.log("UPDATE AVAILABLE");
-      } else {
-        console.log("NO UPDATE AVAILABLE");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async performManualUpdate() {
-    try {
-      const haveUpdate = await Pro.deploy.check();
-      if (haveUpdate) {
-        this.downloadProgress = 0;
-        await Pro.deploy.download((progress) => {
-          this.downloadProgress = progress;
-        })
-        await Pro.deploy.extract();
-        await Pro.deploy.redirect();
-      }
-    } catch (err) {
-    }
+    });
   }
 }
 
