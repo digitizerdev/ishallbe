@@ -151,7 +151,7 @@ export class iShallBe {
     this.platform.ready().then(() => {
       console.log("Platform ready");
       if (this.platform.is('cordova')) {
-        this.deployAutoUpdate().subscribe(() => { this.checkForUserSession(); });
+        this.deployUpdate().subscribe(() => { this.checkForUserSession(); });
       } else this.checkForUserSession();
       this.statusBar.styleDefault();
     });
@@ -178,17 +178,21 @@ export class iShallBe {
     this.splashScreen.hide();
   }
 
-  deployAutoUpdate() {
+  deployUpdate() {
     return Observable.create((observer) => {
       console.log("Deploying auto update");
-      Pro.deploy.checkAndApply(true, function (progress) {
-        this.downloadProgress = progress;
-      }).then((resp) => {
-        observer.next(resp);
-        console.log(resp);
-      }).catch((error) => {
-        observer.next(error);
-        console.error(error);
+      Pro.deploy.check().then((haveUpdate) => {
+        if (haveUpdate) {
+          console.log("UPDATE AVAILABLE");
+          Pro.deploy.download().then(() => {
+            Pro.deploy.extract().then(() => {
+              console.log("REDIRECTING");
+              Pro.deploy.redirect();
+            });
+          })
+          console.log("NO UPDATE AVAILABLE");
+          observer.next();
+        }
       });
     });
   }
