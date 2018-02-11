@@ -14,7 +14,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../environments/environment';
 
-import { StartupPage } from '../pages/startup/startup';
+import { LoginPage } from '../pages/login/login';
 
 import { } from 'jasmine';
 
@@ -111,12 +111,12 @@ describe('iShallBe Component', () => {
     expect(component.providers.length).toBe(1);
   });
 
-  it('should have 21 pages', () => {
-    expect(component.pages.length).toBe(21);
+  it('should have 20 pages', () => {
+    expect(component.pages.length).toBe(20);
   });
 
   it('should initialize root page to StartupPage', () => {
-    expect(component['rootPage']).toBe(StartupPage);
+    expect(component['rootPage']).toBe(LoginPage);
   });
 
   it('should be able to ready platform', () => {

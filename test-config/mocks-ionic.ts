@@ -1,4 +1,4 @@
-import { FirebaseProvider } from '../src/providers/firebase/firebase';
+import { NavController, NavParams, ActionSheetController, AlertController, LoadingController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -6,11 +6,14 @@ import { Camera } from '@ionic-native/camera';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { EmailComposer } from '@ionic-native/email-composer';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { Observable } from 'rxjs/Observable';
+
 import { HomePage } from '../src/pages/home/home';
-import { NavController, NavParams, ActionSheetController, AlertController, LoadingController } from 'ionic-angular';
+
+import { FirebaseProvider } from '../src/providers/firebase/firebase';
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection, AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import { Observable } from 'rxjs/Observable';
 
 export class PlatformMock {
   public ready(): Promise<string> {
@@ -227,6 +230,16 @@ export class EmailComposerMock extends EmailComposer {
   _getPortal(): any { return {} };
 
   public open(email): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+}
+
+export class InAppBrowserMock extends InAppBrowser {
+  _getPortal(): any { return {} };
+
+  public create(): any {
     return new Promise(function (resolve: Function): void {
       resolve();
     });

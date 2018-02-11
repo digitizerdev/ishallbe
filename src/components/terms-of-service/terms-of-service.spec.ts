@@ -3,6 +3,7 @@ import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { IonicModule, Platform, Nav } from 'ionic-angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -17,6 +18,7 @@ import { } from 'jasmine';
 import {
     PlatformMock,
     NavMock,
+    InAppBrowserMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
@@ -25,6 +27,7 @@ describe('TermsOfServiceComponent', () => {
     let component;
     let platform: Platform;
     let nav: Nav;
+    let inAppBrowser: InAppBrowser;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -45,6 +48,7 @@ describe('TermsOfServiceComponent', () => {
             providers: [
                 { provide: Platform, useClass: PlatformMock },
                 { provide: Nav, useClass: NavMock },
+                { provide: InAppBrowser, useClass: InAppBrowser },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -57,6 +61,7 @@ describe('TermsOfServiceComponent', () => {
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(Nav);
+        inAppBrowser = TestBed.get(InAppBrowser);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -67,6 +72,7 @@ describe('TermsOfServiceComponent', () => {
         fixture.destroy();
         component = null;
         platform = null;
+        inAppBrowser = null;
         nav = null;
         firebase = null;
         afa = null;
@@ -77,12 +83,13 @@ describe('TermsOfServiceComponent', () => {
         expect(component instanceof TermsOfServiceComponent).toBe(true);
     });
 
-    it('should display terms of service link', () => {
+    it('should be to open terms of service link', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('a'));
-        el = de.nativeElement.href;
-        expect(el).toContain('https://docs.wixstatic.com/ugd/7905e6_240379278fa1486d8954001723621f33.pdf');
+        de = fixture.debugElement.query(By.css('#TermsOfServiceLink'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+        expect(component.openLink).toBeDefined();
     });
 
 });
