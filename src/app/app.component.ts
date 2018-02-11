@@ -180,6 +180,7 @@ export class iShallBe {
     console.log("Checking for channel");
     try {
       const res = await Pro.deploy.info();
+      console.log(res);
       this.deployChannel = res.channel;
       this.isBeta = (this.deployChannel === 'Beta');
       console.log("Deploy channel is " + this.deployChannel)
