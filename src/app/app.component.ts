@@ -58,12 +58,7 @@ export class iShallBe {
     private firebase: FirebaseProvider,
   ) {
     this.rootPage = StartupPage;
-    platform.ready().then(() => {
-      console.log("Platform ready");
-      this.checkChannel();
-      statusBar.styleDefault();
-      splashScreen.hide();
-      });
+    this.platformReady();
     this.listenToAuthEvents();
     this.exploreMenuPages = [
       {
@@ -99,7 +94,7 @@ export class iShallBe {
         icon: 'ios-person',
         component: ProfilePage
       },
-    ];  
+    ];
 
     this.editorMenuPages = [
       {
@@ -126,7 +121,7 @@ export class iShallBe {
     this.pages = [
       { title: 'Startup Page', component: StartupPage },
       { title: 'Signup Page', component: SignupPage },
-      { title: 'Support Page', component: SupportPage },      
+      { title: 'Support Page', component: SupportPage },
       { title: 'Login Page', component: LoginPage },
       { title: 'About Page', component: AboutPage },
       { title: 'Support Page', component: SupportPage },
@@ -146,35 +141,32 @@ export class iShallBe {
       { title: 'Posts Manager Page', component: PostsManagerPage },
       { title: 'Users Manager Page', component: UsersManagerPage },
     ];
-    
+
   }
-  
+
   openPage(page) {
     this.nav.setRoot(page.component);
   }
-  
+
+  platformReady() {
+    this.platform.ready().then(() => {
+      console.log("Platform ready");
+      this.toggleStaging();
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
+    });
+  }
+
   listenToAuthEvents() {
     this.events.subscribe('login: editor', () => { this.editor = true });
     this.events.subscribe('logout', () => { this.editor = false });
-  }
-
- async checkChannel() {
-   console.log("Checking for channel");
-    try {
-      const res = await Pro.deploy.info();
-      this.deployChannel = res.channel;
-      this.isStaging = (this.deployChannel === 'Staging');
-      console.log("Deploy channel is "+  this.deployChannel)
-    } catch (err) {
-      console.error(err);
-    }
   }
 
   async toggleStaging() {
     const config = {
       channel: (this.isStaging ? 'Staging' : 'Master')
     }
-      console.log("Channel is " + config.channel);
+    console.log("Channel is " + config.channel);
     try {
       await Pro.deploy.init(config);
       await this.checkChannel();
@@ -182,18 +174,29 @@ export class iShallBe {
     } catch (err) {
       console.error(err);
     }
+  }
 
+  async checkChannel() {
+    console.log("Checking for channel");
+    try {
+      const res = await Pro.deploy.info();
+      this.deployChannel = res.channel;
+      this.isStaging = (this.deployChannel === 'Staging');
+      console.log("Deploy channel is " + this.deployChannel)
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async performAutomaticUpdate() {
     console.log("Performing automatic update");
     try {
-      const resp = await Pro.deploy.checkAndApply(true, function(progress){
-          this.downloadProgress = progress;
+      const resp = await Pro.deploy.checkAndApply(true, function (progress) {
+        this.downloadProgress = progress;
       });
-      if (resp.update){
+      if (resp.update) {
         console.log("UPDATE AVAILABLE");
-      }else{
+      } else {
         console.log("NO UPDATE AVAILABLE");
       }
     } catch (err) {
@@ -204,7 +207,7 @@ export class iShallBe {
   async performManualUpdate() {
     try {
       const haveUpdate = await Pro.deploy.check();
-      if (haveUpdate){
+      if (haveUpdate) {
         this.downloadProgress = 0;
         await Pro.deploy.download((progress) => {
           this.downloadProgress = progress;
