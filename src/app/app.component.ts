@@ -36,7 +36,7 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
 export class iShallBe {
 
   public deployChannel = "";
-  public isStaging = false;
+  public isBeta = false;
   public downloadProgress = 0;
 
   @ViewChild(Nav) nav: Nav;
@@ -151,7 +151,7 @@ export class iShallBe {
   platformReady() {
     this.platform.ready().then(() => {
       console.log("Platform ready");
-      this.toggleStaging();
+      this.toggleBeta();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
@@ -162,9 +162,9 @@ export class iShallBe {
     this.events.subscribe('logout', () => { this.editor = false });
   }
 
-  async toggleStaging() {
+  async toggleBeta() {
     const config = {
-      channel: (this.isStaging ? 'Staging' : 'Master')
+      channel: (this.isBeta ? 'Beta' : 'Production')
     }
     console.log("Channel is " + config.channel);
     try {
@@ -181,7 +181,7 @@ export class iShallBe {
     try {
       const res = await Pro.deploy.info();
       this.deployChannel = res.channel;
-      this.isStaging = (this.deployChannel === 'Staging');
+      this.isBeta = (this.deployChannel === 'Beta');
       console.log("Deploy channel is " + this.deployChannel)
     } catch (err) {
       console.error(err);
