@@ -190,6 +190,7 @@ export class iShallBe {
               Pro.deploy.redirect();
             });
           })
+        } else {
           console.log("NO UPDATE AVAILABLE");
           observer.next();
         }
