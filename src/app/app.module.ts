@@ -19,7 +19,6 @@ import { NgCalendarModule } from 'ionic2-calendar';
 
 import { environment } from '../environments/environment';
 
-import { StartupPage } from '../pages/startup/startup';
 import { SignupPage } from '../pages/signup/signup';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
 import { LoginPage } from '../pages/login/login';
@@ -53,7 +52,6 @@ Pro.init('69d144ed', {
 @NgModule({
   declarations: [
     iShallBe,
-    StartupPage,
     SignupPage,
     PasswordResetPage,
     LoginPage,
@@ -89,7 +87,6 @@ Pro.init('69d144ed', {
   bootstrap: [IonicApp],
   entryComponents: [
     iShallBe,
-    StartupPage,
     SignupPage,
     PasswordResetPage,
     LoginPage,

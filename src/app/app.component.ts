@@ -6,7 +6,6 @@ import { Pro } from '@ionic/pro';
 
 import { Observable } from 'rxjs/Rx';
 
-import { StartupPage } from '../pages/startup/startup';
 import { SignupPage } from '../pages/signup/signup';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
 import { LoginPage } from '../pages/login/login';
@@ -47,6 +46,7 @@ export class iShallBe {
   editorMenuPages: Array<{ title: string, icon: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
   pages: Array<{ title: string, component: any }>;
+  session = false;
   editor = false;
 
   constructor(
@@ -57,7 +57,7 @@ export class iShallBe {
     private events: Events,
     private firebase: FirebaseProvider,
   ) {
-    this.rootPage = StartupPage;
+    this.rootPage = LoginPage;
     this.platformReady();
     this.listenToAuthEvents();
     this.exploreMenuPages = [
@@ -119,7 +119,6 @@ export class iShallBe {
     ];
 
     this.pages = [
-      { title: 'Startup Page', component: StartupPage },
       { title: 'Signup Page', component: SignupPage },
       { title: 'Support Page', component: SupportPage },
       { title: 'Login Page', component: LoginPage },
@@ -151,7 +150,9 @@ export class iShallBe {
   platformReady() {
     this.platform.ready().then(() => {
       console.log("Platform ready");
-      this.toggleBeta();
+      this.checkForUserSession();
+      if (this.platform.is('cordova')) this.toggleBeta();
+        else console.log("NOT CORDOVA");
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
@@ -160,6 +161,20 @@ export class iShallBe {
   listenToAuthEvents() {
     this.events.subscribe('login: editor', () => { this.editor = true });
     this.events.subscribe('logout', () => { this.editor = false });
+  }
+
+  checkForUserSession() {
+    if (this.firebase.session) this.inSession();
+     else {
+      this.firebase.sessionExists().subscribe((session) => {
+        if (session) this.inSession();
+      });
+    }
+  }
+
+  inSession() {
+    this.session = true;
+    this.nav.setRoot(HomePage);
   }
 
   async toggleBeta() {
