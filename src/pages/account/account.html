@@ -17,18 +17,14 @@
     <h5 padding>{{user?.email}}</h5>
   </div>
   <br>
-  <div class="feature" *ngIf="editor">
-    <ion-row responsive-sm>
-      <ion-col text-center>
-        <h5>Staging Branch</h5>
-      </ion-col>
-    </ion-row>
-    <ion-row responsive-sm padding-bottom>
-      <ion-col text-center>
-        <button ion-button id="AccountInstallUpdateButton" (click)="installUpdate()" color="grayer" round strong>UPDATE AVAILABLE</button>
-      </ion-col>
-    </ion-row>
+  <div class="beta"  text-center>
+    <h5>Connected to {{deployChannel}} Channel</h5>
+    <ion-item no-lines>
+      <ion-label>Opt in to Beta Features</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="isBeta" (ionChange)="toggleBeta()"></ion-toggle>
+    </ion-item>
   </div>
+  <br *ngIf="editor">
   <ion-row responsive-sm>
     <br>
     <ion-col text-center>

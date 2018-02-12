@@ -4,4 +4,9 @@ page-account {
         border-top: thick solid color($colors, primary);                  
         border-bottom: thick solid color($colors, primary);                  
     }
+
+    .beta {
+        border-top: thick solid color($colors, secondary);                  
+        border-bottom: thick solid color($colors, secondary);                  
+    }
 }

@@ -20,6 +20,9 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 })
 export class AccountPage {
 
+  public deployChannel = "";
+  public isBeta = false;
+  public downloadProgress = 0;
   user: any;
   editor = false;
 
@@ -33,43 +36,42 @@ export class AccountPage {
   }
 
   ionViewDidLoad() {
+    console.log("Loaded Account Page")
     this.user = this.firebase.user;
     if (this.user.roles.editor) {
       this.editor = true;
       if (this.platform.is('cordova')) {
-        this.initDeploy().then(() => {
-          this.checkForBetaUpdate();
-        });
-      }
+        this.checkChannel();
+      } else console.log("NOT CORDOVA");
     }
   }
 
-  initDeploy() {
-    console.log("Initializing Deploy");
-    const config = {
-      'appId': '69d144ed',
-      'channel': 'Beta'
-    }
-    return Pro.deploy.init(config);
-  }
-
-  checkForBetaUpdate() {
+  checkChannel() {
     return Observable.create((observer) => {
-      console.log("Deploying auto update");
-      Pro.deploy.check().then((haveUpdate) => {
-        if (haveUpdate) {
-          console.log("UPDATE AVAILABLE");
-          /*           Pro.deploy.download().then(() => {
-                      Pro.deploy.extract().then(() => {
-                        console.log("REDIRECTING");
-                        Pro.deploy.redirect();
-                      });
-                    }) */
-        } else {
-          console.log("NO UPDATE AVAILABLE");
-          observer.next();
-        }
-      });
+      console.log("Checking Channel");
+      Pro.deploy.info().then((res) => {
+        this.deployChannel = res.channel;
+        this.isBeta = (this.deployChannel === 'Beta');
+      })
+    });
+  }
+
+  toggleBeta() {
+    console.log("Beta toggled");
+    return Observable.create((observer) => {
+      const config = {
+        channel: (this.isBeta ? 'Beta' : 'Production')
+      }
+      Pro.deploy.init(config).then(() => {
+        Pro.deploy.check().then((haveUpdate) => {
+          Pro.deploy.download().then(() => {
+            Pro.deploy.extract().then(() => {
+              console.log("REDIRECTING");
+              Pro.deploy.redirect();
+            });
+          })
+        });
+      })
     });
   }
 
