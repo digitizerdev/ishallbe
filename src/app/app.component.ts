@@ -147,13 +147,13 @@ export class iShallBe {
     this.platform.ready().then(() => {
       console.log("Platform ready");
       if (this.platform.is('cordova')) {
-        this.autoDeployUpdate().subscribe(() => { this.checkForUserSession(); });
+        this.deployUpdate().subscribe(() => { this.checkForUserSession(); });
       } else this.checkForUserSession();
       this.statusBar.styleDefault();
     });
   }
 
-  autoDeployUpdate() {
+  deployUpdate() {
     return Observable.create((observer) => {
       Pro.deploy.checkAndApply(true).then((resp) => {
         if (!resp.update) observer.next();
@@ -182,4 +182,3 @@ export class iShallBe {
     this.events.subscribe('logout', () => { this.editor = false });
   }
 }
-

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, Platform, LoadingController } from 'ionic-angular';
 import { Pro } from '@ionic/pro';
 
 import { Observable } from 'rxjs/Observable';
@@ -25,12 +25,14 @@ export class AccountPage {
   downloadProgress = 0;
   user: any;
   editor = false;
+  loader: any;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private events: Events,
     private platform: Platform,
+    private loadingCtrl: LoadingController,
     private firebase: FirebaseProvider,
   ) {
   }
@@ -56,34 +58,29 @@ export class AccountPage {
     }
   }
 
-
   async toggleBeta() {
-    const config = {
-      channel: (this.isBeta ? 'Beta' : 'Production')
-    }
-
+    const config = { channel: (this.isBeta ? 'Beta' : 'Production')}
     try {
       await Pro.deploy.init(config);
       await this.checkChannel();
-      await this.performAutomaticUpdate();
-    } catch (err) { console.log(err); }
-
+      await this.deployUpdate();
+    } catch (err) { console.log(err)};
   }
 
-
-  async performAutomaticUpdate() {
+  async deployUpdate() {
     try {
-      const resp = await Pro.deploy.checkAndApply(true, function(progress){
-          this.downloadProgress = progress;
-      });
-      if (resp.update){
-        console.log("UPDATE AVAILABLE")
-      }else{
-        console.log("NO UPDATE AVAILABLE");
-      }
-    } catch (err) {
-      console.log(err);
-    }
+      const resp = await Pro.deploy.checkAndApply(true, function(progress){ this.downloadProgress = progress; });
+      if (resp.update){ this.startLoading()}
+        else { Pro.deploy.extract().then(() => { Pro.deploy.redirect()})};
+    } catch (err) { console.log(err)}''
+  }
+
+  startLoading() {
+    this.loader =  this.loadingCtrl.create({
+      spinner: 'dots',
+      content: 'Deploying ' + this.deployChannel + ' Channel: ' + this.downloadProgress
+    });
+    this.loader.present();
   }
 
   pushEmailUpdatePage() {
