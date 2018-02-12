@@ -147,15 +147,18 @@ export class iShallBe {
     this.platform.ready().then(() => {
       console.log("Platform ready");
       if (this.platform.is('cordova')) {
-        this.deployUpdate().subscribe(() => { this.checkForUserSession(); });
+        this.autoDeployUpdate().subscribe(() => { this.checkForUserSession(); });
       } else this.checkForUserSession();
       this.statusBar.styleDefault();
     });
   }
 
-  listenToAuthEvents() {
-    this.events.subscribe('login: editor', () => { this.editor = true });
-    this.events.subscribe('logout', () => { this.editor = false });
+  autoDeployUpdate() {
+    return Observable.create((observer) => {
+      Pro.deploy.checkAndApply(true).then((resp) => {
+        if (!resp.update) observer.next();
+      });
+    });
   }
 
   checkForUserSession() {
@@ -174,24 +177,9 @@ export class iShallBe {
     this.splashScreen.hide();
   }
 
-  deployUpdate() {
-    return Observable.create((observer) => {
-      console.log("Deploying auto update");
-      Pro.deploy.check().then((haveUpdate) => {
-        if (haveUpdate) {
-          console.log("UPDATE AVAILABLE");
-          Pro.deploy.download().then(() => {
-            Pro.deploy.extract().then(() => {
-              console.log("REDIRECTING");
-              Pro.deploy.redirect();
-            });
-          })
-        } else {
-          console.log("NO UPDATE AVAILABLE");
-          observer.next();
-        }
-      });
-    });
+  listenToAuthEvents() {
+    this.events.subscribe('login: editor', () => { this.editor = true });
+    this.events.subscribe('logout', () => { this.editor = false });
   }
 }
 
