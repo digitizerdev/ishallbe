@@ -59,20 +59,20 @@ export class AccountPage {
 
   toggleBeta() {
     console.log("Beta toggled");
-      const config = {
-        channel: (this.isBeta ? 'Beta' : 'Production')
-      }
-      console.log(config);
-      Pro.deploy.init(config).then(() => {
-        Pro.deploy.check().then((haveUpdate) => {
-          Pro.deploy.download().then(() => {
-            Pro.deploy.extract().then(() => {
-              console.log("REDIRECTING");
-              Pro.deploy.redirect();
-            });
-          })
-        });
-      })
+    const config = {
+      channel: (this.isBeta ? 'Beta' : 'Production')
+    }
+    console.log(config);
+    Pro.deploy.init(config).then(() => {
+      Pro.deploy.check().then((haveUpdate) => {
+        Pro.deploy.download().then(() => {
+          Pro.deploy.extract().then(() => {
+            console.log("REDIRECTING");
+            Pro.deploy.redirect();
+          });
+        })
+      });
+    })
   }
 
   pushEmailUpdatePage() {
