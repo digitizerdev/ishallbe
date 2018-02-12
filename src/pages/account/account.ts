@@ -75,9 +75,10 @@ export class AccountPage {
   }
 
   startLoading() {
+    console.log("Started Loading")
     this.loader =  this.loadingCtrl.create({
       spinner: 'dots',
-      content: 'Deploying ' + this.deployChannel + ' Channel: ' + this.downloadProgress
+      content: 'Deploying Update...'
     });
     this.loader.present();
   }
