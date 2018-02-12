@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, Platform, LoadingController } from 'ionic-angular';
 import { Pro } from '@ionic/pro';
 
 import { Observable } from 'rxjs/Observable';
@@ -25,12 +25,14 @@ export class AccountPage {
   downloadProgress = 0;
   user: any;
   editor = false;
+  loader: any;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private events: Events,
     private platform: Platform,
+    private loadingCtrl: LoadingController,
     private firebase: FirebaseProvider,
   ) {
   }
@@ -58,10 +60,11 @@ export class AccountPage {
 
 
   async toggleBeta() {
+    this.loader =  this.loadingCtrl.create();
+    this.loader.present();
     const config = {
       channel: (this.isBeta ? 'Beta' : 'Production')
     }
-
     try {
       await Pro.deploy.init(config);
       await this.checkChannel();
@@ -80,6 +83,7 @@ export class AccountPage {
         console.log("UPDATE AVAILABLE")
       }else{
         console.log("NO UPDATE AVAILABLE");
+        this.loader.dismiss();
       }
     } catch (err) {
       console.log(err);
