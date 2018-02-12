@@ -47,35 +47,32 @@ export class AccountPage {
     }
   }
 
-  checkChannel() {
-    console.log("Checking Channel");
-    return Observable.create((observer) => {
-      return Pro.deploy.info().then((res) => {
-        console.log(res);
-        this.deployChannel = res.channel;
-        this.isBeta = (this.deployChannel === 'Beta');
-        observer.next();
-      })
-    });
+  async checkChannel() {
+    try {
+      const res = await Pro.deploy.info();
+      this.deployChannel = res.channel;
+      this.isBeta = (this.deployChannel === 'Beta')
+    } catch (err) {
+    }
   }
+
 
   toggleBeta() {
     console.log("Beta toggled");
-    return Observable.create((observer) => {
       const config = {
         channel: (this.isBeta ? 'Beta' : 'Production')
       }
-      return Pro.deploy.init(config).then(() => {
-        return Pro.deploy.check().then((haveUpdate) => {
-          return Pro.deploy.download().then(() => {
-            return Pro.deploy.extract().then(() => {
+      console.log(config);
+      Pro.deploy.init(config).then(() => {
+        Pro.deploy.check().then((haveUpdate) => {
+          Pro.deploy.download().then(() => {
+            Pro.deploy.extract().then(() => {
               console.log("REDIRECTING");
-              return Pro.deploy.redirect();
+              Pro.deploy.redirect();
             });
           })
         });
       })
-    });
   }
 
   pushEmailUpdatePage() {
