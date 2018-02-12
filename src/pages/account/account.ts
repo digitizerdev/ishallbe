@@ -25,7 +25,6 @@ export class AccountPage {
   downloadProgress = 0;
   user: any;
   editor = false;
-  loader: any;
 
   constructor(
     private navCtrl: NavController,
@@ -81,11 +80,10 @@ export class AccountPage {
 
   startLoading() {
     console.log("Started Loading")
-    this.loader =  this.loadingCtrl.create({
-      spinner: 'dots',
+    let loader =  this.loadingCtrl.create({
       content: 'Deploying Update...'
     });
-    this.loader.present();
+    loader.present();
   }
 
   pushEmailUpdatePage() {
