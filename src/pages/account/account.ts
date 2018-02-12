@@ -74,7 +74,7 @@ export class AccountPage {
         console.log("UPDATE AVAILABLE");
         this.startLoading();
       } else {
-        console.log("NO UPDATE AVAILABLE"):
+        console.log("NO UPDATE AVAILABLE");
       }
     } catch (err) { console.log(err)}''
   }
