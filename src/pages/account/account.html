@@ -19,6 +19,7 @@
   <br>
   <div class="beta" *ngIf="editor" text-center>
     <h5>Connected to {{deployChannel}} Channel</h5>
+    <h6>Download Progress: {{downloadProgress}}</h6>
     <ion-item no-lines>
       <ion-label>Opt in to Beta Features</ion-label>
       <ion-toggle color="primary" [(ngModel)]="isBeta" (ionChange)="toggleBeta()"></ion-toggle>

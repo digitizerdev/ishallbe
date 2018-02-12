@@ -20,9 +20,9 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 })
 export class AccountPage {
 
-  public deployChannel = "";
-  public isBeta = false;
-  public downloadProgress = 0;
+  deployChannel = "";
+  isBeta = false;
+  downloadProgress = 0;
   user: any;
   editor = false;
 
@@ -57,22 +57,33 @@ export class AccountPage {
   }
 
 
-  toggleBeta() {
-    console.log("Beta toggled");
+  async toggleBeta() {
     const config = {
       channel: (this.isBeta ? 'Beta' : 'Production')
     }
-    console.log(config);
-    Pro.deploy.init(config).then(() => {
-      Pro.deploy.check().then((haveUpdate) => {
-        Pro.deploy.download().then(() => {
-          Pro.deploy.extract().then(() => {
-            console.log("REDIRECTING");
-            Pro.deploy.redirect();
-          });
-        })
+
+    try {
+      await Pro.deploy.init(config);
+      await this.checkChannel();
+      await this.performAutomaticUpdate();
+    } catch (err) { console.log(err); }
+
+  }
+
+
+  async performAutomaticUpdate() {
+    try {
+      const resp = await Pro.deploy.checkAndApply(true, function(progress){
+          this.downloadProgress = progress;
       });
-    })
+      if (resp.update){
+        console.log("UPDATE AVAILABLE")
+      }else{
+        console.log("NO UPDATE AVAILABLE");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   pushEmailUpdatePage() {
