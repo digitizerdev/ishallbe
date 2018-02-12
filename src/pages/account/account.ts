@@ -48,9 +48,9 @@ export class AccountPage {
   }
 
   checkChannel() {
+    console.log("Checking Channel");
     return Observable.create((observer) => {
-      console.log("Checking Channel");
-      Pro.deploy.info().then((res) => {
+      return Pro.deploy.info().then((res) => {
         console.log(res);
         this.deployChannel = res.channel;
         this.isBeta = (this.deployChannel === 'Beta');
@@ -65,12 +65,12 @@ export class AccountPage {
       const config = {
         channel: (this.isBeta ? 'Beta' : 'Production')
       }
-      Pro.deploy.init(config).then(() => {
-        Pro.deploy.check().then((haveUpdate) => {
-          Pro.deploy.download().then(() => {
-            Pro.deploy.extract().then(() => {
+      return Pro.deploy.init(config).then(() => {
+        return Pro.deploy.check().then((haveUpdate) => {
+          return Pro.deploy.download().then(() => {
+            return Pro.deploy.extract().then(() => {
               console.log("REDIRECTING");
-              Pro.deploy.redirect();
+              return Pro.deploy.redirect();
             });
           })
         });
