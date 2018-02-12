@@ -41,6 +41,7 @@ export class AccountPage {
     if (this.user.roles.editor) {
       this.editor = true;
       if (this.platform.is('cordova')) {
+        console.log("CORDOVA");
         this.checkChannel();
       } else console.log("NOT CORDOVA");
     }
@@ -50,8 +51,10 @@ export class AccountPage {
     return Observable.create((observer) => {
       console.log("Checking Channel");
       Pro.deploy.info().then((res) => {
+        console.log(res);
         this.deployChannel = res.channel;
         this.isBeta = (this.deployChannel === 'Beta');
+        observer.next();
       })
     });
   }
