@@ -70,7 +70,12 @@ export class AccountPage {
   async deployUpdate() {
     try {
       const resp = await Pro.deploy.checkAndApply(true, function(progress){ this.downloadProgress = progress; });
-      if (resp.update) this.startLoading();
+      if (resp.update) {
+        console.log("UPDATE AVAILABLE");
+        this.startLoading();
+      } else {
+        console.log("NO UPDATE AVAILABLE"):
+      }
     } catch (err) { console.log(err)}''
   }
 
