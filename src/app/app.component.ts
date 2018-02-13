@@ -44,6 +44,7 @@ export class iShallBe {
   pages: Array<{ title: string, component: any }>;
   session = false;
   editor = false;
+  loaded = false;
 
   constructor(
     private platform: Platform,
@@ -145,10 +146,9 @@ export class iShallBe {
 
   platformReady() {
     this.platform.ready().then(() => {
-      console.log("Platform ready");
       if (this.platform.is('cordova')) {
-        this.deployUpdate().subscribe(() => { this.checkForUserSession(); });
-      } else this.checkForUserSession();
+        this.deployUpdate().subscribe(() => { this.checkForSession(); });
+      } else this.checkForSession();
       this.statusBar.styleDefault();
     });
   }
@@ -161,12 +161,15 @@ export class iShallBe {
     });
   }
 
-  checkForUserSession() {
+  checkForSession() {
     if (this.firebase.session) this.inSession();
     else {
       this.firebase.sessionExists().subscribe((session) => {
-        if (session) this.inSession();
-        else this.splashScreen.hide();
+        if (!this.loaded) {
+          this.loaded = true;
+          if (session) this.inSession();
+          else this.splashScreen.hide();
+        }
       });
     }
   }
