@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { Pro } from '@ionic/pro';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Observable } from 'rxjs/Observable';
 
@@ -55,6 +56,7 @@ export class LoginPage {
   }
 
   errorHandler(error) {
+    Pro.monitoring.exception(error);
     this.firebase.afa.auth.signOut(); 
     this.navCtrl.setRoot(this.navCtrl.getActive().component);
     let alert = this.alertCtrl.create({
@@ -66,11 +68,7 @@ export class LoginPage {
   }
 
   setRootSignupPage() {
-    console.log("About to set root to Signup Page");
-    this.navCtrl.setRoot(SignupPage).catch((error) => {
-      console.log("Error");
-      console.log(error);
-    });
+    this.navCtrl.setRoot(SignupPage);
   }
 
   setRootPasswordResetPage() {

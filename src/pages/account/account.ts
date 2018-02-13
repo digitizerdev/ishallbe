@@ -22,7 +22,6 @@ export class AccountPage {
 
   deployChannel = "";
   isBeta = false;
-  downloadProgress = 0;
   user: any;
   editor = false;
 
@@ -37,14 +36,10 @@ export class AccountPage {
   }
 
   ionViewDidLoad() {
-    console.log("Loaded Account Page")
     this.user = this.firebase.user;
     if (this.user.roles.editor) {
       this.editor = true;
-      if (this.platform.is('cordova')) {
-        console.log("CORDOVA");
-        this.checkChannel();
-      } else console.log("NOT CORDOVA");
+      if (this.platform.is('cordova')) { this.checkChannel(); } 
     }
   }
 
@@ -53,8 +48,7 @@ export class AccountPage {
       const res = await Pro.deploy.info();
       this.deployChannel = res.channel;
       this.isBeta = (this.deployChannel === 'Beta')
-    } catch (err) {
-    }
+    } catch (err) { Pro.monitoring.exception(err)};
   }
 
   async toggleBeta() {
@@ -63,23 +57,18 @@ export class AccountPage {
       await Pro.deploy.init(config);
       await this.checkChannel();
       await this.deployUpdate();
-    } catch (err) { console.log(err)};
+    } catch (err) { Pro.monitoring.exception(err)};
   }
 
   async deployUpdate() {
     try {
       const resp = await Pro.deploy.checkAndApply(true, function(progress){ this.downloadProgress = progress; });
-      if (resp.update) {
-        console.log("UPDATE AVAILABLE");
-        this.startLoading();
-      } else {
-        console.log("NO UPDATE AVAILABLE");
+      if (resp.update) {this.startLoading();
       }
-    } catch (err) { console.log(err)}''
+    } catch (err) { Pro.monitoring.exception(err)};
   }
 
   startLoading() {
-    console.log("Started Loading")
     let loader =  this.loadingCtrl.create({
       content: 'Deploying Update...'
     });
