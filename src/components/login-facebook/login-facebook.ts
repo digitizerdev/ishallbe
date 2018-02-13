@@ -24,6 +24,7 @@ export class LoginFacebookComponent {
   displayDate: string;
   rawTime: number;
   displayTime: string;
+  loader: any;
 
   constructor(
     private firebase: FirebaseProvider,
@@ -37,6 +38,8 @@ export class LoginFacebookComponent {
   }
 
   authenticate() {
+    this.loader = this.loadingCtrl.create({ content: 'Please Wait..' });
+    this.loader.present();
     this.timeStampPage();
     this.determineAuthType(this.platform.is('cordova'));
   }
@@ -103,19 +106,17 @@ export class LoginFacebookComponent {
   }
 
   loadUser() {
-    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
-    loading.present();
     this.checkForExistingUser().subscribe((user) => {
       this.user.unsubscribe;
-      if (user) { this.login(); loading.dismiss() }
+      if (user) { this.login(); this.loader.dismiss() }
       else {
         console.log("Need to register user");
         this.registerUser().subscribe(() => {
-          this.login(); loading.dismiss();
+          this.login(); this.loader.dismiss();
         }, error => {
           this.firebase.afa.auth.signOut();
           this.navCtrl.setRoot(this.navCtrl.getActive().component);
-          loading.dismiss();
+          this.loader.dismiss();
         })
       };
     });
