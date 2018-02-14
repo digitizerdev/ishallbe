@@ -1,13 +1,15 @@
 export interface Notification {
   id: string,
-  opened: boolean,
-  content: {
-    subject: string,
-    message: string,
-  }
-  doc: {
+  read: boolean,
+  like: boolean,
+  comment: boolean,
+  commentLike: boolean,
+  reminder: boolean,
+  message: string,
+  post: {
+    id: string,
     type: string,
-    id: string
+    owner: string
   }
   user: {
     uid: string,
