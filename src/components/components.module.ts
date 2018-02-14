@@ -11,7 +11,7 @@ import { MediaComponent } from './media/media';
         HeaderComponent,
         TermsOfServiceComponent,
         LoginFacebookComponent,
-    MediaComponent
+        MediaComponent,
     ],
     imports: [
         IonicModule,
@@ -20,7 +20,7 @@ import { MediaComponent } from './media/media';
         HeaderComponent,
         TermsOfServiceComponent,
         LoginFacebookComponent,
-    MediaComponent
+        MediaComponent,
     ],
     providers: [
         InAppBrowser

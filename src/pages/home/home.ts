@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, Platform, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, ModalController, Platform, Events } from 'ionic-angular';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { Moment, lang } from 'moment';
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 
-import { ProfilePage } from '../profile/profile';
-import { PostPage } from '../post/post';
-import { LoginPage } from '../login/login';
+import { NotificationsPage } from '../../pages/notifications/notifications';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -38,6 +36,7 @@ export class HomePage {
     private firebase: FirebaseProvider,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
+    private modalCtrl: ModalController,
     private events: Events,
     private push: Push
   ) {
@@ -46,7 +45,7 @@ export class HomePage {
   ionViewDidLoad() {
   }
 
-  setRootProfilePage() {
-    this.navCtrl.setRoot(ProfilePage);
+  showNotifications() {
+    this.navCtrl.push(NotificationsPage);
   }
 }

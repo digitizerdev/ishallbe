@@ -14,6 +14,7 @@ import { SupportPage } from '../pages/support/support';
 import { EmailUpdatePage } from '../pages/email-update/email-update';
 import { PasswordUpdatePage } from '../pages/password-update/password-update';
 import { AccountPage } from '../pages/account/account';
+import { NotificationsPage } from '../pages/notifications/notifications';
 import { ProfileUpdatePage } from '../pages/profile-update/profile-update';
 import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
 import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
@@ -124,6 +125,7 @@ export class iShallBe {
       { title: 'Update Email Page', component: EmailUpdatePage },
       { title: 'Update Password Page', component: PasswordUpdatePage },
       { title: 'Account Page', component: AccountPage },
+      { title: 'Notifications Page', component: NotificationsPage },
       { title: 'Edit Profile Page', component: ProfileUpdatePage },
       { title: 'Create Statement Page', component: StatementCreatorPage },
       { title: 'Create Goal Page', component: GoalCreatorPage },
