@@ -111,8 +111,8 @@ describe('iShallBe Component', () => {
     expect(component.providers.length).toBe(1);
   });
 
-  it('should have 20 pages', () => {
-    expect(component.pages.length).toBe(20);
+  it('should have 21 pages', () => {
+    expect(component.pages.length).toBe(21);
   });
 
   it('should initialize root page to StartupPage', () => {

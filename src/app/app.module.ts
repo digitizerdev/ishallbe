@@ -27,6 +27,7 @@ import { SupportPage } from '../pages/support/support';
 import { EmailUpdatePage } from '../pages/email-update/email-update';
 import { PasswordUpdatePage } from '../pages/password-update/password-update';
 import { AccountPage } from '../pages/account/account';
+import { NotificationsPage } from '../pages/notifications/notifications';
 import { ProfileUpdatePage } from '../pages/profile-update/profile-update';
 import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
 import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
@@ -41,6 +42,7 @@ import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
 import { UsersManagerPage } from '../pages/users-manager/users-manager';
 
 import { ComponentsModule } from '../components/components.module';
+
 import { YoutubePipe } from '../pipes/youtube/youtube';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
@@ -63,6 +65,7 @@ Pro.init('69d144ed', {
     ProfileUpdatePage,
     StatementCreatorPage,
     GoalCreatorPage,
+    NotificationsPage,
     ProfilePage,
     PostPage,
     ExplorePage,
@@ -96,6 +99,7 @@ Pro.init('69d144ed', {
     PasswordUpdatePage,
     AccountPage,
     ProfileUpdatePage,
+    NotificationsPage,
     StatementCreatorPage,
     GoalCreatorPage,
     ProfilePage,
