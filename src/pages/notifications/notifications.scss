@@ -5,4 +5,10 @@ page-notifications {
         background: color($colors, light-yellow);
         text-align: center;
     }
+    .footer-image {
+        max-height: 50px;
+    }
+    .footer-logo {
+        border-top: thick solid color($colors, primary);
+    }
 }
