@@ -9,7 +9,7 @@
 <ion-content>
   <h6 class="feature" padding>New</h6>
   <ion-list>
-    <ion-item *ngFor="let unreadNotification of unreadNotifications" text-wrap no-lines>
+    <ion-item *ngFor="let unreadNotification of unreadNotifications" text-wrap>
       <ion-avatar item-left>
         <img src="{{ unreadNotification.user.photo }}">
       </ion-avatar>
@@ -24,7 +24,7 @@
   </ion-list>
   <h6 class="feature" padding>Seen</h6>
   <ion-list>
-    <ion-item *ngFor="let readNotification of readNotifications" text-wrap no-lines>
+    <ion-item *ngFor="let readNotification of readNotifications" text-wrap>
       <ion-avatar item-left>
         <img src="{{ readNotification.user.photo }}">
       </ion-avatar>
