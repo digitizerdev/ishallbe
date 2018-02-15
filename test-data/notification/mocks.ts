@@ -18,10 +18,10 @@ export const likedStatement = {
     photo: "assets/img/headshot.png"
   },
   timestamp: {
-    rawDate: 20180214,
-    displayDate: "FEB 14 2018",
-    rawTime: 172400,
-    displayTime: "5:24pm"
+    rawDate: 20180215,
+    displayDate: "FEB 15 2018",
+    rawTime: 92701,
+    displayTime: "9:27am"
   }
 }
 export const commentedOnStatement = {
@@ -93,10 +93,10 @@ export const likedPin = {
     photo: "assets/img/headshot.png"
   },
   timestamp: {
-    rawDate: 20180214,
-    displayDate: "FEB 14 2018",
-    rawTime: 172400,
-    displayTime: "5:24pm"
+    rawDate: 20180215,
+    displayDate: "FEB 15 2018",
+    rawTime: 84800,
+    displayTime: "8:48am"
   }
 }
 export const commentedOnPin = {
