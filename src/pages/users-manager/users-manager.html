@@ -27,13 +27,14 @@
       </ion-item>
     </ion-list>
   </div>
-  <div class="flagged-users" *ngIf="!this.thereAreBlockedUsers">
+  <div class="feature" *ngIf="!this.thereAreBlockedUsers">
     <ion-row>
       <ion-col text-center>
         <h6>There are no blocked users</h6>
       </ion-col>
     </ion-row>
   </div>
+  <br>
   <ion-searchbar placeholder="Search By User Email" (ionInput)="getUsers($event)"></ion-searchbar>
   <ion-card (click)="viewProfile(user.uid)" *ngFor="let user of users">
     <ion-row text-center>

@@ -9,7 +9,7 @@
 
 <ion-content>
   <header></header>
-  <ion-row *ngIf="this.thereAreFlaggedPosts">
+  <ion-row class="feature" *ngIf="this.thereAreFlaggedPosts">
     <ion-col text-center>
       <h3>Reported Posts</h3>
     </ion-col>
@@ -28,13 +28,14 @@
       </ion-item>
     </ion-list>
   </div>
-  <div class="flagged-posts" *ngIf="!this.thereAreFlaggedPosts">
+  <div class="feature" *ngIf="!this.thereAreFlaggedPosts">
     <ion-row>
       <ion-col text-center>
         <h6>There are no reported posts</h6>
       </ion-col>
     </ion-row>
   </div>
+  <br>
   <ion-searchbar (ionInput)="getPosts($event)"></ion-searchbar>
   <ion-list>
     <ion-card id="profilePosts" class="posts" *ngFor="let post of posts">

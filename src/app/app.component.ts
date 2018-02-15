@@ -111,35 +111,6 @@ export class iShallBe {
         component: UsersManagerPage
       },
     ];
-
-    this.providers = [
-      { title: 'Firebase Provider', component: FirebaseProvider }
-    ];
-
-    this.pages = [
-      { title: 'Signup Page', component: SignupPage },
-      { title: 'Support Page', component: SupportPage },
-      { title: 'Login Page', component: LoginPage },
-      { title: 'About Page', component: AboutPage },
-      { title: 'Support Page', component: SupportPage },
-      { title: 'Update Email Page', component: EmailUpdatePage },
-      { title: 'Update Password Page', component: PasswordUpdatePage },
-      { title: 'Account Page', component: AccountPage },
-      { title: 'Notifications Page', component: NotificationsPage },
-      { title: 'Edit Profile Page', component: ProfileUpdatePage },
-      { title: 'Create Statement Page', component: StatementCreatorPage },
-      { title: 'Create Goal Page', component: GoalCreatorPage },
-      { title: 'Profile Page', component: ProfilePage },
-      { title: 'Post Page', component: PostPage },
-      { title: 'Explore Page', component: ExplorePage },
-      { title: 'Home Page', component: HomePage },
-      { title: 'Tutorial Page', component: TutorialPage },
-      { title: 'Create Pin Page', component: PinCreatorPage },
-      { title: 'Pins Manager Page', component: PinsManagerPage },
-      { title: 'Posts Manager Page', component: PostsManagerPage },
-      { title: 'Users Manager Page', component: UsersManagerPage },
-    ];
-
   }
 
   openPage(page) {
