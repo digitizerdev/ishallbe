@@ -17,10 +17,9 @@
     <h5 padding>{{user?.email}}</h5>
   </div>
   <br>
-  <div class="beta" *ngIf="editor" text-center>
-    PRODUCTION
+  <div class="feature" *ngIf="editor" text-center>
     <h5>Connected to {{deployChannel}} Channel</h5>
-    <ion-item no-lines>
+    <ion-item  class="feature" no-lines>
       <ion-label>Opt in to Beta Features</ion-label>
       <ion-toggle color="primary" [(ngModel)]="isBeta" (ionChange)="toggleBeta()"></ion-toggle>
     </ion-item>
