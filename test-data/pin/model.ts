@@ -1,4 +1,29 @@
 export interface Pin {
+  id: string,
+  title: string,
+  content: string,
+  liked: boolean,
+  likeCount: number,
+  commentCount: number,
+  image: boolean,
+  audio: boolean,
+  video: boolean
+  media: {
+    imageUrl: string,
+    audioUrl: string,
+    videoUrl: string
+  },
+  user: {
+    uid: string,
+    name: string,
+    photo: string,
+  },
+  timestamp: {
+    rawDate: number,
+    displayDate: string,
+    rawTime: number,
+    displayTime: string,
+  },
   comments: [{
     id: string,
     pinId: string,
@@ -11,7 +36,7 @@ export interface Pin {
       photo: string,
     },
     timestamp: {
-      rawdate: number,
+      rawDate: number,
       displayDate: string,
       rawTime: number,
       displayTime: string,
@@ -23,38 +48,14 @@ export interface Pin {
     user: {
       uid: string,
       name: string,
-      photo: string,
+      photo: string
     },
     timestamp: {
-      rawdate: number,
+      rawDate: number,
       displayDate: string,
       rawTime: number,
-      displayTime: string,
+      displayTime: string
     }
   }],
-  id: string,
-  title: string,
-  content: string,
-  flagged: boolean,
-  liked: boolean,
-  likeCount: number,
-  commentCount: number,
-  media: {
-    image: boolean,
-    audio: boolean,
-    video: boolean
-  },
-  mediaUrl: string,
-  user: {
-    uid: string,
-    name: string,
-    photo: string,
-  },
-  timestamp: {
-    rawDate: number,
-    displayDate: string,
-    rawTime: number,
-    displayTime: string,
-  }
 }
 
