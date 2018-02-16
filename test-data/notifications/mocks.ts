@@ -20,7 +20,7 @@ export const likedStatement = {
   timestamp: {
     rawDate: 20180215,
     displayDate: "FEB 15 2018",
-    rawTime: 92701,
+    rawTime: 2018021592701,
     displayTime: "9:27am"
   }
 }
@@ -45,7 +45,7 @@ export const commentedOnStatement = {
   timestamp: {
     rawDate: 20180214,
     displayDate: "FEB 14 2018",
-    rawTime: 162400,
+    rawTime: 20180214162400,
     displayTime: "4:24pm"
   }
 }
@@ -70,7 +70,7 @@ export const likedCommentOnStatement = {
   timestamp: {
     rawDate: 20180213,
     displayDate: "FEB 13 2018",
-    rawTime: 162400,
+    rawTime: 20180213162400,
     displayTime: "4:24pm"
   }
 }
@@ -95,7 +95,7 @@ export const likedPin = {
   timestamp: {
     rawDate: 20180215,
     displayDate: "FEB 15 2018",
-    rawTime: 84800,
+    rawTime: 20180215084800,
     displayTime: "8:48am"
   }
 }
@@ -120,7 +120,7 @@ export const commentedOnPin = {
   timestamp: {
     rawDate: 20180214,
     displayDate: "FEB 14 2018",
-    rawTime: 162400,
+    rawTime: 20180214162400,
     displayTime: "4:24pm"
   }
 }
@@ -145,7 +145,7 @@ export const likedCommentOnPin = {
   timestamp: {
     rawDate: 20180213,
     displayDate: "FEB 13 2018",
-    rawTime: 162400,
+    rawTime: 20180213162400,
     displayTime: "4:24pm"
   }
 }
@@ -170,7 +170,7 @@ export const goalReminder = {
   timestamp: {
     rawDate: 20180205,
     displayDate: "FEB 5 2018",
-    rawTime: 121212,
+    rawTime: 20180205121212,
     displayTime: "12:12pm"
   }
 }
