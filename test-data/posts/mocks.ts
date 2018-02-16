@@ -6,6 +6,7 @@ export const statement = {
   commentCount: 0,
   likeCount: 0,
   liked: false,
+  private: false,
   statement: true,
   pin: false,
   goal: false,
@@ -18,6 +19,7 @@ export const statement = {
   externalUrl: "",
   day: "",
   dateDue: "",
+  complete: false,
   user: {
     uid: "1",
     name: "Test Contributor",
@@ -37,6 +39,7 @@ export const pin = {
   commentCount: 0,
   likeCount: 0,
   liked: false,
+  private: false,
   statement: false,
   pin: true,
   goal: false,
@@ -49,6 +52,7 @@ export const pin = {
   externalUrl: "https://youtube.com",
   day: "Monday",
   dateDue: "",
+  complete: false,
   user: {
     uid: "2",
     name: "Test Editor",

@@ -5,6 +5,7 @@ export interface Post {
   commentCount: number,
   likeCount: number,
   liked: boolean,
+  private: boolean,
   statement: boolean,
   pin: boolean,
   goal: boolean,
@@ -17,6 +18,7 @@ export interface Post {
   externalUrl: string,
   day: string,
   dateDue: string,
+  complete: boolean,
   user: {
     uid: string,
     name: string,

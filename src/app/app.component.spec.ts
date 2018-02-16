@@ -99,20 +99,12 @@ describe('iShallBe Component', () => {
     expect(component.exploreMenuPages.length).toBe(3);
   });
 
-  it('should have editor menu with three pages', () => {
+  it('should have engage menu with three pages', () => {
     expect(component.engageMenuPages.length).toBe(3);
   });
 
   it('should have editor menu with three pages', () => {
     expect(component.editorMenuPages.length).toBe(3);
-  });
-
-  it('should have 1 provider', () => {
-    expect(component.providers.length).toBe(1);
-  });
-
-  it('should have 21 pages', () => {
-    expect(component.pages.length).toBe(21);
   });
 
   it('should initialize root page to StartupPage', () => {
