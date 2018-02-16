@@ -1,10 +1,13 @@
 page-users-manager {
-
+    .feature {
+        border-top: thick solid color($colors, primary);
+        border-bottom: thick solid color($colors, primary);
+        background: color($colors, light-yellow);
+    }
     .flagged-users {
         border-top: thick solid color($colors, primary);   
         border-bottom: thick solid color($colors, primary); 
     }
-
     .avatar {
         display: round;
         margin-left: auto ; 
@@ -13,5 +16,4 @@ page-users-manager {
         border-radius: 50%;
         text-align: center;
     }
-
 }

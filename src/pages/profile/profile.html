@@ -11,22 +11,17 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-
 <ion-content>
-  <ion-refresher (ionRefresh)="refreshPage($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="">
-    </ion-refresher-content>
-  </ion-refresher>
-  <div text-center padding class="user-profile">
+  <div class="user-profile" text-center padding>
     <img class="avatar" src="{{ user?.photo }}">
-    <ion-row *ngIf="this.user?.social" text-center class="social">
+    <ion-row *ngIf="this.user?.social"  class="social" text-center >
       <ion-col *ngIf="this.user?.social.instagram" (click)="openSocial('instagram')" text-center>
         <ion-icon name="logo-instagram"></ion-icon>
       </ion-col>
-      <ion-col *ngIf="this.user?.social.twitter" text-center (click)="openSocial('twitter')">
+      <ion-col *ngIf="this.user?.social.twitter" (click)="openSocial('twitter')" text-center>
         <ion-icon name="logo-twitter"></ion-icon>
       </ion-col>
-      <ion-col *ngIf="this.user?.social.linkedin" text-center (click)="openSocial('linkedin')">
+      <ion-col *ngIf="this.user?.social.linkedin" (click)="openSocial('linkedin')" text-center>
         <ion-icon name="logo-linkedin"></ion-icon>
       </ion-col>
     </ion-row>
@@ -45,108 +40,6 @@
       </ion-col>
     </ion-row>
   </div>
-  <div class="user-posts">
-    <ion-card class="posts" *ngFor="let flaggedPost of flaggedPosts">
-      <ion-item class="post-header">
-        <ion-avatar padding-top item-left>
-          <img src="{{ flaggedPost?.face }}">
-        </ion-avatar>
-        <ion-icon (click)="flaggedMessage(flaggedPost)" name="alert" color="danger" item-right></ion-icon>
-        <h2 padding-top ion-text color="primary" class="post-author">{{ flaggedPost?.name }}</h2>
-        <h3>
-          <b>{{ flaggedPost?.title}}</b>
-        </h3>
-        <span class="post-time">
-          {{ flaggedPost?.time }}
-        </span>
-      </ion-item>
-      <div text-center>
-        <img class="full-image" src="{{ flaggedPost?.url }}">
-        <div class="post-content">
-          <h2 text-center padding>{{ flaggedPost?.content}}</h2>
-        </div>
-      </div>
-    </ion-card>
-  </div>
-  <div *ngIf="loaded" class="user-posts">
-    <br>
-    <div *ngIf="noUserPosts" class="posts" padding>
-      <ion-row padding text-center>
-        <ion-col text-center>
-          <h3>No Posts</h3>
-        </ion-col>
-      </ion-row>
-    </div>
-    <ion-card id="userPosts" class="posts" *ngFor="let post of posts">
-      <ion-item class="post-header">
-        <ion-avatar padding-top item-left>
-          <img src="{{ post?.face }}">
-        </ion-avatar>
-        <h2 padding-top ion-text color="primary" class="post-author">{{ post?.name }}</h2>
-        <h3>
-          <b>{{ post?.title}}</b>
-        </h3>
-        <span class="post-time">
-          {{ post?.time }}
-        </span>
-      </ion-item>
-      <div text-center (click)="viewPost(post.$key)">
-        <img class="full-image" src="{{ post?.url }}">
-        <div class="post-content">
-          <h2 text-center padding>{{ post?.content}}</h2>
-        </div>
-        <div (click)="viewPost(post?.$key)" class="interactions" padding-left>
-          <a *ngIf="post.likeCount > 1 || post.likeCount == 0" class="subdued">{{ post?.likeCount}} Likes</a>
-          <a *ngIf="post.likeCount == 1" class="subdued">{{ post?.likeCount}} Like</a>
-          <a *ngIf="post.commentCount > 1 || post.commentCount == 0" class="subdued" margin-left>{{ post?.commentCount}} Comments</a>
-          <a *ngIf="post.commentCount == 1" class="subdued" margin-left>{{ post?.commentCount}} Comment</a>
-          <br>
-          <br>
-        </div>
-      </div>
-      <ion-grid class="post-actions">
-        <ion-row>
-          <ion-col width-33 text-center (click)="togglePostLike(post)">
-            <ion-icon class="like-icon" name="thumbs-up" color="secondary" *ngIf="post?.userLiked"></ion-icon>
-            <ion-icon name="thumbs-up" *ngIf="!post?.userLiked"></ion-icon>
-          </ion-col>
-          <ion-col width-33 text-center (click)="viewPost(post?.$key)">
-            <ion-icon name="chatboxes"></ion-icon>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card>
-  </div>
-  <div *ngIf="this.noPosts && !flaggedPostsLoaded">
-    <ion-row responsive-sm>
-      <ion-col class="no-posts-yet" text-center>
-        <p>No Posts Yet</p>
-      </ion-col>
-    </ion-row>
-    <ion-row responsive-sm *ngIf="!flaggedPostsLoaded">
-      <ion-col text-center>
-        <button ion-button (click)="goToCreateStatementPage()" color="secondary" round>Create Statement</button>
-      </ion-col>
-    </ion-row>
-  </div>
-  <ion-infinite-scroll [hidden]="postsLoaded || noPosts || flaggedPostsLoaded" (ionInfinite)="doInfinite($event)">
-    <ion-infinite-scroll-content loadingSpinner="dots">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-  <div *ngIf="this.postsLoaded && !noPosts && !flaggedPostsLoaded">
-    <ion-row class="posts-loaded">
-      <ion-col text-center>
-        All Posts Loaded
-      </ion-col>
-    </ion-row>
-    <ion-row class="posts-loaded">
-      <ion-col text-center>
-        <img class="footer-image" src="assets/img/icon.png">
-      </ion-col>
-    </ion-row>
-    <ion-row class="footer-bar">
-      <ion-col text-center>
-      </ion-col>
-    </ion-row>
-  </div>
+  <br>
+  <footer></footer>
 </ion-content>

@@ -34,4 +34,12 @@ export class PinsManagerPage {
 
   ionViewDidLoad() {
   }
+
+  onViewTitleChanged(title) {
+    this.viewTitle = title;
+  }
+
+  onTimeSelected(ev) {
+    this.selectedDay = ev.selectedTime;
+  }
 }
