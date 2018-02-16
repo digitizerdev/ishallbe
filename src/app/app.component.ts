@@ -24,9 +24,9 @@ import { ExplorePage } from '../pages/explore/explore';
 import { HomePage } from '../pages/home/home';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { PinCreatorPage } from '../pages/pin-creator/pin-creator';
-import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
-import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
-import { UsersManagerPage } from '../pages/users-manager/users-manager';
+import { ApiManagerPage } from '../pages/api-manager/api-manager';
+import { PostManagerPage } from '../pages/post-manager/post-manager';
+import { UserManagerPage } from '../pages/user-manager/user-manager';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
@@ -91,25 +91,25 @@ export class iShallBe {
         title: 'Manage Profile',
         icon: 'ios-person',
         component: ProfilePage
-      },
+      }
     ];
 
     this.editorMenuPages = [
       {
-        title: 'Manage Pins',
-        icon: 'ios-albums',
-        component: PinsManagerPage
-      },
-      {
-        title: 'Manage Posts',
-        icon: 'ios-images',
-        component: PostsManagerPage
-      },
-      {
-        title: 'Manage Users',
+        title: 'User Manager',
         icon: 'ios-people',
-        component: UsersManagerPage
+        component: UserManagerPage
       },
+      {
+        title: 'Post Manager',
+        icon: 'ios-albums',
+        component: PostManagerPage
+      },
+      {
+        title: 'API Manager',
+        icon: 'ios-pulse',
+        component: ApiManagerPage
+      }
     ];
   }
 

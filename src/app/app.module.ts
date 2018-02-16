@@ -37,15 +37,15 @@ import { ExplorePage } from '../pages/explore/explore';
 import { HomePage } from '../pages/home/home';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { PinCreatorPage } from '../pages/pin-creator/pin-creator';
-import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
-import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
-import { UsersManagerPage } from '../pages/users-manager/users-manager';
-
-import { ComponentsModule } from '../components/components.module';
+import { ApiManagerPage } from '../pages/api-manager/api-manager';
+import { PostManagerPage } from '../pages/post-manager/post-manager';
+import { UserManagerPage } from '../pages/user-manager/user-manager';
 
 import { YoutubePipe } from '../pipes/youtube/youtube';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
+
+import { ComponentsModule } from '../components/components.module';
 
 Pro.init('69d144ed', {
   appVersion: '1.2.0'
@@ -72,9 +72,9 @@ Pro.init('69d144ed', {
     HomePage,
     TutorialPage,
     PinCreatorPage,
-    PinsManagerPage,
-    PostsManagerPage,
-    UsersManagerPage,
+    ApiManagerPage,
+    PostManagerPage,
+    UserManagerPage,
     YoutubePipe
   ],
   imports: [
@@ -108,9 +108,9 @@ Pro.init('69d144ed', {
     HomePage,
     TutorialPage,
     PinCreatorPage,
-    PinsManagerPage,
-    PostsManagerPage,
-    UsersManagerPage,
+    ApiManagerPage,
+    PostManagerPage,
+    UserManagerPage,
   ],
   providers: [
     StatusBar,
