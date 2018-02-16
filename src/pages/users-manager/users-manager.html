@@ -34,8 +34,9 @@
       </ion-col>
     </ion-row>
   </div>
-  <br>
-  <ion-searchbar placeholder="Search By User Email" (ionInput)="getUsers($event)"></ion-searchbar>
+  <ion-toolbar no-border-top color='primary'>
+    <ion-searchbar color="primary" (ionInput)="getUsers($event)"></ion-searchbar>
+  </ion-toolbar>
   <ion-card (click)="viewProfile(user.uid)" *ngFor="let user of users">
     <ion-row text-center>
       <ion-col>

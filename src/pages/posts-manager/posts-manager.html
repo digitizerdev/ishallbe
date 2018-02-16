@@ -35,8 +35,9 @@
       </ion-col>
     </ion-row>
   </div>
-  <br>
-  <ion-searchbar (ionInput)="getPosts($event)"></ion-searchbar>
+  <ion-toolbar no-border-top color='primary'>
+    <ion-searchbar color="primary" (ionInput)="getPosts($event)"></ion-searchbar>
+  </ion-toolbar>
   <ion-list>
     <ion-card id="profilePosts" class="posts" *ngFor="let post of posts">
       <ion-item class="post-header">
