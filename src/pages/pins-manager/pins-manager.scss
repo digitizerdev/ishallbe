@@ -1,23 +1,22 @@
 page-pins-manager {
-   
     .monthview-datetable {
         border: 0 !important;
-        
-        td, th {
-          border: 0 !important;
-          padding: 3px!important;
-          font-size: .9em;
+        td,
+        th {
+            border: 0 !important;
+            padding: 3px!important;
+            font-size: .9em;
         }
     }
-
     .monthview-primary-with-event {
         background-color: color($colors, secondary) !important;
-        color: white !important; 
+        color: white !important;
     }
-
     .monthview-selected {
         background-color: color($colors, primary) !important;
         color: white !important;
     }
-        
+    .monthview-container {
+        max-height: 300px;
+    }
 }
