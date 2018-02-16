@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import moment from 'moment';
 
-import { mockNotifications } from '../../../test-data/notification/mocks';
+import { mockNotifications } from '../../../test-data/notifications/mocks';
 
 @IonicPage()
 @Component({
