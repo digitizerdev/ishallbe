@@ -7,7 +7,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'statement-creator.html',
 })
 export class StatementCreatorPage {
- createGoalForm: {
+ createStatementForm: {
     title?: string;
     description?: string, 
   } = {};    

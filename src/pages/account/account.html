@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>ACCOUNT</ion-title>
+    <ion-title color='primary'>Account</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="setRootHomePage()">
         <ion-icon name="md-home"></ion-icon>
@@ -17,16 +17,6 @@
     <h5 padding>{{user?.email}}</h5>
   </div>
   <br>
-  <div class="feature" *ngIf="editor" text-center>
-    <h5>Connected to {{deployChannel}} Channel</h5>
-    <ion-item  class="feature" no-lines>
-      <ion-label>Opt in to Beta Features</ion-label>
-      <ion-toggle color="primary" [(ngModel)]="isBeta" (ionChange)="toggleBeta()"></ion-toggle>
-    </ion-item>
-  </div>
-  <div *ngIf="editor">
-    <br>
-  </div>
   <ion-row responsive-sm>
     <br>
     <ion-col text-center>

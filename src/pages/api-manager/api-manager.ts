@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, Platform, LoadingController } from 'ionic-angular';
+import { Pro } from '@ionic/pro';
 
-/**
- * Generated class for the ApiManagerPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Observable } from 'rxjs/Observable';
+
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()
 @Component({
@@ -15,11 +13,60 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ApiManagerPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  user: any;
+  deployChannel = "";
+  isBeta = false;
+  editor = false;
+
+  constructor(
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private events: Events,
+    private platform: Platform,
+    private loadingCtrl: LoadingController,
+    private firebase: FirebaseProvider,
+  ) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ApiManagerPage');
+    this.user = this.firebase.user;
+    if (this.user.roles.editor) {
+      this.editor = true;
+      if (this.platform.is('cordova')) { this.checkChannel(); } 
+    }
   }
+
+  async checkChannel() {
+    try {
+      const res = await Pro.deploy.info();
+      this.deployChannel = res.channel;
+      this.isBeta = (this.deployChannel === 'Beta')
+    } catch (err) { Pro.monitoring.exception(err)};
+  }
+
+  async toggleBeta() {
+    const config = { channel: (this.isBeta ? 'Beta' : 'Production')}
+    try {
+      await Pro.deploy.init(config);
+      await this.checkChannel();
+      await this.deployUpdate();
+    } catch (err) { Pro.monitoring.exception(err)};
+  }
+
+  async deployUpdate() {
+    try {
+      const resp = await Pro.deploy.checkAndApply(true, function(progress){ this.downloadProgress = progress; });
+      if (resp.update) {this.startLoading();
+      }
+    } catch (err) { Pro.monitoring.exception(err)};
+  }
+
+  startLoading() {
+    let loader =  this.loadingCtrl.create({
+      content: 'Deploying Update...'
+    });
+    loader.present();
+  }
+
 
 }

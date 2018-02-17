@@ -6,6 +6,13 @@
     <ion-title color='primary'>API Manager</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
-
+<ion-content>
+  <header></header>
+  <div class="feature" *ngIf="editor" text-center>
+    <h5>Connected to {{deployChannel}} Channel</h5>
+    <ion-item  class="feature" no-lines>
+      <ion-label>Opt in to Beta Features</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="isBeta" (ionChange)="toggleBeta()"></ion-toggle>
+    </ion-item>
+  </div>
 </ion-content>

@@ -3,12 +3,11 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>GOAL</ion-title>
+    <ion-title color='primary'>Create Goal</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
-  <header></header>
-  <form #createGoalForm="ngForm" novalidate padding>
+<ion-content>
+  <form class="my-form" #createGoalForm="ngForm" novalidate padding>
     <ion-row>
       <ion-col text-center>
         <button id="SpeakButton" ion-button (click)="record()" color="danger" icon-start round block large strong>
@@ -39,7 +38,7 @@
     <ion-row>
       <ion-col text-center class="submit">
         <button id="CreateGoalButton" ion-button (click)="submit(createGoalForm)" color="primary" round block large strong>
-          CREATE
+          SUBMIT
         </button>
       </ion-col>
     </ion-row>

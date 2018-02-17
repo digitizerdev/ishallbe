@@ -20,8 +20,6 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 })
 export class AccountPage {
 
-  deployChannel = "";
-  isBeta = false;
   user: any;
   editor = false;
 
@@ -37,42 +35,6 @@ export class AccountPage {
 
   ionViewDidLoad() {
     this.user = this.firebase.user;
-    if (this.user.roles.editor) {
-      this.editor = true;
-      if (this.platform.is('cordova')) { this.checkChannel(); } 
-    }
-  }
-
-  async checkChannel() {
-    try {
-      const res = await Pro.deploy.info();
-      this.deployChannel = res.channel;
-      this.isBeta = (this.deployChannel === 'Beta')
-    } catch (err) { Pro.monitoring.exception(err)};
-  }
-
-  async toggleBeta() {
-    const config = { channel: (this.isBeta ? 'Beta' : 'Production')}
-    try {
-      await Pro.deploy.init(config);
-      await this.checkChannel();
-      await this.deployUpdate();
-    } catch (err) { Pro.monitoring.exception(err)};
-  }
-
-  async deployUpdate() {
-    try {
-      const resp = await Pro.deploy.checkAndApply(true, function(progress){ this.downloadProgress = progress; });
-      if (resp.update) {this.startLoading();
-      }
-    } catch (err) { Pro.monitoring.exception(err)};
-  }
-
-  startLoading() {
-    let loader =  this.loadingCtrl.create({
-      content: 'Deploying Update...'
-    });
-    loader.present();
   }
 
   pushEmailUpdatePage() {

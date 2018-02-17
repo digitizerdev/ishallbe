@@ -3,12 +3,11 @@
         <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title color='primary'>SUPPORT</ion-title>
+        <ion-title color='primary'>Contact Support</ion-title>
     </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-    <header></header>
+<ion-content>
     <form #supportForm="ngForm" novalidate padding>
         <ion-item class="appForm">
             <ion-input class="myItem" placeholder="Subject" [(ngModel)]="supportForm.subject" name="subject" type="text" #subject="ngModel"
@@ -31,10 +30,12 @@
         <ion-row>
             <ion-col text-center class="submit">
                 <button id="SupportButton" ion-button (click)="submit(supportForm)" color="primary" round block large strong>
-                    SEND EMAIL
+                    SUBMIT
                 </button>
             </ion-col>
         </ion-row>
-        <h5 padding id="SupportDirectEmail" text-center> Email us directly at <a href="mailto:info@ishallbe.co">info@ishallbe.co</a></h5>
+        <h5 padding id="SupportDirectEmail" text-center> Email us directly at
+            <a href="mailto:info@ishallbe.co">info@ishallbe.co</a>
+        </h5>
     </form>
 </ion-content>
