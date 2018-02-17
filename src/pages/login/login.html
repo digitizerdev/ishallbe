@@ -1,12 +1,11 @@
 <ion-content center padding>
   <header></header>
+  <ion-row padding-left padding-right>
+    <ion-col text-center>
+      <login-facebook></login-facebook>
+    </ion-col>
+  </ion-row>
   <form #loginForm="ngForm" novalidate padding>
-    <ion-row>
-      <ion-col text-center>
-        <login-facebook></login-facebook>
-      </ion-col>
-    </ion-row>
-    <br>
     <ion-list no-lines>
       <div>
         <ion-item class="authForm">
