@@ -36,9 +36,9 @@
       <ion-col text-center>
         <button ion-button id="SignupButton" (click)="setRootSignupPage()" color="secondary" round strong>SIGNUP</button>
       </ion-col>
-      <ion-col text-center>
+      <ion-col (click)="setRootPasswordResetPage()" text-center>
         <br>
-        <div id="ForgotPasswordLink" (click)="setRootPasswordResetPage()">Forgot Password?</div>
+        <div id="ForgotPasswordLink">Forgot Password?</div>
       </ion-col>
     </ion-row>
   </form>

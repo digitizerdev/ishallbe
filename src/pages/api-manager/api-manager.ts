@@ -56,17 +56,14 @@ export class ApiManagerPage {
   async deployUpdate() {
     try {
       const resp = await Pro.deploy.checkAndApply(true, function(progress){ this.downloadProgress = progress; });
-      if (resp.update) {this.startLoading();
+      if (resp.update) {
+        console.log("Updating");
+        let loading = this.loadingCtrl.create({
+          content: "Deploying Update..."
+        });
+        loading.present();
       }
     } catch (err) { Pro.monitoring.exception(err)};
   }
-
-  startLoading() {
-    let loader =  this.loadingCtrl.create({
-      content: 'Deploying Update...'
-    });
-    loader.present();
-  }
-
 
 }
