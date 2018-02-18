@@ -16,18 +16,10 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 })
 export class HomePage {
 
-  pins: any[] = [];
-  posts: any[] = [];
-  uid: any;
-  refreshing: any;
-  feedTimestamp: any;
-  sunday: any;
-  pinsQuery: any;
-  postsQuery: any;
-  loader: any;
-  pinsLoaded: any;
-  postLimit: any;
-  postsLoaded: any;
+  rawDate: number;
+  displayDate: string;
+  rawTime: number;
+  displayTime: string;
 
   constructor(
     private platform: Platform,
@@ -40,6 +32,20 @@ export class HomePage {
     private events: Events,
     private push: Push
   ) {
+    this.timeStampPage();
+  }
+
+  timeStampPage() {
+    let rawDateString = moment().format('YYYYMMDD');
+    this.rawDate = parseInt(rawDateString);
+    this.displayDate = moment().format('MMM D, YYYY');
+    let rawTimeString = moment().format('YYYYMMDDhhmmss');
+    this.rawTime = parseInt(rawTimeString);
+    this.displayTime = moment().format('h:mma');
+    console.log("Raw date is " + this.rawDate);
+    console.log("Display date is " + this.displayDate);
+    console.log("Raw Time is " + this.rawTime);
+    console.log("Display time is " + this.displayTime);
   }
 
   ionViewDidLoad() {
