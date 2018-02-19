@@ -12,6 +12,7 @@ export class GoalCreatorPage {
     description?: string, 
   } = {};    
   submitted = false;
+  private = false;
 
   constructor(
     private navCtrl: NavController, 

@@ -7,7 +7,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <header></header>
+  <br>
   <form class="my-form" #createGoalForm="ngForm" novalidate padding>
     <ion-row>
       <ion-col text-center>
@@ -35,6 +35,11 @@
     <p ion-text [hidden]="description.valid || submitted == false" color="danger" padding-left>
       Goal Description is required
     </p>
+    <br>
+    <ion-item>
+      <ion-label ion-text color="dark"><b>MAKE PUBLIC?</b></ion-label>
+      <ion-toggle [(ngModel)]="private" [ngModelOptions]="{standalone: true}"></ion-toggle>
+    </ion-item>
     <br>
     <ion-row>
       <ion-col text-center class="submit">
