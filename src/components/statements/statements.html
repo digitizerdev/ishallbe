@@ -1,15 +1,16 @@
 <div *ngIf="statements">
   <ion-card *ngFor="let statement of statements">
-    <ion-item>
+    <ion-item class="statement-header">
       <ion-avatar item-left (click)="viewUser(statement.user_id)">
         <img src="{{ statement.user.photo }}">
       </ion-avatar>
       <h2 (click)="viewUser(statement.user_id)">{{ statement.user.name }}</h2>
-      <p>{{ statement.displayTime }}</p>
+      <p>{{ statement.timestamp.displayDate }} {{ statement.timestamp.displayTime }}</p>
     </ion-item>
+    <img class="full-image" *ngIf="statement.mediaUrl" src="{{ statement.mediaUrl }}">
+
     <ion-item text-wrap class="statement-body">
       <div (click)="viewStatement(statement.id)">
-        <img class="full-image" *ngIf="statement.mediaUrl" src="{{ statement.mediaUrl }}">
         <p padding-top padding-bottom>{{ statement.content }}</p>
       </div>
       <div>

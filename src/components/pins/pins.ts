@@ -12,23 +12,15 @@ export class PinsComponent {
   @ViewChild(Slides) slides: Slides;
   @Input('pinsStartDate') inputDate;
   rawDate: number;
-  posts: any[];
   pins: any[];
 
   constructor(
   ) {
-    this.posts = [];
+    this.rawDate = this.inputDate;
     this.pins = [];
-    console.log('Hello PinsComponent Component');
   }
 
   ngAfterViewInit() {
-    this.rawDate = this.inputDate;
-    console.log("Got input date");
-    console.log("Raw date is " + this.rawDate);
-    this.posts = mockPosts;
-    console.log("Got posts");
-    console.log(this.posts);
     this.setPins();
     setTimeout(() => {
       this.slides.slideTo(5);
@@ -36,15 +28,10 @@ export class PinsComponent {
   }
 
   setPins() {
-    console.log("Setting Pins");
-    this.posts.forEach((post) => {
+    mockPosts.forEach((post) => {
       if (post.pin) {
-        console.log("Pushing Pin");
-        console.log(post);
         this.pins.push(post);
       }
     });
-    console.log("Finished setting pins");
-    console.log(this.pins);
   }
 }
