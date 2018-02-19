@@ -1,0 +1,35 @@
+<div *ngIf="statements">
+  <ion-card *ngFor="let statement of statements">
+    <ion-item>
+      <ion-avatar item-left (click)="viewUser(statement.user_id)">
+        <img src="{{ statement.user.photo }}">
+      </ion-avatar>
+      <h2 (click)="viewUser(statement.user_id)">{{ statement.user.name }}</h2>
+      <p>{{ statement.displayTime }}</p>
+    </ion-item>
+    <ion-item text-wrap class="statement-body">
+      <div (click)="viewStatement(statement.id)">
+        <img class="full-image" *ngIf="statement.mediaUrl" src="{{ statement.mediaUrl }}">
+        <p padding-top padding-bottom>{{ statement.content }}</p>
+      </div>
+      <div>
+        <a (click)="viewStatement(statement.id)" class="subdued">{{ statement.likeCount}} Likes</a>
+        <a (click)="viewStatement(statement.id)" class="subdued" margin-left>{{ statement.commentCount}} Comments</a>
+      </div>
+    </ion-item>
+    <ion-grid class="statement-actions">
+      <ion-row>
+        <ion-col width-33 text-center (click)="toggleLike(statement)">
+          <ion-icon name="thumbs-up" color="primary" *ngIf="statement.liked"></ion-icon>
+          <ion-icon name="thumbs-up" *ngIf="!statement.liked"></ion-icon>
+        </ion-col>
+        <ion-col width-33 text-center (click)="viewStatement(statement.id)">
+          <ion-icon name="chatboxes"></ion-icon>
+        </ion-col>
+        <ion-col width-33 text-center>
+          <ion-icon name="share-alt"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+</div>

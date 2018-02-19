@@ -7,6 +7,7 @@ import { LoginFacebookComponent } from './login-facebook/login-facebook';
 import { MediaComponent } from './media/media';
 import { FooterComponent } from './footer/footer';
 import { PinsComponent } from './pins/pins';
+import { StatementsComponent } from './statements/statements';
 
 @NgModule({
     declarations: [
@@ -14,8 +15,9 @@ import { PinsComponent } from './pins/pins';
         TermsOfServiceComponent,
         LoginFacebookComponent,
         MediaComponent,
-    FooterComponent,
-    PinsComponent,
+        FooterComponent,
+        PinsComponent,
+        StatementsComponent,
     ],
     imports: [
         IonicModule,
@@ -25,8 +27,9 @@ import { PinsComponent } from './pins/pins';
         TermsOfServiceComponent,
         LoginFacebookComponent,
         MediaComponent,
-    FooterComponent,
-    PinsComponent,
+        FooterComponent,
+        PinsComponent,
+        StatementsComponent,
     ],
     providers: [
         InAppBrowser
