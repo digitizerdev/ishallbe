@@ -1,16 +1,81 @@
 <div class="feature">
-  <ion-slides [speed]="1000" effect="cube" pager>
-    <ion-slide>
-      <h3 padding>Slide 1</h3>
-      <h4>Slide 1 Content</h4>
+  <ion-slides [speed]="1000" effect="coverflow" spaceBetween="100" pager>
+    <ion-slide padding>
+      <h2 ion-text color="primary" padding>2/19/2018</h2>
+      <h3>
+        <b>Motivational Monday</b>
+      </h3>
+      <img class="pin-image" src="https://newevolutiondesigns.com/images/freebies/philadelphia-downtown.jpg" alt="">
+      <div class="pin-interaction-counts" (click)="viewPin(pin.id)">
+        <p>
+          <a class="subdued">10 Likes</a>
+          <a class="subdued" margin-left>10 Comments</a>
+        </p>
+      </div>
+      <ion-grid class="pin-actions">
+        <ion-row>
+          <ion-col width-50 text-center (click)="togglePinLike(pin)">
+            <ion-icon name="thumbs-up"></ion-icon>
+          </ion-col>
+          <ion-col width-50 text-center (click)="viewPin(pin?.id)">
+            <ion-icon name="chatboxes"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <br>
     </ion-slide>
-    <ion-slide>
-      <h3 padding>Slide 2</h3>
-      <img src="https://newevolutiondesigns.com/images/freebies/philadelphia-downtown.jpg" alt="">
+    <ion-slide padding>
+      <h2 ion-text color="primary" padding>2/20/2018</h2>
+      <h3>
+        <b>Tuesday's Tune of the Day</b>
+      </h3>
+      <h4>Sometimes you just have to let it go, Leaving all your fears to burn down, Push them all away so you can move on -
+        Goapele: Closer</h4>
+      <button (click)="openLink(pin.url)" text-center ion-button small round>
+        <ion-icon name="play"></ion-icon>
+      </button>
+      <div class="pin-interaction-counts" (click)="viewPin(pin.id)">
+        <p>
+          <a class="subdued">2 Likes</a>
+          <a class="subdued" margin-left>0 Comments</a>
+        </p>
+      </div>
+      <ion-grid class="pin-actions">
+        <ion-row>
+          <ion-col width-50 text-center (click)="togglePinLike(pin)">
+            <ion-icon name="thumbs-up"></ion-icon>
+          </ion-col>
+          <ion-col width-50 text-center (click)="viewPin(pin?.id)">
+            <ion-icon name="chatboxes"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <br>
     </ion-slide>
-    <ion-slide>
-      <h3 padding>Slide 3</h3>
-      <h4>Slide 3 Content</h4>
+    <ion-slide padding>
+      <h2 ion-text color="primary" padding>2/21/2018</h2>
+      <h3>
+        <b>Wise Words Wednesday</b>
+      </h3>
+      <h4>There will be times in life when we will be faced with struggles, setbacks, challenges, disappointments, and dark days.
+        Part of sustaining and making through is maintaining hope.</h4>
+      <div class="pin-interaction-counts" (click)="viewPin(pin.id)">
+        <p>
+          <a class="subdued">0 Likes</a>
+          <a class="subdued" margin-left>3 Comments</a>
+        </p>
+      </div>
+      <ion-grid class="pin-actions">
+        <ion-row>
+          <ion-col width-50 text-center (click)="togglePinLike(pin)">
+            <ion-icon name="thumbs-up"></ion-icon>
+          </ion-col>
+          <ion-col width-50 text-center (click)="viewPin(pin?.id)">
+            <ion-icon name="chatboxes"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <br>
     </ion-slide>
   </ion-slides>
 </div>

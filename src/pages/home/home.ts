@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController, ModalController, Platform, Events } from 'ionic-angular';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
-import { Moment, lang } from 'moment';
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 
@@ -32,10 +31,10 @@ export class HomePage {
     private events: Events,
     private push: Push
   ) {
-    this.timeStampPage();
+    this.timestamp();
   }
 
-  timeStampPage() {
+  timestamp() {
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
     this.displayDate = moment().format('MMM D, YYYY');
