@@ -4,7 +4,8 @@ pins {
         border-bottom: thick solid color($colors, primary);
     }
     .pin-image {
-        max-height: 150px;            
+        max-width: 75%;
+        max-height: 200px;           
     }
     ion-grid {
         height: 100%;
@@ -20,7 +21,7 @@ pins {
         padding-top: 10px;
     }
     .swiper-pagination-bullet-active{
-        background: #000;
+        background: color($colors, dark) !important;
         opacity: 1;
       }
 }

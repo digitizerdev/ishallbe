@@ -1,68 +1,21 @@
 <div class="feature">
-  <ion-slides [speed]="1000" effect="coverflow" spaceBetween="100" pager>
-    <ion-slide padding>
-      <h2 ion-text color="primary" padding>FEB 19 2018</h2>
+  <ion-slides *ngIf="pins" [speed]="2000" pager>
+    <ion-slide padding *ngFor="let pin of pins">
+      <h2 ion-text color="primary" padding>{{pin.timestamp.displayDate}}</h2>
       <h3>
-        <b>Motivational Monday</b>
+        <b>{{pin.title}}</b>
       </h3>
-      <img class="pin-image" src="https://newevolutiondesigns.com/images/freebies/philadelphia-downtown.jpg" alt="">
-      <div class="pin-interaction-counts" (click)="viewPin(pin.id)">
-        <h6>
-          <a class="subdued">10 Likes</a>
-          <a class="subdued" margin-left>10 Comments</a>
-        </h6>
-      </div>
-      <ion-grid class="pin-actions">
-        <ion-row>
-          <ion-col width-50 text-center (click)="togglePinLike(pin)">
-            <ion-icon color="dark" name="thumbs-up"></ion-icon>
-          </ion-col>
-          <ion-col width-50 text-center (click)="viewPin(pin?.id)">
-            <ion-icon color="dark" name="chatboxes"></ion-icon>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <br>
-    </ion-slide>
-    <ion-slide padding>
-      <h2 ion-text color="primary" padding>FEB 20 2018</h2>
-      <h3>
-        <b>Tuesday's Tune of the Day</b>
-      </h3>
-      <h5>Sometimes you just have to let it go, Leaving all your fears to burn down, Push them all away so you can move on -
-        Goapele: Closer</h5>
-      <button (click)="openLink(pin.url)" text-center ion-button small round>
+      <img *ngIf="pin.day == 'Monday'" class="pin-image" src="{{ pin?.mediaUrl }}">
+      <h5 *ngIf="pin.content">{{pin.content}}</h5>
+      <button *ngIf="pin.day == 'Tuesday'" (click)="openLink(pin.url)" text-center ion-button small round>
         <ion-icon name="play"></ion-icon>
       </button>
       <div class="pin-interaction-counts" (click)="viewPin(pin.id)">
         <h6>
-          <a class="subdued">2 Likes</a>
-          <a class="subdued" margin-left>0 Comments</a>
-        </h6>
-      </div>
-      <ion-grid class="pin-actions">
-        <ion-row>
-          <ion-col width-50 text-center (click)="togglePinLike(pin)">
-            <ion-icon color="dark" name="thumbs-up"></ion-icon>
-          </ion-col>
-          <ion-col width-50 text-center (click)="viewPin(pin?.id)">
-            <ion-icon color="dark" name="chatboxes"></ion-icon>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <br>
-    </ion-slide>
-    <ion-slide padding>
-      <h2 ion-text color="primary" padding>FEB 21 2018</h2>
-      <h3>
-        <b>Wise Words Wednesday</b>
-      </h3>
-      <h5>There will be times in life when we will be faced with struggles, setbacks, challenges, disappointments, and dark days.
-        Part of sustaining and making through is maintaining hope.</h5>
-      <div class="pin-interaction-counts" (click)="viewPin(pin.id)">
-        <h6>
-          <a class="subdued">0 Likes</a>
-          <a class="subdued" margin-left>3 Comments</a>
+          <a *ngIf="pin.likeCount > 1 || pin.likeCount == 0" class="subdued">{{ pin?.likeCount}} Likes</a>
+          <a *ngIf="pin.likeCount == 1" class="subdued">{{ pin?.likeCount}} Like</a>
+          <a *ngIf="pin.commentCount > 1 || pin.commentCount == 0" class="subdued" margin-left>{{ pin?.commentCount}} Comments</a>
+          <a *ngIf="pin.commentCount == 1" class="subdued" margin-left>{{ pin?.commentCount}} Comment</a>
         </h6>
       </div>
       <ion-grid class="pin-actions">

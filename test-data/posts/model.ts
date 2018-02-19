@@ -4,7 +4,6 @@ export interface Post {
   content: string,
   commentCount: number,
   likeCount: number,
-  liked: boolean,
   private: boolean,
   statement: boolean,
   pin: boolean,
