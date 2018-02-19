@@ -17,7 +17,10 @@ pins {
         border-radius: 15px;
     }
     .pin-interaction-counts {
-        color: gray;
         padding-top: 10px;
     }
+    .swiper-pagination-bullet-active{
+        background: #000;
+        opacity: 1;
+      }
 }

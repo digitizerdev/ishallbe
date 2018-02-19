@@ -5,8 +5,8 @@
     </button>
     <ion-title color='primary'>{{ user?.name }}</ion-title>
     <ion-buttons *ngIf="mine" end>
-      <button ion-button icon-only (click)="setRootHomePage()">
-        <ion-icon name="md-home"></ion-icon>
+      <button ion-button icon-only (click)="pushProfileUpdatePage()">
+        <ion-icon name="md-options"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -28,7 +28,7 @@
     <h5 class="bio">{{ user?.bio}} </h5>
     <ion-row>
       <ion-col>
-        <button ion-button id="AccountViewProfileButton" (click)="pushProfileUpdatePage()" color="primary" small round strong>UPDATE PROFILE</button>
+        <button ion-button id="AccountViewProfileButton" (click)="pushProfileUpdatePage()" color="primary" small round strong>MESSAGES</button>
       </ion-col>
       <ion-col>
         <button ion-button id="AccountViewProfileButton" (click)="pushAccountPage()" color="primary" small round strong>ACCOUNT</button>

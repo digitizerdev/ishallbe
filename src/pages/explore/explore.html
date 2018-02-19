@@ -3,7 +3,14 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>Explore</ion-title>
+    <div text-center>
+      <img src="assets/img/logo.png" style="display:inline-block" height="40px" />
+    </div>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="setRootProfilePage()">
+        <ion-icon name="ios-person"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
   <ion-toolbar no-border-top color='primary'>
     <ion-searchbar [(ngModel)]="queryText" (ionInput)="updateSchedule()" placeholder="Search">
