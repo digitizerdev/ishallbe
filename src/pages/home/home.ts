@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, ModalController, Platform, Events } from 'ionic-angular';
-import { Push, PushObject, PushOptions } from '@ionic-native/push';
-import { Observable } from 'rxjs/Observable';
+import { IonicPage, NavController } from 'ionic-angular';
 import moment from 'moment';
 
 import { NotificationsPage } from '../../pages/notifications/notifications';
-
-import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()
 @Component({
@@ -21,15 +17,7 @@ export class HomePage {
   displayTime: string;
 
   constructor(
-    private platform: Platform,
     private navCtrl: NavController,
-    private navParams: NavParams,
-    private firebase: FirebaseProvider,
-    private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
-    private modalCtrl: ModalController,
-    private events: Events,
-    private push: Push
   ) {
     this.timestamp();
   }

@@ -13,8 +13,7 @@ import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireModule, FirebaseApp } from 'angularfire2';
-import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { NgCalendarModule } from 'ionic2-calendar';
 
 import { environment } from '../environments/environment';

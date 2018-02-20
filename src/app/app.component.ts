@@ -1,4 +1,4 @@
-import { NgModule, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, AlertController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -6,24 +6,13 @@ import { Pro } from '@ionic/pro';
 
 import { Observable } from 'rxjs/Rx';
 
-import { SignupPage } from '../pages/signup/signup';
-import { PasswordResetPage } from '../pages/password-reset/password-reset';
 import { LoginPage } from '../pages/login/login';
 import { AboutPage } from '../pages/about/about';
-import { SupportPage } from '../pages/support/support';
-import { EmailUpdatePage } from '../pages/email-update/email-update';
-import { PasswordUpdatePage } from '../pages/password-update/password-update';
-import { AccountPage } from '../pages/account/account';
-import { NotificationsPage } from '../pages/notifications/notifications';
-import { ProfileUpdatePage } from '../pages/profile-update/profile-update';
 import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
 import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
 import { ProfilePage } from '../pages/profile/profile';
-import { PostPage } from '../pages/post/post';
 import { ExplorePage } from '../pages/explore/explore';
 import { HomePage } from '../pages/home/home';
-import { TutorialPage } from '../pages/tutorial/tutorial';
-import { PinCreatorPage } from '../pages/pin-creator/pin-creator';
 import { ApiManagerPage } from '../pages/api-manager/api-manager';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { UserManagerPage } from '../pages/user-manager/user-manager';
