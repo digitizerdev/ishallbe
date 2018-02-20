@@ -14,7 +14,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content text-center>
-  <ion-refresher (ionRefresh)="refreshPage($event)">
+  <ion-refresher class="refreshing" (ionRefresh)="refreshPage($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="">
     </ion-refresher-content>
   </ion-refresher>

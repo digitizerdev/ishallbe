@@ -64,6 +64,10 @@ export class ProfilePage {
     }
   }
 
+  refreshPage(refresh) {
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
+  }
+
   pushProfileUpdatePage() {
     this.navCtrl.push(ProfileUpdatePage);
   }

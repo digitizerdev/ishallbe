@@ -48,9 +48,6 @@ export class HomePage {
     console.log("Display time is " + this.displayTime);
   }
 
-  ionViewDidLoad() {
-  }
-
   showNotifications() {
     this.navCtrl.push(NotificationsPage);
   }
