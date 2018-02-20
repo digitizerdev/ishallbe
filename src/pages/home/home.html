@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <div text-center>
-        <img src="assets/img/logo.png" style="display:inline-block" height="40px"/>
+      <img src="assets/img/logo.png" style="display:inline-block" height="40px" />
     </div>
     <ion-buttons end>
       <button ion-button icon-only (click)="showNotifications()">
@@ -14,7 +14,11 @@
   </ion-navbar>
 </ion-header>
 <ion-content text-center>
-  <pins [pinsStartDate] = "rawDate"></pins>
+  <ion-refresher (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="">
+    </ion-refresher-content>
+  </ion-refresher>
+  <pins [pinsStartDate]="rawDate"></pins>
   <statements></statements>
   <footer></footer>
 </ion-content>

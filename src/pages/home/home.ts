@@ -54,4 +54,8 @@ export class HomePage {
   showNotifications() {
     this.navCtrl.push(NotificationsPage);
   }
+
+  refreshPage(refresh) {
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
+  }
 }

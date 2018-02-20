@@ -9,7 +9,6 @@
       <h5>{{ statement.timestamp.displayTime }}</h5>
     </ion-item>
     <img class="full-image" *ngIf="statement.mediaUrl" src="{{ statement.mediaUrl }}">
-
     <ion-item text-wrap class="statement-body">
       <div (click)="viewStatement(statement.id)">
         <h3 padding-top padding-bottom>{{ statement.description }}</h3>

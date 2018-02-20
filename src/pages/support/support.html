@@ -6,9 +6,8 @@
         <ion-title color='primary'>Contact Support</ion-title>
     </ion-navbar>
 </ion-header>
-
 <ion-content>
-    <br>
+    <header></header>
     <form #supportForm="ngForm" novalidate padding>
         <ion-item class="appForm">
             <ion-input class="myItem" placeholder="Subject" [(ngModel)]="supportForm.subject" name="subject" type="text" #subject="ngModel"
@@ -31,7 +30,7 @@
         <ion-row>
             <ion-col text-center class="submit">
                 <button id="SupportButton" ion-button (click)="submit(supportForm)" color="primary" round block large strong>
-                    SUBMIT
+                    SEND EMAIL
                 </button>
             </ion-col>
         </ion-row>
