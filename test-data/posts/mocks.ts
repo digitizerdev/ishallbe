@@ -2,7 +2,7 @@ import { Post } from './model';
 export const mondayPin = {
   id: "1",
   title: "Motivational Monday",
-  content: "",
+  description: "",
   commentCount: 10,
   likeCount: 10,
   private: false,
@@ -34,7 +34,7 @@ export const mondayPin = {
 export const tuesdayPin = {
   id: "2",
   title: "Tuesday's Tune of the Day",
-  content: "Sometimes you just have to let it go, Leaving all your fears to burn down, Push them all away so you can move on - Goapele: CLoser",
+  description: "Sometimes you just have to let it go, Leaving all your fears to burn down, Push them all away so you can move on - Goapele: CLoser",
   commentCount: 0,
   likeCount: 2,
   private: false,
@@ -66,7 +66,7 @@ export const tuesdayPin = {
 export const wednesdayPin = {
   id: "3",
   title: "Wise Words Wednesday",
-  content: "There will be times in life when we will be faced with struggles, setbacks, challenges, disappointments, and dark days. Part of sustaining and making through is maintaining hope.",
+  description: "There will be times in life when we will be faced with struggles, setbacks, challenges, disappointments, and dark days. Part of sustaining and making through is maintaining hope.",
   commentCount: 3,
   likeCount: 0,
   private: false,
@@ -98,7 +98,7 @@ export const wednesdayPin = {
 export const thursdayPin = {
   id: "4",
   title: "Treat Yourself Thursday",
-  content: "Just because it has not happen does not mean it is not going to happen. ",
+  description: "Just because it has not happen does not mean it is not going to happen. ",
   commentCount: 0,
   likeCount: 1,
   private: false,
@@ -130,7 +130,7 @@ export const thursdayPin = {
 export const fridayPin = {
   id: "5",
   title: "Faith Over Fear Fridays",
-  content: "Failure is the most powerful tool you can use, it just depends on how you use it.",
+  description: "Failure is the most powerful tool you can use, it just depends on how you use it.",
   commentCount: 1,
   likeCount: 0,
   private: false,
@@ -162,7 +162,7 @@ export const fridayPin = {
 export const saturdayPin = {
   id: "6",
   title: "Happy Saturday!",
-  content: "Recap this week’s motivational bar before it is permanently deleted. Have a great Saturday! Get your iShallBe Statement ready for iShallBe Sundays.",
+  description: "Recap this week’s motivational bar before it is permanently deleted. Have a great Saturday! Get your iShallBe Statement ready for iShallBe Sundays.",
   commentCount: 0,
   likeCount: 0,
   private: false,
@@ -194,7 +194,7 @@ export const saturdayPin = {
 export const statement1 = {
   id: "7",
   title: "iShallBe Brotherly",
-  content: "NU MARYANNU OF TUTHMOSIS DYNASTY",
+  description: "NU MARYANNU OF TUTHMOSIS DYNASTY",
   commentCount: 1,
   likeCount: 3,
   private: false,
@@ -226,7 +226,7 @@ export const statement1 = {
 export const statement2 = {
   id: "8",
   title: "iShallBe Adventurous",
-  content: "Portland Segway Tour... Good Times!",
+  description: "Portland Segway Tour... Good Times!",
   commentCount: 10,
   likeCount: 1,
   private: false,
@@ -258,7 +258,7 @@ export const statement2 = {
 export const statement3 = {
   id: "9",
   title: "iShallBe Grateful",
-  content: "We stand on the shoulders of giants. Let's not let them down!",
+  description: "We stand on the shoulders of giants. Let's not let them down!",
   commentCount: 30,
   likeCount: 13,
   private: false,

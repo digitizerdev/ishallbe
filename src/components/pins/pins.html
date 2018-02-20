@@ -6,7 +6,7 @@
         <b>{{pin.title}}</b>
       </h3>
       <img *ngIf="pin.day == 'Monday'" class="pin-image" src="{{ pin?.mediaUrl }}">
-      <h5 *ngIf="pin.content">{{pin.content}}</h5>
+      <h5 *ngIf="pin.description">{{pin.description}}</h5>
       <button *ngIf="pin.day == 'Tuesday'" (click)="openLink(pin.url)" text-center ion-button small round>
         <ion-icon name="play"></ion-icon>
       </button>
