@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import moment from 'moment';
+
 import { mockPosts } from '../../../test-data/posts/mocks';
 
 @Component({
@@ -8,14 +10,20 @@ import { mockPosts } from '../../../test-data/posts/mocks';
 })
 export class StatementsComponent {
 
+  rawDate: number;
   statements: any[];
 
   constructor() {
     console.log('Hello Statements Component');
-    this.statements = [];
+    let rawDateString = moment().format('YYYYMMDD');
+    this.rawDate = parseInt(rawDateString);
+    console.log("Raw date is " + this.rawDate);    this.statements = [];
     mockPosts.forEach((post) => {
       if (post.statement) {
         console.log("Pushing statement");
+        if (this.rawDate > post.timestamp.rawDate)  
+        post.timestamp.displayTime = moment(post.timestamp.rawDate, "YYYYMMDD").fromNow();
+        else post.timestamp.displayTime = moment(post.timestamp.rawTime, "YYYYMMDDhhmmss").fromNow();
         this.statements.push(post);
       }
     });

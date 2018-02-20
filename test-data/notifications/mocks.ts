@@ -18,10 +18,10 @@ export const likedStatement = {
     photo: "assets/img/headshot.png"
   },
   timestamp: {
-    rawDate: 20180215,
-    displayDate: "FEB 15 2018",
-    rawTime: 2018021592701,
-    displayTime: "9:27am"
+    rawDate: 20180219,
+    displayDate: "FEB 19 2018",
+    rawTime: 20180219182701,
+    displayTime: "6:27pm"
   }
 }
 export const commentedOnStatement = {
@@ -43,9 +43,9 @@ export const commentedOnStatement = {
     photo: "assets/img/headshot.png"
   },
   timestamp: {
-    rawDate: 20180214,
-    displayDate: "FEB 14 2018",
-    rawTime: 20180214162400,
+    rawDate: 20180219,
+    displayDate: "FEB 19 2018",
+    rawTime: 20180219162400,
     displayTime: "4:24pm"
   }
 }
@@ -68,9 +68,9 @@ export const likedCommentOnStatement = {
     photo: "assets/img/headshot.png"
   },
   timestamp: {
-    rawDate: 20180213,
-    displayDate: "FEB 13 2018",
-    rawTime: 20180213162400,
+    rawDate: 20180217,
+    displayDate: "FEB 17 2018",
+    rawTime: 20180217162400,
     displayTime: "4:24pm"
   }
 }

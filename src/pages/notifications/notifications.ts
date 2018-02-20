@@ -40,7 +40,7 @@ export class NotificationsPage {
       console.log(notification);
       if (notification.timestamp.rawDate < this.rawDate) 
         notification.timestamp.displayTime = moment(notification.timestamp.rawDate, "YYYYMMDD").fromNow();
-        else notification.timestamp.displayTime = moment(notification.timestamp.rawTime, "hmmss").fromNow();
+        else notification.timestamp.displayTime = moment(notification.timestamp.rawTime, "YYYYMMDDhhmmss").fromNow();
       if (notification.read) this.readNotifications.push(notification);
       else this.unreadNotifications.push(notification);
     });

@@ -8,10 +8,6 @@ statements {
     }
     .statement-body {
         border-top: thick solid color($colors, primary);
-        p {
-            font-size: 1.2em;
-            color: black;
-        }
     }
     .statement-actions {
         background: color($colors, light-yellow);

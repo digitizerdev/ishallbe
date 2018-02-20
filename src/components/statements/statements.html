@@ -4,18 +4,23 @@
       <ion-avatar item-left (click)="viewUser(statement.user_id)">
         <img src="{{ statement.user.photo }}">
       </ion-avatar>
-      <h2 (click)="viewUser(statement.user_id)">{{ statement.user.name }}</h2>
-      <p>{{ statement.timestamp.displayDate }} {{ statement.timestamp.displayTime }}</p>
+      <h2><b>{{ statement.title }}</b></h2>
+      <h3 (click)="viewUser(statement.user_id)" ion-text color="primary">{{ statement.user.name }}</h3>
+      <h5>{{ statement.timestamp.displayTime }}</h5>
     </ion-item>
     <img class="full-image" *ngIf="statement.mediaUrl" src="{{ statement.mediaUrl }}">
 
     <ion-item text-wrap class="statement-body">
       <div (click)="viewStatement(statement.id)">
-        <p padding-top padding-bottom>{{ statement.content }}</p>
+        <h3 padding-top padding-bottom><b>{{ statement.content }}</b></h3>
       </div>
       <div>
-        <a (click)="viewStatement(statement.id)" class="subdued">{{ statement.likeCount}} Likes</a>
-        <a (click)="viewStatement(statement.id)" class="subdued" margin-left>{{ statement.commentCount}} Comments</a>
+        <h6>
+          <a *ngIf="statement.likeCount > 1 || statement.likeCount == 0" class="subdued">{{ statement?.likeCount}} Likes</a>
+          <a *ngIf="statement.likeCount == 1" class="subdued">{{ statement?.likeCount}} Like</a>
+          <a *ngIf="statement.commentCount > 1 || statement.commentCount == 0" class="subdued" margin-left>{{ statement?.commentCount}} Comments</a>
+          <a *ngIf="statement.commentCount == 1" class="subdued" margin-left>{{ statement?.commentCount}} Comment</a>
+        </h6>
       </div>
     </ion-item>
     <ion-grid class="statement-actions">
