@@ -1,4 +1,4 @@
-<div class="feature">
+<div class="feature" no-padding>
   <ion-slides *ngIf="pins" [speed]="2000" pager>
     <ion-slide padding *ngFor="let pin of pins">
       <h2 ion-text color="primary" padding>{{pin.timestamp.displayDate}}</h2>

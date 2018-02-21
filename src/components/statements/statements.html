@@ -1,10 +1,17 @@
-<div *ngIf="statements">
+<div *ngIf="statements" class="statements-content">
+  <div>
+    <h2 color="primary" ion-text padding>
+      <b>STATEMENTS</b>
+    </h2>
+  </div>
   <ion-card *ngFor="let statement of statements">
     <ion-item class="statement-header">
       <ion-avatar item-left (click)="viewUser(statement.user_id)">
         <img src="{{ statement.user.photo }}">
       </ion-avatar>
-      <h2><b>{{ statement.title }}</b></h2>
+      <h2>
+        <b>{{ statement.title }}</b>
+      </h2>
       <h3 (click)="viewUser(statement.user_id)" ion-text color="primary">{{ statement.user.name }}</h3>
       <h5>{{ statement.timestamp.displayTime }}</h5>
     </ion-item>
@@ -37,4 +44,5 @@
       </ion-row>
     </ion-grid>
   </ion-card>
+  <footer></footer>
 </div>

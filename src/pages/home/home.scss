@@ -1,4 +1,7 @@
 page-home {
+    .home-content {
+        background: color($colors, primary);
+    }
     .refreshing {
         background-color: color($colors, light-yellow);
     }

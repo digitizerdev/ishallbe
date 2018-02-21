@@ -1,4 +1,9 @@
-<div *ngIf="goals">
+<div *ngIf="goals" no-padding no-margin>
+  <div no-padding no-margin class="statements-section">
+    <h2 color="light-yellow" ion-text>
+      <b>GOALS</b>
+    </h2>
+  </div>
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let goal of goals" col-12 col-sm>
@@ -9,29 +14,29 @@
                 <ion-icon name="play"></ion-icon>
               </button>
             </ion-avatar>
-            <h2>
+            <h4>
               <b>{{ goal.title }}</b>
-            </h2>
+            </h4>
             <h5 *ngIf="goal.pastDue" color="danger" ion-text>Due {{ goal.displayDateDue }}</h5>
             <h5 *ngIf="goal.dueInNextSevenDays" color="dark" ion-text>Due {{ goal.displayDateDue }}</h5>
             <h5 *ngIf="goal.dueLater" color="primary" ion-text>Due {{ goal.displayDateDue }} </h5>
           </ion-item>
           <ion-item text-wrap class="goal-body">
             <div (click)="viewGoal(goal.id)">
-              <h3 padding-top padding-bottom><b>GOAL:</b> {{ goal.description }}</h3>
+              <h3>
+                {{ goal.description }}
+              </h3>
             </div>
           </ion-item>
           <ion-grid class="goal-actions">
             <ion-row>
-              <ion-col width-33 text-center (click)="toggleLike(goal)">
-                <ion-icon name="md-checkbox" color="primary" *ngIf="goal.complete"></ion-icon>
-                <ion-icon name="md-checkbox-outline" *ngIf="!goal.complete"></ion-icon>
+              <ion-col col-8 text-right>
+                <h5 color="primary" ion-text>
+                  <b>MARK COMPLETE</b>
+                </h5>
               </ion-col>
-              <ion-col width-33 text-center (click)="viewGoal(goal.id)">
-                <ion-icon name="chatboxes"></ion-icon>
-              </ion-col>
-              <ion-col width-33 text-center>
-                <ion-icon name="share-alt"></ion-icon>
+              <ion-col text-center>
+                <ion-icon color="primary" name="md-checkbox-outline"></ion-icon>
               </ion-col>
             </ion-row>
           </ion-grid>

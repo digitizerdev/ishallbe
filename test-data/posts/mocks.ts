@@ -349,7 +349,7 @@ export const goal2 = {
   day: "",
   rawDateDue: 20180224,
   displayDateDue: "FEB 24 2018",
-  complete: true,
+  complete: false,
   user: {
     uid: "1",
     name: "Test Contributor",
@@ -395,8 +395,41 @@ export const goal3 = {
     displayTime: "5:00pm"
   }
 }
+export const goal4 = {
+  id: "12",
+  title: "iShallBe Open Minded",
+  description: "I shall seek to see every moment from other's perspectives",
+  commentCount: 0,
+  likeCount: 0,
+  private: false,
+  statement: false,
+  pin: false,
+  goal: true,
+  reflection: false,
+  result: false,
+  image: false,
+  audio: true,
+  video: false,
+  mediaUrl: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801091208?alt=media&token=67601464-10a2-4878-a951-b70c39a17a7e",
+  externalUrl: "",
+  day: "",
+  rawDateDue: 20180305,
+  displayDateDue: "MAR 5 2018",
+  complete: true,
+  user: {
+    uid: "1",
+    name: "Test Contributor",
+    photo: "assets/img/default-profile.png"
+  },
+  timestamp: {
+    rawDate: 20180201,
+    displayDate: "FEB 01 2018",
+    rawTime: 20180201170000,
+    displayTime: "5:00pm"
+  }
+}
 export const mockPosts: Post[] = [
   mondayPin, tuesdayPin, wednesdayPin, thursdayPin, fridayPin, saturdayPin,
   statement1, statement2, statement3,
-  goal1, goal2, goal3,
+  goal1, goal2, goal3, goal4
 ];       

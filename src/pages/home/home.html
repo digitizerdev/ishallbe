@@ -13,13 +13,12 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content text-center>
-  <ion-refresher class="refreshing" (ionRefresh)="refreshPage($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="">
+<ion-content class="home-content" text-center>
+  <ion-refresher (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="dots" refreshingText="Refeshing" ion-text>
     </ion-refresher-content>
   </ion-refresher>
   <pins [pinsStartDate]="rawDate"></pins>
   <goals></goals>
   <statements></statements>
-  <footer></footer>
 </ion-content>
