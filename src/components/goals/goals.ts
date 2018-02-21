@@ -29,11 +29,13 @@ export class GoalsComponent {
     this.goals = [];
     mockPosts.forEach((post) => {
       if (post.goal) {
-        console.log("Pushing goal");
-        post.displayDateDue = moment(post.rawDateDue, "YYYYMMDDhhmmss").fromNow();
-        this.setDueDateWarningColor(post).subscribe((post) => {
-          this.goals.push(post);
-        });
+        if (!post.complete) {
+          console.log("Pushing goal");
+          post.displayDateDue = moment(post.rawDateDue, "YYYYMMDDhhmmss").fromNow();
+          this.setDueDateWarningColor(post).subscribe((post) => {
+            this.goals.push(post);
+          });   
+        }
       }
     });
     console.log("Finished pushing goals");
