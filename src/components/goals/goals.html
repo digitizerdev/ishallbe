@@ -1,0 +1,42 @@
+<div *ngIf="goals">
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let goal of goals" col-12 col-sm>
+        <ion-card>
+          <ion-item class="goal-header">
+            <ion-avatar (click)="viewUser(goal.user_id)" item-left>
+              <button (click)="openLink(pin.mediaUrl)" text-center ion-button small round>
+                <ion-icon name="play"></ion-icon>
+              </button>
+            </ion-avatar>
+            <h2>
+              <b>{{ goal.title }}</b>
+            </h2>
+            <h5 *ngIf="goal.pastDue" color="danger" ion-text>Due {{ goal.displayDateDue }}</h5>
+            <h5 *ngIf="goal.dueInNextSevenDays" color="dark" ion-text>Due {{ goal.displayDateDue }}</h5>
+            <h5 *ngIf="goal.dueLater" color="primary" ion-text>Due {{ goal.displayDateDue }} </h5>
+          </ion-item>
+          <ion-item text-wrap class="goal-body">
+            <div (click)="viewGoal(goal.id)">
+              <h3 padding-top padding-bottom><b>GOAL:</b> {{ goal.description }}</h3>
+            </div>
+          </ion-item>
+          <ion-grid class="goal-actions">
+            <ion-row>
+              <ion-col width-33 text-center (click)="toggleLike(goal)">
+                <ion-icon name="md-checkbox" color="primary" *ngIf="goal.complete"></ion-icon>
+                <ion-icon name="md-checkbox-outline" *ngIf="!goal.complete"></ion-icon>
+              </ion-col>
+              <ion-col width-33 text-center (click)="viewGoal(goal.id)">
+                <ion-icon name="chatboxes"></ion-icon>
+              </ion-col>
+              <ion-col width-33 text-center>
+                <ion-icon name="share-alt"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>

@@ -1,0 +1,15 @@
+goals {
+    .card {
+        border-radius : 15px;
+      }
+    .goal-header {
+        background: color($colors, light-yellow);
+        border-bottom: thick solid color($colors, primary);
+    }
+    .goal-actions {
+        border-top: thick solid color($colors, primary);
+        background: color($colors, light-yellow);
+        color: #7C7C7C;
+        font-size: 1.4em;
+    }
+}

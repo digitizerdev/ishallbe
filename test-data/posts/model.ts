@@ -16,7 +16,8 @@ export interface Post {
   mediaUrl: string,
   externalUrl: string,
   day: string,
-  dateDue: string,
+  rawDateDue: number,
+  displayDateDue: string,
   complete: boolean,
   user: {
     uid: string,

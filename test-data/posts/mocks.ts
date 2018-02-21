@@ -17,7 +17,8 @@ export const mondayPin = {
   mediaUrl: "https://newevolutiondesigns.com/images/freebies/philadelphia-downtown.jpg",
   externalUrl: "",
   day: "Monday",
-  dateDue: "",
+  rawDateDue: -1, 
+  displayDateDue: "",
   complete: false,
   user: {
     uid: "2",
@@ -49,7 +50,8 @@ export const tuesdayPin = {
   mediaUrl: "https://youtube.com",
   externalUrl: "",
   day: "Tuesday",
-  dateDue: "",
+  rawDateDue: -1, 
+  displayDateDue: "",
   complete: false,
   user: {
     uid: "2",
@@ -81,7 +83,8 @@ export const wednesdayPin = {
   mediaUrl: "",
   externalUrl: "",
   day: "Wednesday",
-  dateDue: "",
+  rawDateDue: -1, 
+  displayDateDue: "",
   complete: false,
   user: {
     uid: "2",
@@ -113,7 +116,8 @@ export const thursdayPin = {
   mediaUrl: "",
   externalUrl: "",
   day: "Thursday",
-  dateDue: "",
+  rawDateDue: -1, 
+  displayDateDue: "",
   complete: false,
   user: {
     uid: "2",
@@ -145,7 +149,8 @@ export const fridayPin = {
   mediaUrl: "",
   externalUrl: "",
   day: "Friday",
-  dateDue: "",
+  rawDateDue: -1, 
+  displayDateDue: "",
   complete: false,
   user: {
     uid: "2",
@@ -177,7 +182,8 @@ export const saturdayPin = {
   mediaUrl: "",
   externalUrl: "",
   day: "Saturday",
-  dateDue: "",
+  rawDateDue: -1, 
+  displayDateDue: "",
   complete: false,
   user: {
     uid: "2",
@@ -209,7 +215,8 @@ export const statement1 = {
   mediaUrl: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801032008?alt=media&token=a876eb59-7bdd-40ce-86c0-f310508770fb",
   externalUrl: "",
   day: "",
-  dateDue: "",
+  rawDateDue: -1, 
+  displayDateDue: "",
   complete: false,
   user: {
     uid: "1",
@@ -241,7 +248,8 @@ export const statement2 = {
   mediaUrl: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2Fstatement?alt=media&token=286d74d7-57d3-48d0-9d35-9483bf37ef1e",
   externalUrl: "",
   day: "",
-  dateDue: "",
+  rawDateDue: -1, 
+  displayDateDue: "",
   complete: false,
   user: {
     uid: "1",
@@ -273,7 +281,8 @@ export const statement3 = {
   mediaUrl: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801091208?alt=media&token=67601464-10a2-4878-a951-b70c39a17a7e",
   externalUrl: "",
   day: "",
-  dateDue: "",
+  rawDateDue: -1,
+  displayDateDue: "",
   complete: false,
   user: {
     uid: "1",
@@ -305,7 +314,8 @@ export const goal1 = {
   mediaUrl: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801091208?alt=media&token=67601464-10a2-4878-a951-b70c39a17a7e",
   externalUrl: "",
   day: "",
-  dateDue: "20180228",
+  rawDateDue: 20180219,
+  displayDateDue: "FEB 19 2018",
   complete: false,
   user: {
     uid: "1",
@@ -337,8 +347,9 @@ export const goal2 = {
   mediaUrl: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801091208?alt=media&token=67601464-10a2-4878-a951-b70c39a17a7e",
   externalUrl: "",
   day: "",
-  dateDue: "20180301",
-  complete: false,
+  rawDateDue: 20180224,
+  displayDateDue: "FEB 24 2018",
+  complete: true,
   user: {
     uid: "1",
     name: "Test Contributor",
@@ -369,7 +380,8 @@ export const goal3 = {
   mediaUrl: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801091208?alt=media&token=67601464-10a2-4878-a951-b70c39a17a7e",
   externalUrl: "",
   day: "",
-  dateDue: "20180301",
+  rawDateDue: 20180301,
+  displayDateDue: "MAR 1 2018",
   complete: false,
   user: {
     uid: "1",
