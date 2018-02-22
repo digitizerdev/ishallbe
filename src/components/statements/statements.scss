@@ -1,6 +1,6 @@
 statements {
     .statements-content {
-        background-color: white;
+        background: color($colors, light-gray);
     }
     .card {
         border-radius : 15px;
@@ -10,6 +10,7 @@ statements {
         border-bottom: thick solid color($colors, primary);
     }
     .statement-body {
+        background: white;
         border-top: thick solid color($colors, primary);
     }
     .statement-actions {
