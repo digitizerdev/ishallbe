@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header no-border>
   <ion-navbar color='primary'>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
@@ -11,7 +11,7 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content class="profile-content">
   <ion-refresher class="refreshing" (ionRefresh)="refreshPage($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="">
     </ion-refresher-content>
@@ -44,6 +44,6 @@
       </ion-col>
     </ion-row>
   </div>
-  <br>
-  <footer></footer>
+  <goals></goals>
+  <statements></statements>
 </ion-content>

@@ -20,6 +20,7 @@ export class ProfilePage {
   user: any;
   mine = false;
   loaded = false;
+  postType = "goals";
 
   constructor(
     private navCtrl: NavController,
@@ -62,6 +63,11 @@ export class ProfilePage {
       let linkedinLink = 'https://linkedin.com/in/' + this.user.social.linkedin;
       open(linkedinLink);
     }
+  }
+
+  segmentChanged() {
+    console.log("Segment Changed");
+    console.log(this.postType);
   }
 
   refreshPage(refresh) {
