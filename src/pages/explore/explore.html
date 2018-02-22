@@ -18,6 +18,10 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <br>
+  <div class="images">
+    <div class="one-image" *ngFor="let statement of statements">
+      <img src="{{ statement.mediaUrl }}">
+    </div>
+  </div>
   <footer></footer>
 </ion-content>

@@ -12,8 +12,8 @@
   </ion-navbar>
 </ion-header>
 <ion-content class="profile-content">
-  <ion-refresher class="refreshing" (ionRefresh)="refreshPage($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="">
+  <ion-refresher (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="dots" refreshingText="Refeshing">
     </ion-refresher-content>
   </ion-refresher>
   <div class="user-profile" text-center padding>
@@ -32,10 +32,7 @@
     <h5 class="bio">{{ user?.bio}} </h5>
     <ion-row>
       <ion-col>
-        <button ion-button id="AccountViewProfileButton" (click)="pushProfileUpdatePage()" color="primary" small round strong>MESSAGES</button>
-      </ion-col>
-      <ion-col>
-        <button ion-button id="AccountViewProfileButton" (click)="pushAccountPage()" color="primary" small round strong>ACCOUNT</button>
+        <button ion-button id="AccountViewProfileButton" (click)="pushAccountPage()" color="primary" small round strong>MANAGE ACCOUNT</button>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="editor && !mine">

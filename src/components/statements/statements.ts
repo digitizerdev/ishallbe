@@ -15,9 +15,18 @@ export class StatementsComponent {
 
   constructor() {
     console.log('Hello Statements Component');
+    this.timestamp();
+    this.setStatements();
+  }
+
+  timestamp() {
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
-    console.log("Raw date is " + this.rawDate);    this.statements = [];
+    console.log("Raw date is " + this.rawDate); 
+  }
+
+  setStatements() {
+    this.statements = [];
     mockPosts.forEach((post) => {
       if (post.statement) {
         console.log("Pushing statement");

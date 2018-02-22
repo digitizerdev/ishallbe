@@ -2,6 +2,9 @@ page-profile {
     .profile-content {
         background: color($colors, primary);
     }
+    .refreshing {
+        background-color: color($colors, light-yellow);
+    }
     .user-profile {
         border-bottom: thick solid color($colors, primary);
         background: color($colors, light-yellow);
