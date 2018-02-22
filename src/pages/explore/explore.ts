@@ -13,7 +13,7 @@ import { mockPosts } from '../../../test-data/posts/mocks';
   templateUrl: 'explore.html',
 })
 export class ExplorePage {
-  
+
   rawDate: number;
   statements: any[];
 
@@ -29,7 +29,7 @@ export class ExplorePage {
   timestamp() {
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
-    console.log("Raw date is " + this.rawDate); 
+    console.log("Raw date is " + this.rawDate);
   }
 
   setStatements() {
@@ -44,4 +44,7 @@ export class ExplorePage {
     console.log(this.statements);
   }
 
+  refreshPage(refresh) {
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
+  }
 }
