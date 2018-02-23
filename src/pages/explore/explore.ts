@@ -47,4 +47,8 @@ export class ExplorePage {
   refreshPage(refresh) {
     this.navCtrl.setRoot(this.navCtrl.getActive().component);
   }
+
+  setRootProfilePage() {
+    this.navCtrl.setRoot(ProfilePage);
+  }
 }
