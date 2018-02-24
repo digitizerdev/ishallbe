@@ -91,39 +91,39 @@ describe('iShallBe Component', () => {
     afs = null;
   });
 
-  fit('should be created', () => {
+  it('should be created', () => {
     expect(component instanceof iShallBe).toBe(true);
   });
 
-  fit('should have explore menu with three pages', () => {
+  it('should have explore menu with three pages', () => {
     expect(component.exploreMenuPages.length).toBe(3);
   });
 
-  fit('should have engage menu with three pages', () => {
+  it('should have engage menu with three pages', () => {
     expect(component.engageMenuPages.length).toBe(3);
   });
 
-  fit('should have editor menu with three pages', () => {
+  it('should have editor menu with three pages', () => {
     expect(component.editorMenuPages.length).toBe(3);
   });
 
-  fit('should initialize root page to StartupPage', () => {
+  it('should initialize root page to StartupPage', () => {
     expect(component['rootPage']).toBe(LoginPage);
   });
 
-  fit('should be able to ready platform', () => {
+  it('should be able to ready platform', () => {
     expect(component.platformReady).toBeDefined();
   });
 
-  fit('should be able to open a page', () => {
+  it('should be able to open a page', () => {
     expect(component.openPage).toBeDefined();
   });
 
-  fit('should listen to auth events', () => {
+  it('should listen to auth events', () => {
     expect(component.listenToAuthEvents).toBeDefined();
   });
 
-  fit('should listen to push notification events', () => {
+  it('should listen to push notification events', () => {
     expect(component.listenToPushNotificationEvents).toBeDefined();
   });
 
