@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, AlertController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { Pro } from '@ionic/pro';
 
 import { Observable } from 'rxjs/Rx';
@@ -42,6 +43,7 @@ export class iShallBe {
     private splashScreen: SplashScreen,
     private alertCtrl: AlertController,
     private events: Events,
+    private push: Push,
     private firebase: FirebaseProvider,
   ) {
     this.rootPage = LoginPage;
@@ -145,5 +147,28 @@ export class iShallBe {
   listenToAuthEvents() {
     this.events.subscribe('login: editor', () => { this.editor = true });
     this.events.subscribe('logout', () => { this.editor = false });
+  }
+
+  listenToPushNotificationEvents() {
+    this.push.hasPermission()
+      .then((res: any) => {
+        if (res.isEnabled) {
+          console.log('We have permission to send push notifications');
+        } else {
+          console.log('We do not have permission to send push notifications');
+        }
+      });
+    const options: PushOptions = {
+      android: {},
+      ios: {
+        alert: 'true',
+        badge: true,
+        sound: 'false'
+      },
+    };
+    const pushObject: PushObject = this.push.init(options);
+    pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
+    pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
+    pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
   }
 }
