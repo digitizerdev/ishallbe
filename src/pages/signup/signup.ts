@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, LoadingController } from 'ionic-angular';
 import { Pro } from '@ionic/pro';
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
@@ -30,7 +30,6 @@ export class SignupPage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private firebase: FirebaseProvider,

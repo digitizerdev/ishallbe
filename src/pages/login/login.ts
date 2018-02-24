@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, LoadingController } from 'ionic-angular';
 import { Pro } from '@ionic/pro';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Observable } from 'rxjs/Observable';
 
 import { PasswordResetPage } from '../password-reset/password-reset';
@@ -25,7 +24,6 @@ export class LoginPage {
 
   constructor(
     private navCtrl: NavController, 
-    private navParams: NavParams,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private firebase: FirebaseProvider

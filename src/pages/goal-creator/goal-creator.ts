@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -15,8 +15,6 @@ export class GoalCreatorPage {
   private = false;
 
   constructor(
-    private navCtrl: NavController, 
-    private navParams: NavParams
   ) {
   }
 

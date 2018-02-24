@@ -1,4 +1,4 @@
-import { ViewChild, Component, Input, Output, EventEmitter } from '@angular/core';
+import { ViewChild, Component, Input } from '@angular/core';
 import { NavController, Slides } from 'ionic-angular';
 
 import { mockPosts } from '../../../test-data/posts/mocks';

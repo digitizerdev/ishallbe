@@ -1,14 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
-import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 import { Observable } from 'rxjs/Observable';
-
-class Credentials {
-  email: string;
-  password: string;
-}
 
 @Injectable()
 export class FirebaseProvider {

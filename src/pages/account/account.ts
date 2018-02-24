@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, Platform, LoadingController } from 'ionic-angular';
-import { Pro } from '@ionic/pro';
-
-import { Observable } from 'rxjs/Observable';
+import { IonicPage, Events, NavController } from 'ionic-angular';
 
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
@@ -25,10 +22,7 @@ export class AccountPage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
     private events: Events,
-    private platform: Platform,
-    private loadingCtrl: LoadingController,
     private firebase: FirebaseProvider,
   ) {
   }

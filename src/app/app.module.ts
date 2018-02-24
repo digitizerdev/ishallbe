@@ -12,7 +12,7 @@ import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireModule, FirebaseApp } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { NgCalendarModule } from 'ionic2-calendar';
 
