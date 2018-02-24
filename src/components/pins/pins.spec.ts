@@ -2,7 +2,7 @@ import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { IonicModule, Platform, Nav } from 'ionic-angular';
+import { IonicModule, Platform, NavController } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -24,7 +24,7 @@ describe('PinsComponent', () => {
     let fixture;
     let component;
     let platform: Platform;
-    let nav: Nav;
+    let nav: NavController;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -44,7 +44,7 @@ describe('PinsComponent', () => {
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
-                { provide: Nav, useClass: NavMock },
+                { provide: NavController, useClass: NavMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -56,7 +56,7 @@ describe('PinsComponent', () => {
         fixture = TestBed.createComponent(PinsComponent);
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
-        nav = TestBed.get(Nav);
+        nav = TestBed.get(NavController);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -74,14 +74,6 @@ describe('PinsComponent', () => {
 
     it('should be created', () => {
         expect(component instanceof PinsComponent).toBe(true);
-    });
-
-    it('should display pins', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('img'));
-        el = de.nativeElement.src;
-        expect(el).toContain('assets/img/logo.png');
     });
 
 });
