@@ -57,7 +57,7 @@ export class SignupPage {
           let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
           loading.present();
           this.buildUser(signupForm)
-          this.register(signupForm).then(() => {
+          this.signup(signupForm).then(() => {
             this.navCtrl.setRoot(HomePage);
             loading.dismiss();
           }).catch((error) => { this.errorHandler(error); loading.dismiss() });
@@ -112,7 +112,7 @@ export class SignupPage {
     }
   }
 
-  register(signupForm) {
+  signup(signupForm) {
     return this.firebase.afa.auth.createUserWithEmailAndPassword(signupForm.email, signupForm.password).then((token) => {
       this.uid = token.uid
       this.profile.uid = token.uid
