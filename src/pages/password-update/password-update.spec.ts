@@ -10,7 +10,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
-import { LoginPage } from '../login/login';
+import { PasswordUpdatePage } from '../password-update/password-update';
 
 import { } from 'jasmine';
 
@@ -20,7 +20,7 @@ import {
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
-describe('LoginPage', () => {
+describe('PasswordUpdatePage', () => {
     let fixture;
     let component;
     let platform: Platform;
@@ -37,9 +37,9 @@ describe('LoginPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [LoginPage],
+            declarations: [PasswordUpdatePage],
             imports: [
-                IonicModule.forRoot(LoginPage),
+                IonicModule.forRoot(PasswordUpdatePage),
                 AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
@@ -56,7 +56,7 @@ describe('LoginPage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(LoginPage);
+        fixture = TestBed.createComponent(PasswordUpdatePage);
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
@@ -76,15 +76,15 @@ describe('LoginPage', () => {
     });
 
     it('should be created', () => {
-        expect(component instanceof LoginPage).toBe(true);
+        expect(component instanceof PasswordUpdatePage).toBe(true);
     });
 
-    it('should display LoginFacebookComponent', () => {
+    it('should be titled Update Password', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('login-facebook'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
+        de = fixture.debugElement.query(By.css('#PasswordUpdatePageTitle'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('Update Password');
     });
 
     it('should display HeaderComponent', () => {
@@ -100,23 +100,8 @@ describe('LoginPage', () => {
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML
-        expect(el).toContain('LOGIN');
+        expect(el).toContain('UPDATE');
     });
 
-    it('should display setRootSignupPageButton', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#setRootSignupPageButton'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('SIGNUP');
-    });
-
-    it('should display setRootPasswordResetLink', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#setRootPasswordResetLink'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Forgot Password?');
-    });
 });
 

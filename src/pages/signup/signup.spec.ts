@@ -95,7 +95,7 @@ describe('SignupPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display signup form', () => {
+    it('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));

@@ -3,6 +3,7 @@ import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { IonicModule, Platform, NavController } from 'ionic-angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -10,21 +11,24 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
-import { LoginPage } from '../login/login';
+import { AboutPage } from '../about/about';
 
 import { } from 'jasmine';
 
 import {
     PlatformMock,
     NavMock,
+    InAppBrowserMock,
     FirebaseProviderMock,
+    EmailComposerMock,
 } from '../../../test-config/mocks-ionic';
 
-describe('LoginPage', () => {
+describe('AboutPage', () => {
     let fixture;
     let component;
     let platform: Platform;
     let nav: NavController;
+    let inAppBrowser: InAppBrowser;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -37,14 +41,15 @@ describe('LoginPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [LoginPage],
+            declarations: [AboutPage],
             imports: [
-                IonicModule.forRoot(LoginPage),
+                IonicModule.forRoot(AboutPage),
                 AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
+                { provide: InAppBrowser, useClass: EmailComposerMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -56,10 +61,11 @@ describe('LoginPage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(LoginPage);
+        fixture = TestBed.createComponent(AboutPage);
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
+        inAppBrowser = TestBed.get(InAppBrowser);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -70,21 +76,22 @@ describe('LoginPage', () => {
         component = null;
         platform = null;
         nav = null;
+        inAppBrowser = null;
         firebase = null;
         afa = null;
         afs = null;
     });
 
     it('should be created', () => {
-        expect(component instanceof LoginPage).toBe(true);
+        expect(component instanceof AboutPage).toBe(true);
     });
 
-    it('should display LoginFacebookComponent', () => {
+    it('should be titled About', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('login-facebook'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
+        de = fixture.debugElement.query(By.css('#AboutPageTitle'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('About');
     });
 
     it('should display HeaderComponent', () => {
@@ -95,28 +102,28 @@ describe('LoginPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display form', () => {
+    it('should display tagline', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('form'));
+        de = fixture.debugElement.query(By.css('#AboutPageTagline'));
         el = de.nativeElement.innerHTML
-        expect(el).toContain('LOGIN');
+        expect(el).toContain('If You Speak It, It Shall Be!');
     });
 
-    it('should display setRootSignupPageButton', () => {
+    it('should display description', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#setRootSignupPageButton'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('SIGNUP');
+        de = fixture.debugElement.query(By.css('#AboutPageDescription'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('iShallBe');
     });
 
-    it('should display setRootPasswordResetLink', () => {
+    it('should display launchWebsiteLearnMoreButton', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#setRootPasswordResetLink'));
+        de = fixture.debugElement.query(By.css('#launchWebsiteLearnMoreButton'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Forgot Password?');
+        expect(el).toContain('LEARN MORE');
     });
 });
 

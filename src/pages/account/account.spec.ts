@@ -10,7 +10,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
-import { LoginPage } from '../login/login';
+import { AccountPage } from '../account/account';
 
 import { } from 'jasmine';
 
@@ -20,7 +20,7 @@ import {
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
-describe('LoginPage', () => {
+describe('AccountPage', () => {
     let fixture;
     let component;
     let platform: Platform;
@@ -37,9 +37,9 @@ describe('LoginPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [LoginPage],
+            declarations: [AccountPage],
             imports: [
-                IonicModule.forRoot(LoginPage),
+                IonicModule.forRoot(AccountPage),
                 AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
@@ -56,7 +56,7 @@ describe('LoginPage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(LoginPage);
+        fixture = TestBed.createComponent(AccountPage);
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
@@ -76,15 +76,15 @@ describe('LoginPage', () => {
     });
 
     it('should be created', () => {
-        expect(component instanceof LoginPage).toBe(true);
+        expect(component instanceof AccountPage).toBe(true);
     });
 
-    it('should display LoginFacebookComponent', () => {
+    it('should be titled Account', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('login-facebook'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
+        de = fixture.debugElement.query(By.css('#AccountPageTitle'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('Account');
     });
 
     it('should display HeaderComponent', () => {
@@ -95,28 +95,52 @@ describe('LoginPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display form', () => {
+    it('should display account email', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('form'));
+        de = fixture.debugElement.query(By.css('#AccountEmail'));
         el = de.nativeElement.innerHTML
-        expect(el).toContain('LOGIN');
+        expect(el).toContain('h5');
     });
 
-    it('should display setRootSignupPageButton', () => {
+    it('should display pushEmailUpdatePageButton', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#setRootSignupPageButton'));
+        de = fixture.debugElement.query(By.css('#pushEmailUpdatePageButton'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('SIGNUP');
+        expect(el).toContain('UPDATE EMAIL');
     });
 
-    it('should display setRootPasswordResetLink', () => {
+    it('should display pushPasswordUpdatePageButton', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#setRootPasswordResetLink'));
+        de = fixture.debugElement.query(By.css('#pushPasswordUpdatePageButton'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Forgot Password?');
+        expect(el).toContain('UPDATE PASSWORD');
+    });
+
+    it('should display pushSupportPageButton', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#pushSupportPageButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('SUPPORT');
+    });
+
+    it('should display logoutButton', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#logoutButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('LOGOUT');
+    });
+
+    it('should display TermsOfServiceComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('terms-of-service'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 });
 
