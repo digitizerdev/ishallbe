@@ -29,7 +29,7 @@ import {
   FirebaseProviderMock,
 } from '../../test-config/mocks-ionic';
 
-describe('iShallBe Component', () => {
+describe('iShallBe 1.2', () => {
   let fixture;
   let component;
   let platform: Platform;

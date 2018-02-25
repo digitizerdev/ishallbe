@@ -114,10 +114,10 @@ describe('LoginFacebookComponent', () => {
         expect(component instanceof LoginFacebookComponent).toBe(true);
     });
 
-    it('should display Facebook Logo as authentication trigger', async(() => {
+    it('should display Facebook login button', async(() => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#LoginWithFacebookButton'));
+        de = fixture.debugElement.query(By.css('#FacebookIconLoginButton'));
         el = de.nativeElement.src
         expect(el).toBeUndefined();
     }));

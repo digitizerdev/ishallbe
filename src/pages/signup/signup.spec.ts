@@ -75,11 +75,11 @@ describe('SignupPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof SignupPage).toBe(true);
     });
 
-    fit('should display HeaderComponent', () => {
+    it('should display HeaderComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('header'));
@@ -87,7 +87,7 @@ describe('SignupPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display LoginFacebookComponent', () => {
+    it('should display LoginFacebookComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('login-facebook'));
@@ -95,7 +95,7 @@ describe('SignupPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display signup form', () => {
+    it('should display signup form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
@@ -103,15 +103,15 @@ describe('SignupPage', () => {
         expect(el).toContain('SIGNUP');
     });
 
-    fit('should display setRootToLoginPageButton', () => {
+    it('should display setRootLoginPageButton', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#setRootToLoginPageButton'));
+        de = fixture.debugElement.query(By.css('#setRootLoginPageButton'));
         el = de.nativeElement.innerHTML;
         expect(el).toContain('LOGIN');
     });
 
-    fit('should display TermsOfServiceComponent', () => {
+    it('should display TermsOfServiceComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('terms-of-service'));

@@ -79,5 +79,28 @@ describe('PasswordResetPage', () => {
         expect(component instanceof PasswordResetPage).toBe(true);
     });
 
+    it('should display HeaderComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('header'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display password reset form', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('form'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('RESET PASSWORD');
+    });
+
+    it('should display setRootToLoginPageButton', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#setRootToLoginPageButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('LOGIN');
+    });
 });
 

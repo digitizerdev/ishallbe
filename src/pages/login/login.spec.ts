@@ -79,5 +79,44 @@ describe('LoginPage', () => {
         expect(component instanceof LoginPage).toBe(true);
     });
 
+    it('should display LoginFacebookComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('login-facebook'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display HeaderComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('header'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display login form', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('form'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('LOGIN');
+    });
+
+    it('should display setRootSignupPageButton', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#setRootSignupPageButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('SIGNUP');
+    });
+
+    it('should display setRootPasswordResetLink', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#setRootPasswordResetLink'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('Forgot Password?');
+    });
 });
 
