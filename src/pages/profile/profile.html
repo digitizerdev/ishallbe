@@ -3,8 +3,8 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>{{ user?.name }}</ion-title>
-    <ion-buttons *ngIf="mine" end>
+    <ion-title id="ProfilePageTitle" color='primary'>{{ user?.name }}</ion-title>
+    <ion-buttons id="pushUpdateProfilePageIcon" *ngIf="mine" end>
       <button ion-button icon-only (click)="pushProfileUpdatePage()">
         <ion-icon name="md-options"></ion-icon>
       </button>
@@ -16,7 +16,7 @@
     <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="dots" refreshingText="Refeshing">
     </ion-refresher-content>
   </ion-refresher>
-  <div class="user-profile" text-center padding>
+  <div class="user-profile" id="UserProfile" text-center padding>
     <img class="avatar" src="{{ user?.photo }}">
     <ion-row *ngIf="this.user?.social" class="social" text-center>
       <ion-col *ngIf="this.user?.social.instagram" (click)="openSocial('instagram')" text-center>
@@ -32,7 +32,7 @@
     <h5 class="bio">{{ user?.bio}} </h5>
     <ion-row>
       <ion-col>
-        <button ion-button id="AccountViewProfileButton" (click)="pushAccountPage()" color="primary" small round strong>MANAGE ACCOUNT</button>
+        <button ion-button id="pushAccountPageButton" (click)="pushAccountPage()" color="primary" small round strong>MANAGE ACCOUNT</button>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="editor && !mine">

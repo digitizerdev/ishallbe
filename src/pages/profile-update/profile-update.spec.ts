@@ -2,7 +2,7 @@ import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { IonicModule, Platform, NavController } from 'ionic-angular';
+import { IonicModule, Platform, NavController, NavParams } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -10,21 +10,23 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
-import { AccountPage } from '../account/account';
+import { ProfileUpdatePage } from '../profile-update/profile-update';
 
 import { } from 'jasmine';
 
 import {
     PlatformMock,
     NavMock,
+    NavParamsMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
-describe('AccountPage', () => {
+describe('ProfileUpdatePage', () => {
     let fixture;
     let component;
     let platform: Platform;
     let nav: NavController;
+    let navParams: NavParams;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -37,14 +39,15 @@ describe('AccountPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [AccountPage],
+            declarations: [ProfileUpdatePage],
             imports: [
-                IonicModule.forRoot(AccountPage),
+                IonicModule.forRoot(ProfileUpdatePage),
                 AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
+                { provide: NavParams, useClass: NavParamsMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -56,10 +59,11 @@ describe('AccountPage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(AccountPage);
+        fixture = TestBed.createComponent(ProfileUpdatePage);
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
+        navParams = TestBed.get(NavParams);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -70,85 +74,38 @@ describe('AccountPage', () => {
         component = null;
         platform = null;
         nav = null;
+        navParams = null;
         firebase = null;
         afa = null;
         afs = null;
     });
 
     it('should be created', () => {
-        expect(component instanceof AccountPage).toBe(true);
+        expect(component instanceof ProfileUpdatePage).toBe(true);
     });
 
-    it('should be titled Account', () => {
+    it('should be titled Update Profile', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#AccountPageTitle'));
+        de = fixture.debugElement.query(By.css('#UpdateProfileTitle'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Account');
+        expect(el).toContain('Update Profile')
     });
 
-    it('should display setRootHomePageIcon', () => {
+    it('should display profile photo', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#setRootHomePageIcon'));
+        de = fixture.debugElement.query(By.css('#UpdateProfilePhoto'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
 
-    it('should display HeaderComponent', () => {
+    it('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('header'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    it('should display account email', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#AccountEmail'));
+        de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML
-        expect(el).toContain('h5');
-    });
-
-    it('should display pushEmailUpdatePageButton', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#pushEmailUpdatePageButton'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('UPDATE EMAIL');
-    });
-
-    it('should display pushPasswordUpdatePageButton', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#pushPasswordUpdatePageButton'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('UPDATE PASSWORD');
-    });
-
-    it('should display pushSupportPageButton', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#pushSupportPageButton'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('SUPPORT');
-    });
-
-    it('should display logoutButton', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#logoutButton'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('LOGOUT');
-    });
-
-    it('should display TermsOfServiceComponent', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('terms-of-service'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
+        expect(el).toContain('UPDATE');
     });
 });
 

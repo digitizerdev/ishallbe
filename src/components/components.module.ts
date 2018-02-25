@@ -18,8 +18,8 @@ import { GoalsComponent } from './goals/goals';
         MediaComponent,
         FooterComponent,
         PinsComponent,
+        GoalsComponent,
         StatementsComponent,
-    GoalsComponent,
     ],
     imports: [
         IonicModule,
@@ -31,8 +31,8 @@ import { GoalsComponent } from './goals/goals';
         MediaComponent,
         FooterComponent,
         PinsComponent,
-        StatementsComponent,
-    GoalsComponent,
+        GoalsComponent,
+        StatementsComponent
     ],
     providers: [
         InAppBrowser
