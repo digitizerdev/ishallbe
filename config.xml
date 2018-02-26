@@ -130,6 +130,6 @@
         <variable name="UPDATE_API" value="https://api.ionicjs.com" />
         <variable name="MAX_STORE" value="2" />
     </plugin>
-    <engine name="android" spec="6.3.0" />
     <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
+    <engine name="android" spec="6.3.0" />
 </widget>
