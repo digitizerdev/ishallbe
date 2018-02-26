@@ -93,6 +93,16 @@ describe('ProfilePage', () => {
         expect(el).toBeUndefined();
     });
 
+    fit('should display pushUpdateProfilePageIcon if mine', () => {
+        component.mine = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css("#pushUpdateProfilePageIcon"));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
     it('should display pushAccountPageButton', () => {
         let de: DebugElement;
         let el: HTMLElement;
