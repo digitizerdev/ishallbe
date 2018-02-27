@@ -2,7 +2,7 @@ import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { IonicModule, Platform, Nav } from 'ionic-angular';
+import { IonicModule, Platform, NavController } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -10,7 +10,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
-import { MediaComponent } from '../media/media';
+import { UploadComponent } from '../upload/upload';
 
 import { } from 'jasmine';
 
@@ -20,11 +20,11 @@ import {
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
-describe('MediaComponent', () => {
+describe('UploadComponent', () => {
     let fixture;
     let component;
     let platform: Platform;
-    let nav: Nav;
+    let nav: NavController;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -37,14 +37,14 @@ describe('MediaComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [MediaComponent],
+            declarations: [UploadComponent],
             imports: [
-                IonicModule.forRoot(MediaComponent),
+                IonicModule.forRoot(UploadComponent),
                 AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
-                { provide: Nav, useClass: NavMock },
+                { provide: NavController, useClass: NavMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -53,10 +53,10 @@ describe('MediaComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(MediaComponent);
+        fixture = TestBed.createComponent(UploadComponent);
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
-        nav = TestBed.get(Nav);
+        nav = TestBed.get(NavController);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -73,7 +73,7 @@ describe('MediaComponent', () => {
     });
 
     it('should be created', () => {
-        expect(component instanceof MediaComponent).toBe(true);
+        expect(component instanceof UploadComponent).toBe(true);
     });
 
 });

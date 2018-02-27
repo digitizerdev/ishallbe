@@ -8,9 +8,10 @@
 </ion-header>
 <ion-content text-center>
   <br>
-  <div id="UpdateProfilePhoto">
-    <img class="avatar" src="{{ user?.photo }}">
+  <div *ngIf="!updatingProfilePhoto" id="UpdateProfilePhoto">
+    <img (click)="updateProfilePhoto()" class="avatar" src="{{ user?.photo }}">
   </div>
+  <upload *ngIf="updatingProfilePhoto"></upload>
   <form novalidate padding>
     <ion-list no-lines>
       <ion-item class="appForm">

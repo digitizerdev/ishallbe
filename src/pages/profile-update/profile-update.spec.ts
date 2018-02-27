@@ -55,7 +55,7 @@ describe('ProfileUpdatePage', () => {
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
             ]
-        })
+        }).compileComponents();
     }));
 
     beforeEach(() => {
@@ -80,11 +80,11 @@ describe('ProfileUpdatePage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof ProfileUpdatePage).toBe(true);
     });
 
-    it('should be titled Update Profile', () => {
+    fit('should be titled Update Profile', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#UpdateProfileTitle'));
@@ -92,7 +92,9 @@ describe('ProfileUpdatePage', () => {
         expect(el).toContain('Update Profile')
     });
 
-    it('should display profile photo', () => {
+    fit('should display profile photo if not updating profile photo', () => {
+        component.updatingProfilePhoto = false;
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#UpdateProfilePhoto'));
@@ -100,12 +102,31 @@ describe('ProfileUpdatePage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display form', () => {
+    fit('should display upload component if updating profile photo', () => {
+        component.updatingProfilePhoto = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('upload'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML
         expect(el).toContain('UPDATE');
+    });
+
+    fit('should enable uploader component to update profile photo', () => {
+        component.UpdateProfilePhoto();
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css(''));
+        el = de.nativeElement.innerHTML
     });
 });
 

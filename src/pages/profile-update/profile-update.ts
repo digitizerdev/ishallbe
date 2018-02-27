@@ -24,6 +24,7 @@ export class ProfileUpdatePage {
   } = {};
   submitted = false;
   loaded = false;
+  updatingProfilePhoto = false;
 
   constructor(
     private navCtrl: NavController,
@@ -67,11 +68,9 @@ export class ProfileUpdatePage {
     let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
     loading.present();
     this.updateUser().then(() => {
-      this.updateUserCollaborations().subscribe(() => {
         loading.dismiss();
         this.navCtrl.setRoot(ProfilePage);
       });
-    }).catch((error) => { this.errorHandler(error) });
   }
 
   updateUser() {
@@ -86,35 +85,9 @@ export class ProfileUpdatePage {
       return this.firebase.afs.doc(path).update(this.user);
   }
 
-  updateUserCollaborations() {
-    return Observable.create((observer) => {
-      let path = 'users/' + this.user.uid + "/collaborations";
-      let userCollaborations = this.firebase.afs.collection(path);
-      let count = 0;
-      userCollaborations.valueChanges().subscribe((myCollaborations) => {
-        if (myCollaborations.length > 0) {
-          myCollaborations.forEach((collaboration) => {
-            return this.updateCollaborator(collaboration).subscribe(() => {
-              count++;
-              if (count == myCollaborations.length) observer.next();
-            });
-          });
-        } else observer.next();
-      });
-    });
-  }
-
-  updateCollaborator(collaboration) {
-    return Observable.create((observer) => {
-      let collaborator = {
-        name: this.user.name,
-        photo: this.user.photo,
-      }
-      let path = "collaborations/" + collaboration.collaborationId + "/collaborators/" + this.user.uid;
-      return this.firebase.afs.doc(path).update(collaborator).then(() => {
-        observer.next();
-      });
-    });
+  updateProfilePhoto() {
+    console.log("Update profile photo clicked");
+    this.updatingProfilePhoto = true;
   }
 
   errorHandler(error) {
