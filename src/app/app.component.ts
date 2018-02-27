@@ -149,25 +149,38 @@ export class iShallBe {
   }
 
   listenToPushNotificationEvents() {
+    if (!this.platform.is('cordova')) {
+      console.warn("Push notifications not initialized. Cordova is not available - Run in physical device");
+      return;
+    }
+
     this.push.hasPermission()
       .then((res: any) => {
         if (res.isEnabled) {
           console.log('We have permission to send push notifications');
-        } else {
-          console.log('We do not have permission to send push notifications');
-        }
+        } else { console.log('We do not have permission to send push notifications'); }
       });
+
     const options: PushOptions = {
       android: {},
       ios: {
         alert: 'true',
         badge: true,
-        sound: 'false'
+        sound: 'false',
+
       },
+      windows: {},
+      browser: {
+        pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+      }
     };
+
     const pushObject: PushObject = this.push.init(options);
-    pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
-    pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
-    pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+
+    pushObject.on('registration').subscribe((data: any) => {
+      console.log('device token -> ' + data.registrationId);
+    }, err => {
+      console.log('error in device registration:', err);
+    });
   }
 }
