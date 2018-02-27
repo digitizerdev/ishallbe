@@ -3,6 +3,7 @@ import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { IonicModule, Platform, NavController } from 'ionic-angular';
+import { DatePicker } from '@ionic-native/date-picker';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -17,6 +18,7 @@ import { } from 'jasmine';
 import {
     PlatformMock,
     NavMock,
+    DatePickerMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
@@ -25,6 +27,7 @@ describe('GoalCreatorPage', () => {
     let component;
     let platform: Platform;
     let nav: NavController;
+    let datePicker: DatePicker;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -45,6 +48,7 @@ describe('GoalCreatorPage', () => {
             providers: [
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
+                { provide: DatePicker, useClass: DatePickerMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -60,6 +64,7 @@ describe('GoalCreatorPage', () => {
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
+        datePicker = TestBed.get(DatePicker);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -70,6 +75,7 @@ describe('GoalCreatorPage', () => {
         component = null;
         platform = null;
         nav = null;
+        datePicker = null;
         firebase = null;
         afa = null;
         afs = null;

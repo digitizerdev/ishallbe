@@ -5,6 +5,7 @@ import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
+import { DatePicker } from '@ionic-native/date-picker';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Observable } from 'rxjs/Observable';
@@ -240,6 +241,16 @@ export class InAppBrowserMock extends InAppBrowser {
   _getPortal(): any { return {} };
 
   public create(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+}
+
+export class DatePickerMock extends DatePicker {
+  _getPortal(): any { return {} };
+
+  public show(): any {
     return new Promise(function (resolve: Function): void {
       resolve();
     });

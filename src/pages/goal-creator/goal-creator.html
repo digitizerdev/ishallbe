@@ -11,7 +11,7 @@
   <form class="my-form" #createGoalForm="ngForm" novalidate padding>
     <ion-row>
       <ion-col text-center>
-        <button id="SpeakButton" ion-button (click)="record()" color="danger" icon-start round block large strong>
+        <button (click)="record()" color="secondary" ion-button icon-start round block large strong>
           <ion-icon name="ios-microphone"></ion-icon>
           SPEAK IT
         </button>
@@ -36,11 +36,14 @@
       Goal Description is required
     </p>
     <br>
-    <ion-item>
-      <ion-label ion-text color="dark"><b>MAKE PUBLIC?</b></ion-label>
-      <ion-toggle [(ngModel)]="private" [ngModelOptions]="{standalone: true}"></ion-toggle>
-    </ion-item>
-    <br>
+    <ion-row>
+      <ion-col text-center>
+        <button (click)="pickDate()" color="danger"  ion-button icon-start round block large strong>
+          <ion-icon name="ios-calendar"></ion-icon>
+          Select Due Date
+        </button>
+      </ion-col>
+    </ion-row>
     <ion-row>
       <ion-col text-center class="submit">
         <button id="CreateGoalButton" ion-button (click)="submit(createGoalForm)" color="primary" round block large strong>

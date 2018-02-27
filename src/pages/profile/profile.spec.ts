@@ -93,7 +93,7 @@ describe('ProfilePage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display pushUpdateProfilePageIcon if mine', () => {
+    it('should display pushUpdateProfilePageIcon if mine', () => {
         component.mine = true;
         fixture.detectChanges();
         let de: DebugElement;
