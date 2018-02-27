@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 
+import moment from 'moment';
+
 import { DatePicker } from '@ionic-native/date-picker';
 
 @IonicPage()
@@ -14,7 +16,7 @@ export class GoalCreatorPage {
     description?: string,
   } = {};
   submitted = false;
-  private = false;
+  dueDate: any;
 
   constructor(
     private datePicker: DatePicker
@@ -32,10 +34,14 @@ export class GoalCreatorPage {
       mode: 'datetime',
       allowOldDates: false,
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
-    }).then(
-      date => console.log('Got date: ', date),
-      err => console.log('Error occurred while getting date: ', err)
-    );
+    }).then((date) => { 
+      console.log("Raw date is: " + date);
+      this.dueDate = moment(date).fromNow();
+      console.log("Due date is " + this.dueDate);
+    },
+      (err) => { 
+        console.error("Error: " + err);
+      });
   }
 
 }
