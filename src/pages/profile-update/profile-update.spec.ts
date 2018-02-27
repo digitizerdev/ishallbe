@@ -11,6 +11,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
 import { ProfileUpdatePage } from '../profile-update/profile-update';
+import { ComponentsModule } from '../../components/components.module';
 
 import { } from 'jasmine';
 
@@ -42,7 +43,8 @@ describe('ProfileUpdatePage', () => {
             declarations: [ProfileUpdatePage],
             imports: [
                 IonicModule.forRoot(ProfileUpdatePage),
-                AngularFireModule.initializeApp(environment.firebase)
+                AngularFireModule.initializeApp(environment.firebase),
+                ComponentsModule
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
@@ -121,11 +123,11 @@ describe('ProfileUpdatePage', () => {
     });
 
     fit('should enable uploader component to update profile photo', () => {
-        component.UpdateProfilePhoto();
+        component.updateProfilePhoto();
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css(''));
+        de = fixture.debugElement.query(By.css('upload'));
         el = de.nativeElement.innerHTML
     });
 });
