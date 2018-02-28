@@ -2,7 +2,8 @@ import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { IonicModule, Platform, NavController, NavParams } from 'ionic-angular';
+import { IonicModule, Platform, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { Camera } from '@ionic-native/camera';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -19,8 +20,11 @@ import {
     PlatformMock,
     NavMock,
     NavParamsMock,
+    ActionSheetControllerMock,
+    CameraMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
+import { Action } from 'rxjs/scheduler/Action';
 
 describe('ProfileUpdatePage', () => {
     let fixture;
@@ -28,6 +32,8 @@ describe('ProfileUpdatePage', () => {
     let platform: Platform;
     let nav: NavController;
     let navParams: NavParams;
+    let actionSheet: ActionSheetController;
+    let camera: Camera;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -50,6 +56,8 @@ describe('ProfileUpdatePage', () => {
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
                 { provide: NavParams, useClass: NavParamsMock },
+                { provide: ActionSheetController, useClass: ActionSheetControllerMock },
+                { provide: Camera, useClass: CameraMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -66,6 +74,8 @@ describe('ProfileUpdatePage', () => {
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
         navParams = TestBed.get(NavParams);
+        actionSheet = TestBed.get(ActionSheetController);
+        camera = TestBed.get(Camera);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -77,16 +87,18 @@ describe('ProfileUpdatePage', () => {
         platform = null;
         nav = null;
         navParams = null;
+        actionSheet = null;
+        camera = null;
         firebase = null;
         afa = null;
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof ProfileUpdatePage).toBe(true);
     });
 
-    it('should be titled Update Profile', () => {
+    fit('should be titled Update Profile', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#UpdateProfileTitle'));
@@ -94,7 +106,7 @@ describe('ProfileUpdatePage', () => {
         expect(el).toContain('Update Profile')
     });
 
-    it('should display profile photo if not updating profile photo', () => {
+    fit('should display profile photo if not updating profile photo', () => {
         component.updatingProfilePhoto = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -104,7 +116,7 @@ describe('ProfileUpdatePage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display upload component if updating profile photo', () => {
+    fit('should enable upload if updating profile photo', () => {
         component.updatingProfilePhoto = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -114,7 +126,7 @@ describe('ProfileUpdatePage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display form', () => {
+    fit('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
@@ -122,13 +134,5 @@ describe('ProfileUpdatePage', () => {
         expect(el).toContain('UPDATE');
     });
 
-    it('should enable uploader component to update profile photo', () => {
-        component.updateProfilePhoto();
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('upload'));
-        el = de.nativeElement.innerHTML
-    });
 });
 

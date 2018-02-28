@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, ActionSheetController} from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { ProfilePage } from '../profile/profile';
@@ -25,12 +25,14 @@ export class ProfileUpdatePage {
   submitted = false;
   loaded = false;
   updatingProfilePhoto = false;
+  imageRetrievalMethod = "default";
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
+    private actionSheetCtrl: ActionSheetController,
     private firebase: FirebaseProvider
   ) {
   }
@@ -87,7 +89,38 @@ export class ProfileUpdatePage {
 
   updateProfilePhoto() {
     console.log("Update profile photo clicked");
-    this.updatingProfilePhoto = true;
+    this.askForImageRetrievalMethod();
+  }
+
+  askForImageRetrievalMethod() {
+    let actionSheet = this.actionSheetCtrl.create({
+      buttons: [
+        {
+          text: 'Camera',
+          handler: () => {
+            console.log("Chose Camera");
+            this.imageRetrievalMethod = "camera";
+            this.updatingProfilePhoto = true;
+          }
+        },
+        {
+          text: 'Library',
+          handler: () => {
+            console.log("Chose Library");
+            this.imageRetrievalMethod = "library";
+            this.updatingProfilePhoto = true;
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log("Canceled asking for image retrieval method");
+          }
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
   errorHandler(error) {

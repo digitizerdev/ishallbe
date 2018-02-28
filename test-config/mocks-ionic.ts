@@ -160,7 +160,7 @@ export class NavParamsMock {
 export class ActionSheetControllerMock extends ActionSheetController {
   _getPortal(): any { return {} };
 
-  public present(): any {
+  public create(): any {
     return new Promise(function (resolve: Function): void {
       resolve('testActionSheetControllerValue');
     });
@@ -219,7 +219,6 @@ export class FirebaseProviderMock extends FirebaseProvider {
 }
 
 export class CameraMock extends Camera {
-
   public getPicture(cameraOptions): any {
     return new Promise(function (resolve: Function): void {
       resolve('image');
