@@ -19,7 +19,7 @@ import { UploadComponent } from './upload/upload';
         PinsComponent,
         GoalsComponent,
         StatementsComponent,
-    UploadComponent,
+        UploadComponent,
     ],
     imports: [
         IonicModule,
@@ -32,7 +32,7 @@ import { UploadComponent } from './upload/upload';
         PinsComponent,
         GoalsComponent,
         StatementsComponent,
-    UploadComponent
+        UploadComponent
     ],
     providers: [
         InAppBrowser

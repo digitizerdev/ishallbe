@@ -110,6 +110,7 @@ export class iShallBe {
   platformReady() {
     this.platform.ready().then(() => {
       if (this.platform.is('cordova')) {
+        this.listenToPushNotificationEvents()
         this.deployUpdate().subscribe(() => { this.checkForSession(); });
       } else this.checkForSession();
       this.statusBar.styleDefault();

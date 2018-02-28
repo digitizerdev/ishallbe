@@ -43,7 +43,7 @@ describe('TermsOfServiceComponent', () => {
             declarations: [TermsOfServiceComponent],
             imports: [
                 IonicModule.forRoot(TermsOfServiceComponent),
-                AngularFireModule.initializeApp(environment.firebase)
+                AngularFireModule.initializeApp(environment.firebase),
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },

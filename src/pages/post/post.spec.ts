@@ -10,7 +10,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
-import { PasswordResetPage } from '../password-reset/password-reset';
+import { PostPage } from '../post/post';
 import { ComponentsModule } from '../../components/components.module';
 
 import { } from 'jasmine';
@@ -21,7 +21,7 @@ import {
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
-describe('PasswordResetPage', () => {
+describe('PostPage', () => {
     let fixture;
     let component;
     let platform: Platform;
@@ -38,9 +38,9 @@ describe('PasswordResetPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [PasswordResetPage],
+            declarations: [PostPage],
             imports: [
-                IonicModule.forRoot(PasswordResetPage),
+                IonicModule.forRoot(PostPage),
                 AngularFireModule.initializeApp(environment.firebase),
                 ComponentsModule
             ],
@@ -51,14 +51,11 @@ describe('PasswordResetPage', () => {
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
             ],
-            schemas: [
-                CUSTOM_ELEMENTS_SCHEMA
-            ]
         }).compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(PasswordResetPage);
+        fixture = TestBed.createComponent(PostPage);
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
@@ -78,31 +75,8 @@ describe('PasswordResetPage', () => {
     });
 
     it('should be created', () => {
-        expect(component instanceof PasswordResetPage).toBe(true);
+        expect(component instanceof PostPage).toBe(true);
     });
 
-    it('should display HeaderComponent', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('header'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    it('should display form', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('form'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('RESET PASSWORD');
-    });
-
-    it('should display setRootToLoginPageButton', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#setRootToLoginPageButton'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('LOGIN');
-    });
 });
 

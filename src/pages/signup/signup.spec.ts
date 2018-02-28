@@ -3,6 +3,7 @@ import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { IonicModule, Platform, NavController } from 'ionic-angular';
+import { Facebook } from '@ionic-native/facebook';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -11,12 +12,14 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
 import { SignupPage } from '../signup/signup';
+import { ComponentsModule } from '../../components/components.module';
 
 import { } from 'jasmine';
 
 import {
     PlatformMock,
     NavMock,
+    FacebookMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
@@ -25,6 +28,7 @@ describe('SignupPage', () => {
     let component;
     let platform: Platform;
     let nav: NavController;
+    let facebook: FacebookMock;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -40,11 +44,13 @@ describe('SignupPage', () => {
             declarations: [SignupPage],
             imports: [
                 IonicModule.forRoot(SignupPage),
-                AngularFireModule.initializeApp(environment.firebase)
+                AngularFireModule.initializeApp(environment.firebase),
+                ComponentsModule
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
+                { provide: Facebook, useClass: FacebookMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -52,7 +58,7 @@ describe('SignupPage', () => {
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
             ]
-        })
+        }).compileComponents();
     }));
 
     beforeEach(() => {
@@ -60,6 +66,7 @@ describe('SignupPage', () => {
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
+        facebook = TestBed.get(Facebook);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -70,6 +77,7 @@ describe('SignupPage', () => {
         component = null;
         platform = null;
         nav = null;
+        facebook = null;
         firebase = null;
         afa = null;
         afs = null;

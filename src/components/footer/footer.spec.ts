@@ -40,7 +40,7 @@ describe('FooterComponent', () => {
             declarations: [FooterComponent],
             imports: [
                 IonicModule.forRoot(FooterComponent),
-                AngularFireModule.initializeApp(environment.firebase)
+                AngularFireModule.initializeApp(environment.firebase),
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },

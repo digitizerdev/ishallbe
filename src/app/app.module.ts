@@ -48,7 +48,7 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
 import { ComponentsModule } from '../components/components.module';
 
 Pro.init('69d144ed', {
-  appVersion: '1.2.0'
+  appVersion: '1.3.0'
 });
 
 @NgModule({

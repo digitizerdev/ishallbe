@@ -11,6 +11,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
 import { StatementCreatorPage } from '../statement-creator/statement-creator';
+import { ComponentsModule } from '../../components/components.module';
 
 import { } from 'jasmine';
 
@@ -40,7 +41,8 @@ describe('StatementCreatorPage', () => {
             declarations: [StatementCreatorPage],
             imports: [
                 IonicModule.forRoot(StatementCreatorPage),
-                AngularFireModule.initializeApp(environment.firebase)
+                AngularFireModule.initializeApp(environment.firebase),
+                ComponentsModule
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
@@ -52,7 +54,7 @@ describe('StatementCreatorPage', () => {
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
             ]
-        })
+        }).compileComponents();
     }));
 
     beforeEach(() => {

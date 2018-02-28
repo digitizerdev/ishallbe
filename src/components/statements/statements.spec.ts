@@ -10,8 +10,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
-import { PasswordResetPage } from '../password-reset/password-reset';
-import { ComponentsModule } from '../../components/components.module';
+import { StatementsComponent } from '../statements/statements';
 
 import { } from 'jasmine';
 
@@ -21,7 +20,7 @@ import {
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
-describe('PasswordResetPage', () => {
+describe('StatementsComponent', () => {
     let fixture;
     let component;
     let platform: Platform;
@@ -38,11 +37,10 @@ describe('PasswordResetPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [PasswordResetPage],
+            declarations: [StatementsComponent],
             imports: [
-                IonicModule.forRoot(PasswordResetPage),
+                IonicModule.forRoot(StatementsComponent),
                 AngularFireModule.initializeApp(environment.firebase),
-                ComponentsModule
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
@@ -51,14 +49,11 @@ describe('PasswordResetPage', () => {
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
             ],
-            schemas: [
-                CUSTOM_ELEMENTS_SCHEMA
-            ]
-        }).compileComponents();
+        })
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(PasswordResetPage);
+        fixture = TestBed.createComponent(StatementsComponent);
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
@@ -78,31 +73,8 @@ describe('PasswordResetPage', () => {
     });
 
     it('should be created', () => {
-        expect(component instanceof PasswordResetPage).toBe(true);
+        expect(component instanceof StatementsComponent).toBe(true);
     });
 
-    it('should display HeaderComponent', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('header'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    it('should display form', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('form'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('RESET PASSWORD');
-    });
-
-    it('should display setRootToLoginPageButton', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#setRootToLoginPageButton'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('LOGIN');
-    });
 });
 

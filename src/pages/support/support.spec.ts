@@ -12,6 +12,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
 import { SupportPage } from '../support/support';
+import { ComponentsModule } from '../../components/components.module';
 
 import { } from 'jasmine';
 
@@ -43,7 +44,8 @@ describe('SupportPage', () => {
             declarations: [SupportPage],
             imports: [
                 IonicModule.forRoot(SupportPage),
-                AngularFireModule.initializeApp(environment.firebase)
+                AngularFireModule.initializeApp(environment.firebase),
+                ComponentsModule
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
@@ -56,7 +58,7 @@ describe('SupportPage', () => {
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
             ]
-        })
+        }).compileComponents();
     }));
 
     beforeEach(() => {

@@ -82,11 +82,11 @@ describe('ProfileUpdatePage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof ProfileUpdatePage).toBe(true);
     });
 
-    fit('should be titled Update Profile', () => {
+    it('should be titled Update Profile', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#UpdateProfileTitle'));
@@ -94,7 +94,7 @@ describe('ProfileUpdatePage', () => {
         expect(el).toContain('Update Profile')
     });
 
-    fit('should display profile photo if not updating profile photo', () => {
+    it('should display profile photo if not updating profile photo', () => {
         component.updatingProfilePhoto = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -104,7 +104,7 @@ describe('ProfileUpdatePage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display upload component if updating profile photo', () => {
+    it('should display upload component if updating profile photo', () => {
         component.updatingProfilePhoto = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -114,7 +114,7 @@ describe('ProfileUpdatePage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display form', () => {
+    it('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
@@ -122,7 +122,7 @@ describe('ProfileUpdatePage', () => {
         expect(el).toContain('UPDATE');
     });
 
-    fit('should enable uploader component to update profile photo', () => {
+    it('should enable uploader component to update profile photo', () => {
         component.updateProfilePhoto();
         fixture.detectChanges();
         let de: DebugElement;

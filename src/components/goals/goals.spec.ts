@@ -40,7 +40,7 @@ describe('GoalsComponent', () => {
             declarations: [GoalsComponent],
             imports: [
                 IonicModule.forRoot(GoalsComponent),
-                AngularFireModule.initializeApp(environment.firebase)
+                AngularFireModule.initializeApp(environment.firebase),
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
