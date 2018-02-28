@@ -1,6 +1,11 @@
 import { Component, ViewChild, ElementRef, Input } from '@angular/core';
 
+import { LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+
+import { Observable } from 'rxjs/Observable';
+
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import Cropper from 'cropperjs';
 import moment from 'moment';
@@ -19,13 +24,21 @@ export class UploadComponent {
   image: any;
 
   constructor(
-    private camera: Camera
+    private loadingCtrl: LoadingController,
+    private camera: Camera,
+    private firebase: FirebaseProvider
   ) {
     console.log("Hello Upload Component");
   }
 
   ngAfterViewInit() {
     console.log("Content type is " + this.contentType);
+    this.setSourceType();
+  }
+
+  setSourceType() {
+    if (this.contentType == "camera") this.sourceType = this.camera.PictureSourceType.CAMERA;
+    if (this.contentType == "library") this.sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
   }
 
   getPicture() {
@@ -64,5 +77,27 @@ export class UploadComponent {
     });
   }
 
+  uploadPhoto() {
+    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+    loading.present();
+    this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
+    let path = 'content/' + this.firebase.user.uid + '/images/profile/';
+    this.store(path, this.image).subscribe((snapshot) => {
+      let photo = snapshot.downloadURL;
+      loading.dismiss();
+    });
+  }
+
+  store(path, obj) {
+    return Observable.create((observer) => {
+      let myPath = firebase.storage().ref(path);
+      return myPath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
+        then(function (snapshot) {
+          observer.next(snapshot);
+        }).catch((error: any) => {
+          observer.next(error);
+        });
+    });
+  }
 
 }

@@ -1,3 +1,14 @@
 <div>
-Upload Component
+    <div text-center>
+        <img #imageSrc/>
+    </div>
+    <div text-center>
+        <img *ngIf="postImage" width="80%" border="black" border-width="2px" class="full-image" [src]="postImage">
+        <br>
+    </div>
+    <ion-row>
+        <ion-col text-center>
+            <button id="UploadPhotoButton" ion-button (click)="uploadPhoto()" type="submit" round large full>UPLOAD</button>
+        </ion-col>
+    </ion-row>
 </div>

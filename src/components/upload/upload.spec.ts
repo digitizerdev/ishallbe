@@ -82,5 +82,15 @@ describe('UploadComponent', () => {
         expect(component instanceof UploadComponent).toBe(true);
     });
 
+    fit('should set source type after view initializes', () => {
+        spyOn(component, 'setSourceType');
+        component.ngAfterViewInit()
+        expect(component.setSourceType).toHaveBeenCalled();
+    });
+
+    fit('should be able to upload photos', () => {
+        expect(component.uploadPhoto).toBeDefined();
+        expect(component.store).toBeDefined();
+    });
 });
 
