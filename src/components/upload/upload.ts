@@ -34,6 +34,7 @@ export class UploadComponent {
   ngAfterViewInit() {
     console.log("Content type is " + this.contentType);
     this.setSourceType();
+    this.getPicture();
   }
 
   setSourceType() {
