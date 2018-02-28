@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 
 import { IonicModule, Platform, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
+import { File } from '@ionic-native/file';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -22,6 +23,7 @@ import {
     NavParamsMock,
     ActionSheetControllerMock,
     CameraMock,
+    FileMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 import { Action } from 'rxjs/scheduler/Action';
@@ -34,6 +36,7 @@ describe('ProfileUpdatePage', () => {
     let navParams: NavParams;
     let actionSheet: ActionSheetController;
     let camera: Camera;
+    let file: File;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -58,6 +61,7 @@ describe('ProfileUpdatePage', () => {
                 { provide: NavParams, useClass: NavParamsMock },
                 { provide: ActionSheetController, useClass: ActionSheetControllerMock },
                 { provide: Camera, useClass: CameraMock },
+                { provide: File, useClass: FileMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -76,6 +80,7 @@ describe('ProfileUpdatePage', () => {
         navParams = TestBed.get(NavParams);
         actionSheet = TestBed.get(ActionSheetController);
         camera = TestBed.get(Camera);
+        file = TestBed.get(File);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -89,6 +94,7 @@ describe('ProfileUpdatePage', () => {
         navParams = null;
         actionSheet = null;
         camera = null;
+        file = null;
         firebase = null;
         afa = null;
         afs = null;

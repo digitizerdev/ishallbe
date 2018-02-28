@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef, Input } from '@angular/core';
 
 import { LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { File } from '@ionic-native/file';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -26,6 +27,7 @@ export class UploadComponent {
   constructor(
     private loadingCtrl: LoadingController,
     private camera: Camera,
+    private file: File,
     private firebase: FirebaseProvider
   ) {
     console.log("Hello Upload Component");
@@ -100,5 +102,7 @@ export class UploadComponent {
         });
     });
   }
+
+
 
 }
