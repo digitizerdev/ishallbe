@@ -6,6 +6,7 @@ import { File } from '@ionic-native/file';
 
 import { Observable } from 'rxjs/Observable';
 
+import firebase from 'firebase';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import Cropper from 'cropperjs';
