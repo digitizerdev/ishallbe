@@ -80,12 +80,15 @@ export class UploadComponent {
     });
   }
 
-  uploadPhoto() {
+  upload() {
     let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
     loading.present();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
-    let path = 'content/' + this.firebase.user.uid + '/images/profile/';
-    this.store(path, this.image).subscribe((snapshot) => {
+    let uploadPath = 'content/' + this.firebase.user.uid + '/images/profile/';
+    console.log("Upload path is " + uploadPath);
+    this.store(uploadPath, this.image).subscribe((snapshot) => {
+      console.log("Finished storing media");
+      console.log(snapshot);
       let photo = snapshot.downloadURL;
       loading.dismiss();
     });
@@ -93,8 +96,8 @@ export class UploadComponent {
 
   store(path, obj) {
     return Observable.create((observer) => {
-      let myPath = firebase.storage().ref(path);
-      return myPath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
+      let storagePath = firebase.storage().ref(path);
+      return storagePath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
         then(function (snapshot) {
           observer.next(snapshot);
         }).catch((error: any) => {
