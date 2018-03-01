@@ -137,6 +137,13 @@ export class ProfileUpdatePage {
     actionSheet.present();
   }
 
+  setProfilePhoto(content) {
+    console.log("Set profile photo triggered");
+    console.log(content);
+    this.user.photo = content;
+    this.updatingProfilePhoto = false;
+  }
+
   errorHandler(error) {
     let alert = this.alertCtrl.create({
       title: 'Fail',

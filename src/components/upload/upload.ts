@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 
 import { LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -20,6 +20,7 @@ export class UploadComponent {
   @ViewChild('imageSrc') imageElement: ElementRef;
 
   @Input('method') contentType;
+  @Output() uploaded = new EventEmitter();
   sourceType: any;
   cameraOptions: any;
   cropperInstance: any;
@@ -90,7 +91,8 @@ export class UploadComponent {
     this.store(uploadPath, this.image).subscribe((snapshot) => {
       console.log("Finished storing media");
       console.log(snapshot);
-      let photo = snapshot.downloadURL;
+      let content = snapshot.downloadURL;
+      this.uploaded.emit(content);
       loading.dismiss();
     });
   }
