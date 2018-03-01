@@ -16,7 +16,7 @@
       <img class="avatar" src="{{ user?.photo }}">
     </div>
   </div>
-  <upload [method]="imageRetrievalMethod" *ngIf="updatingProfilePhoto"></upload>
+  <upload [method]="imageRetrievalMethod" *ngIf="updatingProfilePhoto" padding></upload>
   <form *ngIf="!updatingProfilePhoto" novalidate padding text-center>
     <ion-list no-lines>
       <ion-item class="appForm">
@@ -28,7 +28,7 @@
       <br>
       <ion-item class="appForm">
         <ion-label stacked text-left padding-left> <ion-icon name="logo-linkedin" color="primary"></ion-icon></ion-label>
-        <ion-input [(ngModel)]="profileForm.linkedin" name="linkedin" type="text" #linkedin="ngModel" spellcheck="false" autocapitalize="off">
+        <ion-input [(ngModel)]="profileForm.linkedin" placeholder="linkedin.com/username" name="linkedin" type="text" #linkedin="ngModel" spellcheck="false" autocapitalize="off">
           <ion-icon name="logo-linkedin"></ion-icon>
         </ion-input>
       </ion-item>
@@ -41,7 +41,7 @@
       <br>
       <ion-item class="appForm">
           <ion-label stacked text-left padding-left> <ion-icon name="logo-instagram" color="primary"> :</ion-icon></ion-label>
-        <ion-input [(ngModel)]="profileForm.instagram" name="instagram" type="text" #instagram="ngModel" spellcheck="false" autocapitalize="off">
+        <ion-input [(ngModel)]="profileForm.instagram" placeholder="instagram.com/username" name="instagram" type="text" #instagram="ngModel" spellcheck="false" autocapitalize="off">
         </ion-input>
       </ion-item>
       <br>

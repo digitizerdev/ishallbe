@@ -102,7 +102,5 @@ export class UploadComponent {
         });
     });
   }
-
-
-
 }
+
