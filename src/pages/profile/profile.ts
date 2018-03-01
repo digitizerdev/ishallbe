@@ -49,7 +49,8 @@ export class ProfilePage {
   }
 
   openLink(link) {
-    open(link);
+    let hyperlink = "https://" + link;
+    open(hyperlink);
   }
 
   segmentChanged() {

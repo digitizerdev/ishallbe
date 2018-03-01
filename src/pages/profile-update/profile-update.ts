@@ -25,7 +25,7 @@ export class ProfileUpdatePage {
   submitted = false;
   loaded = false;
   updatingProfilePhoto = false;
-  imageRetrievalMethod = "default";
+  imageRetrievalMethod: any;
 
   constructor(
     private navCtrl: NavController,
@@ -64,11 +64,11 @@ export class ProfileUpdatePage {
 
   populateEmptySocialFields() {
     return Observable.create((observer: any) => {
-      if (!this.profileForm.linkedin) this.profileForm.linkedin = "https://linkedin.com/in/";
+      if (!this.profileForm.linkedin) this.profileForm.linkedin = "linkedin.com/in/";
       else this.profileForm.linkedin = this.user.social.linkedin;
-      if (!this.profileForm.instagram) this.profileForm.instagram = "https://instagram.com/";
+      if (!this.profileForm.instagram) this.profileForm.instagram = "instagram.com/";
       else this.profileForm.instagram = this.user.social.instagram;
-      if (!this.profileForm.twitter) this.profileForm.twitter = "https://twitter.com/";
+      if (!this.profileForm.twitter) this.profileForm.twitter = "twitter.com/";
       else this.profileForm.twitter = this.user.social.twitter;
       observer.next();
     });
@@ -78,38 +78,22 @@ export class ProfileUpdatePage {
     let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
     loading.present();
     this.submitted = true;
-    this.clearEmptySocialFields().subscribe(() => {
-      this.loadProfile().subscribe(() => {
-        this.updateUser().then(() => {
-          loading.dismiss();
-          this.navCtrl.setRoot(ProfilePage);
-        });
-      });
+    this.loadProfile();
+    this.updateUser().then(() => {
+      loading.dismiss();
+      this.navCtrl.setRoot(ProfilePage);
     });
   }
 
   loadProfile() {
-    return Observable.create((observer: any) => {
-      console.log("Loading form");
-      console.log(this.profileForm);
-      this.user.name = this.profileForm.name;
-      this.user.social = {
-        linkedin: this.profileForm.linkedin,
-        twitter: this.profileForm.twitter,
-        instagram: this.profileForm.instagram
-      };
-      this.user.bio = this.profileForm.bio;
-      observer.next();
-    });
-  }
-
-  clearEmptySocialFields() {
-    return Observable.create((observer: any) => {
-      if (this.profileForm.linkedin == "https://linkedin.com/in/") this.profileForm.linkedin = "";
-      if (this.profileForm.instagram == "https://instagram.com/") this.profileForm.instagram = "";
-      if (this.profileForm.twitter == "https://twitter.com/") this.profileForm.twitter = "";
-      observer.next();
-    });
+    if (this.profileForm.linkedin == "linkedin.com/in/") this.user.social.linkedin = "";
+    else this.user.social.linkedin = this.profileForm.linkedin;
+    if (this.profileForm.instagram == "instagram.com/") this.user.social.instagram = "";
+    else this.user.social.instagram = this.profileForm.instagram;
+    if (this.profileForm.twitter == "twitter.com/") this.user.social.twitter = "";
+    else this.user.social.twitter = this.profileForm.twitter;
+    this.user.name = this.profileForm.name;
+    this.user.bio = this.profileForm.bio;
   }
 
   updateUser() {

@@ -27,26 +27,26 @@
       </ion-item>
       <br>
       <ion-item class="appForm">
-        <ion-label> <ion-icon name="logo-linkedin" color="primary"> :</ion-icon></ion-label>
+        <ion-label stacked text-left padding-left> <ion-icon name="logo-linkedin" color="primary"></ion-icon></ion-label>
         <ion-input [(ngModel)]="profileForm.linkedin" name="linkedin" type="text" #linkedin="ngModel" spellcheck="false" autocapitalize="off">
           <ion-icon name="logo-linkedin"></ion-icon>
         </ion-input>
       </ion-item>
       <br>
       <ion-item class="appForm">
-          <ion-label> <ion-icon name="logo-twitter" color="primary"> :</ion-icon></ion-label>
-          <ion-input [(ngModel)]="profileForm.twitter" name="twitter" type="text" #twitter="ngModel" spellcheck="false" autocapitalize="off">
+          <ion-label stacked text-left padding-left> <ion-icon name="logo-twitter" color="primary"></ion-icon></ion-label>
+          <ion-input [(ngModel)]="profileForm.twitter" placeholder="twitter.com/username" name="twitter" type="text" #twitter="ngModel" spellcheck="false" autocapitalize="off">
         </ion-input>
       </ion-item>
       <br>
       <ion-item class="appForm">
-          <ion-label> <ion-icon name="logo-instagram" color="primary"> :</ion-icon></ion-label>
+          <ion-label stacked text-left padding-left> <ion-icon name="logo-instagram" color="primary"> :</ion-icon></ion-label>
         <ion-input [(ngModel)]="profileForm.instagram" name="instagram" type="text" #instagram="ngModel" spellcheck="false" autocapitalize="off">
         </ion-input>
       </ion-item>
       <br>
       <ion-item class="appFormTextArea">
-        <ion-label color="primary" text-leftt><b>Bio :</b></ion-label>
+        <ion-label color="primary" text-left no-padding-right><b>Bio :</b></ion-label>
         <ion-textarea [attr.rows]="4" autosize [(ngModel)]="profileForm.bio" name="bio" type="text" #bio="ngModel" spellcheck="false"
           autocapitalize="off" maxlength="250">
         </ion-textarea>
