@@ -48,19 +48,8 @@ export class ProfilePage {
     });
   }
 
-  openSocial(socialNetwork) {
-    if (socialNetwork == 'instagram') {
-      let instagramLink = 'https://instagram.com/' + this.user.social.instagram;
-      open(instagramLink);
-    }
-    if (socialNetwork == 'twitter') {
-      let twitterLink = 'https://twitter.com/' + this.user.social.twitter;
-      open(twitterLink);
-    }
-    if (socialNetwork == 'linkedin') {
-      let linkedinLink = 'https://linkedin.com/in/' + this.user.social.linkedin;
-      open(linkedinLink);
-    }
+  openLink(link) {
+    open(link);
   }
 
   segmentChanged() {

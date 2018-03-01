@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController, ActionSheetController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, ActionSheetController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { ProfilePage } from '../profile/profile';
@@ -15,7 +15,7 @@ export class ProfileUpdatePage {
 
   user: any;
   photo: any;
-  editProfileForm: {
+  profileForm: {
     name?: string,
     bio?: string,
     instagram?: string,
@@ -41,50 +41,80 @@ export class ProfileUpdatePage {
     this.photo = this.navParams.get('photo');
     this.user = this.firebase.user;
     if (this.photo) this.user.photo = this.photo;
-      this.loadProfileForm().subscribe(() => {
+    this.loadProfileForm().subscribe(() => {
+      this.populateEmptySocialFields().subscribe(() => {
         this.loaded = true;
-      })
+        console.log("Edit profile form is");
+        console.log(this.profileForm);
+      });
+    })
   }
 
 
   loadProfileForm() {
     return Observable.create((observer: any) => {
-      if (!this.user.social) {
-        this.editProfileForm.instagram = "";
-        this.editProfileForm.twitter = "";
-        this.editProfileForm.linkedin = "";
-      } else {
-        this.editProfileForm.instagram = this.user.social.instagram;
-        this.editProfileForm.twitter = this.user.social.twitter;
-        this.editProfileForm.linkedin = this.user.social.linkedin;
-      }
-      this.editProfileForm.name = this.user.name;
-      this.editProfileForm.bio = this.user.bio
+      this.profileForm.linkedin = this.user.social.linkedin;
+      this.profileForm.instagram = this.user.social.instagram;
+      this.profileForm.twitter = this.user.social.twitter;
+      this.profileForm.name = this.user.name;
+      this.profileForm.bio = this.user.bio
       observer.next();
     });
   }
 
-  submit(form) {
-    this.submitted = true;
-    this.editProfileForm = form;
+  populateEmptySocialFields() {
+    return Observable.create((observer: any) => {
+      if (!this.profileForm.linkedin) this.profileForm.linkedin = "https://linkedin.com/in/";
+      else this.profileForm.linkedin = this.user.social.linkedin;
+      if (!this.profileForm.instagram) this.profileForm.instagram = "https://instagram.com/";
+      else this.profileForm.instagram = this.user.social.instagram;
+      if (!this.profileForm.twitter) this.profileForm.twitter = "https://twitter.com/";
+      else this.profileForm.twitter = this.user.social.twitter;
+      observer.next();
+    });
+  }
+
+  submit() {
     let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
     loading.present();
-    this.updateUser().then(() => {
-        loading.dismiss();
-        this.navCtrl.setRoot(ProfilePage);
+    this.submitted = true;
+    this.clearEmptySocialFields().subscribe(() => {
+      this.loadProfile().subscribe(() => {
+        this.updateUser().then(() => {
+          loading.dismiss();
+          this.navCtrl.setRoot(ProfilePage);
+        });
       });
+    });
+  }
+
+  loadProfile() {
+    return Observable.create((observer: any) => {
+      console.log("Loading form");
+      console.log(this.profileForm);
+      this.user.name = this.profileForm.name;
+      this.user.social = {
+        linkedin: this.profileForm.linkedin,
+        twitter: this.profileForm.twitter,
+        instagram: this.profileForm.instagram
+      };
+      this.user.bio = this.profileForm.bio;
+      observer.next();
+    });
+  }
+
+  clearEmptySocialFields() {
+    return Observable.create((observer: any) => {
+      if (this.profileForm.linkedin == "https://linkedin.com/in/") this.profileForm.linkedin = "";
+      if (this.profileForm.instagram == "https://instagram.com/") this.profileForm.instagram = "";
+      if (this.profileForm.twitter == "https://twitter.com/") this.profileForm.twitter = "";
+      observer.next();
+    });
   }
 
   updateUser() {
-      this.user.name = this.editProfileForm.name;
-      this.user.social = {
-        linkedin: this.editProfileForm.linkedin,
-        twitter: this.editProfileForm.twitter,
-        instagram: this.editProfileForm.instagram
-      };
-      this.user.bio = this.editProfileForm.bio;
-      let path = "users/" + this.user.uid;
-      return this.firebase.afs.doc(path).update(this.user);
+    let path = "users/" + this.user.uid;
+    return this.firebase.afs.doc(path).update(this.user);
   }
 
   updateProfilePhoto() {

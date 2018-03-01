@@ -122,7 +122,7 @@ describe('ProfileUpdatePage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should enable upload if updating profile photo', () => {
+    fit('should display upload component if updating profile photo', () => {
         component.updatingProfilePhoto = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -132,7 +132,9 @@ describe('ProfileUpdatePage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display form', () => {
+    fit('should display form if not updating profile photo', () => {
+        component.updatingProfilePhoto = false;
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
