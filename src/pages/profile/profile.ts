@@ -54,7 +54,7 @@ export class ProfilePage {
 
   openLink(link) {
     let hyperlink = "https://" + link;
-    this.inAppBrowser.create(link, '_system');
+    this.inAppBrowser.create(hyperlink, '_system');
   }
 
   segmentChanged() {
