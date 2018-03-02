@@ -57,11 +57,6 @@ export class ProfilePage {
     this.inAppBrowser.create(hyperlink, '_system');
   }
 
-  segmentChanged() {
-    console.log("Segment Changed");
-    console.log(this.postType);
-  }
-
   refreshPage(refresh) {
     this.navCtrl.setRoot(this.navCtrl.getActive().component);
   }
