@@ -65,11 +65,11 @@ export class LoginPage {
     alert.present();
   }
 
-  setRootTSignupPage() {
+  setRootSignupPage() {
     this.navCtrl.setRoot(SignupPage);
   }
 
-  setRootToPasswordResetPage() {
+  setRootPasswordResetPage() {
     this.navCtrl.setRoot(PasswordResetPage);
   }
 
