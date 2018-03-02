@@ -8,16 +8,16 @@
 </ion-header>
 <ion-content>
   <br>
+  <ion-row *ngIf="!recording" padding>
+    <ion-col text-center>
+      <button (click)="startRecording()" color="secondary" ion-button icon-start round block large strong>
+        <ion-icon name="ios-microphone"></ion-icon>
+        SPEAK IT
+      </button>
+    </ion-col>
+  </ion-row>
+  <upload *ngIf="recording" (uploaded)="setProfilePhoto($event)" [method]="contentMethod" padding></upload>
   <form class="my-form" #createGoalForm="ngForm" novalidate padding>
-    <ion-row>
-      <ion-col text-center>
-        <button (click)="record()" color="secondary" ion-button icon-start round block large strong>
-          <ion-icon name="ios-microphone"></ion-icon>
-          SPEAK IT
-        </button>
-      </ion-col>
-    </ion-row>
-    <br>
     <ion-item class="appForm">
       <ion-input class="myItem" placeholder="Goal Title" [(ngModel)]="createGoalForm.title" name="title" type="text" #title="ngModel"
         spellcheck="false" autocapitalize="off" required>
@@ -38,7 +38,7 @@
     <br>
     <ion-row>
       <ion-col text-center>
-        <button (click)="pickDate()" color="danger"  ion-button icon-start round block large strong>
+        <button (click)="pickDate()" color="danger" ion-button icon-start round block large strong>
           <ion-icon name="ios-calendar"></ion-icon>
           Select Due Date
         </button>

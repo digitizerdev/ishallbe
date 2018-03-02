@@ -17,6 +17,8 @@ export class GoalCreatorPage {
   } = {};
   submitted = false;
   dueDate: any;
+  recording = false;
+  contentMethod: any;
 
   constructor(
     private datePicker: DatePicker
@@ -25,6 +27,12 @@ export class GoalCreatorPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad GoalCreatorage');
+  }
+
+  startRecording() {
+    console.log("Record triggered");
+    this.contentMethod = "audio";
+    this.recording = true;
   }
 
   pickDate() {

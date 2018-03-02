@@ -16,7 +16,7 @@
       <img class="avatar" src="{{ user?.photo }}">
     </div>
   </div>
-  <upload (uploaded)="setProfilePhoto($event)" [method]="imageRetrievalMethod" *ngIf="updatingProfilePhoto" padding></upload>
+  <upload *ngIf="updatingProfilePhoto" (uploaded)="setProfilePhoto($event)" [method]="imageRetrievalMethod" padding></upload>
   <form *ngIf="!updatingProfilePhoto" novalidate padding text-center>
     <ion-list no-lines>
       <ion-item class="appForm">

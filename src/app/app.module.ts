@@ -11,6 +11,7 @@ import { Camera } from '@ionic-native/camera';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
+import { Media } from '@ionic-native/media';
 import { DatePicker } from '@ionic-native/date-picker';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireModule } from 'angularfire2';
@@ -118,6 +119,7 @@ Pro.init('69d144ed', {
     EmailComposer,
     Push,
     File,
+    Media,
     DatePicker,
     Facebook,
     Camera,

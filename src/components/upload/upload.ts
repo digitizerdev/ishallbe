@@ -3,6 +3,7 @@ import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@
 import { LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
+import { Media, MediaObject } from '@ionic-native/media';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -25,12 +26,16 @@ export class UploadComponent {
   cameraOptions: any;
   cropperInstance: any;
   image: any;
+  audio: any;
   contentBlob: any;
+  gettingPicture = false;
+  recording = false;
 
   constructor(
     private loadingCtrl: LoadingController,
     private camera: Camera,
     private file: File,
+    private media: Media,
     private firebase: FirebaseProvider
   ) {
     console.log("Hello Upload Component");
@@ -38,16 +43,14 @@ export class UploadComponent {
 
   ngAfterViewInit() {
     console.log("Content type is " + this.contentType);
-    this.setSourceType();
-    this.getPicture();
-  }
-
-  setSourceType() {
-    if (this.contentType == "camera") this.sourceType = this.camera.PictureSourceType.CAMERA;
-    if (this.contentType == "library") this.sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
+    if (this.contentType == "audio") this.record();
+    else this.getPicture();
   }
 
   getPicture() {
+    this.gettingPicture = true;
+    if (this.contentType == "camera") this.sourceType = this.camera.PictureSourceType.CAMERA;
+    if (this.contentType == "library") this.sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
     this.camera.getPicture(this.getCameraOptions()).then((image) => {
       this.imageElement.nativeElement.src = image;
       this.cropImage();
@@ -110,6 +113,20 @@ export class UploadComponent {
     });
   }
 
+  record() {
+    console.log("Record triggered");
+    this.recording = true;
+    this.file.createFile(this.file.tempDirectory, 'my_file.m4a', true).then(() => {
+      let file = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.m4a');
+      file.startRecord();
+      window.setTimeout(() => file.stopRecord(), 10000);
+    });
+  }
+
+  stopRecording() {
+    this.audio.stopRecord();
+  }
+
   uploadBlob() {
     console.log("Upload blob triggered");
     return Observable.create((observer) => {
@@ -150,6 +167,6 @@ export class UploadComponent {
             }, (e) => { console.debug(e); observer.error(e); });
         }, (e) => { console.debug(e); observer.error(e); });
     });
-}
+  }
 }
 

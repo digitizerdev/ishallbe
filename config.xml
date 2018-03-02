@@ -127,5 +127,5 @@
     <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
     <engine name="android" spec="6.3.0" />
     <engine name="ios" spec="4.5.4" />
-    <plugin name="cordova-plugin-file" spec="^5.0.0" />
+    <plugin name="cordova-plugin-file" spec="^6.0.1" />
 </widget>

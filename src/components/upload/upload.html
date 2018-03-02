@@ -1,14 +1,19 @@
 <div>
-    <div text-center>
-        <img #imageSrc/>
+    <div *ngIf="gettingPicture">
+        <div text-center>
+            <img #imageSrc/>
+        </div>
+        <div text-center>
+            <img *ngIf="postImage" width="80%" border="black" border-width="2px" class="full-image" [src]="postImage">
+            <br>
+        </div>
+        <ion-row>
+            <ion-col text-center padding>
+                <button id="UploadButton" ion-button (click)="upload()" type="submit" round large full>UPLOAD</button>
+            </ion-col>
+        </ion-row>
     </div>
-    <div text-center>
-        <img *ngIf="postImage" width="80%" border="black" border-width="2px" class="full-image" [src]="postImage">
-        <br>
+    <div *ngIf="recording">
+        Now Recording
     </div>
-    <ion-row>
-        <ion-col text-center padding>
-            <button id="UploadButton" ion-button (click)="upload()" type="submit" round large full>UPLOAD</button>
-        </ion-col>
-    </ion-row>
 </div>
