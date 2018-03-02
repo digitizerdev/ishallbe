@@ -25,6 +25,7 @@ export class UploadComponent {
   cameraOptions: any;
   cropperInstance: any;
   image: any;
+  contentBlob: any;
 
   constructor(
     private loadingCtrl: LoadingController,
@@ -108,5 +109,44 @@ export class UploadComponent {
         });
     });
   }
+
+  uploadBlob() {
+    return Observable.create((observer) => {
+      let contentPath = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 });
+      const readFile: any = window['resolveLocalFileSystemURL'];
+        readFile(contentPath, (fileEntry) => {
+            fileEntry.file((file) => {
+                const fileReader = new FileReader();
+                fileReader.onloadend = (result: any) => {
+                    let arrayBuffer = result.target.result;
+                    let blob = new Blob([new Uint8Array(arrayBuffer)], { type: 'image/jpeg' });
+                    let uploadPath = 'content/' + this.firebase.user.uid + '/images/profile/';
+                    var storageRef = firebase.storage().ref(uploadPath);
+                    var uploadTask = storageRef.put(blob);
+                    this.contentBlob = blob;
+                    console.log('Upload started:');
+                    uploadTask.on('state_changed', (snapshot) => {
+                        let percent = uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes * 100;
+                        console.log(percent + "% done");
+                    }, (e) => {
+                        console.debug(e);
+                        console.debug('profileImageStorage:end');
+                        observer.error(e);
+                    }, () => {
+                        var downloadURL = uploadTask.snapshot.downloadURL;
+                        console.info('Profile pic URL:' + downloadURL);
+                        console.info('Profile pic URI:' + contentPath);
+                        console.debug('profileImageStorage:end');
+                        observer.next(downloadURL);
+                    });
+                };
+                fileReader.onerror = (e: any) => {
+                    observer.error(e);
+                };
+                fileReader.readAsArrayBuffer(file);
+            }, (e) => { console.debug(e); observer.error(e); });
+        }, (e) => { console.debug(e); observer.error(e); });
+    });
+}
 }
 
