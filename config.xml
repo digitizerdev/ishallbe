@@ -125,7 +125,10 @@
         <variable name="MAX_STORE" value="2" />
     </plugin>
     <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
+    <plugin name="cordova-plugin-file" spec="^6.0.1" />
+    <plugin name="cordova-plugin-media" spec="^5.0.2">
+        <variable name="KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE" value="NO" />
+    </plugin>
     <engine name="android" spec="6.3.0" />
     <engine name="ios" spec="4.5.4" />
-    <plugin name="cordova-plugin-file" spec="^6.0.1" />
 </widget>
