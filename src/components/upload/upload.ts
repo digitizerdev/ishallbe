@@ -111,8 +111,11 @@ export class UploadComponent {
   }
 
   uploadBlob() {
+    console.log("Upload blob triggered");
     return Observable.create((observer) => {
-      let contentPath = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 });
+      let contentPath = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).to
+      console.log("Got cropped image");
+      console.log(contentPath);
       const readFile: any = window['resolveLocalFileSystemURL'];
         readFile(contentPath, (fileEntry) => {
             fileEntry.file((file) => {

@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { HomePage } from '../home/home';
 import { ProfileUpdatePage } from '../profile-update/profile-update';
@@ -23,6 +26,7 @@ export class ProfilePage {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
+    private inAppBrowser: InAppBrowser,
     private firebase: FirebaseProvider
   ) {
   }
@@ -50,7 +54,7 @@ export class ProfilePage {
 
   openLink(link) {
     let hyperlink = "https://" + link;
-    open(hyperlink);
+    this.inAppBrowser.create(link, '_system');
   }
 
   segmentChanged() {

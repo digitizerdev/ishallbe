@@ -10,12 +10,12 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 export class AboutPage {
 
   constructor(
-    public iab: InAppBrowser
+    public inAppBrowser: InAppBrowser
   ) {
   }
 
   openLink(){
-    this.iab.create('https://iShallBe.co', '_system');
+    this.inAppBrowser.create('https://iShallBe.co', '_system');
   }
   
 }
