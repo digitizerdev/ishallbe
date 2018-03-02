@@ -140,8 +140,13 @@ export class ProfileUpdatePage {
   setProfilePhoto(content) {
     console.log("Set profile photo triggered");
     console.log(content);
+    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+    loading.present();    
     this.user.photo = content;
-    this.updatingProfilePhoto = false;
+    this.updateUser().then(() => {
+      loading.dismiss();
+      this.updatingProfilePhoto = false;
+    })
   }
 
   errorHandler(error) {
