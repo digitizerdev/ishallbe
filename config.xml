@@ -106,6 +106,10 @@
         <variable name="CAMERA_USAGE_DESCRIPTION" value="Access to Camera" />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Access to Library" />
     </plugin>
+    <plugin name="cordova-plugin-media" spec="^5.0.2">
+        <variable name="KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE" value="NO" />
+        <variable name="NSMicrophoneUsageDescription" value="Access to Microphone" />
+    </plugin>
     <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
         <variable name="APP_ID" value="1312020948874676" />
         <variable name="APP_NAME" value="iShallBe" />
@@ -126,9 +130,6 @@
     </plugin>
     <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
-    <plugin name="cordova-plugin-media" spec="^5.0.2">
-        <variable name="KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE" value="NO" />
-    </plugin>
     <engine name="android" spec="6.3.0" />
     <engine name="ios" spec="4.5.4" />
 </widget>

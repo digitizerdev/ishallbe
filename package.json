@@ -139,7 +139,8 @@
       },
       "cordova-plugin-datepicker": {},
       "cordova-plugin-media": {
-        "KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE": "NO"
+        "KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE": "NO",
+        "NSMicrophoneUsageDescription": "Access to Microphone"
       }
     },
     "platforms": [
