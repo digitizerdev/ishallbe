@@ -8,6 +8,7 @@ import { File } from '@ionic-native/file';
 import { DatePicker } from '@ionic-native/date-picker';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { Media } from '@ionic-native/media';
 import { Observable } from 'rxjs/Observable';
 
 import { HomePage } from '../src/pages/home/home';
@@ -255,3 +256,14 @@ export class DatePickerMock extends DatePicker {
     });
   }
 }
+
+export class MediaMock extends Media {
+  _getPortal(): any { return {} };
+
+  public create(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+}
+

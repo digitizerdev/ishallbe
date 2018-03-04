@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { IonicModule, Platform, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
+import { Media } from '@ionic-native/media';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -13,6 +14,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
 import { ProfileUpdatePage } from '../profile-update/profile-update';
+
 import { ComponentsModule } from '../../components/components.module';
 
 import { } from 'jasmine';
@@ -21,6 +23,7 @@ import {
     PlatformMock,
     NavMock,
     NavParamsMock,
+    MediaMock,
     ActionSheetControllerMock,
     CameraMock,
     FileMock,
@@ -34,6 +37,7 @@ describe('ProfileUpdatePage', () => {
     let platform: Platform;
     let nav: NavController;
     let navParams: NavParams;
+    let media: Media;
     let actionSheet: ActionSheetController;
     let camera: Camera;
     let file: File;
@@ -59,6 +63,7 @@ describe('ProfileUpdatePage', () => {
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
                 { provide: NavParams, useClass: NavParamsMock },
+                { provide: Media, useClass: MediaMock },
                 { provide: ActionSheetController, useClass: ActionSheetControllerMock },
                 { provide: Camera, useClass: CameraMock },
                 { provide: File, useClass: FileMock },
@@ -78,6 +83,7 @@ describe('ProfileUpdatePage', () => {
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
         navParams = TestBed.get(NavParams);
+        media = TestBed.get(Media);
         actionSheet = TestBed.get(ActionSheetController);
         camera = TestBed.get(Camera);
         file = TestBed.get(File);
@@ -92,6 +98,7 @@ describe('ProfileUpdatePage', () => {
         platform = null;
         nav = null;
         navParams = null;
+        media = null;
         actionSheet = null;
         camera = null;
         file = null;

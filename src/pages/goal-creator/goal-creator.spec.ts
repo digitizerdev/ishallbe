@@ -3,7 +3,10 @@ import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { IonicModule, Platform, NavController } from 'ionic-angular';
+import { Camera } from '@ionic-native/camera';
 import { DatePicker } from '@ionic-native/date-picker';
+import { File } from '@ionic-native/file';
+import { Media } from '@ionic-native/media';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -13,12 +16,17 @@ import { environment } from '../../environments/environment';
 
 import { GoalCreatorPage } from '../goal-creator/goal-creator';
 
+import { ComponentsModule } from '../../components/components.module';
+
 import { } from 'jasmine';
 
 import {
     PlatformMock,
     NavMock,
+    CameraMock,
     DatePickerMock,
+    FileMock,
+    MediaMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
@@ -27,7 +35,10 @@ describe('GoalCreatorPage', () => {
     let component;
     let platform: Platform;
     let nav: NavController;
+    let camera: Camera;
     let datePicker: DatePicker;
+    let file: File;
+    let media: Media;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -43,12 +54,16 @@ describe('GoalCreatorPage', () => {
             declarations: [GoalCreatorPage],
             imports: [
                 IonicModule.forRoot(GoalCreatorPage),
-                AngularFireModule.initializeApp(environment.firebase)
+                AngularFireModule.initializeApp(environment.firebase),
+                ComponentsModule
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
+                { provide: Camera, useClass: CameraMock },
                 { provide: DatePicker, useClass: DatePickerMock },
+                { provide: File, useClass: FileMock },
+                { provide: Media, useClass: MediaMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -56,7 +71,7 @@ describe('GoalCreatorPage', () => {
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
             ]
-        })
+        }).compileComponents();
     }));
 
     beforeEach(() => {
@@ -64,7 +79,10 @@ describe('GoalCreatorPage', () => {
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
+        camera = TestBed.get(Camera);
         datePicker = TestBed.get(DatePicker);
+        file = TestBed.get(File);
+        media = TestBed.get(Media);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -75,7 +93,10 @@ describe('GoalCreatorPage', () => {
         component = null;
         platform = null;
         nav = null;
+        camera = null;
         datePicker = null;
+        file = null;
+        media = null;
         firebase = null;
         afa = null;
         afs = null;
@@ -83,6 +104,26 @@ describe('GoalCreatorPage', () => {
 
     it('should be created', () => {
         expect(component instanceof GoalCreatorPage).toBe(true);
+    });
+
+    it('should display SpeakItButton if not recording', () => {
+        component.recording = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#SpeakItButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display upload component if recording', () => {
+        component.recording = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('upload'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 
     it('should be titled Create Goal', () => {

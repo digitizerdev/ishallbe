@@ -30,6 +30,9 @@ export class UploadComponent {
   contentBlob: any;
   gettingPicture = false;
   recording = false;
+  audioReady = false;
+  playbackPaused = false;
+  playingAudio = false;
 
   constructor(
     private loadingCtrl: LoadingController,
@@ -41,9 +44,9 @@ export class UploadComponent {
     console.log("Hello Upload Component");
   }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     console.log("Content type is " + this.contentType);
-    if (this.contentType == "audio") this.record();
+    if (this.contentType == "audio") this.startRecording();
     else this.getPicture();
   }
 
@@ -113,18 +116,32 @@ export class UploadComponent {
     });
   }
 
-  record() {
+  startRecording() {
     console.log("Record triggered");
     this.recording = true;
     this.file.createFile(this.file.tempDirectory, 'my_file.m4a', true).then(() => {
-      let file = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.m4a');
-      file.startRecord();
-      window.setTimeout(() => file.stopRecord(), 10000);
+      this.audio = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.m4a');
+      this.audio.startRecord();
+      window.setTimeout(() => {
+        this.stopRecording();
+      }, 10000);
     });
   }
 
   stopRecording() {
-    this.audio.stopRecord();
+      this.audio.stopRecord();
+      this.recording = false;
+      this.audioReady = true;
+  }
+
+  playAudio() {
+    this.playingAudio = true;
+    this.audio.play();
+  }
+
+  stopPlayback() {
+    this.playingAudio = false;
+    this.audio.stop();
   }
 
   uploadBlob() {

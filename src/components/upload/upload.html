@@ -13,7 +13,22 @@
             </ion-col>
         </ion-row>
     </div>
-    <div *ngIf="recording">
-        Now Recording
+    <div *ngIf="recording" text-center padding>
+        <button (click)="stopRecording" id="NowRecordingButton" color="danger" text-center ion-button icon-start round block large strong>
+            <ion-icon name="mic"></ion-icon>
+            NOW RECORDING
+        </button>
+    </div>
+    <div *ngIf="audioReady && !playingAudio" text-center padding>
+        <button (click)="playAudio" id="PlayAudioButton" color="primary" text-center ion-button icon-start round block large strong>
+            <ion-icon name="play"></ion-icon>
+            PLAY RECORDING
+        </button>
+    </div>
+    <div *ngIf="playingAudio" text-center padding>
+        <button (click)="stopPlayback" id="StopPlaybackButton" color="danger" text-center ion-button icon-start round block large strong>
+            <ion-icon name="square"></ion-icon>
+            STOP PLAYBACK
+        </button>
     </div>
 </div>

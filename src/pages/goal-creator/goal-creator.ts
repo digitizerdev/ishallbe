@@ -18,6 +18,7 @@ export class GoalCreatorPage {
   submitted = false;
   dueDate: any;
   recording = false;
+  recorded = false;
   contentMethod: any;
 
   constructor(
