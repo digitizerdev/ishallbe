@@ -120,8 +120,8 @@ export class UploadComponent {
   startRecording() {
     console.log("Started Recording");
     this.recording = true;
-    this.file.createFile(this.file.tempDirectory, 'my_file.m4a', true).then(() => {
-      const audio:  MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.m4a');
+    this.file.createFile(this.file.tempDirectory, 'temp.mp3', true).then(() => {
+      const audio:  MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'temp.mp3');
       console.log("Audio assigned to constant audio media object");
       console.log(audio);
       this.audio = audio;
@@ -169,26 +169,6 @@ export class UploadComponent {
     this.audio.stop();
   }
 
-  saveRecord1() {
-    console.log("Saving record");
-    let storageRef = firebase.storage().ref();
-    let metadata = {
-      contentType: 'audio/mp3',
-    };
-    this.file.readAsDataURL(this.audio, "test").then((file) => {
-      let voiceRef = storageRef.child('content/' + this.firebase.user.uid + '/audio/').putString(file, firebase.storage.StringFormat.DATA_URL);
-      voiceRef.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
-        console.log("uploading");
-        console.log(snapshot);
-      }, (e) => {
-        console.log("Audio Upload Error")
-        console.log(JSON.stringify(e, null, 2));
-      }, () => {
-        var downloadURL = voiceRef.snapshot.downloadURL;
-      });
-    });
-  }
-
   saveRecord() {
     console.log("Saving Record");
     const metadata = { contentType: 'audio/mp3' };
@@ -207,6 +187,26 @@ export class UploadComponent {
           resolve(downloadURL);
         });
       });
+  }
+  
+  saveRecord1() {
+    console.log("Saving record");
+    let storageRef = firebase.storage().ref();
+    let metadata = {
+      contentType: 'audio/mp3',
+    };
+    this.file.readAsDataURL(this.audio, "test").then((file) => {
+      let voiceRef = storageRef.child('content/' + this.firebase.user.uid + '/audio/').putString(file, firebase.storage.StringFormat.DATA_URL);
+      voiceRef.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
+        console.log("uploading");
+        console.log(snapshot);
+      }, (e) => {
+        console.log("Audio Upload Error")
+        console.log(JSON.stringify(e, null, 2));
+      }, () => {
+        var downloadURL = voiceRef.snapshot.downloadURL;
+      });
+    });
   }
 
   uploadBlob() {
