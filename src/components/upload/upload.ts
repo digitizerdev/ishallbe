@@ -175,8 +175,9 @@ export class UploadComponent {
     let metadata = {
       contentType: 'audio/mp3',
     };
-    let filePath = `${this.file.externalDataDirectory}` + `${this.audio}`;
-    this.file.readAsDataURL(this.file.externalDataDirectory, this.audio).then((file) => {
+    let filePath = `${this.audio.externalDataDirectory}` + `test`;
+    console.log("File path is " + filePath);
+    this.file.readAsDataURL(this.audio.externalDataDirectory, filePath).then((file) => {
       let voiceRef = storageRef.child('content/' + this.firebase.user.uid + '/audio/').putString(file, firebase.storage.StringFormat.DATA_URL);
       voiceRef.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
         console.log("uploading");
