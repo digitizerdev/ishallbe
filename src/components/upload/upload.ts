@@ -140,7 +140,7 @@ export class UploadComponent {
       console.log("Status of this.audio updated");
       console.log(status);
       if (status == 4 && this.playingAudio) {
-        console.log(this.stopPlayback);
+        this.stopPlayback();
       }
     });
   }
