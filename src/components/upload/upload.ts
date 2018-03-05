@@ -28,6 +28,7 @@ export class UploadComponent {
   image: any;
   audio: any;
   contentBlob: any;
+  duration: any;
   gettingPicture = false;
   recording = false;
   audioReady = false;
@@ -135,6 +136,8 @@ export class UploadComponent {
 
   stopRecording() {
       console.log("Stopped Recording");
+      this.duration = this.audio.getDuration();
+      console.log("Audio Duration: " + this.duration);
       this.recording = false;
       this.audioReady = true;
       this.audio.stopRecord();
@@ -148,11 +151,10 @@ export class UploadComponent {
   }
 
   transitionAudio() {
-    let duration = this.audio.getDuration();
-    console.log(duration);
+    let audioDuration = this.duration * 1000;
     window.setTimeout(() => {
       if (this.playingAudio) this.stopPlayback();
-    }, duration);
+    }, audioDuration);
   }
 
   stopPlayback() {
