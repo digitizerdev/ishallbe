@@ -117,11 +117,17 @@ export class UploadComponent {
   }
 
   startRecording() {
-    console.log("Record triggered");
+    console.log("Started Recording");
     this.recording = true;
     this.file.createFile(this.file.tempDirectory, 'my_file.m4a', true).then(() => {
       this.audio = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.m4a');
-      this.audio.startRecord();
+      this.audio.startRecord().then((data) => {
+        console.log("Start Recording Data");
+        console.log(data);
+      }, (error) => {
+        console.error("Start Recording Error");
+        console.error(error);
+      });
       window.setTimeout(() => {
         this.stopRecording();
       }, 10000);
@@ -129,19 +135,40 @@ export class UploadComponent {
   }
 
   stopRecording() {
-      this.audio.stopRecord();
+      console.log("Stopped Recording")
+      this.audio.stopRecord().then((data) => {
+        console.log("Stop Recording Data");
+        console.log(data);
+      }, (error) => {
+        console.error("Stop Recording Error");
+        console.error(error);
+      });
       this.recording = false;
       this.audioReady = true;
   }
 
   playAudio() {
+    console.log("Playing Audio");
     this.playingAudio = true;
-    this.audio.play();
+    this.audio.play().then((data) => {
+      console.log("Play Audio Data");
+      console.log(data);
+    }, (error) => {
+      console.error("Play Audio Error");
+      console.error(error);
+    });
   }
 
   stopPlayback() {
+    console.log("Stopping Playback");
     this.playingAudio = false;
-    this.audio.stop();
+    this.audio.stop().then((data) => {
+      console.log("Stop Audio Data");
+      console.log(data);
+    }, (error) => {
+      console.log("Stop Audio error");
+      console.error(error);
+    });
   }
 
   uploadBlob() {
