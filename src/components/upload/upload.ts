@@ -137,10 +137,12 @@ export class UploadComponent {
   stopRecording() {
       this.audio.stopRecord();
       console.log("Stopped Recording");
+      console.log(this.audio);
       this.recording = false;
       this.audioReady = true;
-      this.duration = this.audio.getDuration();
+      this.audio.getDuration();
       console.log("Audio Duration: " + this.duration);
+      console.log("Audio Duration Property: " + this.audio.duration);
   }
 
   playAudio() {
@@ -151,10 +153,9 @@ export class UploadComponent {
   }
 
   transitionAudio() {
-    let audioDuration = this.duration * 1000;
     window.setTimeout(() => {
       if (this.playingAudio) this.stopPlayback();
-    }, audioDuration);
+    }, this.audio.duration);
   }
 
   stopPlayback() {
