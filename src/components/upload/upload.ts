@@ -160,13 +160,6 @@ export class UploadComponent {
     console.log("Playing Audio");
     this.playingAudio = true;
     this.audio.play();
-    this.transitionAudio();
-  }
-
-  transitionAudio() {
-    window.setTimeout(() => {
-      if (this.playingAudio) this.stopPlayback();
-    }, this.audio.duration);
   }
 
   stopPlayback() {
