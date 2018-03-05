@@ -138,8 +138,11 @@ export class UploadComponent {
   listenToAudioEvents() {
     this.audio.onStatusUpdate.subscribe(status => {
       console.log("Status of this.audio updated");
-      console.log(status)}
-    );
+      console.log(status);
+      if (status == 4 && this.playingAudio) {
+        console.log(this.stopPlayback);
+      }
+    });
   }
 
   stopRecording() {
