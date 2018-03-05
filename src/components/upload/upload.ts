@@ -169,10 +169,10 @@ export class UploadComponent {
     this.audio.stop();
   }
 
-  saveRecord() {
+  saveRecord1() {
     console.log("Saving Record");
-    const metadata = { contentType: 'audio/m4a' };
-    var blob = new Blob([this.audio], {type: 'audio/m4a'});
+    const metadata = { contentType: 'audio/mp3' };
+    var blob = new Blob([this.audio], {type: 'audio/mp3'});
     let uploadPath = 'content/' + this.firebase.user.uid + '/audio/';
     console.log("Upload path is " + uploadPath);
     let userAudioStorage = firebase.storage().ref(uploadPath);
@@ -189,7 +189,7 @@ export class UploadComponent {
       });
   }
   
-  saveRecord1() {
+  saveRecord2() {
     console.log("Saving record");
     let storageRef = firebase.storage().ref();
     let metadata = {
@@ -207,6 +207,35 @@ export class UploadComponent {
         var downloadURL = voiceRef.snapshot.downloadURL;
       });
     });
+  }
+
+  saveRecord() {
+
+    console.dir(this.file.externalDataDirectory);
+    //  save to firebase
+    // var file = {name:`${this.currentUid}.mp3`};
+    const fileName = {name: `${this.file.externalDataDirectory}/${this.firebase.user.uid}.mp3`};
+    const metadata = {
+      contentType: 'audio/mp3',
+    };
+
+    var blob = new Blob([fileName.name], {type: 'audio/mp3'}); // pass a useful mime type here
+    const uploadAudio = this.audio.child(`${this.firebase.user.uid}/${fileName.name}`)
+    .put(blob, metadata);
+    // Listen for state changes, errors, and completion of the upload.
+    return uploadAudio.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+      (snapshot) => {
+      }, (error) => {
+        console.dir(error);
+      }, () => {
+        // Upload completed successfully, now we can get the download URL
+        var downloadURL = uploadAudio.snapshot.downloadURL;
+        console.dir(downloadURL);
+        return new Promise((resolve, reject) => {
+          resolve(downloadURL);
+        });
+      });
+
   }
 
   uploadBlob() {
