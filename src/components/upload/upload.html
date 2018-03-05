@@ -31,4 +31,10 @@
             STOP PLAYBACK
         </button>
     </div>
+    <div *ngIf="audioReady" text-center padding-left padding-right>
+        <button (click)="saveRecord()" id="SaveRecordButton" color="primary" text-center ion-button icon-start round block large strong>
+            <ion-icon name="arrow-down"></ion-icon>
+            SAVE RECORD
+        </button>
+    </div>
 </div>

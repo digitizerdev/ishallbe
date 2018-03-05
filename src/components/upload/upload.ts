@@ -169,6 +169,47 @@ export class UploadComponent {
     this.audio.stop();
   }
 
+  saveRecord() {
+    console.log("Saving record");
+    let storageRef = firebase.storage().ref();
+    let metadata = {
+      contentType: 'audio/mp3',
+    };
+    let filePath = `${this.file.externalDataDirectory}` + `${this.audio}`;
+    this.file.readAsDataURL(this.file.externalDataDirectory, this.audio).then((file) => {
+      let voiceRef = storageRef.child('content/' + this.firebase.user.uid + '/audio/').putString(file, firebase.storage.StringFormat.DATA_URL);
+      voiceRef.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
+        console.log("uploading");
+        console.log(snapshot);
+      }, (e) => {
+        console.log("Audio Upload Error")
+        console.log(JSON.stringify(e, null, 2));
+      }, () => {
+        var downloadURL = voiceRef.snapshot.downloadURL;
+      });
+    });
+  }
+
+  saveRecord1() {
+    console.log("Saving Record");
+    const metadata = { contentType: 'audio/mp3' };
+    var blob = new Blob([this.audio], {type: 'audio/mp3'});
+
+    let uploadPath = 'content/' + this.firebase.user.uid + '/audio/';
+    let userAudioStorage = firebase.storage().ref(uploadPath);
+    let audio = userAudioStorage.put(blob, metadata);
+    audio.on(firebase.storage.TaskEvent.STATE_CHANGED,
+      (snapshot) => { console.log(snapshot);
+      }, (error) => { console.dir(error);
+      }, () => {
+        var downloadURL = audio.snapshot.downloadURL;
+        console.dir(downloadURL);
+        return new Promise((resolve, reject) => {
+          resolve(downloadURL);
+        });
+      });
+  }
+
   uploadBlob() {
     console.log("Upload blob triggered");
     return Observable.create((observer) => {
