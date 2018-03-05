@@ -14,19 +14,19 @@
         </ion-row>
     </div>
     <div *ngIf="recording" text-center padding-left padding-right>
-        <button (click)="stopRecording" id="NowRecordingButton" color="danger" text-center ion-button icon-start round block large strong>
+        <button (click)="stopRecording()" id="NowRecordingButton" color="danger" text-center ion-button icon-start round block large strong>
             <ion-icon name="mic"></ion-icon>
             NOW RECORDING
         </button>
     </div>
     <div *ngIf="audioReady && !playingAudio" text-center padding-left padding-right>
-        <button (click)="playAudio" id="PlayAudioButton" color="secondary" text-center ion-button icon-start outline round block large strong>
+        <button (click)="playAudio()" id="PlayAudioButton" color="secondary" text-center ion-button icon-start outline round block large strong>
             <ion-icon name="play"></ion-icon>
             PLAY RECORDING
         </button>
     </div>
     <div *ngIf="playingAudio" text-center padding-left padding-right>
-        <button (click)="stopPlayback" id="StopPlaybackButton" color="secondary" text-center ion-button icon-start round block large strong>
+        <button (click)="stopPlayback()" id="StopPlaybackButton" color="secondary" text-center ion-button icon-start round block large strong>
             <ion-icon name="square"></ion-icon>
             STOP PLAYBACK
         </button>
