@@ -169,15 +169,13 @@ export class UploadComponent {
     this.audio.stop();
   }
 
-  saveRecord() {
+  saveRecord1() {
     console.log("Saving record");
     let storageRef = firebase.storage().ref();
     let metadata = {
       contentType: 'audio/mp3',
     };
-    let filePath = `${this.audio.externalDataDirectory}` + `test`;
-    console.log("File path is " + filePath);
-    this.file.readAsDataURL(this.audio.externalDataDirectory, filePath).then((file) => {
+    this.file.readAsDataURL(this.audio, filePath).then((file) => {
       let voiceRef = storageRef.child('content/' + this.firebase.user.uid + '/audio/').putString(file, firebase.storage.StringFormat.DATA_URL);
       voiceRef.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
         console.log("uploading");
@@ -191,12 +189,12 @@ export class UploadComponent {
     });
   }
 
-  saveRecord1() {
+  saveRecord() {
     console.log("Saving Record");
     const metadata = { contentType: 'audio/mp3' };
     var blob = new Blob([this.audio], {type: 'audio/mp3'});
-
     let uploadPath = 'content/' + this.firebase.user.uid + '/audio/';
+    console.log("Upload path is " + uploadPath);
     let userAudioStorage = firebase.storage().ref(uploadPath);
     let audio = userAudioStorage.put(blob, metadata);
     audio.on(firebase.storage.TaskEvent.STATE_CHANGED,
