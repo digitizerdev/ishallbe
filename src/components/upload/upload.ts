@@ -128,10 +128,18 @@ export class UploadComponent {
       console.log("Audio assigned to this.audio media object");
       console.log(this.audio);
       this.audio.startRecord();
+      this.listenToAudioEvents();
       window.setTimeout(() => {
         if (this.recording) this.stopRecording();
       }, 10000);
     });
+  }
+
+  listenToAudioEvents() {
+    this.audio.onStatusUpdate.subscribe(status => {
+      console.log("Status of this.audio updated");
+      console.log(status)}
+    );
   }
 
   stopRecording() {
