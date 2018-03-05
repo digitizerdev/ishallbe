@@ -27,7 +27,6 @@ export class UploadComponent {
   cropperInstance: any;
   image: any;
   audio: any;
-  audioMedia: any;
   contentBlob: any;
   gettingPicture = false;
   recording = false;
@@ -127,12 +126,9 @@ export class UploadComponent {
       this.audio = audio;
       console.log("Audio assigned to this.audio media object");
       console.log(this.audio);
-      this.audioMedia = audio;
-      console.log("Audio assigned to this.audioMedia object");
-      console.log(this.audioMedia);
       audio.startRecord();
       window.setTimeout(() => {
-        this.stopRecording();
+        if (this.recording) this.stopRecording();
       }, 10000);
     });
   }
@@ -141,39 +137,22 @@ export class UploadComponent {
       console.log("Stopped Recording");
       this.recording = false;
       this.audioReady = true;
-      console.log("Recording: " + this.recording);
-      console.log("Audio Ready: " + this.audioReady);
-      this.audio.stopRecord().then((data) => {
-        console.log("Stop Recording Data");
-        console.log(data);
-      }, (error) => {
-        console.error("Stop Recording Error");
-        console.error(error);
-      });
+      this.audio.stopRecord();
   }
 
   playAudio() {
     console.log("Playing Audio");
     this.playingAudio = true;
-    this.audio.play().then((data) => {
-      console.log("Play Audio Data");
-      console.log(data);
-    }, (error) => {
-      console.error("Play Audio Error");
-      console.error(error);
-    });
+    this.audio.play();
+    window.setTimeout(() => {
+      if (this.playingAudio) this.stopPlayback();
+    }, 10000);
   }
 
   stopPlayback() {
     console.log("Stopping Playback");
     this.playingAudio = false;
-    this.audio.stop().then((data) => {
-      console.log("Stop Audio Data");
-      console.log(data);
-    }, (error) => {
-      console.log("Stop Audio error");
-      console.error(error);
-    });
+    this.audio.stop();
   }
 
   uploadBlob() {
