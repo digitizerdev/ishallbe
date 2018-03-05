@@ -210,26 +210,29 @@ export class UploadComponent {
   }
 
   saveRecord() {
-
+    console.log("Saving record");
     console.dir(this.file.externalDataDirectory);
-    //  save to firebase
-    // var file = {name:`${this.currentUid}.mp3`};
     const fileName = {name: `${this.file.externalDataDirectory}/${this.firebase.user.uid}.mp3`};
+    console.log("File name is " + fileName);
     const metadata = {
       contentType: 'audio/mp3',
     };
-
-    var blob = new Blob([fileName.name], {type: 'audio/mp3'}); // pass a useful mime type here
+    var blob = new Blob([fileName.name], {type: 'audio/mp3'});
+    console.log("Blob");
+    console.log(blob);
     const uploadAudio = this.audio.child(`${this.firebase.user.uid}/${fileName.name}`)
     .put(blob, metadata);
     // Listen for state changes, errors, and completion of the upload.
     return uploadAudio.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
       (snapshot) => {
+        console.log("Snapshot");
+        console.log(snapshot);
       }, (error) => {
-        console.dir(error);
+        console.error(error);
       }, () => {
         // Upload completed successfully, now we can get the download URL
         var downloadURL = uploadAudio.snapshot.downloadURL;
+        console.log("Got download url");
         console.dir(downloadURL);
         return new Promise((resolve, reject) => {
           resolve(downloadURL);
