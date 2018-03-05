@@ -27,6 +27,7 @@ export class UploadComponent {
   cropperInstance: any;
   image: any;
   audio: any;
+  audioMedia: any;
   contentBlob: any;
   gettingPicture = false;
   recording = false;
@@ -119,15 +120,17 @@ export class UploadComponent {
   startRecording() {
     console.log("Started Recording");
     this.recording = true;
-    this.file.createFile(this.file.tempDirectory, 'my_file.m4a', true).then(() => {
-      this.audio = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.m4a');
-      this.audio.startRecord().then((data) => {
-        console.log("Start Recording Data");
-        console.log(data);
-      }, (error) => {
-        console.error("Start Recording Error");
-        console.error(error);
-      });
+    this.audio.createFile(this.file.tempDirectory, 'my_file.m4a', true).then(() => {
+      const audio:  MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.m4a');
+      console.log("Audio assigned to constant audio media object");
+      console.log(audio);
+      this.audio = audio;
+      console.log("Audio assigned to this.audio media object");
+      console.log(this.audio);
+      this.audioMedia = audio;
+      console.log("Audio assigned to this.audioMedia object");
+      console.log(this.audioMedia);
+      audio.startRecord();
       window.setTimeout(() => {
         this.stopRecording();
       }, 10000);
@@ -135,7 +138,11 @@ export class UploadComponent {
   }
 
   stopRecording() {
-      console.log("Stopped Recording")
+      console.log("Stopped Recording");
+      this.recording = false;
+      this.audioReady = true;
+      console.log("Recording: " + this.recording);
+      console.log("Audio Ready: " + this.audioReady);
       this.audio.stopRecord().then((data) => {
         console.log("Stop Recording Data");
         console.log(data);
@@ -143,8 +150,6 @@ export class UploadComponent {
         console.error("Stop Recording Error");
         console.error(error);
       });
-      this.recording = false;
-      this.audioReady = true;
   }
 
   playAudio() {
