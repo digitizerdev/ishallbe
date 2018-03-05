@@ -120,7 +120,7 @@ export class UploadComponent {
   startRecording() {
     console.log("Started Recording");
     this.recording = true;
-    this.audio.createFile(this.file.tempDirectory, 'my_file.m4a', true).then(() => {
+    this.file.createFile(this.file.tempDirectory, 'my_file.m4a', true).then(() => {
       const audio:  MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.m4a');
       console.log("Audio assigned to constant audio media object");
       console.log(audio);
