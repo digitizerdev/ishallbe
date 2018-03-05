@@ -135,12 +135,12 @@ export class UploadComponent {
   }
 
   stopRecording() {
+      this.audio.stopRecord();
       console.log("Stopped Recording");
-      this.duration = this.audio.getDuration();
-      console.log("Audio Duration: " + this.duration);
       this.recording = false;
       this.audioReady = true;
-      this.audio.stopRecord();
+      this.duration = this.audio.getDuration();
+      console.log("Audio Duration: " + this.duration);
   }
 
   playAudio() {
