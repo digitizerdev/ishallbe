@@ -144,9 +144,15 @@ export class UploadComponent {
     console.log("Playing Audio");
     this.playingAudio = true;
     this.audio.play();
+    this.transitionAudio();
+  }
+
+  transitionAudio() {
+    let duration = this.audio.getDuration();
+    console.log(duration);
     window.setTimeout(() => {
       if (this.playingAudio) this.stopPlayback();
-    }, 10000);
+    }, duration);
   }
 
   stopPlayback() {
