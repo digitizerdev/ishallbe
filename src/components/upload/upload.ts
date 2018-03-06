@@ -2,8 +2,9 @@ import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@
 
 import { LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { File } from '@ionic-native/file';
 import { Media, MediaObject } from '@ionic-native/media';
+import { File } from '@ionic-native/file';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -40,8 +41,9 @@ export class UploadComponent {
   constructor(
     private loadingCtrl: LoadingController,
     private camera: Camera,
-    private file: File,
     private media: Media,
+    private file: File,
+    private fileTransfer: FileTransfer,
     private firebase: FirebaseProvider
   ) {
     console.log("Hello Upload Component");
@@ -172,12 +174,13 @@ export class UploadComponent {
   }
 
   playAudioFromLink() {
-      /* const fileTransfer = new Transfer();
-      fileTransfer.download(URL, cordova.file.dataDirectory + 'NAME').then((entry) => {
-        console.log('download complete: ' + entry.toURL());
-      }, (error) => {
-        // handle error
-      }); */
+    console.log("Playing audio from link");
+    const fileTransfer: FileTransferObject = this.fileTransfer.create();
+    fileTransfer.download(this.audioLink, cordova.file.externalRootDirectory + 'audio').then((entry) => {
+      console.log('download complete: ' + entry.toURL());
+    }, (error) => {
+      console.error(error);
+    });
   }
 
   uploadAudio() {
@@ -192,7 +195,7 @@ export class UploadComponent {
   storeRecord() {
     return Observable.create((observer) => {
       console.log('Saving record');
-      const filePath= `${this.file.tempDirectory}my_file.m4a`;
+      const filePath = `${this.file.tempDirectory}my_file.m4a`;
       console.log("Path to record is " + filePath);
       const readFile: any = window['resolveLocalFileSystemURL'];
       return readFile(filePath, (fileEntry) => {
@@ -225,11 +228,11 @@ export class UploadComponent {
             observer.error(e);
           };
           fileReader.readAsArrayBuffer(file);
-        }, (e) => { 
+        }, (e) => {
           console.error(e);
           observer.error(e);
         });
-      }, (e) => { 
+      }, (e) => {
         console.error(e);
         observer.error(e);
       });

@@ -4,8 +4,9 @@ import { By } from '@angular/platform-browser';
 
 import { IonicModule, Platform, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
-import { File } from '@ionic-native/file';
 import { Media } from '@ionic-native/media';
+import { File } from '@ionic-native/file';
+import { FileTransfer } from '@ionic-native/file-transfer';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -27,6 +28,7 @@ import {
     ActionSheetControllerMock,
     CameraMock,
     FileMock,
+    FileTransferMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 import { Action } from 'rxjs/scheduler/Action';
@@ -41,6 +43,7 @@ describe('ProfileUpdatePage', () => {
     let actionSheet: ActionSheetController;
     let camera: Camera;
     let file: File;
+    let fileTransfer: FileTransfer;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -67,6 +70,7 @@ describe('ProfileUpdatePage', () => {
                 { provide: ActionSheetController, useClass: ActionSheetControllerMock },
                 { provide: Camera, useClass: CameraMock },
                 { provide: File, useClass: FileMock },
+                { provide: FileTransfer, useClass: FileTransferMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -87,6 +91,7 @@ describe('ProfileUpdatePage', () => {
         actionSheet = TestBed.get(ActionSheetController);
         camera = TestBed.get(Camera);
         file = TestBed.get(File);
+        fileTransfer = TestBed.get(FileTransfer);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -102,6 +107,7 @@ describe('ProfileUpdatePage', () => {
         actionSheet = null;
         camera = null;
         file = null;
+        fileTransfer = null;
         firebase = null;
         afa = null;
         afs = null;

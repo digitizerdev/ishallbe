@@ -5,8 +5,9 @@ import { By } from '@angular/platform-browser';
 import { IonicModule, Platform, NavController } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
 import { DatePicker } from '@ionic-native/date-picker';
-import { File } from '@ionic-native/file';
 import { Media } from '@ionic-native/media';
+import { File } from '@ionic-native/file';
+import { FileTransfer } from '@ionic-native/file-transfer';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -25,8 +26,9 @@ import {
     NavMock,
     CameraMock,
     DatePickerMock,
-    FileMock,
     MediaMock,
+    FileMock,
+    FileTransferMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
@@ -38,6 +40,7 @@ describe('GoalCreatorPage', () => {
     let camera: Camera;
     let datePicker: DatePicker;
     let file: File;
+    let fileTransfer: FileTransfer;
     let media: Media;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
@@ -63,6 +66,7 @@ describe('GoalCreatorPage', () => {
                 { provide: Camera, useClass: CameraMock },
                 { provide: DatePicker, useClass: DatePickerMock },
                 { provide: File, useClass: FileMock },
+                { provide: FileTransfer, useClass: FileTransferMock },
                 { provide: Media, useClass: MediaMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
@@ -82,6 +86,7 @@ describe('GoalCreatorPage', () => {
         camera = TestBed.get(Camera);
         datePicker = TestBed.get(DatePicker);
         file = TestBed.get(File);
+        fileTransfer = TestBed.get(FileTransfer);
         media = TestBed.get(Media);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
@@ -96,6 +101,7 @@ describe('GoalCreatorPage', () => {
         camera = null;
         datePicker = null;
         file = null;
+        fileTransfer = null;
         media = null;
         firebase = null;
         afa = null;

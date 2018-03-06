@@ -4,8 +4,9 @@ import { By } from '@angular/platform-browser';
 
 import { IonicModule, Platform, NavController } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
-import { File } from '@ionic-native/file';
 import { Media } from '@ionic-native/media';
+import { File } from '@ionic-native/file';
+import { FileTransfer } from '@ionic-native/file-transfer';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -22,6 +23,7 @@ import {
     CameraMock,
     MediaMock,
     FileMock,
+    FileTransferMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
@@ -31,8 +33,9 @@ describe('UploadComponent', () => {
     let platform: Platform;
     let nav: NavController;
     let camera: Camera;
-    let file: File;
     let media: Media;
+    let file: File;
+    let fileTransfer: FileTransfer;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -54,8 +57,9 @@ describe('UploadComponent', () => {
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
                 { provide: Camera, useClass: CameraMock },
-                { provide: File, useClass: FileMock },
                 { provide: Media, useClass: MediaMock },
+                { provide: File, useClass: FileMock },
+                { provide: FileTransfer, useClass: FileTransferMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -70,6 +74,7 @@ describe('UploadComponent', () => {
         nav = TestBed.get(NavController);
         camera = TestBed.get(Camera);
         file = TestBed.get(File);
+        fileTransfer = TestBed.get(FileTransfer);
         media = TestBed.get(Media);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
@@ -82,8 +87,9 @@ describe('UploadComponent', () => {
         platform = null;
         nav = null;
         camera = null;
-        file = null;
         media = null;
+        file = null;
+        fileTransfer = null;
         firebase = null;
         afa = null;
         afs = null;
