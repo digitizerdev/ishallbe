@@ -36,7 +36,8 @@ export class UploadComponent {
   audioReady = false;
   playbackPaused = false;
   playingAudio = false;
-  audioLink: any;
+  audioURL: any;
+  audioURI: any;
 
   constructor(
     private loadingCtrl: LoadingController,
@@ -173,15 +174,21 @@ export class UploadComponent {
     this.audio.stop();
   }
 
-  playAudioFromLink() {
-    console.log("Playing audio from link");
+  downloadAudio() {
+    console.log("Downloading A")
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
     var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + "my_file.m4a"
-    fileTransfer.download(this.audioLink, destPath,).then((entry) => {
-      console.log('download complete: ' + entry.toURL());
+    fileTransfer.download(this.audioURL, destPath, ).then((entry) => {
+      this.audioURI = entry.toURL()
+      console.log("Audio URI: " + this.audioURI);
     }, (error) => {
       console.error(error);
     });
+  }
+
+  playAudioURI() {
+    console.log("Playing AudioURI");
+    this.audioURI.play();
   }
 
   uploadAudio() {
@@ -189,7 +196,7 @@ export class UploadComponent {
     this.storeRecord().subscribe((downloadURL) => {
       console.log("Finished storing record");
       console.log("Download URL is " + downloadURL);
-      this.audioLink = downloadURL;
+      this.audioURL = downloadURL;
     });
   }
 

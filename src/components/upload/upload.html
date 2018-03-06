@@ -32,15 +32,21 @@
         </button>
     </div>
     <div *ngIf="audioReady" text-center padding-left padding-right>
-        <button (click)="uploadAudio()" id="UploadAudioButton" color="primary" text-center ion-button icon-start round block large strong>
-            <ion-icon name="arrow-down"></ion-icon>
+        <button (click)="uploadAudio()" id="UploadAudioButton" color="dark" text-center ion-button icon-start outline round block large strong>
+            <ion-icon name="arrow-up"></ion-icon>
             UPLOAD AUDIO
         </button>
     </div>
-    <div *ngIf="audioReady && audioLink" text-center padding-left padding-right>
-        <button (click)="playAudioFromLink()" color="primary" text-center ion-button icon-start round block large strong>
+    <div *ngIf="audioReady && audioURL" text-center padding-left padding-right>
+        <button (click)="downloadAudio()" color="secondary" text-center ion-button icon-start outline round block large strong>
+            <ion-icon name="arrow-down"></ion-icon>
+            DOWNLOAD AUDIO
+        </button>
+    </div>
+    <div *ngIf="audioReady && audioURI" text-center padding-left padding-right>
+        <button (click)="playAudioURI()" color="primary" text-center ion-button icon-start outline round block large strong>
             <ion-icon name="play"></ion-icon>
-            PLAY AUDIO FROM LINK
+            DOWNLOAD AUDIO
         </button>
     </div>
 </div>
