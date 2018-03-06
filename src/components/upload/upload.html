@@ -37,16 +37,16 @@
             UPLOAD AUDIO
         </button>
     </div>
-    <div *ngIf="audioReady && audioURL" text-center padding-left padding-right>
+    <div *ngIf="audioReady && audioURLReady" text-center padding-left padding-right>
         <button (click)="downloadAudio()" color="secondary" text-center ion-button icon-start outline round block large strong>
             <ion-icon name="arrow-down"></ion-icon>
             DOWNLOAD AUDIO
         </button>
     </div>
-    <div *ngIf="audioReady && audioURI" text-center padding-left padding-right>
+    <div *ngIf="audioReady && audioURIReady" text-center padding-left padding-right>
         <button (click)="playAudioURI()" color="primary" text-center ion-button icon-start outline round block large strong>
             <ion-icon name="play"></ion-icon>
-            DOWNLOAD AUDIO
+            PLAY AUDIO
         </button>
     </div>
 </div>

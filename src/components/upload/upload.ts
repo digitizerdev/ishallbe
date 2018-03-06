@@ -29,6 +29,8 @@ export class UploadComponent {
   cropperInstance: any;
   image: any;
   audio: any;
+  audioURL: any;
+  audioURI: any;
   contentBlob: any;
   duration: any;
   gettingPicture = false;
@@ -36,8 +38,8 @@ export class UploadComponent {
   audioReady = false;
   playbackPaused = false;
   playingAudio = false;
-  audioURL: any;
-  audioURI: any;
+  audioURLReady = false;
+  audioURIReady = false;
 
   constructor(
     private loadingCtrl: LoadingController,
@@ -179,7 +181,8 @@ export class UploadComponent {
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
     var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + "my_file.m4a"
     fileTransfer.download(this.audioURL, destPath, ).then((entry) => {
-      this.audioURI = entry.toURL()
+      this.audioURI = entry.toURL();
+      this.audioURIReady = true;
       console.log("Audio URI: " + this.audioURI);
     }, (error) => {
       console.error(error);
@@ -197,6 +200,7 @@ export class UploadComponent {
       console.log("Finished storing record");
       console.log("Download URL is " + downloadURL);
       this.audioURL = downloadURL;
+      this.audioURLReady = true;
     });
   }
 
