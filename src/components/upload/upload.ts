@@ -121,7 +121,7 @@ export class UploadComponent {
     console.log("Started Recording");
     this.recording = true;
     this.file.createFile(this.file.tempDirectory, 'my_file.m4a', true).then(() => {
-      const audio:  MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.m4a');
+      const audio: MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.m4a');
       console.log("Audio assigned to constant audio media object");
       console.log(audio);
       this.audio = audio;
@@ -147,14 +147,14 @@ export class UploadComponent {
   }
 
   stopRecording() {
-      this.audio.stopRecord();
-      console.log("Stopped Recording");
-      console.log(this.audio);
-      this.recording = false;
-      this.audioReady = true;
-      this.audio.getDuration();
-      console.log("Audio Duration: " + this.duration);
-      console.log("Audio Duration Property: " + this.audio.duration);
+    this.audio.stopRecord();
+    console.log("Stopped Recording");
+    console.log(this.audio);
+    this.recording = false;
+    this.audioReady = true;
+    this.audio.getDuration();
+    console.log("Audio Duration: " + this.duration);
+    console.log("Audio Duration Property: " + this.audio.duration);
   }
 
   playAudio() {
@@ -169,20 +169,22 @@ export class UploadComponent {
     this.audio.stop();
   }
 
-  saveRecord() {
+  saveRecord3() {
     console.log("Saving Record");
     const metadata = { contentType: 'audio/mp3' };
-    const fileName = {name: `${this.file.tempDirectory}my_file.mp3`};
+    const fileName = { name: `${this.file.tempDirectory}my_file.mp3` };
     fileName.name = fileName.name.replace(/^file:\/\//, '')
     console.log("File path is " + fileName.name);
-    var blob = new Blob([fileName.name], {type: 'audio/mp3'});
+    var blob = new Blob([fileName.name], { type: 'audio/mp3' });
     let uploadPath = 'content/' + this.firebase.user.uid + '/audio/';
     console.log("Upload path is " + uploadPath);
     let userAudioStorage = firebase.storage().ref(uploadPath);
     let audio = userAudioStorage.put(blob, metadata);
     audio.on(firebase.storage.TaskEvent.STATE_CHANGED,
-      (snapshot) => { console.log(snapshot);
-      }, (error) => { console.dir(error);
+      (snapshot) => {
+        console.log(snapshot);
+      }, (error) => {
+        console.dir(error);
       }, () => {
         var downloadURL = audio.snapshot.downloadURL;
         console.dir(downloadURL);
@@ -191,7 +193,7 @@ export class UploadComponent {
         });
       });
   }
-  
+
   saveRecord1() {
     console.log("Saving record");
     let storageRef = firebase.storage().ref();
@@ -215,16 +217,16 @@ export class UploadComponent {
   saveRecord2() {
     console.log("Saving record");
     console.dir(this.file.tempDirectory);
-    const fileName = {name: `${this.file.tempDirectory}/${this.firebase.user.uid}.mp3`};
+    const fileName = { name: `${this.file.tempDirectory}/${this.firebase.user.uid}.mp3` };
     console.log("File name is " + fileName.name);
     const metadata = {
       contentType: 'audio/mp3',
     };
-    var blob = new Blob([fileName.name], {type: 'audio/mp3'});
+    var blob = new Blob([fileName.name], { type: 'audio/mp3' });
     console.log("Blob");
     console.log(blob);
     const uploadAudio = this.audio.child(`${this.firebase.user.uid}/${fileName.name}`)
-    .put(blob, metadata);
+      .put(blob, metadata);
     // Listen for state changes, errors, and completion of the upload.
     return uploadAudio.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
       (snapshot) => {
@@ -241,6 +243,46 @@ export class UploadComponent {
           resolve(downloadURL);
         });
       });
+  }
 
+  saveRecord() {
+    console.log('Saving record');
+    console.log("Path to record is " + this.audio.src);
+    return new Promise((resolve, reject) => {
+      const readFile: any = window['resolveLocalFileSystemURL'];
+      readFile(this.audio.src, (fileEntry) => {
+        fileEntry.file((file) => {
+          const fileReader = new FileReader();
+          fileReader.onloadend = (result: any) => {
+            let arrayBuffer = result.target.result;
+            let blob = new Blob([new Uint8Array(arrayBuffer)], { type: 'audio/m4a' });
+            console.log("Blob is ");
+            console.log(blob);
+            var storageRef = firebase.storage().ref('content/' + this.firebase.user.uid + '/audio/');
+            console.log("Storage reference is " + storageRef);
+            var uploadTask = storageRef.put(blob);
+            console.log('Upload started:');
+            uploadTask.on('state_changed', (snapshot) => {
+              console.log("state changed");
+              let percent = uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes * 100;
+              console.log(percent + "% done");
+            }, (e) => {
+              console.debug(e);
+              reject(e);
+            }, () => {
+              var downloadURL = uploadTask.snapshot.downloadURL;
+              console.info('Record URL:' + downloadURL);
+              console.info('Record URI:' + this.audio.src);
+              resolve(downloadURL);
+            });
+          };
+          fileReader.onerror = (e: any) => {
+            console.debug(e);
+            reject(e);
+          };
+          fileReader.readAsArrayBuffer(file);
+        }, (e) => { console.debug(e); reject(e); });
+      }, (e) => { console.debug(e); reject(e); });
+    });
   }
 }
