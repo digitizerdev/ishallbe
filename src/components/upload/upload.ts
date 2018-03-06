@@ -247,7 +247,7 @@ export class UploadComponent {
 
   saveRecord() {
     console.log('Saving record');
-    const filePath= { name: `${this.file.tempDirectory}my_file.m4a` };
+    const filePath= `${this.file.tempDirectory}my_file.m4a`;
     console.log("Path to record is " + filePath);
     const readFile: any = window['resolveLocalFileSystemURL'];
     readFile(filePath, (fileEntry) => {
