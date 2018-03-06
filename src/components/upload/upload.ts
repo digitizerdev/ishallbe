@@ -176,25 +176,6 @@ export class UploadComponent {
     this.audio.stop();
   }
 
-  downloadAudio() {
-    console.log("Downloading Audio")
-    const fileTransfer: FileTransferObject = this.fileTransfer.create();
-    var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + "my_file.m4a"
-    fileTransfer.download(this.audioURL, destPath, ).then((entry) => {
-      let rawAudioURI = entry.toURL();
-      this.audioURI = rawAudioURI.replace(/^file:\/\//, '');
-      this.audioURIReady = true;
-      console.log("Audio URI: " + this.audioURI);
-    }, (error) => {
-      console.error(error);
-    });
-  }
-
-  playAudioURI() {
-    console.log("Playing AudioURI");
-    this.audioURI.play();
-  }
-
   uploadAudio() {
     console.log("Uploading record");
     this.storeRecord().subscribe((downloadURL) => {
@@ -219,7 +200,7 @@ export class UploadComponent {
             let blob = new Blob([new Uint8Array(arrayBuffer)], { type: 'audio/m4a' });
             console.log("Blob is ");
             console.log(blob);
-            var storageRef = firebase.storage().ref('content/' + this.firebase.user.uid + '/audio/');
+            var storageRef = firebase.storage().ref('content/' + this.firebase.user.uid + '/my-file.m4a');
             console.log("Storage reference is " + storageRef);
             var uploadTask = storageRef.put(blob);
             console.log('Upload started:');
@@ -250,5 +231,24 @@ export class UploadComponent {
         observer.error(e);
       });
     });
+  }
+
+  downloadAudio() {
+    console.log("Downloading Audio")
+    const fileTransfer: FileTransferObject = this.fileTransfer.create();
+    var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + "my_file.m4a"
+    fileTransfer.download(this.audioURL, destPath, ).then((entry) => {
+      let rawAudioURI = entry.toURL();
+      this.audioURI = rawAudioURI.replace(/^file:\/\//, 'private/');
+      this.audioURIReady = true;
+      console.log("Audio URI: " + this.audioURI);
+    }, (error) => {
+      console.error(error);
+    });
+  }
+
+  playAudioURI() {
+    console.log("Playing AudioURI");
+    this.audioURI.play();
   }
 }
