@@ -120,8 +120,8 @@ export class UploadComponent {
   startRecording() {
     console.log("Started Recording");
     this.recording = true;
-    this.file.createFile(this.file.tempDirectory, 'my_file.mp3', true).then(() => {
-      const audio:  MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.mp3');
+    this.file.createFile(this.file.tempDirectory, 'my_file.m4a', true).then(() => {
+      const audio:  MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.m4a');
       console.log("Audio assigned to constant audio media object");
       console.log(audio);
       this.audio = audio;
@@ -171,8 +171,8 @@ export class UploadComponent {
 
   saveRecord() {
     console.log("Saving Record");
-    const metadata = { contentType: 'audio/mp3' };
-    var blob = new Blob([this.audio], {type: 'audio/mp3'});
+    const metadata = { contentType: 'audio/m4a' };
+    var blob = new Blob([this.audio.src], {type: 'audio/m4a'});
     let uploadPath = 'content/' + this.firebase.user.uid + '/audio/';
     console.log("Upload path is " + uploadPath);
     let userAudioStorage = firebase.storage().ref(uploadPath);
