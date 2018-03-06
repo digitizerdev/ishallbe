@@ -172,7 +172,7 @@ export class UploadComponent {
   saveRecord() {
     console.log("Saving Record");
     const metadata = { contentType: 'audio/mp3' };
-    const fileName = {name: `${this.file.tempDirectory}/my_file.mp3`};
+    const fileName = {name: `${this.file.tempDirectory}my_file.mp3`};
     console.log("File path is " + fileName.name);
     var blob = new Blob([fileName.name], {type: 'audio/mp3'});
     let uploadPath = 'content/' + this.firebase.user.uid + '/audio/';
