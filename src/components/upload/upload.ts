@@ -169,10 +169,10 @@ export class UploadComponent {
     this.audio.stop();
   }
 
-  saveRecord1() {
+  saveRecord() {
     console.log("Saving Record");
-    const metadata = { contentType: 'audio/m4a' };
-    var blob = new Blob([this.audio], {type: 'audio/m4a'});
+    const metadata = { contentType: 'audio/mp3' };
+    var blob = new Blob([this.audio], {type: 'audio/mp3'});
     let uploadPath = 'content/' + this.firebase.user.uid + '/audio/';
     console.log("Upload path is " + uploadPath);
     let userAudioStorage = firebase.storage().ref(uploadPath);
@@ -189,7 +189,7 @@ export class UploadComponent {
       });
   }
   
-  saveRecord2() {
+  saveRecord1() {
     console.log("Saving record");
     let storageRef = firebase.storage().ref();
     let metadata = {
@@ -209,7 +209,7 @@ export class UploadComponent {
     });
   }
 
-  saveRecord() {
+  saveRecord2() {
     console.log("Saving record");
     console.dir(this.file.externalDataDirectory);
     const fileName = {name: `${this.file.externalDataDirectory}/${this.firebase.user.uid}.mp3`};
