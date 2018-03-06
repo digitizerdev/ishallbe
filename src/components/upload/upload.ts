@@ -176,7 +176,7 @@ export class UploadComponent {
   playAudioFromLink() {
     console.log("Playing audio from link");
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
-    var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + "path_to_destination"
+    var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + "my_file.m4a"
     fileTransfer.download(this.audioLink, destPath,).then((entry) => {
       console.log('download complete: ' + entry.toURL());
     }, (error) => {
