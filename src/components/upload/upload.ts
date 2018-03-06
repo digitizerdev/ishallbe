@@ -120,8 +120,8 @@ export class UploadComponent {
   startRecording() {
     console.log("Started Recording");
     this.recording = true;
-    this.file.createFile(this.file.tempDirectory, 'my_file.m4a', true).then(() => {
-      const audio:  MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.m4a');
+    this.file.createFile(this.file.tempDirectory, 'my_file.mp3', true).then(() => {
+      const audio:  MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.mp3');
       console.log("Audio assigned to constant audio media object");
       console.log(audio);
       this.audio = audio;
@@ -171,8 +171,8 @@ export class UploadComponent {
 
   saveRecord1() {
     console.log("Saving Record");
-    const metadata = { contentType: 'audio/mp3' };
-    var blob = new Blob([this.audio], {type: 'audio/mp3'});
+    const metadata = { contentType: 'audio/m4a' };
+    var blob = new Blob([this.audio], {type: 'audio/m4a'});
     let uploadPath = 'content/' + this.firebase.user.uid + '/audio/';
     console.log("Upload path is " + uploadPath);
     let userAudioStorage = firebase.storage().ref(uploadPath);
@@ -213,7 +213,7 @@ export class UploadComponent {
     console.log("Saving record");
     console.dir(this.file.externalDataDirectory);
     const fileName = {name: `${this.file.externalDataDirectory}/${this.firebase.user.uid}.mp3`};
-    console.log("File name is " + fileName);
+    console.log("File name is " + fileName.name);
     const metadata = {
       contentType: 'audio/mp3',
     };
@@ -240,47 +240,4 @@ export class UploadComponent {
       });
 
   }
-
-  uploadBlob() {
-    console.log("Upload blob triggered");
-    return Observable.create((observer) => {
-      let contentPath = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).to
-      console.log("Got cropped image");
-      console.log(contentPath);
-      const readFile: any = window['resolveLocalFileSystemURL'];
-        readFile(contentPath, (fileEntry) => {
-            fileEntry.file((file) => {
-                const fileReader = new FileReader();
-                fileReader.onloadend = (result: any) => {
-                    let arrayBuffer = result.target.result;
-                    let blob = new Blob([new Uint8Array(arrayBuffer)], { type: 'image/jpeg' });
-                    let uploadPath = 'content/' + this.firebase.user.uid + '/images/profile/';
-                    var storageRef = firebase.storage().ref(uploadPath);
-                    var uploadTask = storageRef.put(blob);
-                    this.contentBlob = blob;
-                    console.log('Upload started:');
-                    uploadTask.on('state_changed', (snapshot) => {
-                        let percent = uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes * 100;
-                        console.log(percent + "% done");
-                    }, (e) => {
-                        console.debug(e);
-                        console.debug('profileImageStorage:end');
-                        observer.error(e);
-                    }, () => {
-                        var downloadURL = uploadTask.snapshot.downloadURL;
-                        console.info('Profile pic URL:' + downloadURL);
-                        console.info('Profile pic URI:' + contentPath);
-                        console.debug('profileImageStorage:end');
-                        observer.next(downloadURL);
-                    });
-                };
-                fileReader.onerror = (e: any) => {
-                    observer.error(e);
-                };
-                fileReader.readAsArrayBuffer(file);
-            }, (e) => { console.debug(e); observer.error(e); });
-        }, (e) => { console.debug(e); observer.error(e); });
-    });
-  }
 }
-
