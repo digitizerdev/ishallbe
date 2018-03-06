@@ -247,10 +247,12 @@ export class UploadComponent {
 
   saveRecord() {
     console.log('Saving record');
-    console.log("Path to record is " + this.audio.objectInstance.src);
+    console.log("Path to record is ");
+    console.log(this.audio.objectInstance.src);
+    console.log(this.audio);
     return new Promise((resolve, reject) => {
       const readFile: any = window['resolveLocalFileSystemURL'];
-      readFile(this.audio.objectInstance.src, (fileEntry) => {
+      readFile(this.audio, (fileEntry) => {
         fileEntry.file((file) => {
           const fileReader = new FileReader();
           fileReader.onloadend = (result: any) => {
