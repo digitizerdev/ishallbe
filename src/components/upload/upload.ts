@@ -247,44 +247,38 @@ export class UploadComponent {
 
   saveRecord() {
     console.log('Saving record');
-    console.log("Path to record is ");
-    console.log(this.audio.objectInstance.src);
-    console.log(this.audio);
-    return new Promise((resolve, reject) => {
-      const readFile: any = window['resolveLocalFileSystemURL'];
-      readFile(this.audio, (fileEntry) => {
-        fileEntry.file((file) => {
-          const fileReader = new FileReader();
-          fileReader.onloadend = (result: any) => {
-            let arrayBuffer = result.target.result;
-            let blob = new Blob([new Uint8Array(arrayBuffer)], { type: 'audio/m4a' });
-            console.log("Blob is ");
-            console.log(blob);
-            var storageRef = firebase.storage().ref('content/' + this.firebase.user.uid + '/audio/');
-            console.log("Storage reference is " + storageRef);
-            var uploadTask = storageRef.put(blob);
-            console.log('Upload started:');
-            uploadTask.on('state_changed', (snapshot) => {
-              console.log("state changed");
-              let percent = uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes * 100;
-              console.log(percent + "% done");
-            }, (e) => {
-              console.debug(e);
-              reject(e);
-            }, () => {
-              var downloadURL = uploadTask.snapshot.downloadURL;
-              console.info('Record URL:' + downloadURL);
-              console.info('Record URI:' + this.audio.src);
-              resolve(downloadURL);
-            });
-          };
-          fileReader.onerror = (e: any) => {
+    const filePath= { name: `${this.file.tempDirectory}my_file.m4a` };
+    console.log("Path to record is " + filePath);
+    const readFile: any = window['resolveLocalFileSystemURL'];
+    readFile(filePath, (fileEntry) => {
+      fileEntry.file((file) => {
+        const fileReader = new FileReader();
+        fileReader.onloadend = (result: any) => {
+          let arrayBuffer = result.target.result;
+          let blob = new Blob([new Uint8Array(arrayBuffer)], { type: 'audio/m4a' });
+          console.log("Blob is ");
+          console.log(blob);
+          var storageRef = firebase.storage().ref('content/' + this.firebase.user.uid + '/audio/');
+          console.log("Storage reference is " + storageRef);
+          var uploadTask = storageRef.put(blob);
+          console.log('Upload started:');
+          uploadTask.on('state_changed', (snapshot) => {
+            console.log("state changed");
+            let percent = uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes * 100;
+            console.log(percent + "% done");
+          }, (e) => {
             console.debug(e);
-            reject(e);
-          };
-          fileReader.readAsArrayBuffer(file);
-        }, (e) => { console.debug(e); reject(e); });
-      }, (e) => { console.debug(e); reject(e); });
-    });
+          }, () => {
+            var downloadURL = uploadTask.snapshot.downloadURL;
+            console.info('Record URL:' + downloadURL);
+            console.info('Record URI:' + this.audio.src);
+          });
+        };
+        fileReader.onerror = (e: any) => {
+          console.debug(e);
+        };
+        fileReader.readAsArrayBuffer(file);
+      }, (e) => { console.debug(e); });
+    }, (e) => { console.debug(e) });
   }
 }
