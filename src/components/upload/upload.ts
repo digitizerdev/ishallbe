@@ -179,7 +179,7 @@ export class UploadComponent {
   downloadAudio() {
     console.log("Downloading A")
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
-    var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + "my_file.m4a"
+    var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory).replace(/^file:\/\//, '') + "my_file.m4a"
     fileTransfer.download(this.audioURL, destPath, ).then((entry) => {
       this.audioURI = entry.toURL();
       this.audioURIReady = true;
