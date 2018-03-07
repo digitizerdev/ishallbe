@@ -249,6 +249,8 @@ export class UploadComponent {
 
   playAudioURI() {
     console.log("Playing AudioURI");
-    this.audioURI.play();
+    let downloadedAudio: MediaObject = this.media.create(this.audioURI);
+    console.log("Downloaded audio: " + downloadedAudio);
+    downloadedAudio.play();
   }
 }
