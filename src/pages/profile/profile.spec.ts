@@ -3,6 +3,8 @@ import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { IonicModule, Platform, NavController, NavParams } from 'ionic-angular';
+import { Media } from '@ionic-native/media';
+import { FileTransfer } from '@ionic-native/file-transfer';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -18,6 +20,8 @@ import { } from 'jasmine';
 import {
     PlatformMock,
     NavMock,
+    MediaMock,
+    FileTransferMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
@@ -27,6 +31,8 @@ describe('ProfilePage', () => {
     let platform: Platform;
     let nav: NavController;
     let navParams: NavParams;
+    let media: Media;
+    let fileTransfer: FileTransfer;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -49,6 +55,8 @@ describe('ProfilePage', () => {
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
                 { provide: NavParams, useClass: NavMock },
+                { provide: Media, useClass: MediaMock },
+                { provide: FileTransfer, useClass: FileTransfer },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -65,6 +73,8 @@ describe('ProfilePage', () => {
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
         navParams = TestBed.get(NavParams);
+        media = TestBed.get(Media);
+        fileTransfer = TestBed.get(FileTransfer);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -76,6 +86,8 @@ describe('ProfilePage', () => {
         platform = null;
         nav = null;
         navParams = null;
+        media = null;
+        fileTransfer = null;
         firebase = null;
         afa = null;
         afs = null;

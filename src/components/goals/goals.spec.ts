@@ -4,7 +4,8 @@ import { By } from '@angular/platform-browser';
 
 import { IonicModule, Platform, Nav } from 'ionic-angular';
 import { Media } from '@ionic-native/media';
-import { FileTransfer } from '@ionic-native/file-transfer';import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
