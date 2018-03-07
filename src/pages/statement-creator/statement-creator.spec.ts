@@ -129,7 +129,7 @@ describe('StatementCreatorPage', () => {
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML
-        expect(el).toContain('SUBMIT');
+        expect(el).toContain('CREATE STATEMENT');
     });
 });
 

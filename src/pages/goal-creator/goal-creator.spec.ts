@@ -108,11 +108,39 @@ describe('GoalCreatorPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof GoalCreatorPage).toBe(true);
     });
 
-    it('should display SpeakItButton if not recording', () => {
+    fit('should be titled Goal', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#GoalCreatorTitle'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('Goal')
+    });
+
+    fit('should display SelectDueDateButton if date not selected', () => {
+        component.dateSelected = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#SelectDueDateButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display DueDateText if date selected', () => {
+        component.dateSelected = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#DueDateText'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display SpeakItButton if not recording', () => {
         component.recording = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -122,7 +150,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display upload component if recording', () => {
+    fit('should display upload component if recording', () => {
         component.recording = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -132,21 +160,12 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should be titled Goal', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#GoalCreatorTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Goal')
-    });
-
-    it('should display form', () => {
+    fit('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML
-        expect(el).toContain('SUBMIT');
+        expect(el).toContain('CREATE GOAL');
     });
 
 });
-

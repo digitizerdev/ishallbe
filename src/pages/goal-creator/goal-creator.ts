@@ -17,6 +17,7 @@ export class GoalCreatorPage {
   } = {};
   submitted = false;
   dueDate: any;
+  dateSelected = false;
   recording = false;
   recorded = false;
   contentMethod: any;
@@ -46,6 +47,7 @@ export class GoalCreatorPage {
     }).then((date) => { 
       console.log("Raw date is: " + date);
       this.dueDate = moment(date).fromNow();
+      this.dateSelected = true;
       console.log("Due date is " + this.dueDate);
     },
       (err) => { 
