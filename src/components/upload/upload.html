@@ -16,7 +16,7 @@
     <div *ngIf="recording" text-center padding-left padding-right>
         <button (click)="stopRecording()" id="NowRecordingButton" color="danger" text-center ion-button icon-start round block large strong>
             <ion-icon name="mic"></ion-icon>
-            NOW RECORDING
+            STOP RECORDING
         </button>
     </div>
     <div *ngIf="audioReady && !playingAudio" text-center padding-left padding-right>
@@ -29,24 +29,6 @@
         <button (click)="stopPlayback()" id="StopPlaybackButton" color="danger" text-center ion-button icon-start round block large strong>
             <ion-icon name="square"></ion-icon>
             STOP PLAYBACK
-        </button>
-    </div>
-    <div *ngIf="audioReady" text-center padding-left padding-right>
-        <button (click)="uploadAudio()" id="UploadAudioButton" color="dark" text-center ion-button icon-start outline round block large strong>
-            <ion-icon name="arrow-up"></ion-icon>
-            UPLOAD AUDIO
-        </button>
-    </div>
-    <div *ngIf="audioReady && audioURLReady" text-center padding-left padding-right>
-        <button (click)="downloadAudio()" color="secondary" text-center ion-button icon-start outline round block large strong>
-            <ion-icon name="arrow-down"></ion-icon>
-            DOWNLOAD AUDIO
-        </button>
-    </div>
-    <div *ngIf="audioReady && audioURIReady" text-center padding-left padding-right>
-        <button (click)="playAudioURI()" color="primary" text-center ion-button icon-start outline round block large strong>
-            <ion-icon name="play"></ion-icon>
-            PLAY AUDIO
         </button>
     </div>
 </div>

@@ -4,7 +4,6 @@ import { LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Media, MediaObject } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -46,7 +45,6 @@ export class UploadComponent {
     private camera: Camera,
     private media: Media,
     private file: File,
-    private fileTransfer: FileTransfer,
     private firebase: FirebaseProvider
   ) {
     console.log("Hello Upload Component");
@@ -233,24 +231,4 @@ export class UploadComponent {
     });
   }
 
-  downloadAudio() {
-    console.log("Downloading Audio")
-    const fileTransfer: FileTransferObject = this.fileTransfer.create();
-    var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + "my_file.m4a"
-    fileTransfer.download(this.audioURL, destPath, ).then((entry) => {
-      let rawAudioURI = entry.toURL();
-      this.audioURI = rawAudioURI.replace(/^file:\/\//, '/private');
-      this.audioURIReady = true;
-      console.log("Audio URI: " + this.audioURI);
-    }, (error) => {
-      console.error(error);
-    });
-  }
-
-  playAudioURI() {
-    console.log("Playing AudioURI");
-    let downloadedAudio: MediaObject = this.media.create(this.audioURI);
-    console.log("Downloaded audio: " + downloadedAudio);
-    downloadedAudio.play();
-  }
 }
