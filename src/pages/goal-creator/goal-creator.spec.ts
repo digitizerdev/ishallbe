@@ -132,12 +132,12 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should be titled Create Goal', () => {
+    it('should be titled Goal', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#GoalCreatorTitle'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Create Goal')
+        expect(el).toContain('Goal')
     });
 
     it('should display form', () => {

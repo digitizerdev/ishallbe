@@ -3,13 +3,12 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title id="StatementCreatorTitle" color='primary'>Create Statement</ion-title>
+    <ion-title id="StatementCreatorTitle" color='primary'>Statement</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
   <br>
-  <form #createStatementForm="ngForm" novalidate padding>
-    <ion-row>
+  <ion-row>
       <ion-col text-center>
         <button id="PictureButton" ion-button (click)="capture()" color="secondary" icon-start round block large strong>
           <ion-icon name="ios-camera"></ion-icon>
@@ -17,7 +16,7 @@
         </button>
       </ion-col>
     </ion-row>
-    <br>
+  <form #createStatementForm="ngForm" novalidate padding>
     <ion-item class="appForm">
       <ion-input class="myItem" placeholder="Statement Title" [(ngModel)]="createStatementForm.title" name="title" type="text" #title="ngModel" spellcheck="false"
         autocapitalize="off" required>

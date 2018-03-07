@@ -116,13 +116,12 @@ describe('StatementCreatorPage', () => {
         expect(component instanceof StatementCreatorPage).toBe(true);
     });
 
-    it('should be titled Create Statement', () => {
-        
+    it('should be titled Statement', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#StatementCreatorTitle'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Create Statement')
+        expect(el).toContain('Statement')
     });
 
     it('should display form', () => {
