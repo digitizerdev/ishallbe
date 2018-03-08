@@ -8,13 +8,6 @@
 </ion-header>
 <ion-content>
   <br>
-  <ion-row *ngIf="dateSelected" id="DueDateText">
-    <ion-col (click)="pickDate()" text-center>
-        <h4 *ngIf="dueToday" color="danger" ion-text><b>Due {{ displayDueDate }}</b></h4>
-        <h4 *ngIf="dueThisWeek" color="dark" ion-text><b>Due {{ displayDueDate }}</b></h4>
-        <h4 *ngIf="dueLater" color="primary" ion-text><b>Due {{ displayDueDate }}</b></h4>
-    </ion-col>
-  </ion-row>
   <ion-row *ngIf="!recording" id="SpeakItButton">
     <ion-col text-center padding-left padding-right>
       <button (click)="startRecording()" color="secondary" ion-button icon-start round block large strong>
@@ -25,13 +18,26 @@
   </ion-row>
   <upload *ngIf="recording" (uploaded)="setProfilePhoto($event)" [method]="contentMethod"></upload>
   <ion-row *ngIf="!dateSelected" id="SelectDueDateButton">
-      <ion-col text-center padding-left padding-right>
-        <button (click)="pickDate()" color="grayer" ion-button icon-start clear round block large strong>
-          <ion-icon name="ios-calendar"></ion-icon>
-          SELECT DUE DATE
-        </button>
-      </ion-col>
-    </ion-row>
+    <ion-col text-center padding-left padding-right>
+      <button (click)="pickDate()" color="grayer" ion-button icon-start clear round block large strong>
+        <ion-icon name="ios-calendar"></ion-icon>
+        SELECT DUE DATE
+      </button>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="dateSelected" id="DueDateText">
+    <ion-col (click)="pickDate()" text-center>
+      <h4 *ngIf="dueToday" color="danger" ion-text>
+        <b>Due {{ displayDueDate }}</b>
+      </h4>
+      <h4 *ngIf="dueThisWeek" color="dark" ion-text>
+        <b>Due {{ displayDueDate }}</b>
+      </h4>
+      <h4 *ngIf="dueLater" color="primary" ion-text>
+        <b>Due {{ displayDueDate }}</b>
+      </h4>
+    </ion-col>
+  </ion-row>
   <form class="my-form" #createGoalForm="ngForm" novalidate padding>
     <ion-item class="appForm">
       <ion-input class="myItem" placeholder="Goal Title" [(ngModel)]="createGoalForm.title" name="title" type="text" #title="ngModel"

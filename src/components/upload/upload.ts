@@ -121,6 +121,22 @@ export class UploadComponent {
         });
     });
   }
+  
+  redoRecording() {
+    this.audio = null;
+    this.audioURL = null;
+    this.audioURI = null;
+    this.contentBlob = null;
+    this.duration = null;
+    this.gettingPicture = false;
+    this.recording = false;
+    this.audioReady = false;
+    this.playbackPaused = false;
+    this.playingAudio = false;
+    this.audioURLReady = false;
+    this.audioURIReady = false;
+    this.startRecording();
+  }
 
   startRecording() {
     console.log("Started Recording");

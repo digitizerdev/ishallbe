@@ -14,21 +14,30 @@
         </ion-row>
     </div>
     <div *ngIf="recording" text-center padding-left padding-right>
-        <button (click)="stopRecording()" id="NowRecordingButton" color="danger" text-center ion-button icon-start clear round block large strong>
+        <button (click)="stopRecording()" id="NowRecordingButton" color="danger" text-center ion-button icon-start clear round block
+            large strong>
             <ion-icon name="mic"></ion-icon>
             STOP RECORDING
         </button>
     </div>
-    <div *ngIf="audioReady && !playingAudio" text-center padding-left padding-right>
-        <button (click)="playAudio()" id="PlayAudioButton" color="primary" text-center ion-button icon-start clear ground block large strong>
-            <ion-icon name="play"></ion-icon>
-            PLAY RECORDING
-        </button>
-    </div>
-    <div *ngIf="playingAudio" text-center padding-left padding-right>
-        <button (click)="stopPlayback()" id="StopPlaybackButton" color="danger" text-center ion-button icon-start round block large strong>
-            <ion-icon name="square"></ion-icon>
-            STOP PLAYBACK
-        </button>
-    </div>
+    <ion-row *ngIf="audioReady" responsive-sm>
+        <ion-col text-center>
+            <button *ngIf="!playingAudio" (click)="playAudio()" id="PlayAudioButton" color="primary" text-center ion-button icon-start
+                round small>
+                <ion-icon name="play"></ion-icon>
+                PLAY
+            </button>
+            <button *ngIf="playingAudio" (click)="stopPlayback()" id="StopPlaybackButton" color="danger" text-center ion-button icon-start
+                round small>
+                <ion-icon name="square"></ion-icon>
+                STOP
+            </button>
+        </ion-col>
+        <ion-col text-center>
+            <button (click)="redoRecording()" id="RedoRecordingButton" color="secondary" text-center ion-button icon-start round small>
+                <ion-icon name="redo"></ion-icon>
+                REDO
+            </button>
+        </ion-col>
+    </ion-row>
 </div>
