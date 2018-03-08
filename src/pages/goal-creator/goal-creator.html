@@ -8,15 +8,6 @@
 </ion-header>
 <ion-content>
   <br>
-  <ion-row *ngIf="!recording" id="SpeakItButton">
-    <ion-col text-center padding-left padding-right>
-      <button (click)="startRecording()" color="secondary" ion-button icon-start round block large strong>
-        <ion-icon name="ios-microphone"></ion-icon>
-        SPEAK IT
-      </button>
-    </ion-col>
-  </ion-row>
-  <upload *ngIf="recording" (uploaded)="setProfilePhoto($event)" [method]="contentMethod"></upload>
   <ion-row *ngIf="!dateSelected" id="SelectDueDateButton">
     <ion-col text-center padding-left padding-right>
       <button (click)="pickDate()" color="grayer" ion-button icon-start clear round block large strong>
@@ -38,6 +29,15 @@
       </h4>
     </ion-col>
   </ion-row>
+  <ion-row *ngIf="!recording" id="SpeakItButton">
+    <ion-col text-center padding-left padding-right>
+      <button (click)="startRecording()" color="secondary" ion-button icon-start round block large strong>
+        <ion-icon name="ios-microphone"></ion-icon>
+        SPEAK IT
+      </button>
+    </ion-col>
+  </ion-row>
+  <upload *ngIf="recording" (uploaded)="setProfilePhoto($event)" [method]="contentMethod"></upload>
   <form class="my-form" #createGoalForm="ngForm" novalidate padding>
     <ion-item class="appForm">
       <ion-input class="myItem" placeholder="Goal Title" [(ngModel)]="createGoalForm.title" name="title" type="text" #title="ngModel"

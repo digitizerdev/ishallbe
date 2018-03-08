@@ -14,10 +14,10 @@
         </ion-row>
     </div>
     <div *ngIf="recording" text-center padding-left padding-right>
-        <button (click)="stopRecording()" id="NowRecordingButton" color="danger" text-center ion-button icon-start clear round block
+        <button (click)="stopRecording()" id="NowRecordingButton" color="danger" text-center ion-button icon-start round block
             large strong>
             <ion-icon name="mic"></ion-icon>
-            NOW RECORDING
+            STOP RECORDING
         </button>
     </div>
     <ion-row *ngIf="audioReady" responsive-sm>
