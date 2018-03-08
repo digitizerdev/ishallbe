@@ -23,19 +23,19 @@
     <ion-row *ngIf="audioReady" responsive-sm>
         <ion-col text-center>
             <button *ngIf="!playingAudio" (click)="playAudio()" id="PlayAudioButton" color="primary" text-center ion-button icon-start
-                round small>
+                round strong>
                 <ion-icon name="play"></ion-icon>
                 PLAY
             </button>
             <button *ngIf="playingAudio" (click)="stopPlayback()" id="StopPlaybackButton" color="danger" text-center ion-button icon-start
-                round small>
+                round strong>
                 <ion-icon name="square"></ion-icon>
                 STOP
             </button>
         </ion-col>
         <ion-col text-center>
-            <button (click)="redoRecording()" id="RedoRecordingButton" color="secondary" text-center ion-button icon-start round small>
-                <ion-icon name="redo"></ion-icon>
+            <button (click)="redoRecording()" id="RedoRecordingButton" color="secondary" text-center ion-button icon-start round>
+                <ion-icon name="refresh"></ion-icon>
                 REDO
             </button>
         </ion-col>
