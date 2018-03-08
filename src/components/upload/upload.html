@@ -17,7 +17,7 @@
         <button (click)="stopRecording()" id="NowRecordingButton" color="danger" text-center ion-button icon-start clear round block
             large strong>
             <ion-icon name="mic"></ion-icon>
-            STOP RECORDING
+            NOW RECORDING
         </button>
     </div>
     <ion-row *ngIf="audioReady" responsive-sm>
@@ -34,7 +34,7 @@
             </button>
         </ion-col>
         <ion-col text-center>
-            <button (click)="redoRecording()" id="RedoRecordingButton" color="secondary" text-center ion-button icon-start round>
+            <button (click)="redoRecording()" id="RedoRecordingButton" color="secondary" text-center ion-button icon-start round strong>
                 <ion-icon name="refresh"></ion-icon>
                 REDO
             </button>
