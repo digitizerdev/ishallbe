@@ -79,12 +79,12 @@ describe('EmailUpdatePage', () => {
         expect(component instanceof EmailUpdatePage).toBe(true);
     });
 
-    it('should be titled Update Email', () => {
+    it('should be titled Email', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#EmailUpdatePageTitle'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Update Email');
+        expect(el).toContain('Email');
     });
 
     it('should display HeaderComponent', () => {
@@ -100,7 +100,7 @@ describe('EmailUpdatePage', () => {
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML
-        expect(el).toContain('UPDATE');
+        expect(el).toContain('UPDATE EMAIL');
     });
 
 });

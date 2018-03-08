@@ -117,12 +117,12 @@ describe('ProfileUpdatePage', () => {
         expect(component instanceof ProfileUpdatePage).toBe(true);
     });
 
-    it('should be titled Update Profile', () => {
+    it('should be titled Profile', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#UpdateProfileTitle'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('Update Profile')
+        expect(el).toContain('Profile')
     });
 
     it('should display profile photo if not updating profile photo', () => {
@@ -152,7 +152,7 @@ describe('ProfileUpdatePage', () => {
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
         el = de.nativeElement.innerHTML
-        expect(el).toContain('UPDATE');
+        expect(el).toContain('UPDATE PROFILE');
     });
 
 });

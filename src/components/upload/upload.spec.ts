@@ -106,17 +106,27 @@ describe('UploadComponent', () => {
         expect(component.startRecording).toHaveBeenCalled();
     });
 
-    it('should display NowRecordingButton if recording', () => {
+    it('should display StopRecordingButton if recording', () => {
         component.recording = true;
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#NowRecordingButton'));
+        de = fixture.debugElement.query(By.css('#StopRecordingButton'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
 
-    it('should display PlayAudioButton if audio ready and not playing audio', () => {
+    it('should display audio panel if audio ready', () => {
+        component.audioReady = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#AudioPanel'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display PlayAudioButton if not playing audio', () => {
         component.audioReady = true;
         component.playingAudio = false;
         fixture.detectChanges();
@@ -128,6 +138,7 @@ describe('UploadComponent', () => {
     });
 
     it('should display StopPlaybackButton if playing audio', () => {
+        component.audioReady = true;
         component.playingAudio = true;
         fixture.detectChanges();
         let de: DebugElement;
