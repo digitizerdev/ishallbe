@@ -9,12 +9,10 @@
 <ion-content>
   <br>
   <ion-row *ngIf="dateSelected" id="DueDateText">
-    <ion-col text-center>
-      <b>
-        <h4 *ngIf="dueToday" color="danger" ion-text>Due {{ displayDueDate }}</h4>
-        <h4 *ngIf="dueThisWeek" color="dark" ion-text>Due {{ displayDueDate }}</h4>
-        <h4 *ngIf="dueLater" color="primary" ion-text>Due {{ displayDueDate }} </h4>
-      </b>
+    <ion-col (click)="pickDate()" text-center>
+        <h4 *ngIf="dueToday" color="danger" ion-text><b>Due {{ displayDueDate }}</b></h4>
+        <h4 *ngIf="dueThisWeek" color="dark" ion-text><b>Due {{ displayDueDate }}</b></h4>
+        <h4 *ngIf="dueLater" color="primary" ion-text><b>Due {{ displayDueDate }}</b></h4>
     </ion-col>
   </ion-row>
   <ion-row *ngIf="!dateSelected" id="SelectDueDateButton">

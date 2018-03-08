@@ -57,7 +57,7 @@ export class GoalCreatorPage {
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
     }).then((date) => { 
       console.log("Raw date is: " + date);
-      this.rawDueDate = moment(date, "YYYYMMDD").fromNow();
+      this.rawDueDate = moment(date).format('YYYYMMDD');
       console.log("Raw Due Date is " + this.rawDueDate);
       this.displayDueDate = moment(date).fromNow();
       console.log("Display Due date is " + this.displayDueDate);
