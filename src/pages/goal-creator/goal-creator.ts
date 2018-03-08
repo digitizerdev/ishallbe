@@ -16,11 +16,11 @@ export class GoalCreatorPage {
     description?: string,
   } = {};
   submitted = false;
-  contentMethod: any;
-  rawDate: any;
-  rawNextWeekDate: any;
-  rawDueDate: any;
-  displayDueDate: any;
+  contentMethod: string;
+  rawDate: number;
+  rawNextWeekDate: number;
+  rawDueDate: number;
+  displayDueDate: string;
   dateSelected = false;
   recording = false;
   recorded = false;
@@ -50,6 +50,11 @@ export class GoalCreatorPage {
 
   pickDate() {
     console.log("Picking date");
+    this.dueToday = false;
+    this.dueThisWeek = false;
+    this.dueLater = false;
+    this.displayDueDate = "";
+    this.rawDueDate = 0;
     this.datePicker.show({
       date: new Date(),
       mode: 'datetime',
@@ -57,7 +62,8 @@ export class GoalCreatorPage {
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
     }).then((date) => { 
       console.log("Raw date is: " + date);
-      this.rawDueDate = moment(date).format('YYYYMMDD');
+      let dueDateString = moment(date).format('YYYYMMDD');
+      this.rawDueDate = parseInt(dueDateString);
       console.log("Raw Due Date is " + this.rawDueDate);
       this.displayDueDate = moment(date).fromNow();
       console.log("Display Due date is " + this.displayDueDate);
@@ -65,7 +71,7 @@ export class GoalCreatorPage {
     }, (err) => { console.error("Error: " + err); });
   }
 
-  formateDueDate() {
+formateDueDate() {
     console.log("Formatting Due Date");
     if (this.rawDueDate == this.rawDate) this.dueToday = true;
     else if (this.rawDueDate < this.rawNextWeekDate) this.dueThisWeek = true;
