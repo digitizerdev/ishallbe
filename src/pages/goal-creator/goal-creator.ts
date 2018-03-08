@@ -58,14 +58,16 @@ export class GoalCreatorPage {
     }).then((date) => { 
       console.log("Raw date is: " + date);
       this.rawDueDate = moment(date, "YYYYMMDD").fromNow();
+      console.log("Raw Due Date is " + this.rawDueDate);
       this.displayDueDate = moment(date).fromNow();
+      console.log("Display Due date is " + this.displayDueDate);
       this.formateDueDate();
-      console.log("Due date is " + this.displayDueDate);
     }, (err) => { console.error("Error: " + err); });
   }
 
   formateDueDate() {
-    if (this.rawDueDate = this.rawDate) this.dueToday = true;
+    console.log("Formatting Due Date");
+    if (this.rawDueDate == this.rawDate) this.dueToday = true;
     else if (this.rawDueDate < this.rawNextWeekDate) this.dueThisWeek = true;
     else this.dueLater = true;
     this.dateSelected = true;
