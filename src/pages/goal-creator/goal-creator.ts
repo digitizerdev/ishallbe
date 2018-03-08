@@ -16,15 +16,26 @@ export class GoalCreatorPage {
     description?: string,
   } = {};
   submitted = false;
-  dueDate: any;
+  contentMethod: any;
+  rawDate: any;
+  rawNextWeekDate: any;
+  rawDueDate: any;
+  displayDueDate: any;
   dateSelected = false;
   recording = false;
   recorded = false;
-  contentMethod: any;
+  dueToday = false;
+  dueThisWeek = false;
+  dueLater = false;
 
   constructor(
     private datePicker: DatePicker
   ) {
+    let rawDateString = moment().format('YYYYMMDD');
+    this.rawDate = parseInt(rawDateString);
+    console.log("Raw date is " + this.rawDate); 
+    this.rawNextWeekDate = this.rawDate + 7;
+    console.log("Raw next week date is " + this.rawNextWeekDate);
   }
 
   ionViewDidLoad() {
@@ -46,13 +57,18 @@ export class GoalCreatorPage {
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
     }).then((date) => { 
       console.log("Raw date is: " + date);
-      this.dueDate = moment(date).fromNow();
-      this.dateSelected = true;
-      console.log("Due date is " + this.dueDate);
-    },
-      (err) => { 
-        console.error("Error: " + err);
-      });
+      this.rawDueDate = moment(date, "YYYYMMDD").fromNow();
+      this.displayDueDate = moment(date).fromNow();
+      this.formateDueDate();
+      console.log("Due date is " + this.displayDueDate);
+    }, (err) => { console.error("Error: " + err); });
+  }
+
+  formateDueDate() {
+    if (this.rawDueDate = this.rawDate) this.dueToday = true;
+    else if (this.rawDueDate < this.rawNextWeekDate) this.dueThisWeek = true;
+    else this.dueLater = true;
+    this.dateSelected = true;
   }
 
 }
