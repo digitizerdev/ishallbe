@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 
 import { IonicPage } from 'ionic-angular';
 import { DatePicker } from '@ionic-native/date-picker';
-import { Media, MediaObject } from '@ionic-native/media';
-import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 
 import moment from 'moment';
 declare var cordova: any;
@@ -30,16 +28,12 @@ export class GoalCreatorPage {
   audioName: string;
   dateSelected = false;
   recording = false;
-  audioReady = false;
-  playingAudio = false;
   dueToday = false;
   dueThisWeek = false;
   dueLater = false;
 
   constructor(
     private datePicker: DatePicker,
-    private fileTransfer: FileTransfer,
-    private media: Media
   ) {
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
@@ -83,56 +77,8 @@ export class GoalCreatorPage {
     this.dateSelected = true;
   }
 
-  listenToAudioEvents() {
-    this.audio.onStatusUpdate.subscribe(status => {
-      console.log("Status of this.audio updated");
-      console.log(status);
-      if (status == 4 && this.playingAudio) {
-        console.log("Time to stop playback")
-        this.stopPlayback();
-      }
-    });
-  }
-
   recordAudio() {
-    this.contentMethod = "audio";
-    this.recording = true;
-  }
-
-  recorded(audio) {
-    console.log("Recorded");
-    console.log(audio);
-    this.audioUrl = audio.url;
-    this.audioName = audio.name;
-    this.audioReady = true;
-  }
-
-  playAudio() {
-    console.log("Playing Audio");
-    this.playingAudio = true;
-    const fileTransfer: FileTransferObject = this.fileTransfer.create();
-    var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + this.audioName;
-    fileTransfer.download(this.audioUrl, destPath, ).then((entry) => {
-      let rawAudioURI = entry.toURL();
-      rawAudioURI = rawAudioURI.replace(/^file:\/\//, '/private');
-      let audio: MediaObject = this.media.create(rawAudioURI);
-      this.audio = audio;
-      this.audio.play();
-      this.listenToAudioEvents();
-    }, (error) => {
-    });
-  }
-
-  stopPlayback() {
-    console.log("Stopping Playback");
-    this.playingAudio = false;
-    this.audio.stop();
-  }
-
-  redoRecording() {
-    this.audio = null;
-    this.playingAudio = false;
-    this.audioReady = false;
+    console.log("Record Audio Triggered");
     this.contentMethod = "audio";
     this.recording = true;
   }

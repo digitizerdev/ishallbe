@@ -38,26 +38,6 @@
     </ion-col>
   </ion-row>
   <upload *ngIf="recording" (uploaded)="recorded($event)" [method]="contentMethod"></upload>
-  <ion-row *ngIf="audioReady" id="AudioPanel" responsive-sm>
-      <ion-col text-center>
-          <button *ngIf="!playingAudio" (click)="playAudio()" id="PlayAudioButton" color="primary" text-center ion-button icon-start
-              round strong>
-              <ion-icon name="play"></ion-icon>
-              PLAY
-          </button>
-          <button *ngIf="playingAudio" (click)="stopPlayback()" id="StopPlaybackButton" color="danger" text-center ion-button icon-start
-              round strong>
-              <ion-icon name="square"></ion-icon>
-              STOP
-          </button>
-      </ion-col>
-      <ion-col text-center>
-          <button (click)="redoRecording()" id="RedoRecordingButton" color="secondary" text-center ion-button icon-start round strong>
-              <ion-icon name="refresh"></ion-icon>
-              REDO
-          </button>
-      </ion-col>
-  </ion-row>
   <form class="my-form" #createGoalForm="ngForm" novalidate padding>
     <ion-item class="appForm">
       <ion-input class="myItem" placeholder="Goal Title" [(ngModel)]="createGoalForm.title" name="title" type="text" #title="ngModel"
