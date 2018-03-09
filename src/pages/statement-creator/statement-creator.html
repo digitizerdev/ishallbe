@@ -8,18 +8,24 @@
 </ion-header>
 <ion-content>
   <br>
-  <ion-row>
-      <ion-col text-center padding-left padding-right>
-        <button id="PictureButton" ion-button (click)="capture()" color="secondary" icon-start round block large strong>
-          <ion-icon name="ios-camera"></ion-icon>
-            SEE IT
-        </button>
-      </ion-col>
-    </ion-row>
+  <ion-row *ngIf="!imageLoaded" id="SeeItButton">
+    <ion-col text-center padding-left padding-right>
+      <button ion-button (click)="loadImage()" color="secondary" icon-start round block large strong>
+        <ion-icon name="ios-camera"></ion-icon>
+        SEE IT
+      </button>
+    </ion-col>
+  </ion-row>
+  <upload *ngIf="loadingImage" (uploaded)="setImage($event)" [method]="imageRetrievalMethod" padding></upload>
+  <ion-row *ngIf="imageLoaded" id="StatementImage">
+    <ion-col text-center padding-left padding-right>
+      <img [src]="statementImage" width="80%" border="black" border-width="2px" class="full-image">
+    </ion-col>
+  </ion-row>
   <form #createStatementForm="ngForm" novalidate padding>
     <ion-item class="appForm">
-      <ion-input class="myItem" placeholder="Statement Title" [(ngModel)]="createStatementForm.title" name="title" type="text" #title="ngModel" spellcheck="false"
-        autocapitalize="off" required>
+      <ion-input class="myItem" placeholder="Statement Title" [(ngModel)]="createStatementForm.title" name="title" type="text"
+        #title="ngModel" spellcheck="false" autocapitalize="off" required>
       </ion-input>
     </ion-item>
     <p ion-text [hidden]="title.valid || submitted == false" color="danger" padding-left>
@@ -27,8 +33,8 @@
     </p>
     <br>
     <ion-item class="appFormTextArea">
-      <ion-textarea [attr.rows]="4" autosize placeholder=" Statement Description" [(ngModel)]="createStatementForm.description" name="description"
-        type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" required>
+      <ion-textarea [attr.rows]="4" autosize placeholder=" Statement Description" [(ngModel)]="createStatementForm.description"
+        name="description" type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" required>
       </ion-textarea>
     </ion-item>
     <p ion-text [hidden]="description.valid || submitted == false" color="danger" padding-left>

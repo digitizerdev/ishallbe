@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
+
 import { IonicPage } from 'ionic-angular';
+import { DatePicker } from '@ionic-native/date-picker';
+import { Media, MediaObject } from '@ionic-native/media';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 
 import moment from 'moment';
+declare var cordova: any;
 
-import { DatePicker } from '@ionic-native/date-picker';
 
 @IonicPage()
 @Component({
@@ -21,15 +25,19 @@ export class GoalCreatorPage {
   rawNextWeekDate: number;
   rawDueDate: number;
   displayDueDate: string;
+  audio: any;
   dateSelected = false;
   recording = false;
-  recorded = false;
+  audioReady = false;
+  playingAudio = false;
   dueToday = false;
   dueThisWeek = false;
   dueLater = false;
 
   constructor(
-    private datePicker: DatePicker
+    private datePicker: DatePicker,
+    private fileTransfer: FileTransfer,
+    private media: Media
   ) {
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
@@ -40,12 +48,6 @@ export class GoalCreatorPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad GoalCreatorage');
-  }
-
-  startRecording() {
-    console.log("Record triggered");
-    this.contentMethod = "audio";
-    this.recording = true;
   }
 
   pickDate() {
@@ -77,6 +79,50 @@ formateDueDate() {
     else if (this.rawDueDate < this.rawNextWeekDate) this.dueThisWeek = true;
     else this.dueLater = true;
     this.dateSelected = true;
+  }
+
+  listenToAudioEvents() {
+    this.audio.onStatusUpdate.subscribe(status => {
+      console.log("Status of this.audio updated");
+      console.log(status);
+      if (status == 4 && this.playingAudio) {
+        console.log("Time to stop playback")
+        this.stopPlayback();
+      }
+    });
+  }  
+
+  recordAudio() {
+    this.contentMethod = "audio";
+    this.recording = true;
+  }
+
+  playAudio(audio) {
+    console.log("Playing Audio");
+    console.log(audio);
+    this.playingAudio = true;
+    const fileTransfer: FileTransferObject = this.fileTransfer.create();
+    var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + audio.name;
+    fileTransfer.download(audio.url, destPath, ).then((entry) => {
+      let rawAudioURI = entry.toURL();
+      rawAudioURI = rawAudioURI.replace(/^file:\/\//, '/private');
+      let audio: MediaObject = this.media.create(rawAudioURI);
+      this.audio = audio;
+      this.audio.play();
+      this.listenToAudioEvents();
+    }, (error) => {
+    });
+  }
+
+  stopPlayback() {
+    console.log("Stopping Playback");
+    this.playingAudio = false;
+    this.audio.stop();
+  }
+
+  redoRecording() {
+    this.audio = null;
+    this.playingAudio = false;
   }
 
 }

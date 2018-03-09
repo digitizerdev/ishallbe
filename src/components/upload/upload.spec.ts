@@ -116,38 +116,6 @@ describe('UploadComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display audio panel if audio ready', () => {
-        component.audioReady = true;
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#AudioPanel'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    it('should display PlayAudioButton if not playing audio', () => {
-        component.audioReady = true;
-        component.playingAudio = false;
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#PlayAudioButton'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    it('should display StopPlaybackButton if playing audio', () => {
-        component.audioReady = true;
-        component.playingAudio = true;
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#StopPlaybackButton'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
     it('should get picture via photo library if content type library', () => {
         component.contentType = "library"
         spyOn(component, 'getPicture');

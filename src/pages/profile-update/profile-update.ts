@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
+
 import { IonicPage, NavController, NavParams, LoadingController, AlertController, ActionSheetController } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
 
 import { ProfilePage } from '../profile/profile';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+
+import { Observable } from 'rxjs/Observable';
 
 @IonicPage()
 @Component({
@@ -22,10 +24,10 @@ export class ProfileUpdatePage {
     twitter?: string,
     linkedin?: string
   } = {};
+  imageRetrievalMethod: string;
   submitted = false;
   loaded = false;
   updatingProfilePhoto = false;
-  imageRetrievalMethod: any;
 
   constructor(
     private navCtrl: NavController,
@@ -140,13 +142,17 @@ export class ProfileUpdatePage {
   setProfilePhoto(content) {
     console.log("Set profile photo triggered");
     console.log(content);
-    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
-    loading.present();    
-    this.user.photo = content;
-    this.updateUser().then(() => {
-      loading.dismiss();
+    if (content == "canceled") {
       this.updatingProfilePhoto = false;
-    })
+    } else {
+      let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+      loading.present();    
+      this.user.photo = content;
+      this.updateUser().then(() => {
+        loading.dismiss();
+        this.updatingProfilePhoto = false;
+      });
+    }
   }
 
   errorHandler(error) {

@@ -140,8 +140,8 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display SpeakItButton if not recording', () => {
-        component.recording = false;
+    it('should display SpeakItButton if audio not ready', () => {
+        component.audioReady = false;
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
@@ -156,6 +156,38 @@ describe('GoalCreatorPage', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('upload'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display AudioPanel if audio ready', () => {
+        component.audioReady = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#AudioPanel'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display PlayAudioButton if not playing audio', () => {
+        component.audioReady = true;
+        component.playingAudio = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PlayAudioButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display StopPlaybackButton if playing audio', () => {
+        component.audioReady = true;
+        component.playingAudio = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#StopPlaybackButton'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });

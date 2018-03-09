@@ -124,6 +124,36 @@ describe('StatementCreatorPage', () => {
         expect(el).toContain('Statement')
     });
 
+    it('should display SeeItButton if image not loaded', () => {
+        component.imageLoaded = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#SeeItButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display upload component if loading image', () => {
+        component.loadingImage = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('upload'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display StatementImage if image loaded', () => {
+        component.imageLoaded = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#StatementImage'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
     it('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
