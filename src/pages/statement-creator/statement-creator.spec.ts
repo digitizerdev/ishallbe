@@ -2,7 +2,7 @@ import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { IonicModule, Platform, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { IonicModule, Platform, NavController, NavParams, Events, ActionSheetController } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
 import { Media } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
@@ -24,6 +24,7 @@ import {
     PlatformMock,
     NavMock,
     NavParamsMock,
+    EventsMock,
     MediaMock,
     ActionSheetControllerMock,
     CameraMock,
@@ -38,6 +39,7 @@ describe('StatementCreatorPage', () => {
     let platform: Platform;
     let nav: NavController;
     let navParams: NavParams;
+    let events: Events;
     let media: Media;
     let actionSheet: ActionSheetController;
     let camera: Camera;
@@ -65,6 +67,7 @@ describe('StatementCreatorPage', () => {
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
                 { provide: NavParams, useClass: NavParamsMock },
+                { provide: Events, useClass: EventsMock },
                 { provide: Media, useClass: MediaMock },
                 { provide: ActionSheetController, useClass: ActionSheetControllerMock },
                 { provide: Camera, useClass: CameraMock },
@@ -86,6 +89,7 @@ describe('StatementCreatorPage', () => {
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
         navParams = TestBed.get(NavParams);
+        events = TestBed.get(Events);
         media = TestBed.get(Media);
         actionSheet = TestBed.get(ActionSheetController);
         camera = TestBed.get(Camera);
@@ -102,6 +106,7 @@ describe('StatementCreatorPage', () => {
         platform = null;
         nav = null;
         navParams = null;
+        events = null;
         media = null;
         actionSheet = null;
         camera = null;

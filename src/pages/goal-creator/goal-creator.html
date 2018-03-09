@@ -1,68 +1,88 @@
 <ion-header no-border>
-  <ion-navbar color='primary'>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title id="GoalCreatorTitle" color='primary'>Goal</ion-title>
-  </ion-navbar>
-</ion-header>
-<ion-content>
-  <br>
-  <ion-row *ngIf="!dateSelected" id="SelectDueDateButton">
-    <ion-col text-center padding-left padding-right>
-      <button (click)="pickDate()" color="grayer" ion-button icon-start clear round block large strong>
-        <ion-icon name="ios-calendar"></ion-icon>
-        SELECT DUE DATE
+    <ion-navbar color='primary'>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
       </button>
-    </ion-col>
-  </ion-row>
-  <ion-row *ngIf="dateSelected" id="DueDateText">
-    <ion-col (click)="pickDate()" text-center>
-      <h4 *ngIf="dueToday" color="danger" ion-text>
-        <b>Due {{ displayDueDate }}</b>
-      </h4>
-      <h4 *ngIf="dueThisWeek" color="dark" ion-text>
-        <b>Due {{ displayDueDate }}</b>
-      </h4>
-      <h4 *ngIf="dueLater" color="primary" ion-text>
-        <b>Due {{ displayDueDate }}</b>
-      </h4>
-    </ion-col>
-  </ion-row>
-  <ion-row *ngIf="!recording" id="SpeakItButton">
-    <ion-col text-center padding-left padding-right>
-      <button (click)="recordAudio()" color="secondary" ion-button icon-start round block large strong>
-        <ion-icon name="ios-microphone"></ion-icon>
-        SPEAK IT
-      </button>
-    </ion-col>
-  </ion-row>
-  <upload *ngIf="recording" (uploaded)="recorded($event)" [method]="contentMethod"></upload>
-  <form class="my-form" #createGoalForm="ngForm" novalidate padding>
-    <ion-item class="appForm">
-      <ion-input class="myItem" placeholder="Goal Title" [(ngModel)]="createGoalForm.title" name="title" type="text" #title="ngModel"
-        spellcheck="false" autocapitalize="off" required>
-      </ion-input>
-    </ion-item>
-    <p ion-text [hidden]="title.valid || submitted == false" color="danger" padding-left>
-      Goal Title is required
-    </p>
+      <ion-title id="GoalCreatorTitle" color='primary'>Goal</ion-title>
+    </ion-navbar>
+  </ion-header>
+  <ion-content>
     <br>
-    <ion-item class="appFormTextArea">
-      <ion-textarea [attr.rows]="4" autosize placeholder="Goal Description" [(ngModel)]="createGoalForm.description" name="description"
-        type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" required>
-      </ion-textarea>
-    </ion-item>
-    <p ion-text [hidden]="description.valid || submitted == false" color="danger" padding-left>
-      Goal Description is required
-    </p>
-    <br>
-    <ion-row>
-      <ion-col text-center class="submit">
-        <button id="CreateGoalButton" ion-button (click)="submit(createGoalForm)" color="primary" round block large strong>
-          CREATE GOAL
+    <ion-row *ngIf="!dateSelected" id="SelectDueDateButton">
+      <ion-col text-center padding-left padding-right>
+        <button (click)="pickDate()" color="grayer" ion-button icon-start clear round block large strong>
+          <ion-icon name="ios-calendar"></ion-icon>
+          SELECT DUE DATE
         </button>
       </ion-col>
     </ion-row>
-  </form>
-</ion-content>
+    <ion-row *ngIf="dateSelected" id="DueDateText">
+      <ion-col (click)="pickDate()" text-center>
+        <h4 *ngIf="dueToday" color="danger" ion-text>
+          <b>Due {{ displayDueDate }}</b>
+        </h4>
+        <h4 *ngIf="dueThisWeek" color="dark" ion-text>
+          <b>Due {{ displayDueDate }}</b>
+        </h4>
+        <h4 *ngIf="dueLater" color="primary" ion-text>
+          <b>Due {{ displayDueDate }}</b>
+        </h4>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!recording" id="SpeakItButton">
+      <ion-col text-center padding-left padding-right>
+        <button (click)="recordAudio()" color="secondary" ion-button icon-start round block large strong>
+          <ion-icon name="ios-microphone"></ion-icon>
+          SPEAK IT
+        </button>
+      </ion-col>
+    </ion-row>
+    <upload *ngIf="recording" (uploaded)="recorded($event)" [method]="contentMethod"></upload>
+    <ion-row *ngIf="audioReady" id="AudioPanel" responsive-sm>
+        <ion-col text-center>
+            <button *ngIf="!playingAudio" (click)="playAudio()" id="PlayAudioButton" color="primary" text-center ion-button icon-start
+                round strong>
+                <ion-icon name="play"></ion-icon>
+                PLAY
+            </button>
+            <button *ngIf="playingAudio" (click)="stopPlayback()" id="StopPlaybackButton" color="danger" text-center ion-button icon-start
+                round strong>
+                <ion-icon name="square"></ion-icon>
+                STOP
+            </button>
+        </ion-col>
+        <ion-col text-center>
+            <button (click)="redoRecording()" id="RedoRecordingButton" color="secondary" text-center ion-button icon-start round strong>
+                <ion-icon name="refresh"></ion-icon>
+                REDO
+            </button>
+        </ion-col>
+    </ion-row>
+    <form class="my-form" #createGoalForm="ngForm" novalidate padding>
+      <ion-item class="appForm">
+        <ion-input class="myItem" placeholder="Goal Title" [(ngModel)]="createGoalForm.title" name="title" type="text" #title="ngModel"
+          spellcheck="false" autocapitalize="off" required>
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="title.valid || submitted == false" color="danger" padding-left>
+        Goal Title is required
+      </p>
+      <br>
+      <ion-item class="appFormTextArea">
+        <ion-textarea [attr.rows]="4" autosize placeholder="Goal Description" [(ngModel)]="createGoalForm.description" name="description"
+          type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" required>
+        </ion-textarea>
+      </ion-item>
+      <p ion-text [hidden]="description.valid || submitted == false" color="danger" padding-left>
+        Goal Description is required
+      </p>
+      <br>
+      <ion-row>
+        <ion-col text-center class="submit">
+          <button id="CreateGoalButton" ion-button (click)="submit(createGoalForm)" color="primary" round block large strong>
+            CREATE GOAL
+          </button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-content>

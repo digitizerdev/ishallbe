@@ -208,6 +208,12 @@ export class EventsMock {
       resolve();
     });
   }
+
+  public subscribe(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
 }
 
 export class FirebaseProviderMock extends FirebaseProvider {

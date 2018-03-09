@@ -1,18 +1,17 @@
 import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 
-import { LoadingController } from 'ionic-angular';
+import { Events, LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Media, MediaObject } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
-
-import { Observable } from 'rxjs/Observable';
 
 import firebase from 'firebase';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
+import { Observable } from 'rxjs/Observable';
 import Cropper from 'cropperjs';
 import moment from 'moment';
+
 declare var cordova: any;
 
 @Component({
@@ -29,36 +28,39 @@ export class UploadComponent {
   cropperInstance: any;
   image: any;
   audio: any;
-  contentBlob: any;
-  audioURL: string;
-  audioURI: string;
   audioName: string;
+  contentBlob: any;
   gettingImage = false;
+  imageCropped = false;
   recording = false;
-  audioReady = false;
-  playbackPaused = false;
-  playingAudio = false;
-  audioURLReady = false;
-  audioURIReady = false;
 
   constructor(
+    private events: Events,
     private loadingCtrl: LoadingController,
     private camera: Camera,
     private media: Media,
     private file: File,
-    private fileTransfer: FileTransfer,
     private firebase: FirebaseProvider
   ) {
     console.log("Hello Upload Component");
+    this.listenToMediaEvents();
   }
 
-  ngOnInit() {
-    console.log("Content type is " + this.contentType);
-    this.audioName = moment().format('YYYYMMDDhhmmss');
-    this.audioName = this.audioName + ".m4a";
-    console.log("Audio name is " + this.audioName);
+  listenToMediaEvents() {
+    console.log("Listening to media events");
+    this.events.subscribe('mediaUpload', (type) => {
+      console.log("Page needs media upload");
+      this.contentType = type;
+      console.log("Content Type is " + this.contentType);
+      this.loadMedia();
+    });
+  }
+
+  loadMedia() {
+    console.log("Loading Media");
     if (this.contentType == "audio") this.getAudio();
-    else this.getImage();
+    if (this.contentType == "camera") this.getImage();
+    if (this.contentType == "library") this.getImage();
   }
 
   getImage() {
@@ -134,65 +136,44 @@ export class UploadComponent {
     console.log("Started Recording");
     this.recording = true;
     this.file.createFile(this.file.tempDirectory, this.audioName, true).then(() => {
-      const audio: MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + 'my_file.m4a');
+      const audio: MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + this.audioName);
       console.log("Audio assigned to constant audio media object");
       console.log(audio);
       this.audio = audio;
       console.log("Audio assigned to this.audio media object");
       console.log(this.audio);
       this.audio.startRecord();
-      this.listenToAudioEvents();
       window.setTimeout(() => {
-        if (this.recording) this.stopRecording();
+        if (this.recording) this.uploadAudio();
       }, 10000);
     });
   }
 
-  listenToAudioEvents() {
-    this.audio.onStatusUpdate.subscribe(status => {
-      console.log("Status of this.audio updated");
-      console.log(status);
-      if (status == 4 && this.playingAudio) {
-        console.log("Time to stop playback")
-        this.stopPlayback();
-      }
-    });
-  }
-
-  stopRecording() {
-    this.audio.stopRecord();
-    console.log("Stopped Recording");
-    console.log(this.audio);
-    this.recording = false;
-    this.audioReady = true;
-  }
-
-  playAudio() {
-    console.log("Playing Audio");
-    this.playingAudio = true;
-    this.audio.play();
-  }
-
-  stopPlayback() {
-    console.log("Stopping Playback");
-    this.playingAudio = false;
-    this.audio.stop();
-  }
-
   uploadAudio() {
     console.log("Uploading record");
-    this.storeRecord().subscribe((downloadURL) => {
+    this.recording = false;
+    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+    loading.present();
+    this.audio.stopRecord();
+    this.storeAudio().subscribe((downloadURL) => {
       console.log("Finished storing record");
       console.log("Download URL is " + downloadURL);
-      this.audioURL = downloadURL;
-      this.audioURLReady = true;
+      let audio = {
+        url: downloadURL,
+        name: this.audioName
+      }
+      this.audio = null;
+      this.audioName = null;
+      this.recording = false;
+      this.uploaded.emit(audio);
+      loading.dismiss();
     });
   }
 
-  storeRecord() {
+  storeAudio() {
     return Observable.create((observer) => {
       console.log('Saving record');
-      const filePath = `${this.file.tempDirectory}my_file.m4a`;
+      const filePath = `${this.file.tempDirectory}` + this.audioName;
       console.log("Path to record is " + filePath);
       const readFile: any = window['resolveLocalFileSystemURL'];
       return readFile(filePath, (fileEntry) => {
@@ -203,7 +184,7 @@ export class UploadComponent {
             let blob = new Blob([new Uint8Array(arrayBuffer)], { type: 'audio/m4a' });
             console.log("Blob is ");
             console.log(blob);
-            var storageRef = firebase.storage().ref('content/' + this.firebase.user.uid + '/my-file.m4a');
+            var storageRef = firebase.storage().ref('content/' + this.firebase.user.uid + this.audioName);
             console.log("Storage reference is " + storageRef);
             var uploadTask = storageRef.put(blob);
             console.log('Upload started:');
@@ -234,26 +215,5 @@ export class UploadComponent {
         observer.error(e);
       });
     });
-  }
-
-  downloadAudio() {
-    console.log("Downloading Audio")
-    const fileTransfer: FileTransferObject = this.fileTransfer.create();
-    var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + "my_file.m4a"
-    fileTransfer.download(this.audioURL, destPath, ).then((entry) => {
-      let rawAudioURI = entry.toURL();
-      this.audioURI = rawAudioURI.replace(/^file:\/\//, '/private');
-      this.audioURIReady = true;
-      console.log("Audio URI: " + this.audioURI);
-    }, (error) => {
-      console.error(error);
-    });
-  }
-
-  playAudioURI() {
-    console.log("Playing AudioURI");
-    let downloadedAudio: MediaObject = this.media.create(this.audioURI);
-    console.log("Downloaded audio: " + downloadedAudio);
-    downloadedAudio.play();
   }
 }

@@ -2,7 +2,7 @@ import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { IonicModule, Platform, NavController } from 'ionic-angular';
+import { IonicModule, Platform, NavController, Events } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
 import { Media } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
@@ -20,6 +20,7 @@ import { } from 'jasmine';
 import {
     PlatformMock,
     NavMock,
+    EventsMock,
     CameraMock,
     MediaMock,
     FileMock,
@@ -32,6 +33,7 @@ describe('UploadComponent', () => {
     let component;
     let platform: Platform;
     let nav: NavController;
+    let events: Events;
     let camera: Camera;
     let media: Media;
     let file: File;
@@ -56,6 +58,7 @@ describe('UploadComponent', () => {
             providers: [
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
+                { provide: Events, useClass: EventsMock},
                 { provide: Camera, useClass: CameraMock },
                 { provide: Media, useClass: MediaMock },
                 { provide: File, useClass: FileMock },
@@ -72,6 +75,7 @@ describe('UploadComponent', () => {
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
+        events = TestBed.get(Events);
         camera = TestBed.get(Camera);
         file = TestBed.get(File);
         fileTransfer = TestBed.get(FileTransfer);
@@ -86,6 +90,7 @@ describe('UploadComponent', () => {
         component = null;
         platform = null;
         nav = null;
+        events = null;
         camera = null;
         media = null;
         file = null;
@@ -95,18 +100,18 @@ describe('UploadComponent', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof UploadComponent).toBe(true);
     });
 
-    it('should record if content type audio', () => {
+    fit('should record if content type audio', () => {
         component.contentType = "audio"
-        spyOn(component, 'startRecording');
-        component.ngOnInit()
-        expect(component.startRecording).toHaveBeenCalled();
+        spyOn(component, 'getAudio');
+        component.loadMedia()
+        expect(component.getAudio).toHaveBeenCalled();
     });
 
-    it('should display StopRecordingButton if recording', () => {
+    fit('should display StopRecordingButton if recording', () => {
         component.recording = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -116,17 +121,17 @@ describe('UploadComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should get picture via photo library if content type library', () => {
+    fit('should get picture via photo library if content type library', () => {
         component.contentType = "library"
         spyOn(component, 'getImage');
-        component.ngOnInit()
+        component.loadMedia()
         expect(component.getImage).toHaveBeenCalled();
     });
 
-    it('should get picture via camera if content type camera', () => {
+    fit('should get picture via camera if content type camera', () => {
         component.contentType = "camera"
         spyOn(component, 'getImage');
-        component.ngOnInit()
+        component.loadMedia()
         expect(component.getImage).toHaveBeenCalled();
     });
 });

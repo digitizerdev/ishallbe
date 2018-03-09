@@ -2,7 +2,7 @@ import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { IonicModule, Platform, NavController } from 'ionic-angular';
+import { IonicModule, Platform, NavController, Events } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
 import { DatePicker } from '@ionic-native/date-picker';
 import { Media } from '@ionic-native/media';
@@ -24,6 +24,7 @@ import { } from 'jasmine';
 import {
     PlatformMock,
     NavMock,
+    EventsMock,
     CameraMock,
     DatePickerMock,
     MediaMock,
@@ -37,6 +38,7 @@ describe('GoalCreatorPage', () => {
     let component;
     let platform: Platform;
     let nav: NavController;
+    let events: Events;
     let camera: Camera;
     let datePicker: DatePicker;
     let file: File;
@@ -63,6 +65,7 @@ describe('GoalCreatorPage', () => {
             providers: [
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
+                { provide: Events, useClass: EventsMock },
                 { provide: Camera, useClass: CameraMock },
                 { provide: DatePicker, useClass: DatePickerMock },
                 { provide: File, useClass: FileMock },
@@ -83,6 +86,7 @@ describe('GoalCreatorPage', () => {
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
+        events = TestBed.get(Events);
         camera = TestBed.get(Camera);
         datePicker = TestBed.get(DatePicker);
         file = TestBed.get(File);
@@ -98,6 +102,7 @@ describe('GoalCreatorPage', () => {
         component = null;
         platform = null;
         nav = null;
+        events = null;
         camera = null;
         datePicker = null;
         file = null;
@@ -108,11 +113,11 @@ describe('GoalCreatorPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof GoalCreatorPage).toBe(true);
     });
 
-    it('should be titled Goal', () => {
+    fit('should be titled Goal', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#GoalCreatorTitle'));
@@ -120,7 +125,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toContain('Goal')
     });
 
-    it('should display SelectDueDateButton if date not selected', () => {
+    fit('should display SelectDueDateButton if date not selected', () => {
         component.dateSelected = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -130,7 +135,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display DueDateText if date selected', () => {
+    fit('should display DueDateText if date selected', () => {
         component.dateSelected = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -140,7 +145,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display SpeakItButton if audio not ready', () => {
+    fit('should display SpeakItButton if audio not ready', () => {
         component.audioReady = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -150,7 +155,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display upload component if recording', () => {
+    fit('should display upload component if recording', () => {
         component.recording = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -160,7 +165,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display AudioPanel if audio ready', () => {
+    fit('should display AudioPanel if audio ready', () => {
         component.audioReady = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -170,7 +175,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display PlayAudioButton if not playing audio', () => {
+    fit('should display PlayAudioButton if not playing audio', () => {
         component.audioReady = true;
         component.playingAudio = false;
         fixture.detectChanges();
@@ -181,7 +186,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display StopPlaybackButton if playing audio', () => {
+    fit('should display StopPlaybackButton if playing audio', () => {
         component.audioReady = true;
         component.playingAudio = true;
         fixture.detectChanges();
@@ -192,7 +197,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display form', () => {
+    fit('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
