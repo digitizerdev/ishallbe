@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, NavParams, LoadingController, AlertController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, ActionSheetController } from 'ionic-angular';
 
-import { FirebaseProvider } from '../../providers/firebase/firebase';
-
-import { Observable } from 'rxjs/Observable';
 
 @IonicPage()
 @Component({
@@ -20,14 +17,10 @@ export class StatementCreatorPage {
   imageRetrievalMethod: string; 
   submitted = false;
   loadingImage = false;
+  imageLoaded = false;
 
   constructor(
-    private navCtrl: NavController,
-    private navParams: NavParams,
-    private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController,
     private actionSheetCtrl: ActionSheetController,
-    private firebase: FirebaseProvider
     ) {
   }
 
@@ -75,5 +68,6 @@ export class StatementCreatorPage {
     console.log("Load Imagee triggered");
     console.log(imageUrl);
     this.statementImage = imageUrl;
+    this.imageLoaded = true;
   }
 }

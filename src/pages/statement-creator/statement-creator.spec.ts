@@ -124,8 +124,9 @@ describe('StatementCreatorPage', () => {
         expect(el).toContain('Statement')
     });
 
-    it('should display SeeItButton if image not loaded', () => {
+    it('should display SeeItButton if image not loaded and not loading image', () => {
         component.imageLoaded = false;
+        component.loadingImage = false;
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;

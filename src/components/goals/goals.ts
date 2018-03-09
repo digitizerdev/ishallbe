@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { Media, MediaObject } from '@ionic-native/media';
 
 import moment from 'moment';

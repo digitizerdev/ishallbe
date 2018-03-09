@@ -41,7 +41,7 @@ export class GoalCreatorPage {
   ) {
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
-    console.log("Raw date is " + this.rawDate); 
+    console.log("Raw date is " + this.rawDate);
     this.rawNextWeekDate = this.rawDate + 7;
     console.log("Raw next week date is " + this.rawNextWeekDate);
   }
@@ -62,7 +62,7 @@ export class GoalCreatorPage {
       mode: 'datetime',
       allowOldDates: false,
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
-    }).then((date) => { 
+    }).then((date) => {
       console.log("Raw date is: " + date);
       let dueDateString = moment(date).format('YYYYMMDD');
       this.rawDueDate = parseInt(dueDateString);
@@ -73,7 +73,7 @@ export class GoalCreatorPage {
     }, (err) => { console.error("Error: " + err); });
   }
 
-formateDueDate() {
+  formateDueDate() {
     console.log("Formatting Due Date");
     if (this.rawDueDate == this.rawDate) this.dueToday = true;
     else if (this.rawDueDate < this.rawNextWeekDate) this.dueThisWeek = true;
@@ -90,7 +90,7 @@ formateDueDate() {
         this.stopPlayback();
       }
     });
-  }  
+  }
 
   recordAudio() {
     this.contentMethod = "audio";
@@ -109,6 +109,7 @@ formateDueDate() {
       let audio: MediaObject = this.media.create(rawAudioURI);
       this.audio = audio;
       this.audio.play();
+      this.audioReady = true;
       this.listenToAudioEvents();
     }, (error) => {
     });
@@ -124,5 +125,4 @@ formateDueDate() {
     this.audio = null;
     this.playingAudio = false;
   }
-
 }
