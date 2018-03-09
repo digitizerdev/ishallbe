@@ -45,10 +45,10 @@ export class UploadComponent {
 
   ngOnInit() {
     console.log("Content type is " + this.contentType);
-    if (this.contentType == "audio") this.startRecording();
-    else this.getPicture();
     this.audioName = moment().format('YYYYMMDDhhmmss');
     console.log("Audio name is " + this.audioName);
+    if (this.contentType == "audio") this.startRecording();
+    else this.getPicture();
   }
 
   getPicture() {
