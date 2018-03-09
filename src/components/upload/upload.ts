@@ -28,8 +28,8 @@ export class UploadComponent {
   cropperInstance: any;
   image: any;
   audio: any;
-  audioName: string;
   contentBlob: any;
+  contentName: string;
   gettingImage = false;
   imageCropped = false;
   recording = false;
@@ -43,22 +43,47 @@ export class UploadComponent {
     private firebase: FirebaseProvider
   ) {
     console.log("Hello Upload Component");
-    this.listenToMediaEvents();
   }
 
-  listenToMediaEvents() {
-    console.log("Listening to media events");
-    this.events.subscribe('mediaUpload', (type) => {
-      console.log("Page needs media upload");
+  ngOnInit() {
+    console.log("Content type is " + this.contentType);
+    if (this.contentType == "audio") this.getAudio();
+    else this.getImage();
+    this.listenToRedoEvents();
+  }
+
+  listenToRedoEvents() {
+    console.log("Listening to redo events");
+    this.events.subscribe('redoUpload', (type) => {
+      console.log("Redo Upload triggered");
       this.contentType = type;
-      console.log("Content Type is " + this.contentType);
+      console.log("Content type is " + this.contentType);
+      this.resetUpload();
       this.loadMedia();
     });
   }
 
+  resetUpload() {
+    this.sourceType = null;
+    this.cameraOptions = null;
+    this.cropperInstance = null;
+    this.image = null;
+    this.audio = null;
+    this.contentBlob = null;
+    this.contentName = null;
+    this.gettingImage = false;
+    this.imageCropped = false;
+    this.recording = false;
+  }
+
   loadMedia() {
     console.log("Loading Media");
-    if (this.contentType == "audio") this.getAudio();
+    this.contentName = moment().format('YYYYMMDDhhmmss');
+    console.log("Audio name is " + this.contentName);
+    if (this.contentType == "audio") {
+      this.contentName = this.contentName + ".m4a";
+      this.getAudio();
+    }
     if (this.contentType == "camera") this.getImage();
     if (this.contentType == "library") this.getImage();
   }
@@ -109,7 +134,7 @@ export class UploadComponent {
     let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
     loading.present();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
-    let uploadPath = 'content/' + this.firebase.user.uid + '/images/profile/';
+    let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
     console.log("Upload path is " + uploadPath);
     this.storeImage(uploadPath, this.image).subscribe((snapshot) => {
       console.log("Finished storing media");
@@ -135,8 +160,8 @@ export class UploadComponent {
   getAudio() {
     console.log("Started Recording");
     this.recording = true;
-    this.file.createFile(this.file.tempDirectory, this.audioName, true).then(() => {
-      const audio: MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + this.audioName);
+    this.file.createFile(this.file.tempDirectory, this.contentName, true).then(() => {
+      const audio: MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + this.contentName);
       console.log("Audio assigned to constant audio media object");
       console.log(audio);
       this.audio = audio;
@@ -160,10 +185,10 @@ export class UploadComponent {
       console.log("Download URL is " + downloadURL);
       let audio = {
         url: downloadURL,
-        name: this.audioName
+        name: this.contentName
       }
       this.audio = null;
-      this.audioName = null;
+      this.contentName = null;
       this.recording = false;
       this.uploaded.emit(audio);
       loading.dismiss();
@@ -173,7 +198,7 @@ export class UploadComponent {
   storeAudio() {
     return Observable.create((observer) => {
       console.log('Saving record');
-      const filePath = `${this.file.tempDirectory}` + this.audioName;
+      const filePath = `${this.file.tempDirectory}` + this.contentName;
       console.log("Path to record is " + filePath);
       const readFile: any = window['resolveLocalFileSystemURL'];
       return readFile(filePath, (fileEntry) => {
@@ -184,7 +209,7 @@ export class UploadComponent {
             let blob = new Blob([new Uint8Array(arrayBuffer)], { type: 'audio/m4a' });
             console.log("Blob is ");
             console.log(blob);
-            var storageRef = firebase.storage().ref('content/' + this.firebase.user.uid + this.audioName);
+            var storageRef = firebase.storage().ref('content/' + this.firebase.user.uid + this.contentName);
             console.log("Storage reference is " + storageRef);
             var uploadTask = storageRef.put(blob);
             console.log('Upload started:');

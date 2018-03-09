@@ -98,12 +98,13 @@ export class GoalCreatorPage {
   recordAudio() {
     this.contentMethod = "audio";
     this.recording = true;
-    this.events.publish('mediaUpload', 'audio');
   }
 
   recorded(audio) {
     console.log("Recorded");
     console.log(audio);
+    this.audioUrl = audio.url;
+    this.audioName = audio.name;
     this.audioReady = true;
   }
 
@@ -135,5 +136,6 @@ export class GoalCreatorPage {
     this.audioReady = false;
     this.contentMethod = "audio";
     this.recording = true;
+    this.events.publish('redoUpload', 'audio');
   }
 }
