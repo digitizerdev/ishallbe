@@ -53,7 +53,7 @@ export class UploadComponent {
   }
 
   getImage() {
-    this.gettingImage= true;
+    this.gettingImage = true;
     if (this.contentType == "camera") this.sourceType = this.camera.PictureSourceType.CAMERA;
     if (this.contentType == "library") this.sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
     this.camera.getPicture(this.getCameraOptions()).then((image) => {
@@ -160,7 +160,7 @@ export class UploadComponent {
   storeAudio() {
     return Observable.create((observer) => {
       console.log('Saving record');
-      const filePath = `${this.file.tempDirectory}{audioName}`;
+      const filePath = `${this.file.tempDirectory}` + this.audioName;
       console.log("Path to record is " + filePath);
       const readFile: any = window['resolveLocalFileSystemURL'];
       return readFile(filePath, (fileEntry) => {
