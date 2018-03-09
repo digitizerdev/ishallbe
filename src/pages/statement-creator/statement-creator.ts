@@ -68,6 +68,7 @@ export class StatementCreatorPage {
     console.log("Load Imagee triggered");
     console.log(imageUrl);
     this.statementImage = imageUrl;
+    this.loadingImage = false;
     this.imageLoaded = true;
   }
 }
