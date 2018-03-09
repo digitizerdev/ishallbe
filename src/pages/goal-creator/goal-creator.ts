@@ -102,6 +102,8 @@ export class GoalCreatorPage {
   recorded(audio) {
     console.log("Recorded");
     console.log(audio);
+    this.audioUrl = audio.url;
+    this.audioName = audio.name;
     this.audioReady = true;
   }
 
