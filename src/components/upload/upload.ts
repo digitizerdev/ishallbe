@@ -208,7 +208,8 @@ export class UploadComponent {
             let blob = new Blob([new Uint8Array(arrayBuffer)], { type: 'audio/m4a' });
             console.log("Blob is ");
             console.log(blob);
-            var storageRef = firebase.storage().ref('content/' + this.firebase.user.uid + this.contentName);
+            let uploadPath = 'content/' + this.firebase.user.uid + '/audio/' + this.contentName;
+            var storageRef = firebase.storage().ref(uploadPath);
             console.log("Storage reference is " + storageRef);
             var uploadTask = storageRef.put(blob);
             console.log('Upload started:');
