@@ -118,16 +118,16 @@ describe('UploadComponent', () => {
 
     it('should get picture via photo library if content type library', () => {
         component.contentType = "library"
-        spyOn(component, 'getPicture');
+        spyOn(component, 'getImage');
         component.ngOnInit()
-        expect(component.getPicture).toHaveBeenCalled();
+        expect(component.getImage).toHaveBeenCalled();
     });
 
     it('should get picture via camera if content type camera', () => {
         component.contentType = "camera"
-        spyOn(component, 'getPicture');
+        spyOn(component, 'getImage');
         component.ngOnInit()
-        expect(component.getPicture).toHaveBeenCalled();
+        expect(component.getImage).toHaveBeenCalled();
     });
 });
 

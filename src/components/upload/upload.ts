@@ -29,9 +29,9 @@ export class UploadComponent {
   audio: any;
   audioName: string;
   contentBlob: any;
-  gettingPicture = false;
+  gettingImage = false;
+  imageCropped = false;
   recording = false;
-  audioReady = false;
 
   constructor(
     private loadingCtrl: LoadingController,
@@ -46,13 +46,14 @@ export class UploadComponent {
   ngOnInit() {
     console.log("Content type is " + this.contentType);
     this.audioName = moment().format('YYYYMMDDhhmmss');
+    this.audioName = this.audioName + ".m4a";
     console.log("Audio name is " + this.audioName);
-    if (this.contentType == "audio") this.startRecording();
-    else this.getPicture();
+    if (this.contentType == "audio") this.getAudio();
+    else this.getImage();
   }
 
-  getPicture() {
-    this.gettingPicture = true;
+  getImage() {
+    this.gettingImage= true;
     if (this.contentType == "camera") this.sourceType = this.camera.PictureSourceType.CAMERA;
     if (this.contentType == "library") this.sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
     this.camera.getPicture(this.getCameraOptions()).then((image) => {
@@ -93,13 +94,13 @@ export class UploadComponent {
     });
   }
 
-  upload() {
+  uploadImage() {
     let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
     loading.present();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
     let uploadPath = 'content/' + this.firebase.user.uid + '/images/profile/';
     console.log("Upload path is " + uploadPath);
-    this.store(uploadPath, this.image).subscribe((snapshot) => {
+    this.storeImage(uploadPath, this.image).subscribe((snapshot) => {
       console.log("Finished storing media");
       console.log(snapshot);
       let content = snapshot.downloadURL;
@@ -108,7 +109,7 @@ export class UploadComponent {
     });
   }
 
-  store(path, obj) {
+  storeImage(path, obj) {
     return Observable.create((observer) => {
       let storagePath = firebase.storage().ref(path);
       return storagePath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
@@ -120,7 +121,7 @@ export class UploadComponent {
     });
   }
 
-  startRecording() {
+  getAudio() {
     console.log("Started Recording");
     this.recording = true;
     this.file.createFile(this.file.tempDirectory, this.audioName, true).then(() => {
@@ -132,22 +133,18 @@ export class UploadComponent {
       console.log(this.audio);
       this.audio.startRecord();
       window.setTimeout(() => {
-        if (this.recording) this.stopRecording();
+        if (this.recording) this.uploadAudio();
       }, 10000);
     });
   }
 
-  stopRecording() {
-    this.audio.stopRecord();
-    console.log("Stopped Recording");
-    console.log(this.audio);
-    this.recording = false;
-    this.audioReady = true;
-  }
-
   uploadAudio() {
     console.log("Uploading record");
-    this.storeRecord().subscribe((downloadURL) => {
+    this.recording = false;
+    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+    loading.present();
+    this.audio.stopRecord();
+    this.storeAudio().subscribe((downloadURL) => {
       console.log("Finished storing record");
       console.log("Download URL is " + downloadURL);
       let audio = {
@@ -155,10 +152,12 @@ export class UploadComponent {
         name: this.audioName
       }
       this.uploaded.emit(audio);
+      loading.dismiss();
+
     });
   }
 
-  storeRecord() {
+  storeAudio() {
     return Observable.create((observer) => {
       console.log('Saving record');
       const filePath = `${this.file.tempDirectory}{audioName}`;

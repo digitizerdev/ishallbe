@@ -1,21 +1,23 @@
 <div>
-    <div *ngIf="gettingPicture">
+    <div *ngIf="gettingImage">
         <div text-center>
             <img #imageSrc/>
         </div>
+    </div>
+    <div *ngIf="imageCropped">
         <div text-center>
             <img *ngIf="postImage" width="80%" border="black" border-width="2px" class="full-image" [src]="postImage">
             <br>
         </div>
         <ion-row>
             <ion-col text-center padding>
-                <button id="UploadButton" ion-button (click)="upload()" type="submit" round large full>UPLOAD</button>
+                <button id="UploadButton" ion-button (click)="uploadImage()" type="submit" round large full>SET IMAGE</button>
             </ion-col>
         </ion-row>
     </div>
     <div *ngIf="recording" text-center padding-left padding-right>
-        <button (click)="stopRecording()" id="StopRecordingButton" color="danger" text-center ion-button icon-start round block
-            large strong>
+        <button (click)="uploadAudio()" id="StopRecordingButton" color="danger" text-center ion-button icon-start round block large
+            strong>
             <ion-icon name="mic"></ion-icon>
             STOP RECORDING
         </button>
