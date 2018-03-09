@@ -151,9 +151,11 @@ export class UploadComponent {
         url: downloadURL,
         name: this.audioName
       }
+      this.audio = null;
+      this.audioName = null;
+      this.recording = false;
       this.uploaded.emit(audio);
       loading.dismiss();
-
     });
   }
 

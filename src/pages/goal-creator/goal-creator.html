@@ -37,7 +37,7 @@
       </button>
     </ion-col>
   </ion-row>
-  <upload *ngIf="recording" (uploaded)="playAudio($event)" [method]="contentMethod"></upload>
+  <upload *ngIf="recording" (uploaded)="recorded($event)" [method]="contentMethod"></upload>
   <ion-row *ngIf="audioReady" id="AudioPanel" responsive-sm>
       <ion-col text-center>
           <button *ngIf="!playingAudio" (click)="playAudio()" id="PlayAudioButton" color="primary" text-center ion-button icon-start

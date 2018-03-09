@@ -26,6 +26,8 @@ export class GoalCreatorPage {
   rawDueDate: number;
   displayDueDate: string;
   audio: any;
+  audioUrl: string;
+  audioName: string;
   dateSelected = false;
   recording = false;
   audioReady = false;
@@ -97,19 +99,23 @@ export class GoalCreatorPage {
     this.recording = true;
   }
 
-  playAudio(audio) {
-    console.log("Playing Audio");
+  recorded(audio) {
+    console.log("Recorded");
     console.log(audio);
+    this.audioReady = true;
+  }
+
+  playAudio() {
+    console.log("Playing Audio");
     this.playingAudio = true;
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
-    var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + audio.name;
-    fileTransfer.download(audio.url, destPath, ).then((entry) => {
+    var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + this.audioName;
+    fileTransfer.download(this.audioUrl, destPath, ).then((entry) => {
       let rawAudioURI = entry.toURL();
       rawAudioURI = rawAudioURI.replace(/^file:\/\//, '/private');
       let audio: MediaObject = this.media.create(rawAudioURI);
       this.audio = audio;
       this.audio.play();
-      this.audioReady = true;
       this.listenToAudioEvents();
     }, (error) => {
     });
@@ -125,6 +131,7 @@ export class GoalCreatorPage {
     this.audio = null;
     this.playingAudio = false;
     this.audioReady = false;
-    this.recordAudio();
+    this.contentMethod = "audio";
+    this.recording = true;
   }
 }
