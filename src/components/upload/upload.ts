@@ -46,9 +46,7 @@ export class UploadComponent {
   }
 
   ngOnInit() {
-    console.log("Content type is " + this.contentType);
-    if (this.contentType == "audio") this.getAudio();
-    else this.getImage();
+    this.loadMedia();
     this.listenToRedoEvents();
   }
 
@@ -78,8 +76,9 @@ export class UploadComponent {
 
   loadMedia() {
     console.log("Loading Media");
+    console.log("Content type is " + this.contentType);
     this.contentName = moment().format('YYYYMMDDhhmmss');
-    console.log("Audio name is " + this.contentName);
+    console.log("Content name is " + this.contentName);
     if (this.contentType == "audio") {
       this.contentName = this.contentName + ".m4a";
       this.getAudio();
@@ -158,7 +157,7 @@ export class UploadComponent {
   }
 
   getAudio() {
-    console.log("Started Recording");
+    console.log("Getting Audio");
     this.recording = true;
     this.file.createFile(this.file.tempDirectory, this.contentName, true).then(() => {
       const audio: MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + this.contentName);
