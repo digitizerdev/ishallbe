@@ -18,8 +18,8 @@
   </ion-row>
   <upload *ngIf="loadingImage" (uploaded)="setImage($event)" [method]="imageRetrievalMethod" padding></upload>
   <ion-row *ngIf="imageLoaded" id="StatementImage">
-    <ion-col text-center padding-left padding-right>
-      <img [src]="statementImage" width="80%" border="black" border-width="2px" class="full-image">
+    <ion-col text-center>
+      <img [src]="statementImage" class="full-image">
     </ion-col>
   </ion-row>
   <form #createStatementForm="ngForm" novalidate padding>

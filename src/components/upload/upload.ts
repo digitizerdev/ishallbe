@@ -56,6 +56,7 @@ export class UploadComponent {
       console.log("Redo Upload triggered");
       this.contentType = type;
       console.log("Content type is " + this.contentType);
+      console.log("Content Name is " + this.contentName);
       this.resetUpload();
       this.loadMedia();
     });
