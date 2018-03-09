@@ -124,5 +124,7 @@ export class GoalCreatorPage {
   redoRecording() {
     this.audio = null;
     this.playingAudio = false;
+    this.audioReady = false;
+    this.recordAudio();
   }
 }
