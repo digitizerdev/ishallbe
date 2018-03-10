@@ -50,111 +50,25 @@ export class UploadComponent {
     this.listenToRedoEvents();
   }
 
-  listenToRedoEvents() {
-    console.log("Listening to redo events");
-    this.events.subscribe('redoUpload', (type) => {
-      console.log("Redo Upload triggered");
-      this.contentType = type;
-      console.log("Content type is " + this.contentType);
-      console.log("Content Name is " + this.contentName);
-      this.resetUpload();
-      this.loadMedia();
-    });
-  }
-
-  resetUpload() {
-    this.sourceType = null;
-    this.cameraOptions = null;
-    this.cropperInstance = null;
-    this.image = null;
-    this.audio = null;
-    this.contentBlob = null;
-    this.contentName = null;
-    this.gettingImage = false;
-    this.imageCropped = false;
-    this.recording = false;
-  }
-
   loadMedia() {
     console.log("Loading Media");
     console.log("Content type is " + this.contentType);
     this.contentName = moment().format('YYYYMMDDhhmmss');
     console.log("Content name is " + this.contentName);
-    if (this.contentType == "audio") {
-      this.contentName = this.contentName + ".m4a";
-      this.getAudio();
+    switch (this.contentType) {
+      case'audio': {
+        this.contentName = this.contentName + ".m4a";
+        this.getAudio();
+      }
+      case'camera': {
+        this.sourceType = this.camera.PictureSourceType.CAMERA;
+        this.getImage();
+      }
+      case'library': {
+        this.camera.PictureSourceType.PHOTOLIBRARY;
+        this.getImage();
+      }
     }
-    if (this.contentType == "camera") this.getImage();
-    if (this.contentType == "library") this.getImage();
-  }
-
-  getImage() {
-    this.gettingImage = true;
-    if (this.contentType == "camera") this.sourceType = this.camera.PictureSourceType.CAMERA;
-    if (this.contentType == "library") this.sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
-    this.camera.getPicture(this.getCameraOptions()).then((image) => {
-      this.imageElement.nativeElement.src = image;
-      this.cropImage();
-    }).catch((error) => { 
-      console.error(error)
-      this.uploaded.emit("canceled");
-    });;
-  }
-
-  getCameraOptions() {
-    let cameraOpts: CameraOptions = {
-      quality: 50,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      sourceType: this.sourceType,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      allowEdit: false,
-      correctOrientation: true
-    }
-    return cameraOpts;
-  }
-
-  cropImage() {
-    this.cropperInstance = new Cropper(this.imageElement.nativeElement, {
-      aspectRatio: 3 / 3,
-      dragMode: 'move',
-      modal: true,
-      guides: true,
-      highlight: false,
-      background: false,
-      autoCrop: true,
-      autoCropArea: 0.9,
-      responsive: true,
-      zoomable: true,
-      movable: false
-    });
-  }
-
-  uploadImage() {
-    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
-    loading.present();
-    this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
-    let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
-    console.log("Upload path is " + uploadPath);
-    this.storeImage(uploadPath, this.image).subscribe((snapshot) => {
-      console.log("Finished storing media");
-      console.log(snapshot);
-      let content = snapshot.downloadURL;
-      this.uploaded.emit(content);
-      loading.dismiss();
-    });
-  }
-
-  storeImage(path, obj) {
-    return Observable.create((observer) => {
-      let storagePath = firebase.storage().ref(path);
-      return storagePath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
-        then(function (snapshot) {
-          observer.next(snapshot);
-        }).catch((error: any) => {
-          observer.next(error);
-        });
-    });
   }
 
   getAudio() {
@@ -241,5 +155,103 @@ export class UploadComponent {
         observer.error(e);
       });
     });
+  }
+
+  getImage() {
+    this.gettingImage = true;
+    this.camera.getPicture(this.getCameraOptions()).then((image) => {
+      this.imageElement.nativeElement.src = image;
+      this.cropImage();
+    }).catch((error) => { 
+      console.error(error)
+      this.uploaded.emit("canceled");
+    });;
+  }
+
+  getCameraOptions() {
+    let cameraOpts: CameraOptions = {
+      quality: 50,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      sourceType: this.sourceType,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      allowEdit: false,
+      correctOrientation: true
+    }
+    return cameraOpts;
+  }
+
+  cropImage() {
+    this.cropperInstance = new Cropper(this.imageElement.nativeElement, {
+      aspectRatio: 3 / 3,
+      dragMode: 'move',
+      modal: true,
+      guides: true,
+      highlight: false,
+      background: false,
+      autoCrop: true,
+      autoCropArea: 0.9,
+      responsive: true,
+      zoomable: true,
+      movable: false
+    });
+  }
+
+  uploadImage() {
+    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+    loading.present();
+    this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
+    let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
+    console.log("Upload path is " + uploadPath);
+    this.storeImage(uploadPath, this.image).subscribe((snapshot) => {
+      console.log("Finished storing media");
+      console.log(snapshot);
+      let content = snapshot.downloadURL;
+      this.uploaded.emit(content);
+      loading.dismiss();
+    });
+  }
+
+  storeImage(path, obj) {
+    return Observable.create((observer) => {
+      let storagePath = firebase.storage().ref(path);
+      return storagePath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
+        then(function (snapshot) {
+          observer.next(snapshot);
+        }).catch((error: any) => {
+          observer.next(error);
+        });
+    });
+  }
+
+  listenToRedoEvents() {
+    console.log("Listening to redo events");
+    this.events.subscribe('redoUpload', (contentType, oldContentStoragePath) => {
+      console.log("Redo Upload triggered");
+      contentType = contentType;
+      console.log("Content type is " + this.contentType);
+      console.log("Old content storage path is " + oldContentStoragePath);
+      this.deleteStoredContent(oldContentStoragePath);
+      this.resetUpload();
+      this.loadMedia();
+    });
+  }
+
+  deleteStoredContent(oldContentStoragePath) {
+    console.log("Delete stored content triggered");
+    return this.firebase.afs.doc(oldContentStoragePath).delete();
+  }
+
+  resetUpload() {
+    this.sourceType = null;
+    this.cameraOptions = null;
+    this.cropperInstance = null;
+    this.image = null;
+    this.audio = null;
+    this.contentBlob = null;
+    this.contentName = null;
+    this.gettingImage = false;
+    this.imageCropped = false;
+    this.recording = false;
   }
 }

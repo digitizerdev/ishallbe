@@ -8,6 +8,7 @@ import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import moment from 'moment';
 declare var cordova: any;
 
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()
 @Component({
@@ -40,7 +41,8 @@ export class GoalCreatorPage {
     private events: Events,
     private datePicker: DatePicker,
     private fileTransfer: FileTransfer,
-    private media: Media
+    private media: Media,
+    private firebase: FirebaseProvider
   ) {
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
@@ -136,6 +138,7 @@ export class GoalCreatorPage {
     this.audioReady = false;
     this.contentMethod = "audio";
     this.recording = true;
-    this.events.publish('redoUpload', 'audio');
+    let storagePath = 'content/' + this.firebase.user.uid + '/audio/' + this.audio.name;
+    this.events.publish('redoUpload', 'audio', 'oldContentStoragePath');
   }
 }
