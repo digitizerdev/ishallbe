@@ -5,10 +5,14 @@ import { DatePicker } from '@ionic-native/date-picker';
 import { Media, MediaObject } from '@ionic-native/media';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 
+import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
+
 declare var cordova: any;
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+
+import { goal1 } from '../../../test-data/posts/mocks';
 
 @IonicPage()
 @Component({
@@ -58,14 +62,38 @@ export class GoalCreatorPage {
   }
 
   submit(form) {
+    this.submitted = true;
     console.log("Submitting Form");
     console.log(form);
     console.log("Due Date Selected: " + this.dateSelected);
     console.log("Audio Ready: " + this.audioReady);
     if (!this.audioReady || !this.dateSelected) this.displayNotReadyAlert();
     else {
-      console.log("Ready to create firebase goal");
+      if (form.valid) {
+        console.log("Ready to create firebase goal");
+        this.buildGoal().subscribe(() => {
+          this.createGoal().then((docData) => {
+            console.log("Goal created");
+            console.log(docData);
+          });
+        });
+      }
     }
+  }
+
+  buildGoal() {
+    console.log("Building goal");
+    return Observable.create((observer) => {
+      this.goal = goal1;
+      console.log("Goal Object is " );
+      console.log(this.goal);
+      observer.next();
+    });
+  }
+
+  createGoal() {
+    let goalPath = "posts/";
+    return this.firebase.afs.collection("posts").add(this.goal)
   }
 
   displayNotReadyAlert() {
