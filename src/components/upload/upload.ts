@@ -63,7 +63,7 @@ export class UploadComponent {
       }
       break;
       case 'library': {
-        this.camera.PictureSourceType.PHOTOLIBRARY;
+        this.sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
         this.getImage();
       }
       break;
