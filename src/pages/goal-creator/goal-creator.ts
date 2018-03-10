@@ -20,7 +20,7 @@ export class GoalCreatorPage {
     title?: string;
     description?: string,
   } = {};
-  submitted = false;
+  goal: any;
   contentMethod: string;
   rawDate: number;
   rawNextWeekDate: number;
@@ -29,6 +29,7 @@ export class GoalCreatorPage {
   audio: any;
   audioUrl: string;
   audioName: string;
+  submitted = false;
   dateSelected = false;
   recording = false;
   audioReady = false;
@@ -69,13 +70,14 @@ export class GoalCreatorPage {
 
   displayNotReadyAlert() {
     console.log("Displaying Not Ready Alert");
-    let message = "Please Set a Goal Due Date"
-    if (!this.audioReady) message = "Please Speak Your Goal";
+    let alertMessage = "Please Speak Your Goal";
+    if (!this.dateSelected) alertMessage = "Please Set a Goal Due Date";
     let alert = this.alertCtrl.create({
       title: 'Almost There!',
-      subTitle: message,
+      subTitle: alertMessage,
       buttons: ['OK']
     });
+    alert.present();
   }
 
   pickDate() {
