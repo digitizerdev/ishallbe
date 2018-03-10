@@ -175,6 +175,7 @@ export class UploadComponent {
         url: downloadURL,
         name: this.contentName
       }
+      this.audio.release();
       this.audio = null;
       this.contentName = null;
       this.recording = false;
