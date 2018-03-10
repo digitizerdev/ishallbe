@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, Events } from 'ionic-angular';
+import { IonicPage, Events, AlertController } from 'ionic-angular';
 import { DatePicker } from '@ionic-native/date-picker';
 import { Media, MediaObject } from '@ionic-native/media';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
@@ -36,10 +36,10 @@ export class GoalCreatorPage {
   dueToday = false;
   dueThisWeek = false;
   dueLater = false;
-  isEnabled = false;
 
   constructor(
     private events: Events,
+    private alertCtrl: AlertController,
     private datePicker: DatePicker,
     private fileTransfer: FileTransfer,
     private media: Media,
@@ -54,6 +54,28 @@ export class GoalCreatorPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad GoalCreatorage');
+  }
+
+  submit(form) {
+    console.log("Submitting Form");
+    console.log(form);
+    console.log("Due Date Selected: " + this.dateSelected);
+    console.log("Audio Ready: " + this.audioReady);
+    if (!this.audioReady || !this.dateSelected) this.displayNotReadyAlert();
+    else {
+      console.log("Ready to create firebase goal");
+    }
+  }
+
+  displayNotReadyAlert() {
+    console.log("Displaying Not Ready Alert");
+    let message = "Please Set a Goal Due Date"
+    if (!this.audioReady) message = "Please Speak Your Goal";
+    let alert = this.alertCtrl.create({
+      title: 'Almost There!',
+      subTitle: message,
+      buttons: ['OK']
+    });
   }
 
   pickDate() {
@@ -85,7 +107,6 @@ export class GoalCreatorPage {
     else if (this.rawDueDate < this.rawNextWeekDate) this.dueThisWeek = true;
     else this.dueLater = true;
     this.dateSelected = true;
-    if (this.audioReady) this.isEnabled = true;
   }
 
   listenToAudioEvents() {
@@ -112,7 +133,6 @@ export class GoalCreatorPage {
     this.audioUrl = audio.url;
     this.audioName = audio.name;
     this.audioReady = true;
-    if (this.dateSelected) this.isEnabled = true;
   }
 
   playAudio() {
