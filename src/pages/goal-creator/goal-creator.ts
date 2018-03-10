@@ -87,6 +87,7 @@ export class GoalCreatorPage {
   }
 
   listenToAudioEvents() {
+    console.log("Listening To Audio Events");
     this.audio.onStatusUpdate.subscribe(status => {
       console.log("Status of this.audio updated");
       console.log(status);
@@ -98,6 +99,7 @@ export class GoalCreatorPage {
   }
 
   recordAudio() {
+    console.log("Recording Audio")
     this.contentMethod = "audio";
     this.recording = true;
   }
@@ -133,12 +135,13 @@ export class GoalCreatorPage {
   }
 
   redoRecording() {
+    console.log("Redoing Recording");
     this.audio = null;
     this.playingAudio = false;
     this.audioReady = false;
     this.contentMethod = "audio";
     this.recording = true;
-    let storagePath = 'content/' + this.firebase.user.uid + '/audio/' + this.audio.name;
-    this.events.publish('redoUpload', 'audio', 'oldContentStoragePath');
+    let oldContentStoragePath = 'content/' + this.firebase.user.uid + '/audio/' + this.audio.name;
+    this.events.publish('redoUpload', 'audio', oldContentStoragePath);
   }
 }
