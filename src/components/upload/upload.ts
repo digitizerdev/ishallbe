@@ -57,19 +57,92 @@ export class UploadComponent {
     this.contentName = moment().format('YYYYMMDDhhmmss');
     console.log("Content name is " + this.contentName);
     switch (this.contentType) {
-      case 'audio': {
-        this.contentName = this.contentName + ".m4a";
-        this.getAudio();
-      }
       case 'camera': {
         this.sourceType = this.camera.PictureSourceType.CAMERA;
         this.getImage();
       }
+      break;
       case 'library': {
         this.camera.PictureSourceType.PHOTOLIBRARY;
         this.getImage();
       }
+      break;
+      case 'audio': {
+        this.contentName = this.contentName + ".m4a";
+        this.getAudio();
+      }
     }
+  }
+
+  getImage() {
+    console.log("Getting image");
+    this.gettingImage = true;
+    this.camera.getPicture(this.getCameraOptions()).then((image) => {
+      this.imageElement.nativeElement.src = image;
+      this.cropImage();
+    }).catch((error) => { 
+      console.error(error)
+      this.uploaded.emit("canceled");
+    });;
+  }
+
+  getCameraOptions() {
+    let cameraOpts: CameraOptions = {
+      quality: 50,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      sourceType: this.sourceType,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      allowEdit: false,
+      correctOrientation: true
+    }
+    return cameraOpts;
+  }
+
+  cropImage() {
+    console.log("Cropping Image");
+    this.cropperInstance = new Cropper(this.imageElement.nativeElement, {
+      aspectRatio: 3 / 3,
+      dragMode: 'move',
+      modal: true,
+      guides: true,
+      highlight: false,
+      background: false,
+      autoCrop: true,
+      autoCropArea: 0.9,
+      responsive: true,
+      zoomable: true,
+      movable: false
+    });
+  }
+
+  uploadImage() {
+    console.log("Uploading Image");
+    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+    loading.present();
+    this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
+    let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
+    console.log("Upload path is " + uploadPath);
+    this.storeImage(uploadPath, this.image).subscribe((snapshot) => {
+      console.log("Finished storing media");
+      console.log(snapshot);
+      let content = snapshot.downloadURL;
+      this.uploaded.emit(content);
+      loading.dismiss();
+    });
+  }
+
+  storeImage(path, obj) {
+    console.log("Storing Image");
+    return Observable.create((observer) => {
+      let storagePath = firebase.storage().ref(path);
+      return storagePath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
+        then(function (snapshot) {
+          observer.next(snapshot);
+        }).catch((error: any) => {
+          observer.next(error);
+        });
+    });
   }
 
   getAudio() {
@@ -156,77 +229,6 @@ export class UploadComponent {
         console.error(e);
         observer.error(e);
       });
-    });
-  }
-
-  getImage() {
-    console.log("Getting image");
-    this.gettingImage = true;
-    this.camera.getPicture(this.getCameraOptions()).then((image) => {
-      this.imageElement.nativeElement.src = image;
-      this.cropImage();
-    }).catch((error) => { 
-      console.error(error)
-      this.uploaded.emit("canceled");
-    });;
-  }
-
-  getCameraOptions() {
-    let cameraOpts: CameraOptions = {
-      quality: 50,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      sourceType: this.sourceType,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      allowEdit: false,
-      correctOrientation: true
-    }
-    return cameraOpts;
-  }
-
-  cropImage() {
-    console.log("Cropping Image");
-    this.cropperInstance = new Cropper(this.imageElement.nativeElement, {
-      aspectRatio: 3 / 3,
-      dragMode: 'move',
-      modal: true,
-      guides: true,
-      highlight: false,
-      background: false,
-      autoCrop: true,
-      autoCropArea: 0.9,
-      responsive: true,
-      zoomable: true,
-      movable: false
-    });
-  }
-
-  uploadImage() {
-    console.log("Uploading Image");
-    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
-    loading.present();
-    this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
-    let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
-    console.log("Upload path is " + uploadPath);
-    this.storeImage(uploadPath, this.image).subscribe((snapshot) => {
-      console.log("Finished storing media");
-      console.log(snapshot);
-      let content = snapshot.downloadURL;
-      this.uploaded.emit(content);
-      loading.dismiss();
-    });
-  }
-
-  storeImage(path, obj) {
-    console.log("Storing Image");
-    return Observable.create((observer) => {
-      let storagePath = firebase.storage().ref(path);
-      return storagePath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
-        then(function (snapshot) {
-          observer.next(snapshot);
-        }).catch((error: any) => {
-          observer.next(error);
-        });
     });
   }
 
