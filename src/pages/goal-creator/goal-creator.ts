@@ -136,12 +136,12 @@ export class GoalCreatorPage {
 
   redoRecording() {
     console.log("Redoing Recording");
-    let oldContentStoragePath = 'content/' + this.firebase.user.uid + '/audio/' + this.audio.name;
+    this.contentMethod = "audio";
+    this.recording = true;
+    this.events.publish('redoUpload', 'audio', this.audio.name);
+    this.audio.release();
     this.audio = null;
     this.playingAudio = false;
     this.audioReady = false;
-    this.contentMethod = "audio";
-    this.recording = true;
-    this.events.publish('redoUpload', 'audio', oldContentStoragePath);
   }
 }

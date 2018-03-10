@@ -47,6 +47,8 @@ export class UploadComponent {
 
   ngOnInit() {
     console.log("Initializing Upload Component");
+    this.contentName = moment().format('YYYYMMDDhhmmss');
+    console.log("Content name is " + this.contentName);
     this.loadMedia();
     this.listenToRedoEvents();
   }
@@ -54,8 +56,6 @@ export class UploadComponent {
   loadMedia() {
     console.log("Loading Media");
     console.log("Content type is " + this.contentType);
-    this.contentName = moment().format('YYYYMMDDhhmmss');
-    console.log("Content name is " + this.contentName);
     switch (this.contentType) {
       case 'camera': {
         this.sourceType = this.camera.PictureSourceType.CAMERA;
@@ -82,7 +82,7 @@ export class UploadComponent {
       this.cropImage();
     }).catch((error) => { 
       console.error(error)
-      this.uploaded.emit("canceled");
+      this.events.publish("getImageCanceled");
     });;
   }
 
@@ -235,20 +235,14 @@ export class UploadComponent {
 
   listenToRedoEvents() {
     console.log("Listening To Redo Events");
-    this.events.subscribe('redoUpload', (contentType, oldContentStoragePath) => {
+    this.events.subscribe('redoUpload', (contentType, contentName) => {
       console.log("Redo Upload triggered");
-      contentType = contentType;
+      this.contentType = contentType;
       console.log("Content type is " + this.contentType);
-      console.log("Old content storage path is " + oldContentStoragePath);
-      this.deleteStoredContent(oldContentStoragePath);
+      console.log("Content name is " + this.contentName);
       this.resetUpload();
       this.loadMedia();
     });
-  }
-
-  deleteStoredContent(oldContentStoragePath) {
-    console.log("Deleting Stored Content");
-    return this.firebase.afs.doc(oldContentStoragePath).delete();
   }
 
   resetUpload() {
@@ -258,7 +252,6 @@ export class UploadComponent {
     this.image = null;
     this.audio = null;
     this.contentBlob = null;
-    this.contentName = null;
     this.gettingImage = false;
     this.imageCropped = false;
     this.recording = false;

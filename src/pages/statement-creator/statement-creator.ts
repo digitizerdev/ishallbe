@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, ActionSheetController } from 'ionic-angular';
+import { IonicPage, Events, ActionSheetController } from 'ionic-angular';
 
 
 @IonicPage()
@@ -17,15 +17,17 @@ export class StatementCreatorPage {
   imageRetrievalMethod: string; 
   submitted = false;
   loadingImage = false;
-  imageLoaded = false;
+  imageReady = false;
 
   constructor(
+    private events: Events,
     private actionSheetCtrl: ActionSheetController,
     ) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad StatementCreatorPage');
+    this.listenForCanceledUpload();
   }
 
   loadImage() {
@@ -69,6 +71,14 @@ export class StatementCreatorPage {
     console.log(imageUrl);
     this.statementImage = imageUrl;
     this.loadingImage = false;
-    this.imageLoaded = true;
+    this.imageReady = true;
+  }
+
+  listenForCanceledUpload() {
+    this.events.subscribe('getImageCanceled', (message) => {
+      this.statementImage = null;
+      this.imageReady = false;
+      this.loadingImage = false;
+    });
   }
 }
