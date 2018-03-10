@@ -36,6 +36,7 @@ export class GoalCreatorPage {
   dueToday = false;
   dueThisWeek = false;
   dueLater = false;
+  isEnabled = false;
 
   constructor(
     private events: Events,
@@ -84,6 +85,7 @@ export class GoalCreatorPage {
     else if (this.rawDueDate < this.rawNextWeekDate) this.dueThisWeek = true;
     else this.dueLater = true;
     this.dateSelected = true;
+    if (this.audioReady) this.isEnabled = true;
   }
 
   listenToAudioEvents() {
@@ -110,6 +112,7 @@ export class GoalCreatorPage {
     this.audioUrl = audio.url;
     this.audioName = audio.name;
     this.audioReady = true;
+    if (this.dateSelected) this.isEnabled = true;
   }
 
   playAudio() {
