@@ -46,6 +46,7 @@ export class UploadComponent {
   }
 
   ngOnInit() {
+    console.log("Initializing Upload Component");
     this.loadMedia();
     this.listenToRedoEvents();
   }
@@ -56,15 +57,15 @@ export class UploadComponent {
     this.contentName = moment().format('YYYYMMDDhhmmss');
     console.log("Content name is " + this.contentName);
     switch (this.contentType) {
-      case'audio': {
+      case 'audio': {
         this.contentName = this.contentName + ".m4a";
         this.getAudio();
       }
-      case'camera': {
+      case 'camera': {
         this.sourceType = this.camera.PictureSourceType.CAMERA;
         this.getImage();
       }
-      case'library': {
+      case 'library': {
         this.camera.PictureSourceType.PHOTOLIBRARY;
         this.getImage();
       }
@@ -89,7 +90,7 @@ export class UploadComponent {
   }
 
   uploadAudio() {
-    console.log("Uploading record");
+    console.log("Uploading Audio");
     this.recording = false;
     let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
     loading.present();
@@ -110,6 +111,7 @@ export class UploadComponent {
   }
 
   storeAudio() {
+    console.log("Storing Audio");
     return Observable.create((observer) => {
       console.log('Saving record');
       const filePath = `${this.file.tempDirectory}` + this.contentName;
@@ -158,6 +160,7 @@ export class UploadComponent {
   }
 
   getImage() {
+    console.log("Getting image");
     this.gettingImage = true;
     this.camera.getPicture(this.getCameraOptions()).then((image) => {
       this.imageElement.nativeElement.src = image;
@@ -182,6 +185,7 @@ export class UploadComponent {
   }
 
   cropImage() {
+    console.log("Cropping Image");
     this.cropperInstance = new Cropper(this.imageElement.nativeElement, {
       aspectRatio: 3 / 3,
       dragMode: 'move',
@@ -198,6 +202,7 @@ export class UploadComponent {
   }
 
   uploadImage() {
+    console.log("Uploading Image");
     let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
     loading.present();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
@@ -213,6 +218,7 @@ export class UploadComponent {
   }
 
   storeImage(path, obj) {
+    console.log("Storing Image");
     return Observable.create((observer) => {
       let storagePath = firebase.storage().ref(path);
       return storagePath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
@@ -225,7 +231,7 @@ export class UploadComponent {
   }
 
   listenToRedoEvents() {
-    console.log("Listening to redo events");
+    console.log("Listening To Redo Events");
     this.events.subscribe('redoUpload', (contentType, oldContentStoragePath) => {
       console.log("Redo Upload triggered");
       contentType = contentType;
@@ -238,7 +244,7 @@ export class UploadComponent {
   }
 
   deleteStoredContent(oldContentStoragePath) {
-    console.log("Delete stored content triggered");
+    console.log("Deleting Stored Content");
     return this.firebase.afs.doc(oldContentStoragePath).delete();
   }
 
