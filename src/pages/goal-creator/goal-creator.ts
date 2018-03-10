@@ -136,10 +136,10 @@ export class GoalCreatorPage {
 
   redoRecording() {
     console.log("Redoing Recording");
-    console.log("This audio name is " + this.audio.name);
+    console.log("This audio name is " + this.audioName);
     this.contentMethod = "audio";
     this.recording = true;
-    this.events.publish('redoUpload', 'audio', this.audio.name);
+    this.events.publish('redoUpload', 'audio', this.audioName);
     this.audio.release();
     this.audio = null;
     this.playingAudio = false;
