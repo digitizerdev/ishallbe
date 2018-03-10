@@ -7,6 +7,7 @@ export const likedStatement = {
   commentLike: false,
   reminder: false,
   message: "liked your statement",
+  timestamp: 20180219182701,
   post: {
     id: "1",
     type: "statement",
@@ -16,12 +17,6 @@ export const likedStatement = {
     uid: "1",
     name: "Shelby Tinsley",
     photo: "assets/img/headshot.png"
-  },
-  timestamp: {
-    rawDate: 20180219,
-    displayDate: "FEB 19 2018",
-    rawTime: 20180219182701,
-    displayTime: "6:27pm"
   }
 }
 export const commentedOnStatement = {
@@ -32,6 +27,7 @@ export const commentedOnStatement = {
   commentLike: false,
   reminder: false,
   message: "commented on your statement",
+  timestamp: 20180219162400,
   post: {
     id: "1",
     type: "statement",
@@ -41,12 +37,6 @@ export const commentedOnStatement = {
     uid: "1",
     name: "Shelby Tinsley",
     photo: "assets/img/headshot.png"
-  },
-  timestamp: {
-    rawDate: 20180219,
-    displayDate: "FEB 19 2018",
-    rawTime: 20180219162400,
-    displayTime: "4:24pm"
   }
 }
 export const likedCommentOnStatement = {
@@ -57,6 +47,7 @@ export const likedCommentOnStatement = {
   commentLike: true,
   reminder: false,
   message: "liked your comment on Troy's statement",
+  timestamp: 20180217162400,
   post: {
     id: "1",
     type: "statement",
@@ -66,12 +57,6 @@ export const likedCommentOnStatement = {
     uid: "1",
     name: "Shelby Tinsley",
     photo: "assets/img/headshot.png"
-  },
-  timestamp: {
-    rawDate: 20180217,
-    displayDate: "FEB 17 2018",
-    rawTime: 20180217162400,
-    displayTime: "4:24pm"
   }
 }
 export const likedPin = {
@@ -82,6 +67,7 @@ export const likedPin = {
   commentLike: false,
   reminder: false,
   message: "liked your pin",
+  timestamp: 20180215084800,
   post: {
     id: "1",
     type: "pin",
@@ -91,12 +77,6 @@ export const likedPin = {
     uid: "1",
     name: "Shelby Tinsley",
     photo: "assets/img/headshot.png"
-  },
-  timestamp: {
-    rawDate: 20180215,
-    displayDate: "FEB 15 2018",
-    rawTime: 20180215084800,
-    displayTime: "8:48am"
   }
 }
 export const commentedOnPin = {
@@ -107,6 +87,7 @@ export const commentedOnPin = {
   commentLike: false,
   reminder: false,
   message: "commented on your pin",
+  timestamp: 20180214162400, 
   post: {
     id: "1",
     type: "pin",
@@ -116,12 +97,6 @@ export const commentedOnPin = {
     uid: "1",
     name: "Shelby Tinsley",
     photo: "assets/img/headshot.png"
-  },
-  timestamp: {
-    rawDate: 20180214,
-    displayDate: "FEB 14 2018",
-    rawTime: 20180214162400,
-    displayTime: "4:24pm"
   }
 }
 export const likedCommentOnPin = {
@@ -132,6 +107,7 @@ export const likedCommentOnPin = {
   commentLike: true,
   reminder: false,
   message: "liked your comment on iShallBe's pin",
+  timestamp: 20180213162400,
   post: {
     id: "1",
     type: "pin",
@@ -141,12 +117,6 @@ export const likedCommentOnPin = {
     uid: "1",
     name: "Shelby Tinsley",
     photo: "assets/img/headshot.png"
-  },
-  timestamp: {
-    rawDate: 20180213,
-    displayDate: "FEB 13 2018",
-    rawTime: 20180213162400,
-    displayTime: "4:24pm"
   }
 }
 export const goalReminder = {
@@ -157,6 +127,7 @@ export const goalReminder = {
   commentLike: false,
   reminder: true,
   message: "Don't forget to record results on your September Goal",
+  timestamp: 20180205121212,
   post: {
     id: "1",
     type: "statement",
@@ -166,12 +137,6 @@ export const goalReminder = {
     uid: "1",
     name: "Reminder: ",
     photo: "assets/img/logo-square.png"
-  },
-  timestamp: {
-    rawDate: 20180205,
-    displayDate: "FEB 5 2018",
-    rawTime: 20180205121212,
-    displayTime: "12:12pm"
   }
 }
 export const mockNotifications: Notification[] = [likedStatement, commentedOnStatement, likedCommentOnStatement, likedPin, commentedOnPin, likedCommentOnPin, goalReminder];       

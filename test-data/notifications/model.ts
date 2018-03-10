@@ -6,6 +6,7 @@ export interface Notification {
   commentLike: boolean,
   reminder: boolean,
   message: string,
+  timestamp: number,
   post: {
     id: string,
     type: string,
@@ -15,12 +16,6 @@ export interface Notification {
     uid: string,
     name: string,
     photo: string
-  },
-  timestamp: {
-    rawDate: number,
-    displayDate: string,
-    rawTime: number,
-    displayTime: string
   }
 }
 
