@@ -106,9 +106,8 @@ export class StatementCreatorPage {
       if (form.valid) {
         console.log("Ready to create firebase statement");
         this.buildStatement().subscribe(() => {
-          this.createStatement().then((docData) => {
+          this.createStatement().subscribe(() => {
             console.log("Statement created");
-            console.log(docData);
             this.navCtrl.setRoot(HomePage);
           }, (error) => {
             console.log("There was an error");
@@ -137,8 +136,13 @@ export class StatementCreatorPage {
   }
 
   createStatement() {
-    console.log("Creating Statement");
-    return this.firebase.afs.collection("statements").add(this.statement);
+    return Observable.create((observer) => {
+      console.log("Creating Statement");
+      return this.firebase.afs.collection("statements").add(this.statement).then((docData) => {
+        console.log(docData);
+        observer.next();
+      });
+    });
   }
 
   displayNotReadyAlert() {
