@@ -7,15 +7,17 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-row *ngIf="!imageReady && !loadingImage" id="SeeItButton">
+  <div *ngIf="!imageReady && !loadingImage" id="SeeItButton">
     <br>
-    <ion-col text-center padding-left padding-right>
-      <button ion-button (click)="loadImage()" color="secondary" icon-start round block large strong>
-        <ion-icon name="ios-camera"></ion-icon>
-        SEE IT
-      </button>
-    </ion-col>
-  </ion-row>
+    <ion-row>
+      <ion-col text-center padding-left padding-right>
+        <button ion-button (click)="loadImage()" color="secondary" icon-start round block large strong>
+          <ion-icon name="ios-camera"></ion-icon>
+          SEE IT
+        </button>
+      </ion-col>
+    </ion-row>
+  </div>
   <upload *ngIf="loadingImage" (uploaded)="setImage($event)" [method]="imageRetrievalMethod" padding></upload>
   <ion-row *ngIf="imageReady" id="StatementImage">
     <ion-col text-center>

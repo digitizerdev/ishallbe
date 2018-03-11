@@ -79,6 +79,9 @@ export class GoalCreatorPage {
             console.log("Goal created");
             console.log(docData);
             this.navCtrl.setRoot(HomePage);
+          }, (error) => {
+            console.log("There was an error");
+            console.error(error);
           });
         });
       }

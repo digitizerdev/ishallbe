@@ -110,6 +110,9 @@ export class StatementCreatorPage {
             console.log("Statement created");
             console.log(docData);
             this.navCtrl.setRoot(HomePage);
+          }, (error) => {
+            console.log("There was an error");
+            console.error(error);
           });
         });
       }
