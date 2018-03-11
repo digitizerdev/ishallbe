@@ -17,9 +17,9 @@
             <h4>
               <b>{{ goal.title }}</b>
             </h4>
-            <h5 *ngIf="goal.pastDue" color="danger" ion-text>Due {{ goal.displayDateDue }}</h5>
-            <h5 *ngIf="goal.dueInNextSevenDays" color="dark" ion-text>Due {{ goal.displayDateDue }}</h5>
-            <h5 *ngIf="goal.dueLater" color="primary" ion-text>Due {{ goal.displayDateDue }} </h5>
+            <h5 *ngIf="goal.pastDue" color="danger" ion-text>Due {{ goal.displayDueDate }}</h5>
+            <h5 *ngIf="goal.dueInNextSevenDays" color="dark" ion-text>Due {{ goal.displayDueDate }}</h5>
+            <h5 *ngIf="goal.dueLater" color="primary" ion-text>Due {{ goal.displayDueDate }} </h5>
           </ion-item>
           <ion-item text-wrap class="goal-body">
             <div (click)="viewGoal(goal.id)">

@@ -8,7 +8,9 @@ export const mondayPin = {
   contentUrl: "https://newevolutiondesigns.com/images/freebies/philadelphia-downtown.jpg",
   externalUrl: "https://youtube.com/embed/SJWt62JPY0M",
   day: "Monday",
+  displayAffirmationDate: "",
   affirmationDate: 20180312,
+  displayTimestamp: "",
   timestamp: 20180312000000,
   user: {
     uid: "2",
@@ -25,7 +27,9 @@ export const tuesdayPin = {
   contentUrl: "https://youtube.com",
   externalUrl: "",
   day: "Tuesday",
+  displayAffirmationDate: "",
   affirmationDate: 20180313,
+  displayTimestamp: "",
   timestamp: 201803130000000,
   user: {
     uid: "2",
@@ -42,7 +46,9 @@ export const wednesdayPin = {
   contentUrl: "",
   externalUrl: "",
   day: "Wednesday",
+  displayAffirmationDate: "",
   affirmationDate: 20180314,
+  displayTimestamp: "",
   timestamp: 20180314000000,
   user: {
     uid: "2",
@@ -59,7 +65,9 @@ export const thursdayPin = {
   contentUrl: "",
   externalUrl: "",
   day: "Thursday",
+  displayAffirmationDate: "",
   affirmationDate: 20180315,
+  displayTimestamp: "",
   timestamp: 20180315000000,
   user: {
     uid: "2",
@@ -76,7 +84,9 @@ export const fridayPin = {
   contentUrl: "",
   externalUrl: "",
   day: "Friday",
+  displayAffirmationDate: "",
   affirmationDate: 20180316,
+  displayTimestamp: "",
   timestamp: 20180316000000,
   user: {
     uid: "2",
@@ -93,7 +103,9 @@ export const saturdayPin = {
   contentUrl: "",
   externalUrl: "",
   day: "Saturday",
+  displayAffirmationDate: "",
   affirmationDate: 20180317,
+  displayTimestamp: "",
   timestamp: 20180317000000,
   user: {
     uid: "2",

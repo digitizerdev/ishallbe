@@ -1,7 +1,7 @@
 import { ViewChild, Component, Input } from '@angular/core';
 import { NavController, Slides } from 'ionic-angular';
 
-import { mockPosts } from '../../../test-data/posts/mocks';
+import { mockPins } from '../../../test-data/pins/mocks';
 
 @Component({
   selector: 'pins',
@@ -31,13 +31,10 @@ export class PinsComponent {
     this.navCtrl.setRoot(this.navCtrl.getActive().component);
   }
 
-
   setPins() {
     this.pins = [];
-    mockPosts.forEach((post) => {
-      if (post.pin) {
-        this.pins.push(post);
-      }
+    mockPins.forEach((pin) => {
+        this.pins.push(pin);
     });
   }
 }

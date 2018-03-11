@@ -8,7 +8,9 @@ export const goal1 = {
   private: true,
   complete: false,
   contentUrl: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801091208?alt=media&token=67601464-10a2-4878-a951-b70c39a17a7e",
-  dueDate: 20180310,
+  displayDueDate: "",
+  dueDate: 20180310180000,
+  displayTimestamp: "",
   timestamp: 20180217135900,
   user: {
     uid: "1",
@@ -25,7 +27,9 @@ export const goal2 = {
   private: false,
   complete: false,
   contentUrl: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801091208?alt=media&token=67601464-10a2-4878-a951-b70c39a17a7e",
-  dueDate: 20180409,
+  displayDueDate: "",
+  dueDate: 20180409000000,
+  displayTimestamp: "",
   timestamp: 20180304135900,
   user: {
     uid: "1",
@@ -42,7 +46,9 @@ export const goal3 = {
   private: false,
   complete: false,  
   contentUrl: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801091208?alt=media&token=67601464-10a2-4878-a951-b70c39a17a7e",
-  dueDate: 201803011,
+  displayDueDate: "",
+  dueDate: 201803011230134,
+  displayTimestamp: "",
   timestamp: 20180104130000,
   user: {
     uid: "1",

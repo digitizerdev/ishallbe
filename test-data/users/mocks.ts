@@ -6,6 +6,8 @@ export const contributor = {
   email: "contributor@ishallbe.co",
   blocked: false,
   photo: "assets/img/default-profile.png",
+  displayTimestamp: "",
+  timestamp: 2018030321212,
   social: {
     instagram: null,
     linkedin: null,
@@ -14,12 +16,6 @@ export const contributor = {
   roles: {
     contributor: true,
     editor: false
-  },
-  timestamp: {
-    rawDate: 20180116,
-    displayDate: "Jan 16 2018",
-    rawTime: 20180116121212,
-    displayTime: "12:12pm"
   }
 }
 export const editor = { 
@@ -29,6 +25,8 @@ export const editor = {
   email: "editor@ishallbe.co",
   blocked: false,
   photo: "assets/img/headshot.png",
+  displayTimestamp: "",
+  timestamp: 20180116121212,
   social: {
     instagram: "ishallbe__",
     linkedin: null,
@@ -37,12 +35,6 @@ export const editor = {
   roles: {
     contributor: true,
     editor: true
-  },
-  timestamp: {
-    rawDate: 20180116,
-    displayDate: "Jan 16 2018",
-    rawTime: 20180116121212,
-    displayTime: "12:12pm"
   }
 }
 export const mockUsers: User[] = [contributor, editor];       

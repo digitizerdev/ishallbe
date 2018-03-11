@@ -30,7 +30,7 @@ export class NotificationsPage {
   }
 
   timeStampPage() {
-    let rawDateString = moment().format('YYYYMMDD');
+    let rawDateString = moment().format('YYYYMMDDhhmmss');
     this.rawDate = parseInt(rawDateString);
   }
 
@@ -38,9 +38,9 @@ export class NotificationsPage {
     console.log("Loading notifications");
     mockNotifications.forEach((notification) => {
       console.log(notification);
-      if (notification.timestamp.rawDate < this.rawDate) 
-        notification.timestamp.displayTime = moment(notification.timestamp.rawDate, "YYYYMMDD").fromNow();
-        else notification.timestamp.displayTime = moment(notification.timestamp.rawTime, "YYYYMMDDhhmmss").fromNow();
+      if (notification.timestamp < this.rawDate) 
+        notification.displayTimestamp = moment(notification.timestamp, "YYYYMMDD").fromNow();
+        else notification.displayTimestamp = moment(notification.timestamp, "YYYYMMDDhhmmss").fromNow();
       if (notification.read) this.readNotifications.push(notification);
       else this.unreadNotifications.push(notification);
     });

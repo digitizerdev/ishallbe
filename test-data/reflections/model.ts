@@ -1,15 +1,12 @@
-export interface Goal {
+export interface Reflection {
   id: string,
   title: string,
   description: string,
   commentCount: number,
   likeCount: number,
   private: boolean,
-  complete: boolean,
   contentUrl: string,
-  displayDueDate: string;
-  dueDate: number,
-  displayTimestamp: string;
+  displayTimestamp: string,
   timestamp: number,
   user: {
     uid: string,

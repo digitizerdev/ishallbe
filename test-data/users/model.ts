@@ -5,6 +5,8 @@ export interface User {
     email: string,
     blocked: boolean,
     photo: string,
+    displayTimestamp: string,
+    timestamp: number,
     social: {
         instagram: string,
         linkedin: string,
@@ -13,11 +15,5 @@ export interface User {
     roles: {
         contributor: boolean,
         editor: boolean
-    },
-    timestamp: {
-        rawDate: number,
-        displayDate: string,
-        rawTime: number,
-        displayTime: string,
     }
 }

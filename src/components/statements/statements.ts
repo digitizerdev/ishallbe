@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import moment from 'moment';
 
-import { mockPosts } from '../../../test-data/posts/mocks';
+import { mockStatements } from '../../../test-data/statements/mocks';
 
 @Component({
   selector: 'statements',
@@ -27,14 +27,12 @@ export class StatementsComponent {
 
   setStatements() {
     this.statements = [];
-    mockPosts.forEach((post) => {
-      if (post.statement) {
+    mockStatements.forEach((statement) => {
         console.log("Pushing statement");
-        if (this.rawDate > post.timestamp.rawDate)  
-        post.timestamp.displayTime = moment(post.timestamp.rawDate, "YYYYMMDD").fromNow();
-        else post.timestamp.displayTime = moment(post.timestamp.rawTime, "YYYYMMDDhhmmss").fromNow();
-        this.statements.push(post);
-      }
+        if (this.rawDate > statement.timestamp)
+        statement.displayTimestamp = moment(statement.timestamp, "YYYYMMDD").fromNow();
+        else statement.displayTimestamp= moment(statement.timestamp, "YYYYMMDDhhmmss").fromNow();
+        this.statements.push(statement);
     });
     console.log("Finished pushing statements");
     console.log(this.statements);

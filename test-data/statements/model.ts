@@ -6,6 +6,7 @@ export interface Statement {
   likeCount: number,
   private: boolean,
   contentUrl: string,
+  displayTimestamp: string,
   timestamp: number,
   user: {
     uid: string,

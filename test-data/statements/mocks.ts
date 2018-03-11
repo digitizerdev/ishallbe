@@ -7,6 +7,7 @@ export const statement1 = {
   likeCount: 3,
   private: false,
   contentUrl: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801032008?alt=media&token=a876eb59-7bdd-40ce-86c0-f310508770fb",
+  displayTimestamp: "",
   timestamp: 20180309190100,
   user: {
     uid: "1",
@@ -22,6 +23,7 @@ export const statement2 = {
   likeCount: 1,
   private: false,
   contentUrl: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2Fstatement?alt=media&token=286d74d7-57d3-48d0-9d35-9483bf37ef1e",
+  displayTimestamp: "",
   timestamp: 20180302122300,
   user: {
     uid: "1",
@@ -37,6 +39,7 @@ export const statement3 = {
   likeCount: 13,
   private: false,
   contentUrl: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801091208?alt=media&token=67601464-10a2-4878-a951-b70c39a17a7e",
+  displayTimestamp: "",
   timestamp: 201803010083200,
   user: {
     uid: "1",

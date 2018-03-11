@@ -12,7 +12,7 @@ declare var cordova: any;
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
-import { goal1 } from '../../../test-data/posts/mocks';
+import { goal1 } from '../../../test-data/goals/mocks';
 
 @IonicPage()
 @Component({
@@ -84,31 +84,19 @@ export class GoalCreatorPage {
   buildGoal() {
     console.log("Building goal");
     return Observable.create((observer) => {
-      this.goal = goal1;
+      this.goal = goal1
       this.goal.title = this.createGoalForm.title;
       this.goal.description = this.createGoalForm.description;
-      this.goal.mediaUrl = this.audioUrl;
+      this.goal.contentUrl = this.audioUrl;
+      this.goal.dueDate = this.rawDueDate;
+      this.goal.timestamp = this.audioName;
+      this.goal.user.uid = this.firebase.user.uid;
+      this.goal.user.name = this.firebase.user.name;
+      this.goal.user.photo = this.firebase.user.photo;
       console.log("Goal Object is " );
       console.log(this.goal);
       observer.next();
     });
-  }
-
-  timestampGoal() {
-    let rawDateDueString = moment(this.rawDueDate).format('YYYYMMDD');
-    this.goal.rawDateDue = parseInt(rawDateDueString);
-    let displayDateDue = moment(this.rawDueDate).format('MMM D YYYY');
-    displayDateDue.toUpperCase();
-    this.goal.displayDateDue = displayDateDue;
-    let rawDate = moment(this.audioName).format('YYYMMDDhhmmss');
-    this.goal.timestamp.rawDate = parseInt(rawDate);
-    this.goal.displayDate = moment(this.audioName).format('MMM D YYYY')
-  }
-
-  userstampGoal() {
-    this.goal.user.uid = this.firebase.user.uid;
-    this.goal.user.name = this.firebase.user.name;
-    this.goal.user.photo = this.firebase.user.photo;
   }
 
   createGoal() {

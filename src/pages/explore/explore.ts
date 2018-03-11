@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import { ProfilePage } from '../profile/profile';
 
-import { mockPosts } from '../../../test-data/posts/mocks';
+import { mockStatements } from '../../../test-data/statements/mocks';
 
 @IonicPage()
 @Component({
@@ -34,11 +34,9 @@ export class ExplorePage {
 
   setStatements() {
     this.statements = [];
-    mockPosts.forEach((post) => {
-      if (post.statement) {
+    mockStatements.forEach((post) => {
         console.log("Pushing statement");
         this.statements.push(post);
-      }
     });
     console.log("Finished pushing statements");
     console.log(this.statements);

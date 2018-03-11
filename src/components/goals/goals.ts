@@ -7,7 +7,7 @@ import moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 declare var cordova: any;
 
-import { mockPosts } from '../../../test-data/posts/mocks';
+import { mockGoals } from '../../../test-data/goals/mocks';
 
 @Component({
   selector: 'goals',
@@ -26,7 +26,7 @@ export class GoalsComponent {
     console.log('Hello Goals Component');
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
-    console.log("Raw date is " + this.rawDate); 
+    console.log("Raw date is " + this.rawDate);
     this.rawNextWeekDate = this.rawDate + 7;
     console.log("Raw next week date is " + this.rawNextWeekDate);
     this.setGoals();
@@ -34,15 +34,13 @@ export class GoalsComponent {
 
   setGoals() {
     this.goals = [];
-    mockPosts.forEach((post) => {
-      if (post.goal) {
-        if (!post.complete) {
-          console.log("Pushing goal");
-          post.displayDateDue = moment(post.rawDateDue, "YYYYMMDDhhmmss").fromNow();
-          this.setDueDateWarningColor(post).subscribe((post) => {
-            this.goals.push(post);
-          });   
-        }
+    mockGoals.forEach((goal) => {
+      if (!goal.complete) {
+        console.log("Pushing goal");
+        goal.displayDueDate = moment(goal.dueDate, "YYYYMMDDhhmmss").fromNow();
+        this.setDueDateWarningColor(goal).subscribe((goal) => {
+          this.goals.push(goal);
+        });
       }
     });
     console.log("Finished pushing goals");
@@ -51,8 +49,8 @@ export class GoalsComponent {
 
   setDueDateWarningColor(goal) {
     return Observable.create((observer) => {
-      if (goal.rawDateDue < this.rawDate) goal.pastDue = true;
-      else if (goal.rawDateDue < this.rawNextWeekDate) goal.dueInNextSevenDays = true;
+      if (goal.dueDate < this.rawDate) goal.pastDue = true;
+      else if (goal.dueDate < this.rawNextWeekDate) goal.dueInNextSevenDays = true;
       else goal.dueLater = true;
       console.log("Set due date warning color");
       console.log(goal);
@@ -71,5 +69,4 @@ export class GoalsComponent {
     }, (error) => {
     });
   }
-
 }

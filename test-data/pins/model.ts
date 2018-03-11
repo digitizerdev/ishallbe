@@ -6,7 +6,9 @@ export interface Pin {
   likeCount: number,
   contentUrl: string,
   externalUrl: string,
+  displayAffirmationDate: string,
   affirmationDate: number,
+  displayTimestamp: string,
   timestamp: number,
   day: string,
   user: {
