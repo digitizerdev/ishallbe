@@ -7,8 +7,8 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <br>
   <ion-row *ngIf="!imageReady && !loadingImage" id="SeeItButton">
+    <br>
     <ion-col text-center padding-left padding-right>
       <button ion-button (click)="loadImage()" color="secondary" icon-start round block large strong>
         <ion-icon name="ios-camera"></ion-icon>

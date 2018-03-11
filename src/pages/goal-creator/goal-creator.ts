@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, Events, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, Events, AlertController } from 'ionic-angular';
 import { DatePicker } from '@ionic-native/date-picker';
 import { Media, MediaObject } from '@ionic-native/media';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
@@ -9,6 +9,8 @@ import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 
 declare var cordova: any;
+
+import { HomePage } from '../home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -43,6 +45,7 @@ export class GoalCreatorPage {
   dueLater = false;
 
   constructor(
+    private navCtrl: NavController,
     private events: Events,
     private alertCtrl: AlertController,
     private datePicker: DatePicker,
@@ -75,6 +78,7 @@ export class GoalCreatorPage {
           this.createGoal().then((docData) => {
             console.log("Goal created");
             console.log(docData);
+            this.navCtrl.setRoot(HomePage);
           });
         });
       }
@@ -82,7 +86,7 @@ export class GoalCreatorPage {
   }
 
   buildGoal() {
-    console.log("Building goal");
+    console.log("Building Goal");
     return Observable.create((observer) => {
       this.goal = goal1
       this.goal.title = this.createGoalForm.title;
@@ -100,7 +104,8 @@ export class GoalCreatorPage {
   }
 
   createGoal() {
-    return this.firebase.afs.collection("posts").add(this.goal)
+    console.log("Creating Goal");
+    return this.firebase.afs.collection("goals").add(this.goal)
   }
 
   displayNotReadyAlert() {

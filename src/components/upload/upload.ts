@@ -126,8 +126,11 @@ export class UploadComponent {
     this.storeImage(uploadPath, this.image).subscribe((snapshot) => {
       console.log("Finished storing media");
       console.log(snapshot);
-      let content = snapshot.downloadURL;
-      this.uploaded.emit(content);
+      let image = {
+        url: snapshot.downloadURL,
+        name: this.contentName
+      }
+      this.uploaded.emit(image);
       loading.dismiss();
     });
   }
