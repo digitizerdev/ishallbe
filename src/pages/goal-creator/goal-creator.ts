@@ -79,23 +79,21 @@ export class GoalCreatorPage {
     else {
       if (form.valid) {
         console.log("Ready to create firebase goal");
-        this.buildGoal().subscribe(() => {
-          this.createGoal().subscribe(() => {
-            console.log("Goal created");
-            this.navCtrl.setRoot(HomePage);
-          }, (error) => {
-            console.log("There was an error");
-            console.error(error);
-          });
+        this.createGoal().subscribe(() => {
+          console.log("Goal created");
+          this.navCtrl.setRoot(HomePage);
+        }, (error) => {
+          console.log("There was an error");
+          console.error(error);
         });
       }
     }
   }
 
-  buildGoal() {
-    console.log("Building Goal");
+  createGoal() {
     return Observable.create((observer) => {
-      this.goal = {
+      console.log("Creating Goal");
+      return this.firebase.afs.collection("goals").add({
         title: this.createGoalForm.title,
         description: this.createGoalForm.description,
         commentCount: 0,
@@ -113,17 +111,7 @@ export class GoalCreatorPage {
           name: this.firebase.user.name,
           photo: this.firebase.user.photo
         }
-      }
-      console.log("Goal Object is " );
-      console.log(this.goal);
-      observer.next();
-    });
-  }
-
-  createGoal() {
-    return Observable.create((observer) => {
-      console.log("Creating Goal");
-      return this.firebase.afs.collection("goals").add(this.goal).then((docData) => {
+      }).then((docData) => {
         console.log(docData);
         observer.next();
       });
