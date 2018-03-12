@@ -14,6 +14,8 @@ import { HomePage } from '../home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
+import { Goal } from '../../../test-data/goals/model';
+
 @IonicPage()
 @Component({
   selector: 'page-goal-creator',
@@ -93,7 +95,9 @@ export class GoalCreatorPage {
   createGoal() {
     return Observable.create((observer) => {
       console.log("Creating Goal");
-      return this.firebase.afs.collection("/goals/").add({
+      const goalsCollection = this.firebase.afs.collection<Goal>('goals');
+      return goalsCollection.add({
+        id: "default",
         title: this.createGoalForm.title,
         description: this.createGoalForm.description,
         commentCount: 0,
