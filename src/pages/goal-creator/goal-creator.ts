@@ -93,7 +93,7 @@ export class GoalCreatorPage {
   createGoal() {
     return Observable.create((observer) => {
       console.log("Creating Goal");
-      return this.firebase.afs.collection("goals").add({
+      return this.firebase.afs.collection("/goals/").add({
         title: this.createGoalForm.title,
         description: this.createGoalForm.description,
         commentCount: 0,
@@ -114,6 +114,9 @@ export class GoalCreatorPage {
       }).then((docData) => {
         console.log(docData);
         observer.next();
+      }).catch((error) => {
+        console.log("Error");
+        console.error(error);
       });
     });
   }
