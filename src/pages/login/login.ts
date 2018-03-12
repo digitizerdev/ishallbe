@@ -33,7 +33,7 @@ export class LoginPage {
   submit(loginForm) {
     this.submitted = true;
     if (loginForm.valid) {
-      let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+      let loading = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Please Wait..' });
       loading.present();
       return this.authenticate(loginForm).subscribe((token) => {  
         this.navCtrl.setRoot(HomePage);

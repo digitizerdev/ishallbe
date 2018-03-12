@@ -120,7 +120,7 @@ export class UploadComponent {
 
   uploadImage() {
     console.log("Uploading Image");
-    let loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Please Wait..' });
+    this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Please Wait..' });
     this.loader.present();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
     let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
