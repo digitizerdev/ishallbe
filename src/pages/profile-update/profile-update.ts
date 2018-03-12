@@ -46,8 +46,6 @@ export class ProfileUpdatePage {
     this.loadProfileForm().subscribe(() => {
       this.populateEmptySocialFields().subscribe(() => {
         this.loaded = true;
-        console.log("Edit profile form is");
-        console.log(this.profileForm);
       });
     })
   }
@@ -104,7 +102,6 @@ export class ProfileUpdatePage {
   }
 
   updateProfilePhoto() {
-    console.log("Update profile photo clicked");
     this.askForImageRetrievalMethod();
   }
 
@@ -114,7 +111,6 @@ export class ProfileUpdatePage {
         {
           text: 'Camera',
           handler: () => {
-            console.log("Chose Camera");
             this.imageRetrievalMethod = "camera";
             this.updatingProfilePhoto = true;
           }
@@ -122,7 +118,6 @@ export class ProfileUpdatePage {
         {
           text: 'Library',
           handler: () => {
-            console.log("Chose Library");
             this.imageRetrievalMethod = "library";
             this.updatingProfilePhoto = true;
           }
@@ -131,7 +126,6 @@ export class ProfileUpdatePage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            console.log("Canceled asking for image retrieval method");
           }
         }
       ]
@@ -140,8 +134,6 @@ export class ProfileUpdatePage {
   }
 
   setProfilePhoto(content) {
-    console.log("Set profile photo triggered");
-    console.log(content);
     if (content == "canceled") {
       this.updatingProfilePhoto = false;
     } else {

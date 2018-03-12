@@ -41,7 +41,6 @@ export class StatementCreatorPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad StatementCreatorPage');
     let timestampString = moment().format('YYYYMMDDhhmmss');
     this.timestamp = parseInt(timestampString);
     this.displayTimestamp = moment().format('L');
@@ -49,7 +48,6 @@ export class StatementCreatorPage {
   }
 
   loadImage() {
-    console.log("Load image triggered");
     this.askForImageRetrievalMethod();
   }
 
@@ -85,8 +83,6 @@ export class StatementCreatorPage {
   }
 
   setImage(image) {
-    console.log("Load Image triggered");
-    console.log(image);
     this.statementImageUrl = image.url;
     this.statementName = image.name;
     this.loadingImage = false;
@@ -95,16 +91,11 @@ export class StatementCreatorPage {
 
   submit(form) {
     this.submitted = true;
-    console.log("Submitting Form");
-    console.log(form);
-    console.log("Image Ready: " + this.imageReady);
     if (!this.imageReady) this.displayNotReadyAlert();
     else {
       if (form.valid) {
-        console.log("Ready to create firebase statement");
         this.buildStatement(form).subscribe((statement) => {
           this.createStatement(statement).then(() => {
-            console.log("Statement created");
             this.navCtrl.setRoot(HomePage);
           });
         });
@@ -114,7 +105,6 @@ export class StatementCreatorPage {
 
   buildStatement(form) {
     return Observable.create((observer) => {
-      console.log("Building Statement");
       this.statementId = this.firebase.afs.createId();
       const statement: Statement = {
         id: this.statementId,
@@ -133,21 +123,16 @@ export class StatementCreatorPage {
           photo: this.firebase.user.photo
         }
       }
-      console.log("Statement Built" );
-      console.log(statement);
       observer.next(statement);
     });
   }
 
   createStatement(statement) {
-    console.log("Creating Statement");
     let statementPath = "/statements/" + this.statementId;
-    console.log("Statement Path is " + statementPath);
     return this.firebase.afs.doc(statementPath).set(statement);
   }
 
   displayNotReadyAlert() {
-    console.log("Displaying Not Ready Alert");
     let alertMessage = "Please Add Image to Statement";
     let alert = this.alertCtrl.create({
       title: 'Almost There!',

@@ -35,7 +35,6 @@ export class ProfilePage {
     this.uid = this.navParams.get('uid');
     if (!this.uid) {
       this.user = this.firebase.user;
-      console.log(this.user);
       this.mine = true;
       this.loaded = true;
     } else {

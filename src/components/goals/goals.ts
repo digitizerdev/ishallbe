@@ -23,7 +23,6 @@ export class GoalsComponent {
     private fileTransfer: FileTransfer,
     private media: Media
   ) {
-    console.log('Hello Goals Component');
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
     console.log("Raw date is " + this.rawDate);
@@ -36,15 +35,12 @@ export class GoalsComponent {
     this.goals = [];
     mockGoals.forEach((goal) => {
       if (!goal.complete) {
-        console.log("Pushing goal");
         goal.displayDueDate = moment(goal.dueDate, "YYYYMMDDhhmmss").fromNow();
         this.setDueDateWarningColor(goal).subscribe((goal) => {
           this.goals.push(goal);
         });
       }
     });
-    console.log("Finished pushing goals");
-    console.log(this.goals);
   }
 
   setDueDateWarningColor(goal) {
@@ -52,8 +48,6 @@ export class GoalsComponent {
       if (goal.dueDate < this.rawDate) goal.pastDue = true;
       else if (goal.dueDate < this.rawNextWeekDate) goal.dueInNextSevenDays = true;
       else goal.dueLater = true;
-      console.log("Set due date warning color");
-      console.log(goal);
       observer.next(goal);
     });
   }

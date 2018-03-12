@@ -12,7 +12,6 @@ export class UserManagerPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UserManagerPage');
   }
 
 }

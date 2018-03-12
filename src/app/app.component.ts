@@ -151,15 +151,13 @@ export class iShallBe {
 
   listenToPushNotificationEvents() {
     if (!this.platform.is('cordova')) {
-      console.warn("Push notifications not initialized. Cordova is not available - Run in physical device");
       return;
     }
 
     this.push.hasPermission()
       .then((res: any) => {
         if (res.isEnabled) {
-          console.log('We have permission to send push notifications');
-        } else { console.log('We do not have permission to send push notifications'); }
+        } else { }
       });
 
     const options: PushOptions = {
@@ -179,9 +177,7 @@ export class iShallBe {
     const pushObject: PushObject = this.push.init(options);
 
     pushObject.on('registration').subscribe((data: any) => {
-      console.log('device token -> ' + data.registrationId);
     }, err => {
-      console.log('error in device registration:', err);
     });
   }
 }

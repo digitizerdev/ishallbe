@@ -150,8 +150,8 @@ describe('StatementCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display StatementImage if image loaded', () => {
-        component.imageLoaded = true;
+    it('should display StatementImage if image ready', () => {
+        component.imageReady = true;
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;

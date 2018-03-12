@@ -21,7 +21,6 @@ export class ExplorePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ExplorePage');
     this.timestamp();
     this.setStatements();
   }
@@ -29,17 +28,13 @@ export class ExplorePage {
   timestamp() {
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
-    console.log("Raw date is " + this.rawDate);
   }
 
   setStatements() {
     this.statements = [];
     mockStatements.forEach((post) => {
-        console.log("Pushing statement");
         this.statements.push(post);
     });
-    console.log("Finished pushing statements");
-    console.log(this.statements);
   }
 
   refreshPage(refresh) {

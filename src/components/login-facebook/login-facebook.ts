@@ -54,10 +54,6 @@ export class LoginFacebookComponent {
     let rawTimeString = moment().format('YYYYMMDDhhmmss');
     this.rawTime = parseInt(rawTimeString);
     this.displayTime = moment().format('h:mma');
-    console.log("Raw date is " + this.rawDate);
-    console.log("Display date is " + this.displayDate);
-    console.log("Raw Time is " + this.rawTime);
-    console.log("Display time is " + this.displayTime);
   }
 
   determineAuthType(cordova) {
@@ -113,7 +109,6 @@ export class LoginFacebookComponent {
       this.user.unsubscribe;
       if (user) { this.login(); this.loader.dismiss() }
       else {
-        console.log("Need to register user");
         this.registerUser().subscribe(() => {
           this.login(); this.loader.dismiss();
         }, error => {
@@ -131,26 +126,20 @@ export class LoginFacebookComponent {
   }
 
   checkForExistingUser() {
-    console.log("Checking for existing user");
     return Observable.create((observer) => {
       let path = '/users/' + this.uid;
-      console.log(path);
       this.user = this.firebase.afs.doc(path);
       return this.user.valueChanges().subscribe((user) => {
-        console.log(user);
         if (!this.registering) observer.next(user);
       })
     });
   }
 
   registerUser() {
-    console.log("Registering User")
     this.registering = true;
     return Observable.create((observer) => {
       return this.presentEULA().subscribe((accepted) => {
         if (accepted) this.createUser().then((newUserObject) => { 
-          console.log("Created User");
-          console.log(newUserObject);
           observer.next(); 
         });
         else observer.error();
@@ -159,7 +148,6 @@ export class LoginFacebookComponent {
   }
 
   presentEULA() {
-    console.log("Presenting EULA");
     return Observable.create((observer: any) => {
       let alert = this.alertCtrl.create({
         title: 'Accept Terms of Service',
@@ -203,8 +191,6 @@ export class LoginFacebookComponent {
       }
     }
     let path = 'users/' + this.uid;
-    console.log("Creating user");
-    console.log(user);
     return this.firebase.afs.doc(path).set(user)
   }
 

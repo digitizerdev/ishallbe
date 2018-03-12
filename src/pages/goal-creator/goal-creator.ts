@@ -57,37 +57,24 @@ export class GoalCreatorPage {
   ) {
     let timestampString = moment().format('YYYYMMDDhhmmss');
     this.timestamp = parseInt(timestampString);
-    console.log("Timestamp is " + this.timestamp);
     this.displayTimestamp = moment().format('MMM D YYYY h:mmA');
-    console.log("Display timestamp is " + this.displayTimestamp);
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
-    console.log("Raw date is " + this.rawDate);
     this.rawNextWeekDate = this.rawDate + 7;
-    console.log("Raw next week date is " + this.rawNextWeekDate);
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad GoalCreatorage');
   }
 
   submit(form) {
     this.submitted = true;
-    console.log("Submitting Form");
-    console.log(form);
-    console.log("Due Date Selected: " + this.dateSelected);
-    console.log("Audio Ready: " + this.audioReady);
     if (!this.audioReady || !this.dateSelected) this.displayNotReadyAlert();
     else {
       if (form.valid) {
-        console.log("Ready to create firebase goal");
         this.buildGoal(form).subscribe((goal) => {
           this.createGoal(goal).then(() => {
-            console.log("Goal created");
             this.navCtrl.setRoot(HomePage);
           }, (error) => {
-            console.log("There was an error");
-            console.error(error);
           });
         });
       }
@@ -96,7 +83,6 @@ export class GoalCreatorPage {
 
   buildGoal(form) {
     return Observable.create((observer) => {
-      console.log("Building Goal");
       this.goalId = this.firebase.afs.createId();
       const goal: Goal = {
         id: this.goalId,
@@ -118,21 +104,16 @@ export class GoalCreatorPage {
           photo: this.firebase.user.photo
         }
       }
-      console.log("Goal Built");
-      console.log(goal);
       observer.next(goal);
     });
   }
 
   createGoal(goal) {
-    console.log("Creating Goal");
     let goalPath = "/goals/" + this.goalId;
-    console.log("Goal Path is " + goalPath);
     return this.firebase.afs.doc(goalPath).set(goal);
   }
 
   pickDate() {
-    console.log("Picking date");
     this.dueToday = false;
     this.dueThisWeek = false;
     this.dueLater = false;
@@ -144,18 +125,14 @@ export class GoalCreatorPage {
       allowOldDates: false,
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
     }).then((date) => {
-      console.log("Raw date is: " + date);
       let dueDateString = moment(date).format('YYYYMMDD');
       this.dueDate = parseInt(dueDateString);
-      console.log("Raw Due Date is " + this.dueDate);
       this.displayDueDate = moment(date).fromNow();
-      console.log("Display Due date is " + this.displayDueDate);
       this.formateDueDate();
     }, (err) => { console.error("Error: " + err); });
   }
 
   formateDueDate() {
-    console.log("Formatting Due Date");
     if (this.dueDate == this.rawDate) this.dueToday = true;
     else if (this.dueDate < this.rawNextWeekDate) this.dueThisWeek = true;
     else this.dueLater = true;
@@ -163,33 +140,25 @@ export class GoalCreatorPage {
   }
 
   listenToAudioEvents() {
-    console.log("Listening To Audio Events");
     this.audio.onStatusUpdate.subscribe(status => {
-      console.log("Status of this.audio updated");
-      console.log(status);
       if (status == 4 && this.playingAudio) {
-        console.log("Time to stop playback")
         this.stopPlayback();
       }
     });
   }
 
   recordAudio() {
-    console.log("Recording Audio")
     this.contentMethod = "audio";
     this.recording = true;
   }
 
   recorded(audio) {
-    console.log("Recorded");
-    console.log(audio);
     this.audioUrl = audio.url;
     this.audioName = audio.name;
     this.audioReady = true;
   }
 
   playAudio() {
-    console.log("Playing Audio");
     this.playingAudio = true;
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
     var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + this.audioName;
@@ -205,14 +174,11 @@ export class GoalCreatorPage {
   }
 
   stopPlayback() {
-    console.log("Stopping Playback");
     this.playingAudio = false;
     this.audio.stop();
   }
 
   redoRecording() {
-    console.log("Redoing Recording");
-    console.log("This audio name is " + this.audioName);
     this.audioReady = false;
     this.contentMethod = "audio";
     this.recording = true;
@@ -223,7 +189,6 @@ export class GoalCreatorPage {
   }
 
   displayNotReadyAlert() {
-    console.log("Displaying Not Ready Alert");
     let alertMessage = "Please Speak Your Goal";
     if (!this.dateSelected) alertMessage = "Please Set a Goal Due Date";
     let alert = this.alertCtrl.create({
@@ -236,7 +201,6 @@ export class GoalCreatorPage {
 
   listenForCanceledUpload() {
     this.events.subscribe('getAudioCanceled', () => {
-      console.log("Audio Upload Canceled");
       this.goalId = null;
       this.audioUrl = null;
       this.audioName = null;

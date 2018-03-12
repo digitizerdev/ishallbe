@@ -52,7 +52,6 @@ export class ApiManagerPage {
     try {
       const resp = await Pro.deploy.checkAndApply(true, function(progress){ this.downloadProgress = progress; });
       if (resp.update) {
-        console.log("Updating");
         let loading = this.loadingCtrl.create({
           content: "Deploying Update..."
         });

@@ -19,7 +19,7 @@
       <span ion-text color="primary"> {{ unreadNotification.user.name }} </span>
       <span> {{ unreadNotification.message }} </span>
       <br>
-      <span ion-text color="dark">{{ unreadNotification.timestamp.displayTime }}</span>
+      <span ion-text color="dark">{{ unreadNotification.displayTimestamp }}</span>
     </ion-item>
   </ion-list>
   <h5 class="feature" color="primary" ion-text padding>SEEN</h5>
@@ -34,7 +34,7 @@
       <span ion-text color="primary"> {{ readNotification.user.name }} </span>
       <span> {{ readNotification.message }} </span>
       <br>
-      <span ion-text color="dark">{{ readNotification.timestamp.displayTime }}</span>
+      <span ion-text color="dark">{{ readNotification.displayTimestamp }}</span>
     </ion-item>
   </ion-list>
   <footer></footer>

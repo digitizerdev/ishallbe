@@ -14,7 +14,6 @@ export class StatementsComponent {
   statements: any[];
 
   constructor() {
-    console.log('Hello Statements Component');
     this.timestamp();
     this.setStatements();
   }
@@ -22,19 +21,15 @@ export class StatementsComponent {
   timestamp() {
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
-    console.log("Raw date is " + this.rawDate); 
   }
 
   setStatements() {
     this.statements = [];
     mockStatements.forEach((statement) => {
-        console.log("Pushing statement");
         if (this.rawDate > statement.timestamp)
         statement.displayTimestamp = moment(statement.timestamp, "YYYYMMDD").fromNow();
         else statement.displayTimestamp= moment(statement.timestamp, "YYYYMMDDhhmmss").fromNow();
         this.statements.push(statement);
     });
-    console.log("Finished pushing statements");
-    console.log(this.statements);
   }
 }

@@ -12,7 +12,6 @@ export class PostManagerPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PostManagerPage');
   }
 
 }

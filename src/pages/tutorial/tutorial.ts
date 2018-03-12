@@ -12,7 +12,6 @@ export class TutorialPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad TutorialPage');
   }
 
 }
