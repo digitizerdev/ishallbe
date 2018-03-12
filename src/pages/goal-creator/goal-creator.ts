@@ -82,7 +82,7 @@ export class GoalCreatorPage {
     else {
       if (form.valid) {
         console.log("Ready to create firebase goal");
-        this.buildGoal().subscribe((goal) => {
+        this.buildGoal(form).subscribe((goal) => {
           this.createGoal(goal).then(() => {
             console.log("Goal created");
             this.navCtrl.setRoot(HomePage);
@@ -95,16 +95,14 @@ export class GoalCreatorPage {
     }
   }
 
-
-
-  buildGoal() {
+  buildGoal(form) {
     return Observable.create((observer) => {
       console.log("Building Goal");
       this.goalId = this.firebase.afs.createId();
       const goal: Goal = {
         id: this.goalId,
-        title: this.createGoalForm.title,
-        description: this.createGoalForm.description,
+        title: form.title,
+        description: form.description,
         commentCount: 0,
         likeCount: 0,
         private: true,
