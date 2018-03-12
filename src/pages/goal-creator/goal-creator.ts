@@ -26,7 +26,8 @@ export class GoalCreatorPage {
     title?: string;
     description?: string,
   } = {};
-  goal: object;
+  goalId: string;
+  goalsCollection: any;
   contentMethod: string;
   timestamp: number;
   displayTimestamp: string;
@@ -94,11 +95,14 @@ export class GoalCreatorPage {
     }
   }
 
+
+
   buildGoal() {
     return Observable.create((observer) => {
       console.log("Building Goal");
+      this.goalId = this.firebase.afs.createId();
       const goal: Goal = {
-        id: "default",
+        id: this.goalId,
         title: this.createGoalForm.title,
         description: this.createGoalForm.description,
         commentCount: 0,
@@ -117,7 +121,7 @@ export class GoalCreatorPage {
           photo: this.firebase.user.photo
         }
       }
-      console.log("Goal created");
+      console.log("Goal Built");
       console.log(goal);
       observer.next(goal);
     });
@@ -126,8 +130,9 @@ export class GoalCreatorPage {
   createGoal(goal) {
     return Observable.create((observer) => {
       console.log("Creating Goal");
-      const goalsCollection = this.firebase.afs.collection<Goal>('goals');
-      goalsCollection.add(goal).then((docData) => {
+      let goalPath = "/goals/" + this.goalId;
+      console.log("Goal Path is " + goalPath);
+      this.firebase.afs.doc(goalPath).set(goal).then((docData) => {
         console.log(docData);
         observer.next();
       }).catch((error) => {
@@ -243,7 +248,8 @@ export class GoalCreatorPage {
   listenForCanceledUpload() {
     this.events.subscribe('getAudioCanceled', (message) => {
       console.log("Audio Upload Canceled");
-      this.goal = null;
+      this.goalId = null;
+      this.goalsCollection = null;
       this.audioUrl = null;
       this.audioName = null;
       this.recording = false;
