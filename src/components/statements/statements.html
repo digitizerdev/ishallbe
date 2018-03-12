@@ -15,7 +15,7 @@
       <h3 (click)="viewUser(statement.user_id)" ion-text color="primary">{{ statement.user.name }}</h3>
       <h5>{{ statement.timestamp.displayTime }}</h5>
     </ion-item>
-    <img class="full-image" *ngIf="statement.contentUrl" src="{{ statement.contentUrl }}">
+    <img class="full-image" *ngIf="statement.url" src="{{ statement.url }}">
     <ion-item text-wrap class="statement-body">
       <div (click)="viewStatement(statement.id)">
         <h3 padding-top padding-bottom>{{ statement.description }}</h3>

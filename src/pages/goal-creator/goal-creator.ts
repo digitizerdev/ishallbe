@@ -24,16 +24,17 @@ export class GoalCreatorPage {
     title?: string;
     description?: string,
   } = {};
-  goal: any;
+  goal: object;
   contentMethod: string;
   timestamp: number;
+  displayTimestamp: string;
   rawDate: number;
   rawNextWeekDate: number;
-  rawDueDate: number;
+  dueDate: number;
   displayDueDate: string;
-  audio: any;
   audioUrl: string;
   audioName: string;
+  audio: any;
   submitted = false;
   dateSelected = false;
   recording = false;
@@ -54,6 +55,9 @@ export class GoalCreatorPage {
   ) {
     let timestampString = moment().format('YYYYMMDDhhmmss');
     this.timestamp = parseInt(timestampString);
+    console.log("Timestamp is " + this.timestamp);
+    this.displayTimestamp = moment().format('MMM D YYYY h:mmA');
+    console.log("Display timestamp is " + this.displayTimestamp);
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
     console.log("Raw date is " + this.rawDate);
@@ -101,8 +105,8 @@ export class GoalCreatorPage {
         url: this.audioUrl,
         filename: this.audioName,
         displayDueDate: this.displayDueDate,
-        dueDate: this.rawDueDate,
-        displayTimestamp: "",
+        dueDate: this.dueDate,
+        displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
         user: {
           uid: this.firebase.user.uid,
@@ -132,7 +136,7 @@ export class GoalCreatorPage {
     this.dueThisWeek = false;
     this.dueLater = false;
     this.displayDueDate = "";
-    this.rawDueDate = 0;
+    this.dueDate = 0;
     this.datePicker.show({
       date: new Date(),
       mode: 'datetime',
@@ -141,8 +145,8 @@ export class GoalCreatorPage {
     }).then((date) => {
       console.log("Raw date is: " + date);
       let dueDateString = moment(date).format('YYYYMMDD');
-      this.rawDueDate = parseInt(dueDateString);
-      console.log("Raw Due Date is " + this.rawDueDate);
+      this.dueDate = parseInt(dueDateString);
+      console.log("Raw Due Date is " + this.dueDate);
       this.displayDueDate = moment(date).fromNow();
       console.log("Display Due date is " + this.displayDueDate);
       this.formateDueDate();
@@ -151,8 +155,8 @@ export class GoalCreatorPage {
 
   formateDueDate() {
     console.log("Formatting Due Date");
-    if (this.rawDueDate == this.rawDate) this.dueToday = true;
-    else if (this.rawDueDate < this.rawNextWeekDate) this.dueThisWeek = true;
+    if (this.dueDate == this.rawDate) this.dueToday = true;
+    else if (this.dueDate < this.rawNextWeekDate) this.dueThisWeek = true;
     else this.dueLater = true;
     this.dateSelected = true;
   }
