@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header no-border>
   <ion-navbar color='primary'>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
@@ -7,7 +7,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <h5 class="feature" padding>NEW</h5>
+  <h5 class="feature" color="primary" ion-text padding>NEW</h5>
   <ion-list no-lines>
     <ion-item *ngFor="let unreadNotification of unreadNotifications" text-wrap>
       <ion-avatar item-left>
@@ -19,10 +19,10 @@
       <span ion-text color="primary"> {{ unreadNotification.user.name }} </span>
       <span> {{ unreadNotification.message }} </span>
       <br>
-      <span ion-text color="dark">{{ unreadNotification.timestamp.displayTime }}</span>
+      <span ion-text color="dark">{{ unreadNotification.displayTimestamp }}</span>
     </ion-item>
   </ion-list>
-  <h5 class="feature" padding>SEEN</h5>
+  <h5 class="feature" color="primary" ion-text padding>SEEN</h5>
   <ion-list no-lines>
     <ion-item *ngFor="let readNotification of readNotifications" text-wrap>
       <ion-avatar item-left>
@@ -34,7 +34,7 @@
       <span ion-text color="primary"> {{ readNotification.user.name }} </span>
       <span> {{ readNotification.message }} </span>
       <br>
-      <span ion-text color="dark">{{ readNotification.timestamp.displayTime }}</span>
+      <span ion-text color="dark">{{ readNotification.displayTimestamp }}</span>
     </ion-item>
   </ion-list>
   <footer></footer>

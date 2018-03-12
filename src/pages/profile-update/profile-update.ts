@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
+
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, ActionSheetController } from 'ionic-angular';
 
 import { ProfilePage } from '../profile/profile';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+
+import { Observable } from 'rxjs/Observable';
 
 @IonicPage()
 @Component({
@@ -15,21 +17,24 @@ export class ProfileUpdatePage {
 
   user: any;
   photo: any;
-  editProfileForm: {
+  profileForm: {
     name?: string,
     bio?: string,
     instagram?: string,
     twitter?: string,
     linkedin?: string
   } = {};
+  imageRetrievalMethod: string;
   submitted = false;
   loaded = false;
+  updatingProfilePhoto = false;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
+    private actionSheetCtrl: ActionSheetController,
     private firebase: FirebaseProvider
   ) {
   }
@@ -38,83 +43,108 @@ export class ProfileUpdatePage {
     this.photo = this.navParams.get('photo');
     this.user = this.firebase.user;
     if (this.photo) this.user.photo = this.photo;
-      this.loadProfileForm().subscribe(() => {
+    this.loadProfileForm().subscribe(() => {
+      this.populateEmptySocialFields().subscribe(() => {
         this.loaded = true;
-      })
+      });
+    })
   }
 
 
   loadProfileForm() {
     return Observable.create((observer: any) => {
-      if (!this.user.social) {
-        this.editProfileForm.instagram = "";
-        this.editProfileForm.twitter = "";
-        this.editProfileForm.linkedin = "";
-      } else {
-        this.editProfileForm.instagram = this.user.social.instagram;
-        this.editProfileForm.twitter = this.user.social.twitter;
-        this.editProfileForm.linkedin = this.user.social.linkedin;
-      }
-      this.editProfileForm.name = this.user.name;
-      this.editProfileForm.bio = this.user.bio
+      this.profileForm.linkedin = this.user.social.linkedin;
+      this.profileForm.instagram = this.user.social.instagram;
+      this.profileForm.twitter = this.user.social.twitter;
+      this.profileForm.name = this.user.name;
+      this.profileForm.bio = this.user.bio
       observer.next();
     });
   }
 
-  submit(form) {
-    this.submitted = true;
-    this.editProfileForm = form;
+  populateEmptySocialFields() {
+    return Observable.create((observer: any) => {
+      if (!this.profileForm.linkedin) this.profileForm.linkedin = "linkedin.com/in/";
+      else this.profileForm.linkedin = this.user.social.linkedin;
+      if (!this.profileForm.instagram) this.profileForm.instagram = "instagram.com/";
+      else this.profileForm.instagram = this.user.social.instagram;
+      if (!this.profileForm.twitter) this.profileForm.twitter = "twitter.com/";
+      else this.profileForm.twitter = this.user.social.twitter;
+      observer.next();
+    });
+  }
+
+  submit() {
     let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
     loading.present();
+    this.submitted = true;
+    this.loadProfile();
     this.updateUser().then(() => {
-      this.updateUserCollaborations().subscribe(() => {
-        loading.dismiss();
-        this.navCtrl.setRoot(ProfilePage);
-      });
-    }).catch((error) => { this.errorHandler(error) });
+      loading.dismiss();
+      this.navCtrl.setRoot(ProfilePage);
+    });
+  }
+
+  loadProfile() {
+    if (this.profileForm.linkedin == "linkedin.com/in/") this.user.social.linkedin = "";
+    else this.user.social.linkedin = this.profileForm.linkedin;
+    if (this.profileForm.instagram == "instagram.com/") this.user.social.instagram = "";
+    else this.user.social.instagram = this.profileForm.instagram;
+    if (this.profileForm.twitter == "twitter.com/") this.user.social.twitter = "";
+    else this.user.social.twitter = this.profileForm.twitter;
+    this.user.name = this.profileForm.name;
+    this.user.bio = this.profileForm.bio;
   }
 
   updateUser() {
-      this.user.name = this.editProfileForm.name;
-      this.user.social = {
-        linkedin: this.editProfileForm.linkedin,
-        twitter: this.editProfileForm.twitter,
-        instagram: this.editProfileForm.instagram
-      };
-      this.user.bio = this.editProfileForm.bio;
-      let path = "users/" + this.user.uid;
-      return this.firebase.afs.doc(path).update(this.user);
+    let path = "users/" + this.user.uid;
+    return this.firebase.afs.doc(path).update(this.user);
   }
 
-  updateUserCollaborations() {
-    return Observable.create((observer) => {
-      let path = 'users/' + this.user.uid + "/collaborations";
-      let userCollaborations = this.firebase.afs.collection(path);
-      let count = 0;
-      userCollaborations.valueChanges().subscribe((myCollaborations) => {
-        if (myCollaborations.length > 0) {
-          myCollaborations.forEach((collaboration) => {
-            return this.updateCollaborator(collaboration).subscribe(() => {
-              count++;
-              if (count == myCollaborations.length) observer.next();
-            });
-          });
-        } else observer.next();
-      });
-    });
+  updateProfilePhoto() {
+    this.askForImageRetrievalMethod();
   }
 
-  updateCollaborator(collaboration) {
-    return Observable.create((observer) => {
-      let collaborator = {
-        name: this.user.name,
-        photo: this.user.photo,
-      }
-      let path = "collaborations/" + collaboration.collaborationId + "/collaborators/" + this.user.uid;
-      return this.firebase.afs.doc(path).update(collaborator).then(() => {
-        observer.next();
-      });
+  askForImageRetrievalMethod() {
+    let actionSheet = this.actionSheetCtrl.create({
+      buttons: [
+        {
+          text: 'Camera',
+          handler: () => {
+            this.imageRetrievalMethod = "camera";
+            this.updatingProfilePhoto = true;
+          }
+        },
+        {
+          text: 'Library',
+          handler: () => {
+            this.imageRetrievalMethod = "library";
+            this.updatingProfilePhoto = true;
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+          }
+        }
+      ]
     });
+    actionSheet.present();
+  }
+
+  setProfilePhoto(content) {
+    if (content == "canceled") {
+      this.updatingProfilePhoto = false;
+    } else {
+      let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+      loading.present();    
+      this.user.photo = content;
+      this.updateUser().then(() => {
+        loading.dismiss();
+        this.updatingProfilePhoto = false;
+      });
+    }
   }
 
   errorHandler(error) {

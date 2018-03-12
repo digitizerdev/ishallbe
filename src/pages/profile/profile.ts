@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
-import { Observable } from 'rxjs/Observable';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { HomePage } from '../home/home';
 import { ProfileUpdatePage } from '../profile-update/profile-update';
@@ -20,10 +21,12 @@ export class ProfilePage {
   user: any;
   mine = false;
   loaded = false;
+  postType = "goals";
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
+    private inAppBrowser: InAppBrowser,
     private firebase: FirebaseProvider
   ) {
   }
@@ -32,7 +35,6 @@ export class ProfilePage {
     this.uid = this.navParams.get('uid');
     if (!this.uid) {
       this.user = this.firebase.user;
-      console.log(this.user);
       this.mine = true;
       this.loaded = true;
     } else {
@@ -49,19 +51,13 @@ export class ProfilePage {
     });
   }
 
-  openSocial(socialNetwork) {
-    if (socialNetwork == 'instagram') {
-      let instagramLink = 'https://instagram.com/' + this.user.social.instagram;
-      open(instagramLink);
-    }
-    if (socialNetwork == 'twitter') {
-      let twitterLink = 'https://twitter.com/' + this.user.social.twitter;
-      open(twitterLink);
-    }
-    if (socialNetwork == 'linkedin') {
-      let linkedinLink = 'https://linkedin.com/in/' + this.user.social.linkedin;
-      open(linkedinLink);
-    }
+  openLink(link) {
+    let hyperlink = "https://" + link;
+    this.inAppBrowser.create(hyperlink, '_system');
+  }
+
+  refreshPage(refresh) {
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
   }
 
   pushProfileUpdatePage() {

@@ -1,13 +1,12 @@
-<ion-header>
+<ion-header no-border>
     <ion-navbar color='primary'>
         <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title color='primary'>SUPPORT</ion-title>
+        <ion-title id="SupportPageTitle" color='primary'>Support</ion-title>
     </ion-navbar>
 </ion-header>
-
-<ion-content padding>
+<ion-content>
     <header></header>
     <form #supportForm="ngForm" novalidate padding>
         <ion-item class="appForm">
@@ -35,6 +34,8 @@
                 </button>
             </ion-col>
         </ion-row>
-        <h5 padding id="SupportDirectEmail" text-center> Email us directly at <a href="mailto:info@ishallbe.co">info@ishallbe.co</a></h5>
+        <h5 padding id="SupportPageDirectEmail" text-center> Email us directly at
+            <a href="mailto:info@ishallbe.co">info@ishallbe.co</a>
+        </h5>
     </form>
 </ion-content>

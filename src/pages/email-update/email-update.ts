@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, LoadingController, AlertController } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -20,7 +20,6 @@ export class EmailUpdatePage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private firebase: FirebaseProvider

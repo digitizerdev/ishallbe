@@ -1,0 +1,21 @@
+statements {
+    .statements-content {
+        background: color($colors, light-gray);
+    }
+    .card {
+        border-radius: 15px;
+    }
+    .statement-header {
+        background: color($colors, light-yellow);
+        border-bottom: thick solid color($colors, primary);
+    }
+    .statement-body {
+        background: white;
+        border-top: thick solid color($colors, primary);
+    }
+    .statement-actions {
+        background: color($colors, light-yellow);
+        color: #7C7C7C;
+        font-size: 1.4em;
+    }
+}

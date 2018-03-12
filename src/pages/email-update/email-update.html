@@ -3,13 +3,11 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title id="AccountEmailTitle">EMAIL</ion-title>
+    <ion-title id="EmailUpdatePageTitle">Email</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content text-center padding>
-  <br>
+<ion-content text-center>
   <header></header>
-  <br>
   <form #updateEmailForm="ngForm" novalidate padding>
     <ion-list no-lines>
       <ion-item class="appForm">
@@ -24,7 +22,7 @@
       <ion-row>
         <ion-col text-center class="submit">
           <button ion-button (click)="submit(updateEmailForm)" type="submit" color="primary" round block large strong>
-            UPDATE
+            UPDATE EMAIL
           </button>
         </ion-col>
       </ion-row>

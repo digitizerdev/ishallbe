@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, LoadingController } from 'ionic-angular';
 import { Pro } from '@ionic/pro';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Observable } from 'rxjs/Observable';
 
 import { PasswordResetPage } from '../password-reset/password-reset';
@@ -25,7 +24,6 @@ export class LoginPage {
 
   constructor(
     private navCtrl: NavController, 
-    private navParams: NavParams,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private firebase: FirebaseProvider
@@ -35,7 +33,7 @@ export class LoginPage {
   submit(loginForm) {
     this.submitted = true;
     if (loginForm.valid) {
-      let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+      let loading = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Please Wait..' });
       loading.present();
       return this.authenticate(loginForm).subscribe((token) => {  
         this.navCtrl.setRoot(HomePage);

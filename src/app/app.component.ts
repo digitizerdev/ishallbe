@@ -1,32 +1,22 @@
-import { NgModule, Component, ViewChild } from '@angular/core';
-import { Nav, Platform, AlertController, Events } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { Pro } from '@ionic/pro';
 
 import { Observable } from 'rxjs/Rx';
 
-import { SignupPage } from '../pages/signup/signup';
-import { PasswordResetPage } from '../pages/password-reset/password-reset';
 import { LoginPage } from '../pages/login/login';
 import { AboutPage } from '../pages/about/about';
-import { SupportPage } from '../pages/support/support';
-import { EmailUpdatePage } from '../pages/email-update/email-update';
-import { PasswordUpdatePage } from '../pages/password-update/password-update';
-import { AccountPage } from '../pages/account/account';
-import { NotificationsPage } from '../pages/notifications/notifications';
-import { ProfileUpdatePage } from '../pages/profile-update/profile-update';
 import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
 import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
 import { ProfilePage } from '../pages/profile/profile';
-import { PostPage } from '../pages/post/post';
 import { ExplorePage } from '../pages/explore/explore';
 import { HomePage } from '../pages/home/home';
-import { TutorialPage } from '../pages/tutorial/tutorial';
-import { PinCreatorPage } from '../pages/pin-creator/pin-creator';
-import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
-import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
-import { UsersManagerPage } from '../pages/users-manager/users-manager';
+import { ApiManagerPage } from '../pages/api-manager/api-manager';
+import { PostManagerPage } from '../pages/post-manager/post-manager';
+import { UserManagerPage } from '../pages/user-manager/user-manager';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
@@ -51,8 +41,8 @@ export class iShallBe {
     private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
-    private alertCtrl: AlertController,
     private events: Events,
+    private push: Push,
     private firebase: FirebaseProvider,
   ) {
     this.rootPage = LoginPage;
@@ -91,25 +81,25 @@ export class iShallBe {
         title: 'Manage Profile',
         icon: 'ios-person',
         component: ProfilePage
-      },
+      }
     ];
 
     this.editorMenuPages = [
       {
-        title: 'Manage Pins',
-        icon: 'ios-albums',
-        component: PinsManagerPage
-      },
-      {
-        title: 'Manage Posts',
-        icon: 'ios-images',
-        component: PostsManagerPage
-      },
-      {
-        title: 'Manage Users',
+        title: 'User Manager',
         icon: 'ios-people',
-        component: UsersManagerPage
+        component: UserManagerPage
       },
+      {
+        title: 'Post Manager',
+        icon: 'ios-albums',
+        component: PostManagerPage
+      },
+      {
+        title: 'API Manager',
+        icon: 'ios-pulse',
+        component: ApiManagerPage
+      }
     ];
   }
 
@@ -120,6 +110,7 @@ export class iShallBe {
   platformReady() {
     this.platform.ready().then(() => {
       if (this.platform.is('cordova')) {
+        this.listenToPushNotificationEvents()
         this.deployUpdate().subscribe(() => { this.checkForSession(); });
       } else this.checkForSession();
       this.statusBar.styleDefault();
@@ -156,5 +147,37 @@ export class iShallBe {
   listenToAuthEvents() {
     this.events.subscribe('login: editor', () => { this.editor = true });
     this.events.subscribe('logout', () => { this.editor = false });
+  }
+
+  listenToPushNotificationEvents() {
+    if (!this.platform.is('cordova')) {
+      return;
+    }
+
+    this.push.hasPermission()
+      .then((res: any) => {
+        if (res.isEnabled) {
+        } else { }
+      });
+
+    const options: PushOptions = {
+      android: {},
+      ios: {
+        alert: 'true',
+        badge: true,
+        sound: 'false',
+
+      },
+      windows: {},
+      browser: {
+        pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+      }
+    };
+
+    const pushObject: PushObject = this.push.init(options);
+
+    pushObject.on('registration').subscribe((data: any) => {
+    }, err => {
+    });
   }
 }

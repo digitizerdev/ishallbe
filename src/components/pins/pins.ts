@@ -1,22 +1,40 @@
-import { Component } from '@angular/core';
+import { ViewChild, Component, Input } from '@angular/core';
+import { NavController, Slides } from 'ionic-angular';
 
-/**
- * Generated class for the PinsComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
+import { mockPins } from '../../../test-data/pins/mocks';
+
 @Component({
   selector: 'pins',
   templateUrl: 'pins.html'
 })
 export class PinsComponent {
 
-  text: string;
+  @ViewChild(Slides) slides: Slides;
+  @Input('pinsStartDate') inputDate;
+  rawDate: number;
+  pins: any[];
 
-  constructor() {
-    console.log('Hello PinsComponent Component');
-    this.text = 'Hello World';
+  constructor(
+    private navCtrl: NavController
+  ) {
+    this.rawDate = this.inputDate;
   }
 
+  ngAfterViewInit() {
+    this.setPins();
+    setTimeout(() => {
+      this.slides.slideTo(5);
+    }, 500);
+  }
+
+  refreshPage(refresh) {
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
+  }
+
+  setPins() {
+    this.pins = [];
+    mockPins.forEach((pin) => {
+        this.pins.push(pin);
+    });
+  }
 }

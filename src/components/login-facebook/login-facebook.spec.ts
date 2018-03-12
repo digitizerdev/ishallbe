@@ -20,7 +20,7 @@ import { environment } from '../../environments/environment';
 
 import { LoginFacebookComponent } from '../login-facebook/login-facebook';
 
-import { freshUser } from '../../../test-data/user/mocks';
+import { mockUsers } from '../../../test-data/users/mocks';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -114,10 +114,10 @@ describe('LoginFacebookComponent', () => {
         expect(component instanceof LoginFacebookComponent).toBe(true);
     });
 
-    it('should display Facebook Logo as authentication trigger', async(() => {
+    it('should display Facebook login button', async(() => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#LoginWithFacebookButton'));
+        de = fixture.debugElement.query(By.css('#FacebookIconLoginButton'));
         el = de.nativeElement.src
         expect(el).toBeUndefined();
     }));
@@ -138,7 +138,7 @@ describe('LoginFacebookComponent', () => {
 
     it('should check for existing user', () => {
         component.uid = 'testUID';
-        component.user = freshUser;
+        component.user = mockUsers[0];
         spyOn(component, 'checkForExistingUser').and.returnValue({ subscribe: () => {}});
         component.loadUser();
         expect(component.checkForExistingUser).toHaveBeenCalled();

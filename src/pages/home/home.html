@@ -1,9 +1,11 @@
-<ion-header>
+<ion-header no-border>
   <ion-navbar color='primary'>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>Home</ion-title>
+    <div text-center>
+      <img src="assets/img/logo.png" style="display:inline-block" height="40px" />
+    </div>
     <ion-buttons end>
       <button ion-button icon-only (click)="showNotifications()">
         <ion-icon name="notifications-outline"></ion-icon>
@@ -11,6 +13,12 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content text-center>
-  <header></header>
+<ion-content class="home-content" text-center>
+  <ion-refresher (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="dots" refreshingText="Refeshing">
+    </ion-refresher-content>
+  </ion-refresher>
+  <pins [pinsStartDate]="rawDate"></pins>
+  <goals></goals>
+  <statements></statements>
 </ion-content>

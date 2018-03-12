@@ -1,0 +1,16 @@
+<ion-header no-border>
+  <ion-navbar color='primary' no-border-bottom>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title color='primary'>Post Manager</ion-title>
+  </ion-navbar>
+  <ion-toolbar no-border-top color='primary'>
+    <ion-searchbar color="light-yellow" [(ngModel)]="queryText" (ionInput)="updateSchedule()" placeholder="Search">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <br>
+  <footer></footer>
+</ion-content>

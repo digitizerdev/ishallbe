@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, LoadingController } from 'ionic-angular';
 import { Pro } from '@ionic/pro';
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
@@ -20,17 +20,14 @@ export class SignupPage {
     email?: string,
     password?: string
   } = {};
+  uid: string;
+  profile: object;
+  timestamp: number;
+  displayTimestamp: string;
   submitted = false;
-  uid: any;
-  profile: any;
-  rawDate: number;
-  displayDate: string;
-  rawTime: number;
-  displayTime: string;
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private firebase: FirebaseProvider,
@@ -42,12 +39,9 @@ export class SignupPage {
   }
 
   timeStampPage() {
-    let rawDateString = moment().format('YYYYMMDD');
-    this.rawDate = parseInt(rawDateString);
-    this.displayDate = moment().format('MMM D, YYYY');
-    let rawTimeString = moment().format('YYYYMMDDhhmmss');
-    this.rawTime = parseInt(rawTimeString);
-    this.displayTime = moment().format('h:mma');
+    let timestampString = moment().format('YYYYMMDDhhmmss');
+    this.timestamp = parseInt(timestampString);
+    this.displayTimestamp = moment().format('MMM D YYYY h:mmA');
   }
 
   submit(signupForm) {
@@ -55,10 +49,11 @@ export class SignupPage {
     if (signupForm.valid) {
       this.presentEULA().subscribe((accepted) => {
         if (accepted) {
-          let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+          let loading = this.loadingCtrl.create({ 
+            spinner: 'bubbles',
+            content: 'Loading...' });
           loading.present();
-          this.buildUser(signupForm)
-          this.register(signupForm).then(() => {
+          this.signup(signupForm).then(() => {
             this.navCtrl.setRoot(HomePage);
             loading.dismiss();
           }).catch((error) => { this.errorHandler(error); loading.dismiss() });
@@ -99,31 +94,27 @@ export class SignupPage {
       email: signupForm.email,
       photo: "assets/img/default-profile.png",
       blocked: false,
-      uid: "default",
+      uid: this.uid,
+      displayTimestamp: this.displayTimestamp,
+      timestamp: this.timestamp,
       roles: {
         contributor: true,
         editor: false
-      },
-      timestamp: {
-        rawDate: this.rawDate,
-        displayDate: this.displayDate,
-        rawTime: this.rawTime,
-        displayTime: this.displayTime
       }
     }
   }
 
-  register(signupForm) {
+  signup(signupForm) {
     return this.firebase.afa.auth.createUserWithEmailAndPassword(signupForm.email, signupForm.password).then((token) => {
       this.uid = token.uid
-      this.profile.uid = token.uid
+      this.buildUser(signupForm);
       return this.createUser().then(() => {
       }, (error) => { throw error });
     }, (error) => { throw error });
   }
 
   createUser() {
-    let path = '/users/' + this.profile.uid;
+    let path = '/users/' + this.uid;
     return this.firebase.afs.doc(path).set(this.profile);
   }
 

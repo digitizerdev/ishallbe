@@ -1,10 +1,10 @@
-<ion-header>
+<ion-header no-border>
   <ion-navbar color='primary'>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>ACCOUNT</ion-title>
-    <ion-buttons end>
+    <ion-title id="AccountPageTitle" color='primary'>Account</ion-title>
+    <ion-buttons id="setRootHomePageIcon" end>
       <button ion-button icon-only (click)="setRootHomePage()">
         <ion-icon name="md-home"></ion-icon>
       </button>
@@ -13,36 +13,27 @@
 </ion-header>
 <ion-content>
   <header></header>
-  <div class="feature" text-center>
+  <div class="feature" id="AccountEmail" text-center>
     <h5 padding>{{user?.email}}</h5>
   </div>
   <br>
-  <div class="feature" *ngIf="editor" text-center>
-    <h5>Connected to {{deployChannel}} Channel</h5>
-    <ion-item  class="feature" no-lines>
-      <ion-label>Opt in to Beta Features</ion-label>
-      <ion-toggle color="primary" [(ngModel)]="isBeta" (ionChange)="toggleBeta()"></ion-toggle>
-    </ion-item>
-  </div>
-  <div *ngIf="editor">
-    <br>
-  </div>
+  <br>
   <ion-row responsive-sm>
     <br>
     <ion-col text-center>
-      <button ion-button id="AccountUpdateEmailButton" (click)="pushEmailUpdatePage()" color="primary" round small strong>UPDATE EMAIL</button>
+      <button ion-button (click)="pushEmailUpdatePage()" id="pushEmailUpdatePageButton" color="primary" round small strong>UPDATE EMAIL</button>
     </ion-col>
     <ion-col text-center>
-      <button ion-button id="AccountUpdatePasswordButton" (click)="pushPasswordUpdatePage()" color="primary" round small strong>UPDATE PASSWORD</button>
+      <button ion-button (click)="pushPasswordUpdatePage()" id="pushPasswordUpdatePageButton" color="primary" round small strong>UPDATE PASSWORD</button>
     </ion-col>
   </ion-row>
   <br>
   <ion-row responsive-sm>
     <ion-col text-center>
-      <button ion-button id="AccountContactSupportButton" (click)="pushSupportPage()" color="secondary" round small strong>SUPPORT</button>
+      <button ion-button (click)="pushSupportPage()" id="pushSupportPageButton" color="secondary" round small strong>SUPPORT</button>
     </ion-col>
     <ion-col text-center>
-      <button ion-button id="AccountLogoutButton" (click)="logout()" color="danger" round small strong>LOGOUT</button>
+      <button ion-button (click)="logout()" id="logoutButton" color="danger" round small strong>LOGOUT</button>
     </ion-col>
   </ion-row>
   <br>

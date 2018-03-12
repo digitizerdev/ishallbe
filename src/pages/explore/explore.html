@@ -1,17 +1,31 @@
-<ion-header>
+<ion-header no-border>
   <ion-navbar color='primary' no-border-bottom>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>Explore</ion-title>
+    <div text-center>
+      <img src="assets/img/logo.png" style="display:inline-block" height="40px" />
+    </div>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="setRootProfilePage()">
+        <ion-icon name="ios-person"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
-</ion-header>
-
-<ion-content>
   <ion-toolbar no-border-top color='primary'>
-    <ion-searchbar color="primary" [(ngModel)]="queryText" (ionInput)="updateSchedule()" placeholder="Search">
+    <ion-searchbar [(ngModel)]="queryText" (ionInput)="updateSchedule()" placeholder="Search">
     </ion-searchbar>
   </ion-toolbar>
-  <br>
+</ion-header>
+<ion-content class=explore-content>
+  <ion-refresher (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="dots" refreshingText="Refeshing">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div class="images" padding>
+    <div *ngFor="let statement of statements">
+      <img class="one-image" src="{{ statement.contentUrl }}">
+    </div>
+  </div>
   <footer></footer>
 </ion-content>

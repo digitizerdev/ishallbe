@@ -1,37 +1,38 @@
-<ion-header>
+<ion-header no-border>
   <ion-navbar color='primary'>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>{{ user?.name }}</ion-title>
-    <ion-buttons *ngIf="mine" end>
-      <button ion-button icon-only (click)="setRootHomePage()">
-        <ion-icon name="md-home"></ion-icon>
+    <ion-title id="ProfilePageTitle" color='primary'>{{ user?.name }}</ion-title>
+    <ion-buttons id="pushUpdateProfilePageIcon" *ngIf="mine" end>
+      <button ion-button icon-only (click)="pushProfileUpdatePage()">
+        <ion-icon name="md-options"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content>
-  <div class="user-profile" text-center padding>
+<ion-content class="profile-content">
+  <ion-refresher (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="dots" refreshingText="Refeshing">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div class="user-profile" id="UserProfile" text-center padding>
     <img class="avatar" src="{{ user?.photo }}">
-    <ion-row *ngIf="this.user?.social"  class="social" text-center >
-      <ion-col *ngIf="this.user?.social.instagram" (click)="openSocial('instagram')" text-center>
+    <ion-row *ngIf="this.user?.social" class="social" text-center>
+      <ion-col *ngIf="this.user?.social.instagram" (click)="openLink(this.user.social.instagram)" text-center>
         <ion-icon name="logo-instagram"></ion-icon>
       </ion-col>
-      <ion-col *ngIf="this.user?.social.twitter" (click)="openSocial('twitter')" text-center>
+      <ion-col *ngIf="this.user?.social.twitter" (click)="openLink(this.user.social.twitter)"text-center>
         <ion-icon name="logo-twitter"></ion-icon>
       </ion-col>
-      <ion-col *ngIf="this.user?.social.linkedin" (click)="openSocial('linkedin')" text-center>
+      <ion-col *ngIf="this.user?.social.linkedin" (click)="openLink(this.user.social.linkedin)" text-center>
         <ion-icon name="logo-linkedin"></ion-icon>
       </ion-col>
     </ion-row>
     <h5 class="bio">{{ user?.bio}} </h5>
     <ion-row>
       <ion-col>
-        <button ion-button id="AccountViewProfileButton" (click)="pushProfileUpdatePage()" color="primary" small round strong>UPDATE PROFILE</button>
-      </ion-col>
-      <ion-col>
-        <button ion-button id="AccountViewProfileButton" (click)="pushAccountPage()" color="primary" small round strong>ACCOUNT</button>
+        <button ion-button id="pushAccountPageButton" (click)="pushAccountPage()" color="primary" small round strong>MANAGE ACCOUNT</button>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="editor && !mine">
@@ -40,6 +41,6 @@
       </ion-col>
     </ion-row>
   </div>
-  <br>
-  <footer></footer>
+  <goals></goals>
+  <statements></statements>
 </ion-content>

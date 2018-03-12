@@ -1,3 +1,30 @@
 page-explore {
-
+    .image-container {
+        min-height: 100px;
+        background-size: cover;
+    }
+    .explore-content {
+        background-color: color($colors, primary);
+    }
+    .images {
+        background-color:  color($colors, light-gray);
+    }
+    @media (min-width: 0px) {
+        .images {
+            column-count: 3;
+        }
+    }
+    @media (min-width: 420px) {
+        .images {
+            column-count: 4;
+        }
+    }
+    @media (min-width: 720px) {
+        .images {
+            column-count: 5;
+        }
+    }
+    .one-image {
+        border-radius: 15px;
+    }
 }

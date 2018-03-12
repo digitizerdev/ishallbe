@@ -11,10 +11,12 @@ import { Camera } from '@ionic-native/camera';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { Media } from '@ionic-native/media';
+import { DatePicker } from '@ionic-native/date-picker';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireModule, FirebaseApp } from 'angularfire2';
-import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { NgCalendarModule } from 'ionic2-calendar';
 
 import { environment } from '../environments/environment';
@@ -37,18 +39,18 @@ import { ExplorePage } from '../pages/explore/explore';
 import { HomePage } from '../pages/home/home';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { PinCreatorPage } from '../pages/pin-creator/pin-creator';
-import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
-import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
-import { UsersManagerPage } from '../pages/users-manager/users-manager';
-
-import { ComponentsModule } from '../components/components.module';
+import { ApiManagerPage } from '../pages/api-manager/api-manager';
+import { PostManagerPage } from '../pages/post-manager/post-manager';
+import { UserManagerPage } from '../pages/user-manager/user-manager';
 
 import { YoutubePipe } from '../pipes/youtube/youtube';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
+import { ComponentsModule } from '../components/components.module';
+
 Pro.init('69d144ed', {
-  appVersion: '1.2.0'
+  appVersion: '1.3.0'
 });
 
 @NgModule({
@@ -72,9 +74,9 @@ Pro.init('69d144ed', {
     HomePage,
     TutorialPage,
     PinCreatorPage,
-    PinsManagerPage,
-    PostsManagerPage,
-    UsersManagerPage,
+    ApiManagerPage,
+    PostManagerPage,
+    UserManagerPage,
     YoutubePipe
   ],
   imports: [
@@ -108,9 +110,9 @@ Pro.init('69d144ed', {
     HomePage,
     TutorialPage,
     PinCreatorPage,
-    PinsManagerPage,
-    PostsManagerPage,
-    UsersManagerPage,
+    ApiManagerPage,
+    PostManagerPage,
+    UserManagerPage,
   ],
   providers: [
     StatusBar,
@@ -118,6 +120,9 @@ Pro.init('69d144ed', {
     EmailComposer,
     Push,
     File,
+    FileTransfer,
+    Media,
+    DatePicker,
     Facebook,
     Camera,
     { provide: ErrorHandler, useClass: IonicErrorHandler },

@@ -43,7 +43,7 @@ describe('TermsOfServiceComponent', () => {
             declarations: [TermsOfServiceComponent],
             imports: [
                 IonicModule.forRoot(TermsOfServiceComponent),
-                AngularFireModule.initializeApp(environment.firebase)
+                AngularFireModule.initializeApp(environment.firebase),
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
@@ -83,7 +83,7 @@ describe('TermsOfServiceComponent', () => {
         expect(component instanceof TermsOfServiceComponent).toBe(true);
     });
 
-    it('should be to open terms of service link', () => {
+    it('should display terms of service link', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#TermsOfServiceLink'));

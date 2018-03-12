@@ -40,7 +40,7 @@ describe('HeaderComponent', () => {
             declarations: [HeaderComponent],
             imports: [
                 IonicModule.forRoot(HeaderComponent),
-                AngularFireModule.initializeApp(environment.firebase)
+                AngularFireModule.initializeApp(environment.firebase),
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },

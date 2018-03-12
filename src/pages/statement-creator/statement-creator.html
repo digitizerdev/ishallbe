@@ -1,45 +1,52 @@
-<ion-header>
+<ion-header no-border>
   <ion-navbar color='primary'>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>STATEMENT</ion-title>
+    <ion-title id="StatementCreatorTitle" color='primary'>Statement</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
-  <header></header>
-  <form #createGoalForm="ngForm" novalidate padding>
+<ion-content>
+  <div *ngIf="!imageReady && !loadingImage" id="SeeItButton">
+    <br>
     <ion-row>
-      <ion-col text-center>
-        <button id="PictureButton" ion-button (click)="capture()" color="danger" icon-start round block large strong>
+      <ion-col text-center padding-left padding-right>
+        <button ion-button (click)="loadImage()" color="secondary" icon-start round block large strong>
           <ion-icon name="ios-camera"></ion-icon>
-            SEE IT
+          SEE IT
         </button>
       </ion-col>
     </ion-row>
-    <br>
+  </div>
+  <upload *ngIf="loadingImage" (uploaded)="setImage($event)" [method]="imageRetrievalMethod" padding></upload>
+  <ion-row *ngIf="imageReady" id="StatementImage">
+    <ion-col text-center>
+      <img [src]="statementImageUrl" class="full-image">
+    </ion-col>
+  </ion-row>
+  <form #createStatementForm="ngForm" novalidate padding>
     <ion-item class="appForm">
-      <ion-input class="myItem" placeholder="Goal Title" [(ngModel)]="createGoalForm.title" name="title" type="text" #title="ngModel" spellcheck="false"
-        autocapitalize="off" required>
+      <ion-input class="myItem" placeholder="Statement Title" [(ngModel)]="createStatementForm.title" name="title" type="text"
+        #title="ngModel" spellcheck="false" autocapitalize="off" required>
       </ion-input>
     </ion-item>
     <p ion-text [hidden]="title.valid || submitted == false" color="danger" padding-left>
-      Goal Title is required
+      Statement Title is required
     </p>
     <br>
     <ion-item class="appFormTextArea">
-      <ion-textarea [attr.rows]="4" autosize placeholder="Description" [(ngModel)]="createGoalForm.description" name="description"
-        type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" required>
+      <ion-textarea [attr.rows]="4" autosize placeholder=" Statement Description" [(ngModel)]="createStatementForm.description"
+        name="description" type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" required>
       </ion-textarea>
     </ion-item>
     <p ion-text [hidden]="description.valid || submitted == false" color="danger" padding-left>
-      Description is required
+      Statement Description is required
     </p>
     <br>
     <ion-row>
       <ion-col text-center class="submit">
-        <button id="CreateGoalButton" ion-button (click)="submit(createGoalForm)" color="primary" round block large strong>
-          CREATE
+        <button id="CreateStatementButton" ion-button (click)="submit(createStatementForm)" color="primary" round block large strong>
+          CREATE STATEMENT
         </button>
       </ion-col>
     </ion-row>
