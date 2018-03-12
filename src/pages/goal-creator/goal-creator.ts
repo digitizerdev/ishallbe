@@ -27,7 +27,6 @@ export class GoalCreatorPage {
     description?: string,
   } = {};
   goalId: string;
-  goalsCollection: any;
   contentMethod: string;
   timestamp: number;
   displayTimestamp: string;
@@ -236,10 +235,9 @@ export class GoalCreatorPage {
   }
 
   listenForCanceledUpload() {
-    this.events.subscribe('getAudioCanceled', (message) => {
+    this.events.subscribe('getAudioCanceled', () => {
       console.log("Audio Upload Canceled");
       this.goalId = null;
-      this.goalsCollection = null;
       this.audioUrl = null;
       this.audioName = null;
       this.recording = false;
@@ -249,6 +247,21 @@ export class GoalCreatorPage {
         buttons: ['OK']
       });
       alert.present();
+    });
+  }
+
+  listenForUploadTimeout() {
+    this.events.subscribe('timeout', () => {
+      this.goalId = null;
+      this.audioUrl = null;
+      this.audioName = null;
+      this.recording = false;
+      let alert = this.alertCtrl.create({
+        title: 'Upload Timeout',
+        subTitle: 'Please Try Again',
+        buttons: ['OK']
+      });
+      alert.present();    
     });
   }
 

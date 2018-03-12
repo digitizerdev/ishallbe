@@ -38,7 +38,10 @@ export class LoginFacebookComponent {
   }
 
   authenticate() {
-    this.loader = this.loadingCtrl.create({ content: 'Please Wait..' });
+    this.loader = this.loadingCtrl.create({ 
+      spinner: 'bubbles',
+      content: 'Loading...' 
+    });
     this.loader.present();
     this.timeStampPage();
     this.determineAuthType(this.platform.is('cordova'));

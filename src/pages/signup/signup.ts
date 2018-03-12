@@ -49,7 +49,9 @@ export class SignupPage {
     if (signupForm.valid) {
       this.presentEULA().subscribe((accepted) => {
         if (accepted) {
-          let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+          let loading = this.loadingCtrl.create({ 
+            spinner: 'bubbles',
+            content: 'Loading...' });
           loading.present();
           this.signup(signupForm).then(() => {
             this.navCtrl.setRoot(HomePage);

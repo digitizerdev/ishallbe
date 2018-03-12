@@ -85,6 +85,7 @@ export class UploadComponent {
       console.error(error)
       this.events.publish("getImageCanceled");
     });;
+    this.catchUploadTimeout();
   }
 
   getCameraOptions() {
@@ -119,8 +120,8 @@ export class UploadComponent {
 
   uploadImage() {
     console.log("Uploading Image");
-    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
-    loading.present();
+    this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Please Wait..' });
+    this.loader.present();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
     let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
     console.log("Upload path is " + uploadPath);
@@ -132,7 +133,7 @@ export class UploadComponent {
         name: this.contentName
       }
       this.uploaded.emit(image);
-      loading.dismiss();
+      this.loader.dismiss();
     });
   }
 
@@ -168,12 +169,13 @@ export class UploadComponent {
       this.events.publish("getAudioCanceled");
       this.loader.dismiss();
     });
+    this.catchUploadTimeout();
   }
 
   uploadAudio() {
     console.log("Uploading Audio");
     this.recording = false;
-    this.loader = this.loadingCtrl.create({ content: 'Please Wait..' });
+    this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Please Wait..' });
     this.loader.present();
     this.audio.stopRecord();
     this.storeAudio().subscribe((downloadURL) => {
@@ -267,5 +269,15 @@ export class UploadComponent {
     this.gettingImage = false;
     this.imageCropped = false;
     this.recording = false;
+  }
+
+  catchUploadTimeout() {
+    setTimeout(() => {
+      console.log("Upload timing out");
+      this.loader.dismiss();
+      this.resetUpload();
+      this.events.publish("timeout");
+    },
+    5000);
   }
 }
