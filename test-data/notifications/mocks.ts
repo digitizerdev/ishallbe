@@ -7,7 +7,7 @@ export const likedStatement = {
   commentLike: false,
   reminder: false,
   message: "liked your statement",
-  displayTimestamp: "",
+  displayTimestamp: "FEB 19 2018 6:27PM",
   timestamp: 20180219182701,
   post: {
     id: "1",
@@ -28,7 +28,7 @@ export const commentedOnStatement = {
   commentLike: false,
   reminder: false,
   message: "commented on your statement",
-  displayTimestamp: "",
+  displayTimestamp: "FEB 19 2018 4:24PM",
   timestamp: 20180219162400,
   post: {
     id: "1",
@@ -49,7 +49,7 @@ export const likedCommentOnStatement = {
   commentLike: true,
   reminder: false,
   message: "liked your comment on Troy's statement",
-  displayTimestamp: "",
+  displayTimestamp: "FEB 17 2018 4:24PM",
   timestamp: 20180217162400,
   post: {
     id: "1",
@@ -70,7 +70,7 @@ export const likedPin = {
   commentLike: false,
   reminder: false,
   message: "liked your pin",
-  displayTimestamp: "",
+  displayTimestamp: "FEB 15 2018 8:48AM",
   timestamp: 20180215084800,
   post: {
     id: "1",
@@ -91,7 +91,7 @@ export const commentedOnPin = {
   commentLike: false,
   reminder: false,
   message: "commented on your pin",
-  displayTimestamp: "",
+  displayTimestamp: "FEB 14 2018 4:24PM",
   timestamp: 20180214162400, 
   post: {
     id: "1",
@@ -112,7 +112,7 @@ export const likedCommentOnPin = {
   commentLike: true,
   reminder: false,
   message: "liked your comment on iShallBe's pin",
-  displayTimestamp: "",
+  displayTimestamp: "FEB 13 2018 4:24PM",
   timestamp: 20180213162400,
   post: {
     id: "1",
@@ -133,7 +133,7 @@ export const goalReminder = {
   commentLike: false,
   reminder: true,
   message: "Don't forget to record results on your September Goal",
-  displayTimestamp: "",
+  displayTimestamp: "FEB 05 2018 12:12PM",
   timestamp: 20180205121212,
   post: {
     id: "1",

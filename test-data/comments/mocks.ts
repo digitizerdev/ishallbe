@@ -5,6 +5,7 @@ export const statementComment = {
     content: "Test Comment",
     liked: false,
     likeCount: 0,
+    displayTimestamp: "FEB 16 2018",
     timestamp: 20180216121212,
     user: {
         uid: "2",
@@ -18,6 +19,7 @@ export const pinComment = {
     content: "Test Comment",
     liked: false,
     likeCount: 0,
+    displayTimestamp: "FEB 16 2018",
     timestamp: 20180216121212,
     user: {
         uid: "1",

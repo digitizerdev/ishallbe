@@ -6,8 +6,8 @@ export const contributor = {
   email: "contributor@ishallbe.co",
   blocked: false,
   photo: "assets/img/default-profile.png",
-  displayTimestamp: "",
-  timestamp: 2018030321212,
+  displayTimestamp: "MAR 03 2018 12:12PM",
+  timestamp: 20180303121212,
   social: {
     instagram: null,
     linkedin: null,
@@ -25,7 +25,7 @@ export const editor = {
   email: "editor@ishallbe.co",
   blocked: false,
   photo: "assets/img/headshot.png",
-  displayTimestamp: "",
+  displayTimestamp: "JAN 16 2018 12:12PM",
   timestamp: 20180116121212,
   social: {
     instagram: "ishallbe__",

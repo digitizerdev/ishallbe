@@ -6,8 +6,8 @@ export const reflection1 = {
   commentCount: 1,
   likeCount: 3,
   private: false,
-  contentUrl: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801032008?alt=media&token=a876eb59-7bdd-40ce-86c0-f310508770fb",
-  displayTimestamp: "",
+  url: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801032008?alt=media&token=a876eb59-7bdd-40ce-86c0-f310508770fb",
+  displayTimestamp: "MAR 09 2018 9:19AM",
   timestamp: 20180309190100,
   user: {
     uid: "1",

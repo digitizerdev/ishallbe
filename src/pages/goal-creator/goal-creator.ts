@@ -14,8 +14,6 @@ import { HomePage } from '../home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
-import { goal1 } from '../../../test-data/goals/mocks';
-
 @IonicPage()
 @Component({
   selector: 'page-goal-creator',
@@ -28,6 +26,7 @@ export class GoalCreatorPage {
   } = {};
   goal: any;
   contentMethod: string;
+  timestamp: number;
   rawDate: number;
   rawNextWeekDate: number;
   rawDueDate: number;
@@ -53,6 +52,8 @@ export class GoalCreatorPage {
     private media: Media,
     private firebase: FirebaseProvider
   ) {
+    let timestampString = moment().format('YYYYMMDDhhmmss');
+    this.timestamp = parseInt(timestampString);
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
     console.log("Raw date is " + this.rawDate);
@@ -90,15 +91,25 @@ export class GoalCreatorPage {
   buildGoal() {
     console.log("Building Goal");
     return Observable.create((observer) => {
-      this.goal = goal1
-      this.goal.title = this.createGoalForm.title;
-      this.goal.description = this.createGoalForm.description;
-      this.goal.contentUrl = this.audioUrl;
-      this.goal.dueDate = this.rawDueDate;
-      this.goal.timestamp = this.audioName;
-      this.goal.user.uid = this.firebase.user.uid;
-      this.goal.user.name = this.firebase.user.name;
-      this.goal.user.photo = this.firebase.user.photo;
+      this.goal = {
+        title: this.createGoalForm.title,
+        description: this.createGoalForm.description,
+        commentCount: 0,
+        likeCount: 0,
+        private: true,
+        complete: false,
+        url: this.audioUrl,
+        filename: this.audioName,
+        displayDueDate: this.displayDueDate,
+        dueDate: this.rawDueDate,
+        displayTimestamp: "",
+        timestamp: this.timestamp,
+        user: {
+          uid: this.firebase.user.uid,
+          name: this.firebase.user.name,
+          photo: this.firebase.user.photo
+        }
+      }
       console.log("Goal Object is " );
       console.log(this.goal);
       observer.next();
@@ -113,18 +124,6 @@ export class GoalCreatorPage {
         observer.next();
       });
     });
-  }
-
-  displayNotReadyAlert() {
-    console.log("Displaying Not Ready Alert");
-    let alertMessage = "Please Speak Your Goal";
-    if (!this.dateSelected) alertMessage = "Please Set a Goal Due Date";
-    let alert = this.alertCtrl.create({
-      title: 'Almost There!',
-      subTitle: alertMessage,
-      buttons: ['OK']
-    });
-    alert.present();
   }
 
   pickDate() {
@@ -217,4 +216,33 @@ export class GoalCreatorPage {
     this.audio = null;
     this.playingAudio = false;
   }
+
+  displayNotReadyAlert() {
+    console.log("Displaying Not Ready Alert");
+    let alertMessage = "Please Speak Your Goal";
+    if (!this.dateSelected) alertMessage = "Please Set a Goal Due Date";
+    let alert = this.alertCtrl.create({
+      title: 'Almost There!',
+      subTitle: alertMessage,
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  listenForCanceledUpload() {
+    this.events.subscribe('getAudioCanceled', (message) => {
+      console.log("Audio Upload Canceled");
+      this.goal = null;
+      this.audioUrl = null;
+      this.audioName = null;
+      this.recording = false;
+      let alert = this.alertCtrl.create({
+        title: 'Upload Error',
+        subTitle: 'Please Try Again',
+        buttons: ['OK']
+      });
+      alert.present();
+    });
+  }
+
 }

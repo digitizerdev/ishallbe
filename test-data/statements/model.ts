@@ -5,7 +5,8 @@ export interface Statement {
   commentCount: number,
   likeCount: number,
   private: boolean,
-  contentUrl: string,
+  url: string,
+  filename: string,
   displayTimestamp: string,
   timestamp: number,
   user: {

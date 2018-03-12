@@ -4,6 +4,7 @@ export interface Comment {
     content: string,
     liked: boolean,
     likeCount: number,
+    displayTimestamp: string,
     timestamp: number,
     user: {
         uid: string,

@@ -6,7 +6,8 @@ export interface Goal {
   likeCount: number,
   private: boolean,
   complete: boolean,
-  contentUrl: string,
+  url: string,
+  filename: string,
   displayDueDate: string;
   dueDate: number,
   displayTimestamp: string;

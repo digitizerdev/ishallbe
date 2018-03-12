@@ -30,6 +30,7 @@ export class UploadComponent {
   audio: any;
   contentBlob: any;
   contentName: string;
+  loader: any;
   gettingImage = false;
   imageCropped = false;
   recording = false;
@@ -162,14 +163,18 @@ export class UploadComponent {
       window.setTimeout(() => {
         if (this.recording) this.uploadAudio();
       }, 10000);
+    }, (error) => {
+      console.log("There was an error");
+      this.events.publish("getAudioCanceled");
+      this.loader.dismiss();
     });
   }
 
   uploadAudio() {
     console.log("Uploading Audio");
     this.recording = false;
-    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
-    loading.present();
+    this.loader = this.loadingCtrl.create({ content: 'Please Wait..' });
+    this.loader.present();
     this.audio.stopRecord();
     this.storeAudio().subscribe((downloadURL) => {
       console.log("Finished storing record");
@@ -183,7 +188,11 @@ export class UploadComponent {
       this.contentName = null;
       this.recording = false;
       this.uploaded.emit(audio);
-      loading.dismiss();
+      this.loader.dismiss();
+    }, (error) => {
+      console.log("There was an error");
+      this.events.publish("getAudioCanceled");
+      this.loader.dismiss();
     });
   }
 

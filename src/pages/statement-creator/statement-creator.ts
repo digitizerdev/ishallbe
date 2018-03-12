@@ -9,8 +9,6 @@ import { HomePage } from '../home/home';
  
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
-import { statement1 } from '../../../test-data/statements/mocks';
-
 @IonicPage()
 @Component({
   selector: 'page-statement-creator',
@@ -22,9 +20,10 @@ export class StatementCreatorPage {
     description?: string, 
   } = {};  
   statement: any;
-  statementImage: string; 
+  statementImageUrl: string; 
   statementName: string;
   imageRetrievalMethod: string; 
+  timestamp: number;
   submitted = false;
   loadingImage = false;
   imageReady = false;
@@ -40,6 +39,8 @@ export class StatementCreatorPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad StatementCreatorPage');
+    let timestampString = moment().format('YYYYMMDDhhmmss');
+    this.timestamp = parseInt(timestampString);
     this.listenForCanceledUpload();
   }
 
@@ -82,18 +83,10 @@ export class StatementCreatorPage {
   setImage(image) {
     console.log("Load Image triggered");
     console.log(image);
-    this.statementImage = image.url;
+    this.statementImageUrl = image.url;
     this.statementName = image.name;
     this.loadingImage = false;
     this.imageReady = true;
-  }
-  
-  listenForCanceledUpload() {
-    this.events.subscribe('getImageCanceled', (message) => {
-      this.statementImage = null;
-      this.imageReady = false;
-      this.loadingImage = false;
-    });
   }
 
   submit(form) {
@@ -109,9 +102,6 @@ export class StatementCreatorPage {
           this.createStatement().subscribe(() => {
             console.log("Statement created");
             this.navCtrl.setRoot(HomePage);
-          }, (error) => {
-            console.log("There was an error");
-            console.error(error);
           });
         });
       }
@@ -121,14 +111,22 @@ export class StatementCreatorPage {
   buildStatement() {
     console.log("Building Statement");
     return Observable.create((observer) => {
-      this.statement = statement1
-      this.statement.title = this.createStatementForm.title;
-      this.statement.description = this.createStatementForm.description;
-      this.statement.contentUrl = this.statementImage;
-      this.statement.timestamp = this.statementName;
-      this.statement.user.uid = this.firebase.user.uid;
-      this.statement.user.name = this.firebase.user.name;
-      this.statement.user.photo = this.firebase.user.photo;
+      this.statement = {
+        title: this.createStatementForm.title,
+        description: this.createStatementForm.description,
+        commentCount: 0,
+        likeCount: 0,
+        private: false,
+        url: this.statementImageUrl,
+        filename: this.statementName,
+        displayTimestamp: "",
+        timestamp: this.timestamp,
+        user: {
+          uid: this.firebase.user.uid,
+          name: this.firebase.user.name,
+          photo: this.firebase.user.photo
+        }
+      }
       console.log("Statement Object is " );
       console.log(this.statement);
       observer.next();
@@ -141,10 +139,21 @@ export class StatementCreatorPage {
       return this.firebase.afs.collection("statements").add(this.statement).then((docData) => {
         console.log(docData);
         observer.next();
+      }, (error) => {
+        console.log("There was an error");
+        console.error(error);
       });
     });
   }
 
+  listenForCanceledUpload() {
+    this.events.subscribe('getImageCanceled', (message) => {
+      this.statementImageUrl = null;
+      this.imageReady = false;
+      this.loadingImage = false;
+    });
+  }
+  
   displayNotReadyAlert() {
     console.log("Displaying Not Ready Alert");
     let alertMessage = "Please Add Image to Statement";

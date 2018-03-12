@@ -5,7 +5,7 @@ export interface Reflection {
   commentCount: number,
   likeCount: number,
   private: boolean,
-  contentUrl: string,
+  url: string,
   displayTimestamp: string,
   timestamp: number,
   user: {
