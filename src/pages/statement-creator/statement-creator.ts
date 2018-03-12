@@ -26,6 +26,7 @@ export class StatementCreatorPage {
   statementName: string;
   imageRetrievalMethod: string; 
   timestamp: number;
+  displayTimestamp: string;
   submitted = false;
   loadingImage = false;
   imageReady = false;
@@ -43,6 +44,7 @@ export class StatementCreatorPage {
     console.log('ionViewDidLoad StatementCreatorPage');
     let timestampString = moment().format('YYYYMMDDhhmmss');
     this.timestamp = parseInt(timestampString);
+    this.displayTimestamp = moment().format('L');
     this.listenForCanceledUpload();
   }
 
@@ -123,7 +125,7 @@ export class StatementCreatorPage {
         private: false,
         url: this.statementImageUrl,
         filename: this.statementName,
-        displayTimestamp: "",
+        displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
         user: {
           uid: this.firebase.user.uid,

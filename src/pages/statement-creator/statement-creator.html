@@ -21,7 +21,7 @@
   <upload *ngIf="loadingImage" (uploaded)="setImage($event)" [method]="imageRetrievalMethod" padding></upload>
   <ion-row *ngIf="imageReady" id="StatementImage">
     <ion-col text-center>
-      <img [src]="statementImage" class="full-image">
+      <img [src]="statementImageUrl" class="full-image">
     </ion-col>
   </ion-row>
   <form #createStatementForm="ngForm" novalidate padding>
