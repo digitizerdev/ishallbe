@@ -83,7 +83,7 @@ export class GoalCreatorPage {
       if (form.valid) {
         console.log("Ready to create firebase goal");
         this.buildGoal().subscribe((goal) => {
-          this.createGoal(goal).subscribe(() => {
+          this.createGoal(goal).then(() => {
             console.log("Goal created");
             this.navCtrl.setRoot(HomePage);
           }, (error) => {
@@ -128,18 +128,10 @@ export class GoalCreatorPage {
   }
 
   createGoal(goal) {
-    return Observable.create((observer) => {
-      console.log("Creating Goal");
-      let goalPath = "/goals/" + this.goalId;
-      console.log("Goal Path is " + goalPath);
-      this.firebase.afs.doc(goalPath).set(goal).then((docData) => {
-        console.log(docData);
-        observer.next();
-      }).catch((error) => {
-        console.log("Error");
-        console.error(error);
-      });
-    });
+    console.log("Creating Goal");
+    let goalPath = "/goals/" + this.goalId;
+    console.log("Goal Path is " + goalPath);
+    return this.firebase.afs.doc(goalPath).set(goal);
   }
 
   pickDate() {
