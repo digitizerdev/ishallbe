@@ -25,9 +25,7 @@ export class GoalsComponent {
   ) {
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
-    console.log("Raw date is " + this.rawDate);
     this.rawNextWeekDate = this.rawDate + 7;
-    console.log("Raw next week date is " + this.rawNextWeekDate);
     this.setGoals();
   }
 
