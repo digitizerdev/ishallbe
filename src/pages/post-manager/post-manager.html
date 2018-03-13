@@ -5,12 +5,39 @@
     </button>
     <ion-title color='primary'>Post Manager</ion-title>
   </ion-navbar>
-  <ion-toolbar no-border-top color='primary'>
-    <ion-searchbar color="light-yellow" [(ngModel)]="queryText" (ionInput)="updateSchedule()" placeholder="Search">
-    </ion-searchbar>
-  </ion-toolbar>
 </ion-header>
 <ion-content>
-  <br>
+  <ion-segment [(ngModel)]="postType" color="primary" padding-top>
+    <ion-segment-button value="pins">
+      <ion-icon name="calendar"></ion-icon>
+      <b>PINS</b>
+    </ion-segment-button>
+    <ion-segment-button value="statements">
+      <ion-icon name="images"></ion-icon>
+      <b>STATEMENTS</b>
+    </ion-segment-button>
+  </ion-segment>
+  <div *ngIf="postType=='pins'" text-center>
+    <h5 color="primary" ion-text>
+      <b>{{viewTitle}}</b>
+    </h5>
+    <calendar [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate" noEventsLabel="No Pin Created for {{displaySelectedDay}}"
+      (onEventSelected)="onEventSelected($event)" (onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="onTimeSelected($event)"
+      step="30" class="calendar">
+    </calendar>
+    <ion-row>
+      <ion-col text-center>
+        <button ion-button id="CreatePinButton" (click)="pushPinCreatorPage()" color="primary" large round>CREATE PIN</button>
+      </ion-col>
+    </ion-row>
+    <br>
+  </div>
+  <div *ngIf="postType=='statements'">
+    <ion-row>
+      <ion-col text-center>
+        <h5>There are no reported statements</h5>
+      </ion-col>
+    </ion-row>
+  </div>
   <footer></footer>
 </ion-content>
