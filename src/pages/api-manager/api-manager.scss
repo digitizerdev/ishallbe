@@ -4,4 +4,7 @@ page-api-manager {
         border-top: thick solid color($colors, primary);                  
         border-bottom: thick solid color($colors, primary);                  
     }
+    .tdct {
+        max-width: 33%;
+    }
 }

@@ -6,5 +6,50 @@
     <ion-title>Create Pin</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content>
+    <ion-content>
+        <div *ngIf="!imageReady && !loadingImage" id="SeeItButton">
+          <br>
+          <ion-row>
+            <ion-col text-center padding-left padding-right>
+              <button ion-button (click)="loadImage()" color="secondary" icon-start round block large strong>
+                <ion-icon name="ios-camera"></ion-icon>
+                SEE IT
+              </button>
+            </ion-col>
+          </ion-row>
+        </div>
+        <upload *ngIf="loadingImage" (uploaded)="setImage($event)" [method]="imageRetrievalMethod" padding></upload>
+        <ion-row *ngIf="imageReady" id="PinImage">
+          <ion-col text-center>
+            <img [src]="pinImageUrl" class="full-image">
+          </ion-col>
+        </ion-row>
+        <form #createPinForm="ngForm" novalidate padding>
+          <ion-item class="appForm">
+            <ion-input class="myItem" placeholder="Pin Title" [(ngModel)]="createPinForm.title" name="title" type="text"
+              #title="ngModel" spellcheck="false" autocapitalize="off" required>
+            </ion-input>
+          </ion-item>
+          <p ion-text [hidden]="title.valid || submitted == false" color="danger" padding-left>
+            Pin Title is required
+          </p>
+          <br>
+          <ion-item class="appFormTextArea">
+            <ion-textarea [attr.rows]="4" autosize placeholder=" Pin Description" [(ngModel)]="createPinForm.description"
+              name="description" type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" required>
+            </ion-textarea>
+          </ion-item>
+          <p ion-text [hidden]="description.valid || submitted == false" color="danger" padding-left>
+            Pin Description is required
+          </p>
+          <br>
+          <ion-row>
+            <ion-col text-center class="submit">
+              <button id="CreatePinButton" ion-button (click)="submit(createPinForm)" color="primary" round block large strong>
+                CREATE STATEMENT
+              </button>
+            </ion-col>
+          </ion-row>
+        </form>
 </ion-content>

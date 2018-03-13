@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+
 import { IonicPage, Platform, LoadingController } from 'ionic-angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Pro } from '@ionic/pro';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -20,6 +22,7 @@ export class ApiManagerPage {
     private platform: Platform,
     private loadingCtrl: LoadingController,
     private firebase: FirebaseProvider,
+    public iab: InAppBrowser
   ) {
   }
 
@@ -58,6 +61,10 @@ export class ApiManagerPage {
         loading.present();
       }
     } catch (err) { Pro.monitoring.exception(err)};
+  }
+
+  openLink() {
+    this.iab.create('https://tdct.io', '_system');
   }
 
 }
