@@ -82,11 +82,11 @@ describe('ApiManagerPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof ApiManagerPage).toBe(true);
     });
 
-    it('should be titled API Manager', () => {
+    fit('should be titled API Manager', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#APIManagerTitle'));

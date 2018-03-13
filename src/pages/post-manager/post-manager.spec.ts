@@ -3,6 +3,7 @@ import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { IonicModule, Platform, NavController } from 'ionic-angular';
+import { NgCalendarModule } from 'ionic2-calendar';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -42,7 +43,8 @@ describe('PostManagerPage', () => {
             imports: [
                 IonicModule.forRoot(PostManagerPage),
                 AngularFireModule.initializeApp(environment.firebase),
-                ComponentsModule
+                ComponentsModule,
+                NgCalendarModule
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
@@ -74,7 +76,7 @@ describe('PostManagerPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof PostManagerPage).toBe(true);
     });
 

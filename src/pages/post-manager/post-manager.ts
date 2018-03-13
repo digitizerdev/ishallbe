@@ -36,9 +36,9 @@ export class PostManagerPage {
     this.eventSource = [];
     setTimeout(() => {
       this.eventSource = calendarEvents;
-    })
+    });
   }
-
+  
   onViewTitleChanged(title) {
     this.viewTitle = title;
   }

@@ -18,9 +18,9 @@
     </ion-segment-button>
   </ion-segment>
   <div *ngIf="postType=='pins'" text-center>
-    <h5 color="primary" ion-text>
+    <h4 color="primary" ion-text>
       <b>{{viewTitle}}</b>
-    </h5>
+    </h4>
     <calendar [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate" noEventsLabel="No Pin Created for {{displaySelectedDay}}"
       (onEventSelected)="onEventSelected($event)" (onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="onTimeSelected($event)"
       step="30" class="calendar">

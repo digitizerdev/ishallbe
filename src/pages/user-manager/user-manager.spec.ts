@@ -74,7 +74,7 @@ describe('UserManagerPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof UserManagerPage).toBe(true);
     });
 

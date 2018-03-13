@@ -74,7 +74,7 @@ describe('PinCreatorPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof PinCreatorPage).toBe(true);
     });
 
