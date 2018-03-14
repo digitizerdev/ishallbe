@@ -154,9 +154,14 @@ export class PinCreatorPage {
   }
 
   submitValidPin(form) {
+    console.log("Submiting Valid Pin");
     this.buildPin(form).subscribe((pin) => {
       this.createPin(pin).then(() => {
+        console.log("Pin Created");
         this.navCtrl.setRoot(HomePage);
+      }, (error) => {
+        console.error("error");
+        console.log(error);
       });
     });
   }
@@ -185,16 +190,20 @@ export class PinCreatorPage {
           photo: this.firebase.user.photo
         }
       }
+      console.log("Pin Built");
+      console.log(pin);
       observer.next(pin);
     });
   }
 
   createPin(pin) {
+    console.log("Creating Pin");
     let pinPath = "/pins/" + this.pinId;
     return this.firebase.afs.doc(pinPath).set(pin);
   }
 
   displayNotReadyAlert() {
+    console.log("Display Not Ready Alert");
     let alert = this.alertCtrl.create({
       title: 'Almost There!',
       subTitle: "Please Add Image to Pin",
@@ -204,6 +213,7 @@ export class PinCreatorPage {
   }
 
   displayIncompleteFieldsAlert() {
+    console.log("Display Incomplete Fields Alert");
     let alert = this.alertCtrl.create({
       title: 'Almost There!',
       subTitle: 'Please Complete All Fields',
