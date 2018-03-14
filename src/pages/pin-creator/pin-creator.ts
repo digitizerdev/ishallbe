@@ -5,7 +5,7 @@ import { IonicPage, NavController, NavParams, AlertController, Events } from 'io
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 
-import { HomePage } from '../home/home';
+import { PostManagerPage } from '../post-manager/post-manager';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -140,6 +140,7 @@ export class PinCreatorPage {
       case 'Monday': {
         if (!this.imageReady) this.displayNotReadyAlert();
         else if (!form.title || !form.link) this.displayIncompleteFieldsAlert();
+        else if (form.link=='https://youtube.com/embed/') this.displayMissingYoutubeIdAlert();
         else this.submitValidPin(form);
       }
         break;
@@ -160,7 +161,7 @@ export class PinCreatorPage {
     this.buildPin(form).subscribe((pin) => {
       this.createPin(pin).then(() => {
         console.log("Pin Created");
-        this.navCtrl.setRoot(HomePage);
+        this.navCtrl.setRoot(PostManagerPage);
       }, (error) => {
         console.error("error");
         console.log(error);
@@ -172,6 +173,7 @@ export class PinCreatorPage {
     return Observable.create((observer) => {
       console.log("Building Pin");
       this.pinId = this.firebase.afs.createId();
+      let time = this.selectedDay.toISOString();
       if (this.monday) form.description = ""
       if (!this.monday) this.pinName = "";
       if (!this.monday) this.pinImageUrl = "";
@@ -190,6 +192,8 @@ export class PinCreatorPage {
         affirmationDate: this.affirmationDate,
         displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
+        startTime: time,
+        endTime: time,
         user: {
           uid: this.firebase.user.uid,
           name: this.firebase.user.name,
@@ -209,10 +213,20 @@ export class PinCreatorPage {
     return this.firebase.afs.doc(pinPath).set(pin);
   }
 
-  displayNotReadyAlert() {
-    console.log("Display Not Ready Alert");
+  displayMissingYoutubeIdAlert() {
+    console.log("Displaying Missing Youtube Id Alert");
     let alert = this.alertCtrl.create({
-      title: 'Almost There!',
+      title: 'Submission Error',
+      subTitle: "Please Add Youtube Video ID",
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  displayNotReadyAlert() {
+    console.log("Displaying Not Ready Alert");
+    let alert = this.alertCtrl.create({
+      title: 'Submission Error',
       subTitle: "Please Add Image to Pin",
       buttons: ['OK']
     });
@@ -220,9 +234,9 @@ export class PinCreatorPage {
   }
 
   displayIncompleteFieldsAlert() {
-    console.log("Display Incomplete Fields Alert");
+    console.log("Displaying Incomplete Fields Alert");
     let alert = this.alertCtrl.create({
-      title: 'Almost There!',
+      title: 'Submission Error',
       subTitle: 'Please Complete All Fields',
       buttons: ['OK']
     });

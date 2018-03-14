@@ -3,7 +3,10 @@ import { IonicPage, NavController } from 'ionic-angular';
 
 import { PinCreatorPage } from '../pin-creator/pin-creator';
 
+import { FirebaseProvider } from '../../providers/firebase/firebase';
+
 import moment from 'moment';
+import { Observable } from 'rxjs';
 
 @IonicPage()
 @Component({
@@ -27,32 +30,73 @@ export class PostManagerPage {
   pin: any;
 
   constructor(
-    public navCtrl: NavController
+    private navCtrl: NavController,
+    private firebase: FirebaseProvider
   ) {
     this.displaySelectedDay = moment().format("MMM D YYYY");
     this.postType = "pins";
     console.log("Post type is " + this.postType);
-    let calendarEvents = this.eventSource;
-    this.eventSource = [];
-    setTimeout(() => {
-      this.eventSource = calendarEvents;
+    this.loadPins().subscribe((pins) => {
+      console.log("Pins Loaded");
+      console.log(pins);
+      let calendarEvents = this.eventSource;
+      pins.forEach((pin) => {
+        pin.startTime = new Date(pin.startTime);
+        pin.endTime = new Date(pin.endTime);
+        console.log("Pushing Pin");
+        console.log(pin);
+        calendarEvents.push(pin);
+      });
+      this.eventSource = [];
+      setTimeout(() => {
+        this.eventSource = calendarEvents;
+      });
     });
   }
-  
+
   onViewTitleChanged(title) {
     this.viewTitle = title;
   }
 
   onTimeSelected(ev) {
     this.selectedDay = ev.selectedTime;
-    this.displaySelectedDay = moment(this.selectedDay).format("MMM D YYYY");
   }
 
   onEventSelected(event) {
+/*     let alert = this.alertCtrl.create({
+      title: event.title,
+      message: event.content,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Open',
+          handler: () => {
+            this.navCtrl.push(PinPage, { id: event.id })
+          }
+        }
+      ]
+    });
+    alert.present(); */
+  }
+  
+  loadPins() {
+    return Observable.create((observer) => {
+      console.log("Loading Pins");
+      this.pins = this.firebase.afs.collection("pins");
+      return this.pins.valueChanges().subscribe((pins) => {
+        console.log("Got Pins");
+        console.log(pins);
+        observer.next(pins);
+      });
+    });
   }
 
   pushPinCreatorPage() {
     this.navCtrl.push(PinCreatorPage, { selectedDay: this.selectedDay });
   }
-
 }

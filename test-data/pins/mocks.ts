@@ -13,6 +13,8 @@ export const mondayPin = {
   affirmationDate: 20180312,
   displayTimestamp: "",
   timestamp: 20180312000000,
+  startTime: "",
+  endTime: "",
   user: {
     uid: "2",
     name: "Test Editor",
@@ -33,6 +35,8 @@ export const tuesdayPin = {
   affirmationDate: 20180313,
   displayTimestamp: "",
   timestamp: 201803130000000,
+  startTime: "",
+  endTime: "",
   user: {
     uid: "2",
     name: "Test Editor",
@@ -53,6 +57,8 @@ export const wednesdayPin = {
   affirmationDate: 20180314,
   displayTimestamp: "",
   timestamp: 20180314000000,
+  startTime: "",
+  endTime: "",
   user: {
     uid: "2",
     name: "Test Editor",
@@ -73,6 +79,8 @@ export const thursdayPin = {
   affirmationDate: 20180315,
   displayTimestamp: "",
   timestamp: 20180315000000,
+  startTime: "",
+  endTime: "",
   user: {
     uid: "2",
     name: "Test Editor",
@@ -93,6 +101,8 @@ export const fridayPin = {
   affirmationDate: 20180316,
   displayTimestamp: "",
   timestamp: 20180316000000,
+  startTime: "",
+  endTime: "",
   user: {
     uid: "2",
     name: "Test Editor",
@@ -113,6 +123,8 @@ export const saturdayPin = {
   affirmationDate: 20180317,
   displayTimestamp: "",
   timestamp: 20180317000000,
+  startTime: "",
+  endTime: "",
   user: {
     uid: "2",
     name: "Test Editor",
