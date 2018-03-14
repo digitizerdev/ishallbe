@@ -2,7 +2,7 @@ import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { IonicModule, Platform, NavController } from 'ionic-angular';
+import { IonicModule, Platform, NavController, NavParams } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -18,6 +18,7 @@ import { } from 'jasmine';
 import {
     PlatformMock,
     NavMock,
+    NavParamsMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
@@ -26,6 +27,7 @@ describe('PinCreatorPage', () => {
     let component;
     let platform: Platform;
     let nav: NavController;
+    let navParams: NavParams;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -47,6 +49,7 @@ describe('PinCreatorPage', () => {
             providers: [
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
+                { provide: NavParams, useClass: NavParamsMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -59,6 +62,7 @@ describe('PinCreatorPage', () => {
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
+        navParams = TestBed.get(NavParams);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -69,6 +73,7 @@ describe('PinCreatorPage', () => {
         component = null;
         platform = null;
         nav = null;
+        navParams = null;
         firebase = null;
         afa = null;
         afs = null;
@@ -86,7 +91,19 @@ describe('PinCreatorPage', () => {
         expect(el).toContain('Pin')
     });
     
+    fit('should display display UploadThumbnailButton if selected day is Monday', () => {
+        component.monday = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#UploadThumbnailButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
     fit('should display display MondayForm if selected day is Monday', () => {
+        component.monday = true;
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#MondayForm'));
@@ -95,6 +112,8 @@ describe('PinCreatorPage', () => {
     });
 
     fit('should display display TuesdayForm if selected day is Tuesday', () => {
+        component.tuesday = true;
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#TuesdayForm'));
@@ -103,6 +122,8 @@ describe('PinCreatorPage', () => {
     });
 
     fit('should display WedToSunForm if selected day is not Monday or Tuesday', () => {
+        component.wedToSun = true;
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#WedToSunForm'));

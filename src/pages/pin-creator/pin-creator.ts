@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, AlertController, Events, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Events, ActionSheetController } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
@@ -27,12 +27,17 @@ export class PinCreatorPage {
   imageRetrievalMethod: string; 
   timestamp: number;
   displayTimestamp: string;
+  selectedDay: any;
   submitted = false;
   loadingImage = false;
   imageReady = false;
+  monday = false;
+  tuesday = false;
+  wedToSun = false;
 
   constructor(
     private navCtrl: NavController, 
+    private navParams: NavParams,
     private alertCtrl: AlertController,
     private events: Events,
     private actionSheetCtrl: ActionSheetController,
@@ -41,45 +46,25 @@ export class PinCreatorPage {
   }
 
   ionViewDidLoad() {
-    let timestampString = moment().format('YYYYMMDDhhmmss');
-    this.timestamp = parseInt(timestampString);
-    this.displayTimestamp = moment().format('L');
+    this.selectedDay = this.navParams.get('selectedDay');
+    this.timestampPage();
     this.listenForCanceledUpload();
   }
 
-  loadImage() {
-    this.askForImageRetrievalMethod();
+  timestampPage() {
+    let today = moment(this.selectedDay).format("dddd");
+    console.log("Selected Day is " + today);
+    if (today == "Monday") this.monday = true;
+    else if (today == "Tuesday") this.tuesday = true;
+    else this.wedToSun = true;
+    let timestampString = moment().format('YYYYMMDDhhmmss');
+    this.timestamp = parseInt(timestampString);
+    this.displayTimestamp = moment().format('L');
   }
 
-  askForImageRetrievalMethod() {
-    let actionSheet = this.actionSheetCtrl.create({
-      buttons: [
-        {
-          text: 'Camera',
-          handler: () => {
-            console.log("Chose Camera");
-            this.imageRetrievalMethod = "camera";
-            this.loadingImage = true;
-          }
-        },
-        {
-          text: 'Library',
-          handler: () => {
-            console.log("Chose Library");
-            this.imageRetrievalMethod = "library";
-            this.loadingImage = true;
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log("Canceled asking for image retrieval method");
-          }
-        }
-      ]
-    });
-    actionSheet.present();
+  loadImage() {
+    this.imageRetrievalMethod = "library";
+    this.loadingImage = true;
   }
 
   setImage(image) {
