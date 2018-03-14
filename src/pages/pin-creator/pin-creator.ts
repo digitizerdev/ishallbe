@@ -120,6 +120,7 @@ export class PinCreatorPage {
 
   setImage(image) {
     console.log("Setting Image");
+    console.log(image);
     this.pinImageUrl = image.url;
     this.pinName = image.name;
     this.loadingImage = false;
@@ -171,6 +172,9 @@ export class PinCreatorPage {
     return Observable.create((observer) => {
       console.log("Building Pin");
       this.pinId = this.firebase.afs.createId();
+      if (!this.monday) this.pinName = "";
+      if (!this.monday) this.pinImageUrl = "";
+      if (!this.monday) form.link = "";
       const pin: Pin = {
         id: this.pinId,
         title: form.title,
