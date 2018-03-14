@@ -20,7 +20,11 @@ page-post-manager {
         background-color: color($colors, primary) !important;
         color: white !important; 
     }
+    .monthview-eventdetail-timecolumn {
+        font-weight: bold;
+    }
     .event-detail {
+        font-weight: bold;
         color: color($colors, primary) !important
     }
     .feature {

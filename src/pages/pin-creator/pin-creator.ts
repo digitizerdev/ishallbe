@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, NavParams, AlertController, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, Events } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
@@ -52,6 +52,7 @@ export class PinCreatorPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
     private events: Events,
     private firebase: FirebaseProvider
   ) {
@@ -193,10 +194,15 @@ export class PinCreatorPage {
 
   submitValidPin(form) {
     console.log("Submiting Valid Pin");
+    let loading = this.loadingCtrl.create({ 
+      spinner: 'bubbles',
+      content: 'Loading...' });
+    loading.present();
     this.buildPin(form).subscribe((pin) => {
       this.createPin(pin).then(() => {
         console.log("Pin Created");
         this.navCtrl.setRoot(PostManagerPage);
+        loading.dismiss();
       }, (error) => {
         console.error("error");
         console.log(error);

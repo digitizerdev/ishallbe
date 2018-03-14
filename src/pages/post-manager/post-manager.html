@@ -21,7 +21,7 @@
     <h4 color="primary" ion-text>
       <b>{{viewTitle}}</b>
     </h4>
-    <calendar [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate" allDayLabel="" noEventsLabel="No {{displaySelectedDay}} Pin"
+    <calendar [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate" allDayLabel="{{displaySelectedDay}}" noEventsLabel="No {{displaySelectedDay}} Pin"
       (onEventSelected)="onEventSelected($event)" (onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="onTimeSelected($event)"
       step="30" class="calendar">
     </calendar>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, Events, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, Events, AlertController, LoadingController } from 'ionic-angular';
 import { DatePicker } from '@ionic-native/date-picker';
 import { Media, MediaObject } from '@ionic-native/media';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
@@ -50,6 +50,7 @@ export class GoalCreatorPage {
     private navCtrl: NavController,
     private events: Events,
     private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
     private datePicker: DatePicker,
     private fileTransfer: FileTransfer,
     private media: Media,
@@ -71,9 +72,14 @@ export class GoalCreatorPage {
     if (!this.audioReady || !this.dateSelected) this.displayNotReadyAlert();
     else {
       if (form.valid) {
+        let loading = this.loadingCtrl.create({ 
+          spinner: 'bubbles',
+          content: 'Loading...' });
+        loading.present();
         this.buildGoal(form).subscribe((goal) => {
           this.createGoal(goal).then(() => {
             this.navCtrl.setRoot(HomePage);
+            loading.dismiss();
           }, (error) => {
           });
         });
