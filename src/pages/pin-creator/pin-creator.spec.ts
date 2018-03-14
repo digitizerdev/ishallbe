@@ -78,5 +78,36 @@ describe('PinCreatorPage', () => {
         expect(component instanceof PinCreatorPage).toBe(true);
     });
 
+    fit('should be titled Pin', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PinCreatorTitle'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('Pin')
+    });
+    
+    fit('should display display MondayForm if selected day is Monday', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#MondayForm'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display display TuesdayForm if selected day is Tuesday', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#TuesdayForm'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display WedToSunForm if selected day is not Monday or Tuesday', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#WedToSunForm'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
 });
 

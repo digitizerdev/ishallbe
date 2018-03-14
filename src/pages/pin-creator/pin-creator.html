@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Create Pin</ion-title>
+    <ion-title>Pin</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
@@ -13,8 +13,8 @@
           <ion-row>
             <ion-col text-center padding-left padding-right>
               <button ion-button (click)="loadImage()" color="secondary" icon-start round block large strong>
-                <ion-icon name="ios-camera"></ion-icon>
-                SEE IT
+                <ion-icon name="ios-image"></ion-icon>
+                UPLOAD THUMBNAIL
               </button>
             </ion-col>
           </ion-row>
@@ -47,7 +47,7 @@
           <ion-row>
             <ion-col text-center class="submit">
               <button id="CreatePinButton" ion-button (click)="submit(createPinForm)" color="primary" round block large strong>
-                CREATE STATEMENT
+                CREATE PIN
               </button>
             </ion-col>
           </ion-row>

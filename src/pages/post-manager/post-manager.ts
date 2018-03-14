@@ -52,7 +52,7 @@ export class PostManagerPage {
   }
 
   pushPinCreatorPage() {
-    this.navCtrl.push(PinCreatorPage);
+    this.navCtrl.push(PinCreatorPage, { selectedDay: this.selectedDay });
   }
 
 }
