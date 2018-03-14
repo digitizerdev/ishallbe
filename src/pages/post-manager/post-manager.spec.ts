@@ -80,5 +80,32 @@ describe('PostManagerPage', () => {
         expect(component instanceof PostManagerPage).toBe(true);
     });
 
+    fit('should be titled Post Manager', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PostManagerTitle'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('Post Manager')
+    });
+
+    fit('should display PinsSegment if postType is pins', () => {
+        component.postType = 'pins';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PinsSegment'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+    
+    fit('should display StatementsSegment if postType is statments', () => {
+        component.postType = 'statements';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#StatementsSegment'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
 });
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, LoadingController } from 'ionic-angular';
 
 import { PinCreatorPage } from '../pin-creator/pin-creator';
 import { PostPage } from '../post/post';
@@ -21,23 +21,30 @@ export class PostManagerPage {
   viewTitle: string;
   selectedDay = new Date();
   displaySelectedDay: string;
-  feedTimestamp: any;
-  pins: any;
-  pinsQuery: any;
   calendar = {
     mode: 'month',
     currentDate: this.selectedDay
   }
-  pin: any;
+  pins: any;
+  pinCreated = false;
 
   constructor(
     private navCtrl: NavController,
-    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
     private firebase: FirebaseProvider
   ) {
     this.displaySelectedDay = moment().format("MMM D");
     this.postType = "pins";
     console.log("Post type is " + this.postType);
+  }
+
+  ionViewDidLoad() {
+    let loading = this.loadingCtrl.create({ 
+      spinner: 'bubbles',
+      content: 'Loading...',
+      cssClass: 'loading-hold'
+     });
+    loading.present();
     this.loadPins().subscribe((pins) => {
       console.log("Pins Loaded");
       console.log(pins);
@@ -46,13 +53,12 @@ export class PostManagerPage {
         pin.startTime = new Date(pin.startTime);
         pin.endTime = new Date(pin.endTime);
         pin.allDay = true;
-        console.log("Pushing Pin");
-        console.log(pin);
         calendarEvents.push(pin);
       });
       this.eventSource = [];
       setTimeout(() => {
         this.eventSource = calendarEvents;
+        loading.dismiss();
       });
     });
   }
@@ -62,30 +68,16 @@ export class PostManagerPage {
   }
 
   onTimeSelected(ev) {
+    console.log("On Time Selected");
     this.selectedDay = ev.selectedTime;
     this.displaySelectedDay = moment(this.selectedDay).format("MMM D");
+    console.log(ev);
+    if (ev.events.length == 0 ) this.pinCreated = false;
+    else this.pinCreated = true;
   }
 
   onEventSelected(event) {
-  let alert = this.alertCtrl.create({
-      title: event.title,
-      message: event.description,
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-          }
-        },
-        {
-          text: 'Open',
-          handler: () => {
-            this.navCtrl.push(PostPage, { id: event.id })
-          }
-        }
-      ]
-    });
-    alert.present();
+    this.navCtrl.push(PostPage, { id: event.id })
   }
   
   loadPins() {

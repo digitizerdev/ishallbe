@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>Post Manager</ion-title>
+    <ion-title id="PostManagerTitle" color='primary'>Post Manager</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
@@ -17,22 +17,23 @@
       <b>STATEMENTS</b>
     </ion-segment-button>
   </ion-segment>
-  <div *ngIf="postType=='pins'" text-center>
+  <div *ngIf="postType=='pins'" id="PinsSegment" text-center>
     <h4 color="primary" ion-text>
       <b>{{viewTitle}}</b>
     </h4>
     <calendar [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate" allDayLabel="{{displaySelectedDay}}" noEventsLabel="No {{displaySelectedDay}} Pin"
       (onEventSelected)="onEventSelected($event)" (onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="onTimeSelected($event)"
-      step="30" class="calendar">
+      step="30" class="calendar" no-padding-bottom no-margin-bottom>
     </calendar>
-    <ion-row>
-      <ion-col text-center>
-        <button ion-button id="CreatePinButton" (click)="pushPinCreatorPage()" color="primary" round block large strong>CREATE PIN</button>
+    <ion-row no-padding-top no-margin-top>
+      <ion-col text-center padding-left padding-right>
+        <button *ngIf="!pinCreated" id="CreatePinButton" (click)="pushPinCreatorPage()" color="primary" ion-button round block large strong>CREATE PIN</button>
+        <button *ngIf="pinCreated" id="UpdatePinButton" (click)="pushPinCreatorPage()" color="primary" ion-button round block large strong>UPDATE PIN</button>
       </ion-col>
     </ion-row>
     <br>
   </div>
-  <div *ngIf="postType=='statements'">
+  <div *ngIf="postType=='statements'" id="StatementsSegment">
     <br>
     <br>
     <div class="feature" text-center>
