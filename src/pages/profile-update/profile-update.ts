@@ -75,7 +75,9 @@ export class ProfileUpdatePage {
   }
 
   submit() {
-    let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+    let loading = this.loadingCtrl.create({ 
+      spinner: 'bubbles',
+      content: 'Loading...' });
     loading.present();
     this.submitted = true;
     this.loadProfile();
@@ -137,8 +139,10 @@ export class ProfileUpdatePage {
     if (content == "canceled") {
       this.updatingProfilePhoto = false;
     } else {
-      let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
-      loading.present();    
+      let loading = this.loadingCtrl.create({ 
+        spinner: 'bubbles',
+        content: 'Loading...' });
+      loading.present();   
       this.user.photo = content;
       this.updateUser().then(() => {
         loading.dismiss();

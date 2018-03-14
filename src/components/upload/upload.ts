@@ -125,7 +125,7 @@ export class UploadComponent {
   }
 
   uploadImage() {
-    this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Please Wait..' });
+    this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
     this.loader.present();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
     let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
@@ -169,7 +169,7 @@ export class UploadComponent {
 
   uploadAudio() {
     this.recording = false;
-    this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Please Wait..' });
+    this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
     this.loader.present();
     this.audio.stopRecord();
     this.storeAudio().subscribe((downloadURL) => {

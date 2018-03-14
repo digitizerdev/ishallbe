@@ -30,4 +30,11 @@ page-pin-creator {
     ion-icon {
         font-size: 2em;
     }
+    .loading-hold {
+        background-color: white;
+        color: color($colors, primary);
+        button{
+            color: color($colors, primary);
+        }
+    }
 }

@@ -143,7 +143,7 @@ export class PinCreatorPage {
     if (this.dayOfWeek == 'Thursday') this.wedToSunForm.title = "Treat Yourself Thursday";
     if (this.dayOfWeek == 'Friday') this.wedToSunForm.title = "Faith Over Fear Friday";
     if (this.dayOfWeek == 'Saturday') this.wedToSunForm.title = "Happy Saturday!";
-    if (this.dayOfWeek == 'Sunday') this.wedToSunForm.title = "It's iShallBe Sunday";
+    if (this.dayOfWeek == 'Sunday') this.wedToSunForm.title = "It's iShallBe Sunday!";
     console.log(this.wedToSunForm);
   }
 
@@ -196,7 +196,9 @@ export class PinCreatorPage {
     console.log("Submiting Valid Pin");
     let loading = this.loadingCtrl.create({ 
       spinner: 'bubbles',
-      content: 'Loading...' });
+      content: 'Loading...',
+      cssClass: 'loading-hold'
+     });
     loading.present();
     this.buildPin(form).subscribe((pin) => {
       this.createPin(pin).then(() => {
