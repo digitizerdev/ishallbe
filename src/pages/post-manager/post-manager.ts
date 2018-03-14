@@ -35,7 +35,7 @@ export class PostManagerPage {
     private alertCtrl: AlertController,
     private firebase: FirebaseProvider
   ) {
-    this.displaySelectedDay = moment().format("MMM D YYYY");
+    this.displaySelectedDay = moment().format("MMM D");
     this.postType = "pins";
     console.log("Post type is " + this.postType);
     this.loadPins().subscribe((pins) => {
@@ -63,6 +63,7 @@ export class PostManagerPage {
 
   onTimeSelected(ev) {
     this.selectedDay = ev.selectedTime;
+    this.displaySelectedDay = moment(this.selectedDay).format("MMM D");
   }
 
   onEventSelected(event) {

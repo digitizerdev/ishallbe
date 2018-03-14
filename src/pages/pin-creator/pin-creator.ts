@@ -74,7 +74,8 @@ export class PinCreatorPage {
     return pinCol.valueChanges().subscribe((existingPin) => {
       console.log("Got pin");
       console.log(existingPin);
-      if (existingPin) this.setExistingPinFields();
+      this.pin = existingPin[0];
+      if (existingPin.length == 1) this.setExistingPinFields();
     });
   }
 
@@ -88,9 +89,12 @@ export class PinCreatorPage {
         this.imageReady = true;
       }
         break;
-      case 'Tuesday': this.setTuesdayForm();
+      case 'Tuesday': {
+        this.tuesdayForm.description = this.pin.description;
+        this.tuesdayForm.link = this.pin.link;
+      }
         break;
-      default: this.setWedToSunForm();
+      default: this.wedToSunForm.description = this.pin.description;
     }
   }
 
@@ -203,12 +207,13 @@ export class PinCreatorPage {
   buildPin(form) {
     return Observable.create((observer) => {
       console.log("Building Pin");
-      this.pinId = this.firebase.afs.createId();
+      if (this.pin) this.pinId = this.pin.id;
+      else this.pinId = this.firebase.afs.createId();
       let time = this.selectedDay.toISOString();
       if (this.monday) form.description = ""
       if (!this.monday) this.pinName = "";
       if (!this.monday) this.pinImageUrl = "";
-      if (!this.monday) form.link = "";
+      if (!this.monday && !this.tuesday) form.link = "";
       const pin: Pin = {
         id: this.pinId,
         title: form.title,
