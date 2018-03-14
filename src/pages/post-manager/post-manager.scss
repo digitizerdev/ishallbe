@@ -20,6 +20,9 @@ page-post-manager {
         background-color: color($colors, primary) !important;
         color: white !important; 
     }
+    .event-detail {
+        color: color($colors, primary) !important
+    }
     .feature {
         background: color($colors, light-yellow);
         border-top: thick solid color($colors, primary);                  

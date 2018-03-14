@@ -30,6 +30,7 @@ export class PinCreatorPage {
     title?: string;
     description?: string,
   } = {};
+  pin: any;
   pinId: string;
   pinImageUrl: string;
   pinName: string;
@@ -62,6 +63,35 @@ export class PinCreatorPage {
     this.displaySelectedDay = moment(this.selectedDay).format("MMM D YYYY").toUpperCase();
     this.timestampPage();
     this.listenForCanceledUpload();
+    this.checkForExistingPin();
+  }
+
+  checkForExistingPin() {
+    console.log("Checking For Existing Pin");
+    let today = parseInt(moment(this.selectedDay).format("YYYYMMDD"));
+    console.log("Today is " + today);
+    let pinCol = this.firebase.afs.collection('pins', ref => ref.where('affirmationDate', '==', today));
+    return pinCol.valueChanges().subscribe((existingPin) => {
+      console.log("Got pin");
+      console.log(existingPin);
+      if (existingPin) this.setExistingPinFields();
+    });
+  }
+
+  setExistingPinFields() {
+    console.log("Setting Existing Pin Fields");
+    switch (this.dayOfWeek) {
+      case 'Monday': {
+        this.mondayForm.link = this.pin.link;
+        this.pinImageUrl = this.pin.url;
+        this.loadingImage = false;
+        this.imageReady = true;
+      }
+        break;
+      case 'Tuesday': this.setTuesdayForm();
+        break;
+      default: this.setWedToSunForm();
+    }
   }
 
   timestampPage() {
@@ -138,19 +168,20 @@ export class PinCreatorPage {
     console.log("Checking Form Fields");
     switch (this.dayOfWeek) {
       case 'Monday': {
-        if (!this.imageReady) this.displayNotReadyAlert();
-        else if (!form.title || !form.link) this.displayIncompleteFieldsAlert();
-        else if (form.link=='https://youtube.com/embed/') this.displayMissingYoutubeIdAlert();
+        if (!this.imageReady) this.displaySubmissionErrorAlert("Please Add Image to Pin");
+        else if (!form.title || !form.link) this.displaySubmissionErrorAlert("Please Complete All Fields");
+        else if (form.link == 'https://youtube.com/embed/') this.displaySubmissionErrorAlert("Please Add YouTube Video ID");
         else this.submitValidPin(form);
       }
         break;
-      case 'Tuesday':  {
-        if (!form.title || !form.description || !form.link) this.displayIncompleteFieldsAlert();
+      case 'Tuesday': {
+        if (!form.title || !form.description || !form.link) this.displaySubmissionErrorAlert("Please Complete All Fields");
+        else if (form.link == 'https://youtu.be/') this.displaySubmissionErrorAlert("Please Add YouTube Video ID");
         else this.submitValidPin(form);
       }
         break;
       default: {
-        if (!form.title || !form.description) this.displayIncompleteFieldsAlert();
+        if (!form.title || !form.description) this.displaySubmissionErrorAlert("Please Complete All Fields");
         else this.submitValidPin(form);
       }
     }
@@ -213,31 +244,12 @@ export class PinCreatorPage {
     return this.firebase.afs.doc(pinPath).set(pin);
   }
 
-  displayMissingYoutubeIdAlert() {
-    console.log("Displaying Missing Youtube Id Alert");
+  displaySubmissionErrorAlert(message) {
+    console.log("Displaying Submission Error Alert");
+    console.log("Message is " + message);
     let alert = this.alertCtrl.create({
       title: 'Submission Error',
-      subTitle: "Please Add Youtube Video ID",
-      buttons: ['OK']
-    });
-    alert.present();
-  }
-
-  displayNotReadyAlert() {
-    console.log("Displaying Not Ready Alert");
-    let alert = this.alertCtrl.create({
-      title: 'Submission Error',
-      subTitle: "Please Add Image to Pin",
-      buttons: ['OK']
-    });
-    alert.present();
-  }
-
-  displayIncompleteFieldsAlert() {
-    console.log("Displaying Incomplete Fields Alert");
-    let alert = this.alertCtrl.create({
-      title: 'Submission Error',
-      subTitle: 'Please Complete All Fields',
+      subTitle: message,
       buttons: ['OK']
     });
     alert.present();
@@ -263,5 +275,13 @@ export class PinCreatorPage {
       });
       alert.present();
     });
+  }
+
+  redoImageLoad() {
+    console.log("Redoing Image Load");
+    this.pinImageUrl = null;
+    this.imageReady = false;
+    this.loadingImage = true;
+    this.events.publish('redoUpload', 'pin', this.pinName);
   }
 }

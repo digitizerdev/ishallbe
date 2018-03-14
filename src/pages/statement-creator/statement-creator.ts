@@ -163,4 +163,12 @@ export class StatementCreatorPage {
       alert.present();    
     });
   }
+
+  redoImageLoad() {
+    console.log("Redoing Image Load");
+    this.statementImageUrl = null;
+    this.imageReady = false;
+    this.loadingImage = true;
+    this.events.publish('redoUpload', this.imageRetrievalMethod, this.statementName);
+  }
 }

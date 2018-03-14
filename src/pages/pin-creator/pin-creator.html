@@ -26,7 +26,7 @@
     <upload *ngIf="loadingImage" (uploaded)="setImage($event)" [method]="imageRetrievalMethod" padding></upload>
     <ion-row *ngIf="imageReady" id="PinImage">
       <ion-col text-center>
-        <img [src]="pinImageUrl" class="full-image">
+        <img (click)="redoImageLoad()" [src]="pinImageUrl" class="full-image">
       </ion-col>
     </ion-row>
     <form id="MondayForm" novalidate padding>

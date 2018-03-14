@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, AlertController } from 'ionic-angular';
 
 import { PinCreatorPage } from '../pin-creator/pin-creator';
+import { PostPage } from '../post/post';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -31,6 +32,7 @@ export class PostManagerPage {
 
   constructor(
     private navCtrl: NavController,
+    private alertCtrl: AlertController,
     private firebase: FirebaseProvider
   ) {
     this.displaySelectedDay = moment().format("MMM D YYYY");
@@ -43,6 +45,7 @@ export class PostManagerPage {
       pins.forEach((pin) => {
         pin.startTime = new Date(pin.startTime);
         pin.endTime = new Date(pin.endTime);
+        pin.allDay = true;
         console.log("Pushing Pin");
         console.log(pin);
         calendarEvents.push(pin);
@@ -63,9 +66,9 @@ export class PostManagerPage {
   }
 
   onEventSelected(event) {
-/*     let alert = this.alertCtrl.create({
+  let alert = this.alertCtrl.create({
       title: event.title,
-      message: event.content,
+      message: event.description,
       buttons: [
         {
           text: 'Cancel',
@@ -76,12 +79,12 @@ export class PostManagerPage {
         {
           text: 'Open',
           handler: () => {
-            this.navCtrl.push(PinPage, { id: event.id })
+            this.navCtrl.push(PostPage, { id: event.id })
           }
         }
       ]
     });
-    alert.present(); */
+    alert.present();
   }
   
   loadPins() {
