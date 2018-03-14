@@ -172,6 +172,7 @@ export class PinCreatorPage {
     return Observable.create((observer) => {
       console.log("Building Pin");
       this.pinId = this.firebase.afs.createId();
+      if (this.monday) form.description = ""
       if (!this.monday) this.pinName = "";
       if (!this.monday) this.pinImageUrl = "";
       if (!this.monday) form.link = "";
