@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, NavParams, AlertController, Events, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Events } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 
 import { HomePage } from '../home/home';
- 
+
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import { Pin } from '../../../test-data/pins/model';
@@ -17,17 +17,28 @@ import { Pin } from '../../../test-data/pins/model';
   templateUrl: 'pin-creator.html',
 })
 export class PinCreatorPage {
- createPinForm: {
+  mondayForm: {
+    title?: string
+    link?: string,
+  } = {};
+  tuesdayForm: {
+    title?: string,
+    description?: string,
+    link?: string,
+  } = {};
+  wedToSunForm: {
     title?: string;
-    description?: string, 
-  } = {};  
+    description?: string,
+  } = {};
   pinId: string;
-  pinImageUrl: string; 
+  pinImageUrl: string;
   pinName: string;
-  imageRetrievalMethod: string; 
+  imageRetrievalMethod: string;
   timestamp: number;
   displayTimestamp: string;
   selectedDay: any;
+  displaySelectedDay: string;
+  dayOfWeek: string;
   submitted = false;
   loadingImage = false;
   imageReady = false;
@@ -36,30 +47,66 @@ export class PinCreatorPage {
   wedToSun = false;
 
   constructor(
-    private navCtrl: NavController, 
+    private navCtrl: NavController,
     private navParams: NavParams,
     private alertCtrl: AlertController,
     private events: Events,
-    private actionSheetCtrl: ActionSheetController,
     private firebase: FirebaseProvider
-    ) {
+  ) {
   }
 
   ionViewDidLoad() {
     this.selectedDay = this.navParams.get('selectedDay');
+    this.displaySelectedDay = moment(this.selectedDay).format("MMM D YYYY").toUpperCase();
     this.timestampPage();
     this.listenForCanceledUpload();
   }
 
   timestampPage() {
-    let today = moment(this.selectedDay).format("dddd");
-    console.log("Selected Day is " + today);
-    if (today == "Monday") this.monday = true;
-    else if (today == "Tuesday") this.tuesday = true;
+    this.dayOfWeek = moment(this.selectedDay).format("dddd");
+    console.log("Selected Day is " + this.dayOfWeek);
+    if (this.dayOfWeek == "Monday") this.monday = true;
+    else if (this.dayOfWeek == "Tuesday") this.tuesday = true;
     else this.wedToSun = true;
     let timestampString = moment().format('YYYYMMDDhhmmss');
     this.timestamp = parseInt(timestampString);
     this.displayTimestamp = moment().format('L');
+    this.setPinForm();
+  }
+
+  setPinForm() {
+    console.log("Setting Pin Form");
+    switch (this.dayOfWeek) {
+      case 'Monday': this.setMondayForm();
+      break;
+      case 'Tuesday': this.setTuesdayForm();
+      break;
+      default: this.setWedToSunForm();
+    }
+  }
+
+  setMondayForm() {
+    console.log("Setting Monday Form");
+    this.mondayForm.title = "Motivational Monday";
+    this.mondayForm.link = "https://youtube.com/embed/";
+    console.log(this.mondayForm);
+  }
+
+  setTuesdayForm() {
+    console.log("Setting Tuesday Form");
+    this.tuesdayForm.title = "Tuesday's Tune of the Day";
+    this.tuesdayForm.link = "https://youtu.be/";
+    console.log(this.tuesdayForm);
+  }
+
+  setWedToSunForm() {
+    console.log("Setting Wednesday to Sunday Form");
+    if (this.dayOfWeek == 'Wednesday') this.wedToSunForm.title = "Wise Words Wednesday";
+    if (this.dayOfWeek == 'Thursday') this.wedToSunForm.title = "Treat Yourself Thursday";
+    if (this.dayOfWeek == 'Friday') this.wedToSunForm.title = "Faith Over Fear Friday";
+    if (this.dayOfWeek == 'Saturday') this.wedToSunForm.title = "Happy Saturday!";
+    if (this.dayOfWeek == 'Sunday') this.wedToSunForm.title = "It's iShallBe Sunday";
+    console.log(this.wedToSunForm);
   }
 
   loadImage() {
@@ -93,7 +140,7 @@ export class PinCreatorPage {
       this.pinId = this.firebase.afs.createId();
       const pin: Pin = {
         id: this.pinId,
-        title: form.title,
+        title: this.wedToSunForm.title,
         description: form.description,
         commentCount: 0,
         likeCount: 0,
@@ -148,7 +195,7 @@ export class PinCreatorPage {
         subTitle: 'Please Try Again',
         buttons: ['OK']
       });
-      alert.present();    
+      alert.present();
     });
   }
 }

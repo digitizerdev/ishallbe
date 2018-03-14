@@ -2,9 +2,9 @@ page-pin-creator {
     .appForm {
         background-color: #e9e9e9 !important;
         border-radius: 30px;
-        height: 60px !important;
         padding: 0 20px;
         font-size: 1.25em !important;
+        color: color($colors, dark) !important;
         border: 1px solid transparent;
         max-width: 500px;
         margin: auto;
@@ -15,20 +15,19 @@ page-pin-creator {
         border-radius: 30px;
         padding: 0 20px;
         font-size: 1.25em !important;
+        color: color($colors, dark) !important;
         border: 1px solid transparent;
         max-width: 500px;
         margin: auto;
         text-align: center;
-        height: 20vh;
-    }
-    .item-input {
-        background-color: #FFF;
-        border-radius: 30px;
-        border: 1px solid transparent;
+        min-height: 20vh;
     }
     .item-inner,
     ion-item {
         border-bottom-color: transparent !important;
         box-shadow: none !important;
+    }
+    ion-icon {
+        font-size: 2em;
     }
 }

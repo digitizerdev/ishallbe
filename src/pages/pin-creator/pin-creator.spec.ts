@@ -90,6 +90,14 @@ describe('PinCreatorPage', () => {
         el = de.nativeElement.innerHTML;
         expect(el).toContain('Pin')
     });
+
+    fit('should display selectedDateText', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#selectedDateText'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
     
     fit('should display display UploadThumbnailButton if selected day is Monday', () => {
         component.monday = true;
