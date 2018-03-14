@@ -38,6 +38,7 @@ export class PinCreatorPage {
   displayTimestamp: string;
   selectedDay: any;
   displaySelectedDay: string;
+  affirmationDate: number;
   dayOfWeek: string;
   submitted = false;
   loadingImage = false;
@@ -65,7 +66,7 @@ export class PinCreatorPage {
 
   timestampPage() {
     this.dayOfWeek = moment(this.selectedDay).format("dddd");
-    this.selectedDay = moment(this.selectedDay).format()
+    this.affirmationDate = parseInt(moment(this.selectedDay).format("YYYYMMDD"));
     console.log("Selected Day is " + this.dayOfWeek);
     if (this.dayOfWeek == "Monday") this.monday = true;
     else if (this.dayOfWeek == "Tuesday") this.tuesday = true;
@@ -178,10 +179,10 @@ export class PinCreatorPage {
         likeCount: 0,
         url: this.pinImageUrl,
         link: form.link,
-        day: this.displaySelectedDay,
+        day: this.dayOfWeek,
         filename: this.pinName,
         displayAffirmationDate: this.displaySelectedDay,
-        affirmationDate: this.selectedDay,
+        affirmationDate: this.affirmationDate,
         displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
         user: {
@@ -199,6 +200,7 @@ export class PinCreatorPage {
   createPin(pin) {
     console.log("Creating Pin");
     let pinPath = "/pins/" + this.pinId;
+    console.log("Pin path is " + pinPath);
     return this.firebase.afs.doc(pinPath).set(pin);
   }
 
