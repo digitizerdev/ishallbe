@@ -56,6 +56,7 @@ export class PinCreatorPage {
   }
 
   ionViewDidLoad() {
+    console.log("Pin Creator Page Loaded");
     this.selectedDay = this.navParams.get('selectedDay');
     this.displaySelectedDay = moment(this.selectedDay).format("MMM D YYYY").toUpperCase();
     this.timestampPage();
@@ -64,6 +65,7 @@ export class PinCreatorPage {
 
   timestampPage() {
     this.dayOfWeek = moment(this.selectedDay).format("dddd");
+    this.selectedDay = moment(this.selectedDay).format()
     console.log("Selected Day is " + this.dayOfWeek);
     if (this.dayOfWeek == "Monday") this.monday = true;
     else if (this.dayOfWeek == "Tuesday") this.tuesday = true;
@@ -78,9 +80,9 @@ export class PinCreatorPage {
     console.log("Setting Pin Form");
     switch (this.dayOfWeek) {
       case 'Monday': this.setMondayForm();
-      break;
+        break;
       case 'Tuesday': this.setTuesdayForm();
-      break;
+        break;
       default: this.setWedToSunForm();
     }
   }
@@ -110,11 +112,13 @@ export class PinCreatorPage {
   }
 
   loadImage() {
-    this.imageRetrievalMethod = "library";
+    console.log("Loading Image");
+    this.imageRetrievalMethod = "pin";
     this.loadingImage = true;
   }
 
   setImage(image) {
+    console.log("Setting Image");
     this.pinImageUrl = image.url;
     this.pinName = image.name;
     this.loadingImage = false;
@@ -122,34 +126,57 @@ export class PinCreatorPage {
   }
 
   submit(form) {
+    console.log("Submitting Form");
+    console.log(form);
     this.submitted = true;
-    if (!this.imageReady) this.displayNotReadyAlert();
-    else {
-      if (form.valid) {
-        this.buildPin(form).subscribe((pin) => {
-          this.createPin(pin).then(() => {
-            this.navCtrl.setRoot(HomePage);
-          });
-        });
+    this.checkFormFields(form);
+  }
+
+  checkFormFields(form) {
+    console.log("Checking Form Fields");
+    switch (this.dayOfWeek) {
+      case 'Monday': {
+        if (!this.imageReady) this.displayNotReadyAlert();
+        else if (!form.title || !form.link) this.displayIncompleteFieldsAlert();
+        else this.submitValidPin(form);
+      }
+        break;
+      case 'Tuesday':  {
+        if (!form.title || !form.description || !form.link) this.displayIncompleteFieldsAlert();
+        else this.submitValidPin(form);
+      }
+        break;
+      default: {
+        if (!form.title || !form.description) this.displayIncompleteFieldsAlert();
+        else this.submitValidPin(form);
       }
     }
   }
 
+  submitValidPin(form) {
+    this.buildPin(form).subscribe((pin) => {
+      this.createPin(pin).then(() => {
+        this.navCtrl.setRoot(HomePage);
+      });
+    });
+  }
+
   buildPin(form) {
     return Observable.create((observer) => {
+      console.log("Building Pin");
       this.pinId = this.firebase.afs.createId();
       const pin: Pin = {
         id: this.pinId,
-        title: this.wedToSunForm.title,
+        title: form.title,
         description: form.description,
         commentCount: 0,
         likeCount: 0,
         url: this.pinImageUrl,
-        link: "",
-        day: "",
+        link: form.link,
+        day: this.displaySelectedDay,
         filename: this.pinName,
-        displayAffirmationDate: "",
-        affirmationDate: 0,
+        displayAffirmationDate: this.displaySelectedDay,
+        affirmationDate: this.selectedDay,
         displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
         user: {
@@ -168,10 +195,18 @@ export class PinCreatorPage {
   }
 
   displayNotReadyAlert() {
-    let alertMessage = "Please Add Image to Pin";
     let alert = this.alertCtrl.create({
       title: 'Almost There!',
-      subTitle: alertMessage,
+      subTitle: "Please Add Image to Pin",
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  displayIncompleteFieldsAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'Almost There!',
+      subTitle: 'Please Complete All Fields',
       buttons: ['OK']
     });
     alert.present();
