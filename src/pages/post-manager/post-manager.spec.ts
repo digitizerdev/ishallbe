@@ -161,6 +161,5 @@ describe('PostManagerPage', () => {
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
-
 });
 
