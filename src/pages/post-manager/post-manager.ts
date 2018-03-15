@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
 import { PinCreatorPage } from '../pin-creator/pin-creator';
 import { PostPage } from '../post/post';
@@ -27,10 +27,10 @@ export class PostManagerPage {
   }
   pins: any;
   pinCreated = false;
+  reportedStatements: any;
 
   constructor(
     private navCtrl: NavController,
-    private loadingCtrl: LoadingController,
     private firebase: FirebaseProvider
   ) {
     this.displaySelectedDay = moment().format("MMM D");
@@ -39,12 +39,6 @@ export class PostManagerPage {
   }
 
   ionViewDidLoad() {
-    let loading = this.loadingCtrl.create({ 
-      spinner: 'bubbles',
-      content: 'Loading...',
-      cssClass: 'loading-hold'
-     });
-    loading.present();
     this.loadPins().subscribe((pins) => {
       console.log("Pins Loaded");
       console.log(pins);
@@ -58,7 +52,6 @@ export class PostManagerPage {
       this.eventSource = [];
       setTimeout(() => {
         this.eventSource = calendarEvents;
-        loading.dismiss();
       });
     });
   }

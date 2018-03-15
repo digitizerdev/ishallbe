@@ -97,8 +97,40 @@ describe('PostManagerPage', () => {
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
-    
-    fit('should display StatementsSegment if postType is statments', () => {
+
+    fit('should display PinsCalendar if postType is pins', () => {
+        component.postType = 'pins';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PinsCalendar'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display CreatePinButton if selectedDay does not already have a pin', () => {
+        component.postType = 'pins';
+        component.pinCreated = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#CreatePinButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display UpdatePinButton if selectedDay already has a pin', () => {
+        component.postType = 'pins';
+        component.pinCreated = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#UpdatePinButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display StatementsSegment if postType is statements', () => {
         component.postType = 'statements';
         fixture.detectChanges();
         let de: DebugElement;
@@ -107,5 +139,28 @@ describe('PostManagerPage', () => {
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
+
+    fit('should display NoReportedStatements if there are no reported statements', () => {
+        component.postType = 'statements';
+        component.reportedStatements = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#NoReportedStatements'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display ReportedStatements if there are reported statements', () => {
+        component.postType = 'statements';
+        component.reportedStatements = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ReportedStatements'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
 });
 

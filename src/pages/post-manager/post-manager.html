@@ -21,7 +21,7 @@
     <h4 color="primary" ion-text>
       <b>{{viewTitle}}</b>
     </h4>
-    <calendar [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate" allDayLabel="{{displaySelectedDay}}" noEventsLabel="No {{displaySelectedDay}} Pin"
+    <calendar id="PinsCalendar" [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate" allDayLabel="{{displaySelectedDay}}" noEventsLabel="No {{displaySelectedDay}} Pin"
       (onEventSelected)="onEventSelected($event)" (onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="onTimeSelected($event)"
       step="30" class="calendar" no-padding-bottom no-margin-bottom>
     </calendar>
@@ -36,8 +36,11 @@
   <div *ngIf="postType=='statements'" id="StatementsSegment">
     <br>
     <br>
-    <div class="feature" text-center>
+    <div *ngIf="!reportedStatements" class="feature" id="NoReportedStatements" text-center>
       <h5>There are no reported statements</h5>
+    </div>
+    <div *ngIf="reportedStatements" class="feature" id="ReportedStatements" text-center>
+      <h5>Reported Statements</h5>
     </div>
     <br>
   </div>
