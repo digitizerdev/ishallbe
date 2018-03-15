@@ -82,11 +82,11 @@ describe('ApiManagerPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof ApiManagerPage).toBe(true);
     });
 
-    fit('should be titled API Manager', () => {
+    it('should be titled API Manager', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#APIManagerTitle'));
@@ -94,7 +94,7 @@ describe('ApiManagerPage', () => {
         expect(el).toContain('API Manager')
     });
 
-    fit('should display header', () => {
+    it('should display header', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('header'));
@@ -102,7 +102,7 @@ describe('ApiManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display ChannelFeature', () => {
+    it('should display ChannelFeature', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#ChannelFeature'));
@@ -110,7 +110,7 @@ describe('ApiManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display AppBaseFeature', () => {
+    it('should display AppBaseFeature', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#AppBaseFeature'));

@@ -16,18 +16,19 @@ import { Observable } from 'rxjs';
 })
 export class PostManagerPage {
 
-  postType: string;
-  eventSource = [];
-  viewTitle: string;
   selectedDay = new Date();
-  displaySelectedDay: string;
+  eventSource = [];
   calendar = {
     mode: 'month',
     currentDate: this.selectedDay
   }
   pins: any;
-  pinCreated = false;
   reportedStatements: any;
+  postType: string;
+  viewTitle: string;
+  displaySelectedDay: string;
+  pinCreated = false;
+  pinsLoaded = false;
 
   constructor(
     private navCtrl: NavController,
@@ -35,13 +36,10 @@ export class PostManagerPage {
   ) {
     this.displaySelectedDay = moment().format("MMM D");
     this.postType = "pins";
-    console.log("Post type is " + this.postType);
   }
 
   ionViewDidLoad() {
     this.loadPins().subscribe((pins) => {
-      console.log("Pins Loaded");
-      console.log(pins);
       let calendarEvents = this.eventSource;
       pins.forEach((pin) => {
         pin.startTime = new Date(pin.startTime);
@@ -52,6 +50,7 @@ export class PostManagerPage {
       this.eventSource = [];
       setTimeout(() => {
         this.eventSource = calendarEvents;
+        this.pinsLoaded = true;
       });
     });
   }
@@ -61,10 +60,8 @@ export class PostManagerPage {
   }
 
   onTimeSelected(ev) {
-    console.log("On Time Selected");
     this.selectedDay = ev.selectedTime;
     this.displaySelectedDay = moment(this.selectedDay).format("MMM D");
-    console.log(ev);
     if (ev.events.length == 0 ) this.pinCreated = false;
     else this.pinCreated = true;
   }
@@ -75,11 +72,8 @@ export class PostManagerPage {
   
   loadPins() {
     return Observable.create((observer) => {
-      console.log("Loading Pins");
       this.pins = this.firebase.afs.collection("pins");
       return this.pins.valueChanges().subscribe((pins) => {
-        console.log("Got Pins");
-        console.log(pins);
         observer.next(pins);
       });
     });

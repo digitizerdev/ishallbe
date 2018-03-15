@@ -59,7 +59,6 @@ export class PinCreatorPage {
   }
 
   ionViewDidLoad() {
-    console.log("Pin Creator Page Loaded");
     this.selectedDay = this.navParams.get('selectedDay');
     this.displaySelectedDay = moment(this.selectedDay).format("MMM D YYYY").toUpperCase();
     this.timestampPage();
@@ -68,20 +67,15 @@ export class PinCreatorPage {
   }
 
   checkForExistingPin() {
-    console.log("Checking For Existing Pin");
     let today = parseInt(moment(this.selectedDay).format("YYYYMMDD"));
-    console.log("Today is " + today);
     let pinCol = this.firebase.afs.collection('pins', ref => ref.where('affirmationDate', '==', today));
     return pinCol.valueChanges().subscribe((existingPin) => {
-      console.log("Got pin");
-      console.log(existingPin);
       this.pin = existingPin[0];
       if (existingPin.length == 1) this.setExistingPinFields();
     });
   }
 
   setExistingPinFields() {
-    console.log("Setting Existing Pin Fields");
     switch (this.dayOfWeek) {
       case 'Monday': {
         this.mondayForm.link = this.pin.link;
@@ -102,7 +96,6 @@ export class PinCreatorPage {
   timestampPage() {
     this.dayOfWeek = moment(this.selectedDay).format("dddd");
     this.affirmationDate = parseInt(moment(this.selectedDay).format("YYYYMMDD"));
-    console.log("Selected Day is " + this.dayOfWeek);
     if (this.dayOfWeek == "Monday") this.monday = true;
     else if (this.dayOfWeek == "Tuesday") this.tuesday = true;
     else this.wedToSun = true;
@@ -113,7 +106,6 @@ export class PinCreatorPage {
   }
 
   setPinForm() {
-    console.log("Setting Pin Form");
     switch (this.dayOfWeek) {
       case 'Monday': this.setMondayForm();
         break;
@@ -124,38 +116,29 @@ export class PinCreatorPage {
   }
 
   setMondayForm() {
-    console.log("Setting Monday Form");
     this.mondayForm.title = "Motivational Monday";
     this.mondayForm.link = "https://youtube.com/embed/";
-    console.log(this.mondayForm);
   }
 
   setTuesdayForm() {
-    console.log("Setting Tuesday Form");
     this.tuesdayForm.title = "Tuesday's Tune of the Day";
     this.tuesdayForm.link = "https://youtu.be/";
-    console.log(this.tuesdayForm);
   }
 
   setWedToSunForm() {
-    console.log("Setting Wednesday to Sunday Form");
     if (this.dayOfWeek == 'Wednesday') this.wedToSunForm.title = "Wise Words Wednesday";
     if (this.dayOfWeek == 'Thursday') this.wedToSunForm.title = "Treat Yourself Thursday";
     if (this.dayOfWeek == 'Friday') this.wedToSunForm.title = "Faith Over Fear Friday";
     if (this.dayOfWeek == 'Saturday') this.wedToSunForm.title = "Happy Saturday!";
     if (this.dayOfWeek == 'Sunday') this.wedToSunForm.title = "It's iShallBe Sunday!";
-    console.log(this.wedToSunForm);
   }
 
   loadImage() {
-    console.log("Loading Image");
     this.imageRetrievalMethod = "pin";
     this.loadingImage = true;
   }
 
   setImage(image) {
-    console.log("Setting Image");
-    console.log(image);
     this.pinImageUrl = image.url;
     this.pinName = image.name;
     this.loadingImage = false;
@@ -163,14 +146,11 @@ export class PinCreatorPage {
   }
 
   submit(form) {
-    console.log("Submitting Form");
-    console.log(form);
     this.submitted = true;
     this.checkFormFields(form);
   }
 
   checkFormFields(form) {
-    console.log("Checking Form Fields");
     switch (this.dayOfWeek) {
       case 'Monday': {
         if (!this.imageReady) this.displaySubmissionErrorAlert("Please Add Image to Pin");
@@ -193,7 +173,6 @@ export class PinCreatorPage {
   }
 
   submitValidPin(form) {
-    console.log("Submiting Valid Pin");
     let loading = this.loadingCtrl.create({ 
       spinner: 'bubbles',
       content: 'Loading...',
@@ -202,19 +181,15 @@ export class PinCreatorPage {
     loading.present();
     this.buildPin(form).subscribe((pin) => {
       this.createPin(pin).then(() => {
-        console.log("Pin Created");
         this.navCtrl.setRoot(PostManagerPage);
         loading.dismiss();
       }, (error) => {
-        console.error("error");
-        console.log(error);
       });
     });
   }
 
   buildPin(form) {
     return Observable.create((observer) => {
-      console.log("Building Pin");
       if (this.pin) this.pinId = this.pin.id;
       else this.pinId = this.firebase.afs.createId();
       let time = this.selectedDay.toISOString();
@@ -244,22 +219,16 @@ export class PinCreatorPage {
           photo: this.firebase.user.photo
         }
       }
-      console.log("Pin Built");
-      console.log(pin);
       observer.next(pin);
     });
   }
 
   createPin(pin) {
-    console.log("Creating Pin");
     let pinPath = "/pins/" + this.pinId;
-    console.log("Pin path is " + pinPath);
     return this.firebase.afs.doc(pinPath).set(pin);
   }
 
   displaySubmissionErrorAlert(message) {
-    console.log("Displaying Submission Error Alert");
-    console.log("Message is " + message);
     let alert = this.alertCtrl.create({
       title: 'Submission Error',
       subTitle: message,
@@ -291,7 +260,6 @@ export class PinCreatorPage {
   }
 
   redoImageLoad() {
-    console.log("Redoing Image Load");
     this.pinImageUrl = null;
     this.imageReady = false;
     this.loadingImage = true;
