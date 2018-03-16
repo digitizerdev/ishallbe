@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, AlertController, LoadingController } from 'ionic-angular';
-import { Pro } from '@ionic/pro';
 import { Observable } from 'rxjs/Observable';
 
 import { PasswordResetPage } from '../password-reset/password-reset';
@@ -54,7 +53,6 @@ export class LoginPage {
   }
 
   errorHandler(error) {
-    Pro.monitoring.exception(error);
     this.firebase.afa.auth.signOut(); 
     this.navCtrl.setRoot(this.navCtrl.getActive().component);
     let alert = this.alertCtrl.create({

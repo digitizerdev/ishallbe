@@ -18,14 +18,14 @@
   </ion-refresher>
   <div class="user-profile" id="UserProfile" text-center padding>
     <img class="avatar" src="{{ user?.photo }}">
-    <ion-row *ngIf="this.user?.social" class="social" text-center>
-      <ion-col *ngIf="this.user?.social.instagram" (click)="openLink(this.user.social.instagram)" text-center>
+    <ion-row *ngIf="this.user?.instagram || this.user?.twitter || this.user?.linkedin" class="social" text-center>
+      <ion-col *ngIf="this.user?.instagram" (click)="openLink(this.user.instagram)" text-center>
         <ion-icon name="logo-instagram"></ion-icon>
       </ion-col>
-      <ion-col *ngIf="this.user?.social.twitter" (click)="openLink(this.user.social.twitter)"text-center>
+      <ion-col *ngIf="this.user?.twitter" (click)="openLink(this.user.twitter)"text-center>
         <ion-icon name="logo-twitter"></ion-icon>
       </ion-col>
-      <ion-col *ngIf="this.user?.social.linkedin" (click)="openLink(this.user.social.linkedin)" text-center>
+      <ion-col *ngIf="this.user?.linkedin" (click)="openLink(this.user.linkedin)" text-center>
         <ion-icon name="logo-linkedin"></ion-icon>
       </ion-col>
     </ion-row>

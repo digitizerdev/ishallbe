@@ -7,13 +7,9 @@ export interface User {
     photo: string,
     displayTimestamp: string,
     timestamp: number,
-    social: {
-        instagram: string,
-        linkedin: string,
-        twitter: string
-    },
-    roles: {
-        contributor: boolean,
-        editor: boolean
-    }
+    instagram: string,
+    linkedin: string,
+    twitter: string
+    contributor: boolean,
+    editor: boolean
 }

@@ -56,8 +56,7 @@ export class GoalCreatorPage {
     private media: Media,
     private firebase: FirebaseProvider
   ) {
-    let timestampString = moment().format('YYYYMMDDhhmmss');
-    this.timestamp = parseInt(timestampString);
+    this.timestamp = moment().unix();
     this.displayTimestamp = moment().format('MMM D YYYY h:mmA');
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
@@ -72,9 +71,10 @@ export class GoalCreatorPage {
     if (!this.audioReady || !this.dateSelected) this.displayNotReadyAlert();
     else {
       if (form.valid) {
-        let loading = this.loadingCtrl.create({ 
+        let loading = this.loadingCtrl.create({
           spinner: 'bubbles',
-          content: 'Loading...' });
+          content: 'Loading...'
+        });
         loading.present();
         this.buildGoal(form).subscribe((goal) => {
           this.createGoal(goal).then(() => {
@@ -104,11 +104,9 @@ export class GoalCreatorPage {
         dueDate: this.dueDate,
         displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
-        user: {
-          uid: this.firebase.user.uid,
-          name: this.firebase.user.name,
-          photo: this.firebase.user.photo
-        }
+        uid: this.firebase.user.uid,
+        name: this.firebase.user.name,
+        face: this.firebase.user.photo
       }
       observer.next(goal);
     });
@@ -131,11 +129,10 @@ export class GoalCreatorPage {
       allowOldDates: false,
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
     }).then((date) => {
-      let dueDateString = moment(date).format('YYYYMMDD');
-      this.dueDate = parseInt(dueDateString);
+      this.dueDate = moment(date).unix();
       this.displayDueDate = moment(date).fromNow();
       this.formateDueDate();
-    }, (err) => { console.error("Error: " + err); });
+    }, (err) => { });
   }
 
   formateDueDate() {
@@ -231,7 +228,7 @@ export class GoalCreatorPage {
         subTitle: 'Please Try Again',
         buttons: ['OK']
       });
-      alert.present();    
+      alert.present();
     });
   }
 

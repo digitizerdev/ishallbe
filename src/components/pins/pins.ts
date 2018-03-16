@@ -3,8 +3,10 @@ import { NavController, Slides } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
-import moment from 'moment';
 import { Observable } from 'rxjs';
+import moment from 'moment';
+
+import { mockPins } from '../../../test-data/pins/mocks';
 
 @Component({
   selector: 'pins',
@@ -14,7 +16,9 @@ export class PinsComponent {
 
   @ViewChild(Slides) slides: Slides;
   @Input('pinsStartDate') inputDate;
-  rawDate: number;
+  startDate: number;
+  endDate: number;
+  dayNumber: number;
   pins: any;
   pinsLoaded = false;
 
@@ -26,6 +30,25 @@ export class PinsComponent {
   }
 
   ngAfterViewInit() {
+    this.setPins();
+    setTimeout(() => {
+      this.slides.slideTo(5);
+    }, 500);
+  }
+
+  refreshPage(refresh) {
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
+  }
+
+  setPins() {
+    this.pins = [];
+    mockPins.forEach((pin) => {
+      this.pins.push(pin);
+    });
+  }
+}
+
+/*   ngAfterViewInit() {
     console.log("View Initialized");
     this.timestamp();
     this.loadPins().subscribe((pins) => {
@@ -36,15 +59,17 @@ export class PinsComponent {
         console.log(this.pins);
         setTimeout(() => {
           this.pinsLoaded = true;
-          this.slides.slideTo(5);
+          this.slides.slideTo(this.dayNumber);
         }, 500);
       })
     });
   }
 
   timestamp() {
-    this.rawDate = this.inputDate;
     console.log("Date is " + this.inputDate);
+    this.endDate = parseInt((moment.unix(this.inputDate).format('YYYYMMDD')));
+    this.dayNumber = moment(this.inputDate).isoWeekday();
+    console.log("Day Number is " + this.dayNumber);
   }
 
   refreshPage(refresh) {
@@ -55,7 +80,10 @@ export class PinsComponent {
   loadPins() {
     console.log("Loading Pins");
     return Observable.create((observer) => {
-      let weeklyPins = this.firebase.afs.collection('pins', ref => ref.orderBy('affirmationDate'));
+      this.startDate = this.endDate - this.dayNumber;
+      console.log("Input Date is " + this.startDate);
+      console.log("End Date is " + this.endDate);
+      let weeklyPins = this.firebase.afs.collection('pins', ref => ref.orderBy('affirmationDate').endAt(this.endDate));
       return weeklyPins.valueChanges().subscribe((pins) => {
         observer.next(pins);
       });
@@ -67,11 +95,10 @@ export class PinsComponent {
     return Observable.create((observer) => {
       this.pins = [];
       pins.forEach((pin) => {
-        console.log("Pushing Pin");
-        console.log(pin);
         this.pins.push(pin);
       });
       observer.next();
     });
   }
 }
+ */

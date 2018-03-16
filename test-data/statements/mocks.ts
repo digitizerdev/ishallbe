@@ -10,11 +10,9 @@ export const statement1 = {
   filename: "20180309190100",
   displayTimestamp: "MAR 09 2018 9:19AM",
   timestamp: 20180309190100,
-  user: {
-    uid: "1",
-    name: "Test Contributor",
-    photo: "assets/img/default-profile.png"
-  }
+  uid: "1",
+  name: "Test Contributor",
+  face: "assets/img/default-profile.png"
 }
 export const statement2 = {
   id: "12",
@@ -27,11 +25,9 @@ export const statement2 = {
   filename: "20180302122300",
   displayTimestamp: "MAR 02 2018 12:12PM",
   timestamp: 20180302122300,
-  user: {
-    uid: "1",
-    name: "Test Contributor",
-    photo: "assets/img/default-profile.png"
-  }
+  uid: "1",
+  name: "Test Contributor",
+  face: "assets/img/default-profile.png"
 }
 export const statement3 = {
   id: "13",
@@ -44,11 +40,9 @@ export const statement3 = {
   filename: "20180301083200",
   displayTimestamp: "MAR 01 2018 9:19AM",
   timestamp: 20180301083200,
-  user: {
-    uid: "1",
-    name: "Test Contributor",
-    photo: "assets/img/default-profile.png"
-  }
+  uid: "1",
+  name: "Test Contributor",
+  face: "assets/img/default-profile.png"
 }
 export const mockStatements: Statement[] = [
   statement1, statement2, statement3,

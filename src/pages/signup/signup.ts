@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
+
 import { IonicPage, NavController, AlertController, LoadingController } from 'ionic-angular';
-import { Pro } from '@ionic/pro';
+
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 
@@ -8,6 +9,8 @@ import { HomePage } from '../home/home';
 import { LoginPage } from '../login/login';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+
+import { User } from '../../../test-data/users/model';
 
 @IonicPage()
 @Component({
@@ -21,9 +24,9 @@ export class SignupPage {
     password?: string
   } = {};
   uid: string;
-  profile: object;
   timestamp: number;
   displayTimestamp: string;
+  loader: any;
   submitted = false;
 
   constructor(
@@ -39,8 +42,7 @@ export class SignupPage {
   }
 
   timeStampPage() {
-    let timestampString = moment().format('YYYYMMDDhhmmss');
-    this.timestamp = parseInt(timestampString);
+    this.timestamp = moment().unix();
     this.displayTimestamp = moment().format('MMM D YYYY h:mmA');
   }
 
@@ -49,14 +51,15 @@ export class SignupPage {
     if (signupForm.valid) {
       this.presentEULA().subscribe((accepted) => {
         if (accepted) {
-          let loading = this.loadingCtrl.create({ 
+          this.loader = this.loadingCtrl.create({
             spinner: 'bubbles',
-            content: 'Loading...' });
-          loading.present();
-          this.signup(signupForm).then(() => {
+            content: 'Loading...'
+          });
+          this.loader.present();
+          this.signup(signupForm).subscribe(() => {
             this.navCtrl.setRoot(HomePage);
-            loading.dismiss();
-          }).catch((error) => { this.errorHandler(error); loading.dismiss() });
+            this.loader.dismiss();
+          });
         }
       })
     };
@@ -88,38 +91,45 @@ export class SignupPage {
   }
 
   buildUser(signupForm) {
-    this.signupForm = signupForm;
-    this.profile = {
-      name: signupForm.name,
-      email: signupForm.email,
-      photo: "assets/img/default-profile.png",
-      blocked: false,
-      uid: this.uid,
-      displayTimestamp: this.displayTimestamp,
-      timestamp: this.timestamp,
-      roles: {
+    return Observable.create((observer) => {
+      const user: User = {
+        uid: this.uid,
+        name: signupForm.name,
+        bio: "",
+        email: signupForm.email,
+        photo: "assets/img/default-profile.png",
+        blocked: false,
+        displayTimestamp: this.displayTimestamp,
+        timestamp: this.timestamp,
+        instagram: "",
+        linkedin: "",
+        twitter: "",
         contributor: true,
         editor: false
       }
-    }
+      observer.next(user);
+    });
   }
 
   signup(signupForm) {
-    return this.firebase.afa.auth.createUserWithEmailAndPassword(signupForm.email, signupForm.password).then((token) => {
-      this.uid = token.uid
-      this.buildUser(signupForm);
-      return this.createUser().then(() => {
-      }, (error) => { throw error });
-    }, (error) => { throw error });
+    return Observable.create((observer) => {
+      return this.firebase.afa.auth.createUserWithEmailAndPassword(signupForm.email, signupForm.password).then((token) => {
+        this.uid = token.uid
+        return this.buildUser(signupForm).subscribe((user) => {
+          return this.createUser(user).then(() => {
+            observer.next();
+          }).catch((error) => { this.errorHandler(error); this.loader.dismiss() });
+        });
+      }).catch((error) => { this.errorHandler(error); this.loader.dismiss() });
+    });
   }
 
-  createUser() {
+  createUser(user) {
     let path = '/users/' + this.uid;
-    return this.firebase.afs.doc(path).set(this.profile);
+    return this.firebase.afs.doc(path).set(user);
   }
 
   errorHandler(error) {
-    Pro.monitoring.exception(error);
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,

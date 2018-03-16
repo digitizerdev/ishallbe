@@ -15,11 +15,9 @@ export const mondayPin = {
   timestamp: 20180312000000,
   startTime: "",
   endTime: "",
-  user: {
-    uid: "2",
-    name: "Test Editor",
-    photo: "assets/img/headshot.png"
-  }
+  uid: "2",
+  name: "Test Editor",
+  face: "assets/img/headshot.png"
 }
 export const tuesdayPin = {
   id: "5",
@@ -37,11 +35,9 @@ export const tuesdayPin = {
   timestamp: 201803130000000,
   startTime: "",
   endTime: "",
-  user: {
-    uid: "2",
-    name: "Test Editor",
-    photo: "assets/img/headshot.png"
-  }
+  uid: "2",
+  name: "Test Editor",
+  face: "assets/img/headshot.png"
 }
 export const wednesdayPin = {
   id: "6",
@@ -59,11 +55,9 @@ export const wednesdayPin = {
   timestamp: 20180314000000,
   startTime: "",
   endTime: "",
-  user: {
-    uid: "2",
-    name: "Test Editor",
-    photo: "assets/img/headshot.png"
-  }
+  uid: "2",
+  name: "Test Editor",
+  face: "assets/img/headshot.png"
 }
 export const thursdayPin = {
   id: "7",
@@ -81,11 +75,9 @@ export const thursdayPin = {
   timestamp: 20180315000000,
   startTime: "",
   endTime: "",
-  user: {
-    uid: "2",
-    name: "Test Editor",
-    photo: "assets/img/headshot.png"
-  }
+  uid: "2",
+  name: "Test Editor",
+  face: "assets/img/headshot.png"
 }
 export const fridayPin = {
   id: "8",
@@ -103,11 +95,9 @@ export const fridayPin = {
   timestamp: 20180316000000,
   startTime: "",
   endTime: "",
-  user: {
-    uid: "2",
-    name: "Test Editor",
-    photo: "assets/img/headshot.png"
-  }
+  uid: "2",
+  name: "Test Editor",
+  face: "assets/img/headshot.png"
 }
 export const saturdayPin = {
   id: "9",
@@ -125,11 +115,9 @@ export const saturdayPin = {
   timestamp: 20180317000000,
   startTime: "",
   endTime: "",
-  user: {
-    uid: "2",
-    name: "Test Editor",
-    photo: "assets/img/headshot.png"
-  }
+  uid: "2",
+  name: "Test Editor",
+  face: "assets/img/headshot.png"
 }
 export const mockPins: Pin[] = [
   mondayPin, tuesdayPin, wednesdayPin, thursdayPin, fridayPin, saturdayPin,

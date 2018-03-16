@@ -12,10 +12,8 @@ export interface Goal {
   dueDate: number,
   displayTimestamp: string;
   timestamp: number,
-  user: {
-    uid: string,
-    name: string,
-    photo: string,
-  }
+  uid: string,
+  name: string,
+  face: string,
 }
 

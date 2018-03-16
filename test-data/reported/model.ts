@@ -1,12 +1,11 @@
-export interface Comment {
+export interface Reported {
     id: string,
     pin: boolean,
     statement: boolean,
     goal: boolean,
+    comment: boolean,
     collectionId: string,
     description: string,
-    liked: boolean,
-    likeCount: number,
     displayTimestamp: string,
     timestamp: number,
     uid: string,

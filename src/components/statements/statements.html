@@ -7,12 +7,12 @@
   <ion-card *ngFor="let statement of statements">
     <ion-item class="statement-header">
       <ion-avatar item-left (click)="viewUser(statement.user_id)">
-        <img src="{{ statement.user.photo }}">
+        <img src="{{ statement.face }}">
       </ion-avatar>
       <h2>
         <b>{{ statement.title }}</b>
       </h2>
-      <h3 (click)="viewUser(statement.user_id)" ion-text color="primary">{{ statement.user.name }}</h3>
+      <h3 (click)="viewUser(statement.user_id)" ion-text color="primary">{{ statement.name }}</h3>
       <h5>{{ statement.timestamp.displayTime }}</h5>
     </ion-item>
     <img class="full-image" *ngIf="statement.url" src="{{ statement.url }}">

@@ -53,9 +53,9 @@ export class ProfileUpdatePage {
 
   loadProfileForm() {
     return Observable.create((observer: any) => {
-      this.profileForm.linkedin = this.user.social.linkedin;
-      this.profileForm.instagram = this.user.social.instagram;
-      this.profileForm.twitter = this.user.social.twitter;
+      this.profileForm.linkedin = this.user.linkedin;
+      this.profileForm.instagram = this.user.instagram;
+      this.profileForm.twitter = this.user.twitter;
       this.profileForm.name = this.user.name;
       this.profileForm.bio = this.user.bio
       observer.next();
@@ -65,11 +65,11 @@ export class ProfileUpdatePage {
   populateEmptySocialFields() {
     return Observable.create((observer: any) => {
       if (!this.profileForm.linkedin) this.profileForm.linkedin = "linkedin.com/in/";
-      else this.profileForm.linkedin = this.user.social.linkedin;
+      else this.profileForm.linkedin = this.user.linkedin;
       if (!this.profileForm.instagram) this.profileForm.instagram = "instagram.com/";
-      else this.profileForm.instagram = this.user.social.instagram;
+      else this.profileForm.instagram = this.user.instagram;
       if (!this.profileForm.twitter) this.profileForm.twitter = "twitter.com/";
-      else this.profileForm.twitter = this.user.social.twitter;
+      else this.profileForm.twitter = this.user.twitter;
       observer.next();
     });
   }
@@ -88,12 +88,12 @@ export class ProfileUpdatePage {
   }
 
   loadProfile() {
-    if (this.profileForm.linkedin == "linkedin.com/in/") this.user.social.linkedin = "";
-    else this.user.social.linkedin = this.profileForm.linkedin;
-    if (this.profileForm.instagram == "instagram.com/") this.user.social.instagram = "";
-    else this.user.social.instagram = this.profileForm.instagram;
-    if (this.profileForm.twitter == "twitter.com/") this.user.social.twitter = "";
-    else this.user.social.twitter = this.profileForm.twitter;
+    if (this.profileForm.linkedin == "linkedin.com/in/") this.user.linkedin = "";
+    else this.user.linkedin = this.profileForm.linkedin;
+    if (this.profileForm.instagram == "instagram.com/") this.user.instagram = "";
+    else this.user.instagram = this.profileForm.instagram;
+    if (this.profileForm.twitter == "twitter.com/") this.user.twitter = "";
+    else this.user.twitter = this.profileForm.twitter;
     this.user.name = this.profileForm.name;
     this.user.bio = this.profileForm.bio;
   }
