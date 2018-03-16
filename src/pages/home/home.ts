@@ -24,8 +24,7 @@ export class HomePage {
 
   timestamp() {
     console.log("Timestamping");
-    let rawDateString = moment().format('YYYYMMDD');
-    this.rawDate = parseInt(rawDateString);
+    this.rawDate = moment().unix();
     console.log("Raw Date is " + this.rawDate);
     this.displayDate = moment().format('MMM D YYYY').toUpperCase();
     console.log("Display Date is " + this.displayDate);
