@@ -219,8 +219,6 @@ export class PinCreatorPage {
           photo: this.firebase.user.photo
         }
       }
-      console.log("Pin Built");
-      console.log(pin);
       observer.next(pin);
     });
   }

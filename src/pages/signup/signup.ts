@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
 import { IonicPage, NavController, AlertController, LoadingController } from 'ionic-angular';
-import { Pro } from '@ionic/pro';
 
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
@@ -39,7 +38,6 @@ export class SignupPage {
   }
 
   ionViewDidLoad() {
-    console.log("Loaded Signup Page");
     this.timeStampPage();
   }
 
@@ -49,7 +47,6 @@ export class SignupPage {
   }
 
   submit(signupForm) {
-    console.log("Signup form submitted");
     this.submitted = true;
     if (signupForm.valid) {
       this.presentEULA().subscribe((accepted) => {
@@ -114,16 +111,12 @@ export class SignupPage {
           editor: false
         },
       }
-      console.log("User Built");
-      console.log(user);
       observer.next(user);
     });
   }
 
   signup(signupForm) {
     return Observable.create((observer) => {
-      console.log("Signing up");
-      console.log(signupForm);
       return this.firebase.afa.auth.createUserWithEmailAndPassword(signupForm.email, signupForm.password).then((token) => {
         this.uid = token.uid
         return this.buildUser(signupForm).subscribe((user) => {
@@ -141,7 +134,6 @@ export class SignupPage {
   }
 
   errorHandler(error) {
-    console.log("Error handler triggered");
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,

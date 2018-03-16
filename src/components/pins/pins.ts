@@ -3,7 +3,6 @@ import { NavController, Slides } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
-import moment from 'moment';
 import { Observable } from 'rxjs';
 
 @Component({

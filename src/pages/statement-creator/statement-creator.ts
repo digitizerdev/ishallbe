@@ -57,7 +57,6 @@ export class StatementCreatorPage {
         {
           text: 'Camera',
           handler: () => {
-            console.log("Chose Camera");
             if (this.imageReady) this.redoImageLoad();
             this.imageRetrievalMethod = "camera";
             this.loadingImage = true;
@@ -66,7 +65,6 @@ export class StatementCreatorPage {
         {
           text: 'Library',
           handler: () => {
-            console.log("Chose Library");
             if (this.imageReady) this.redoImageLoad();
             this.imageRetrievalMethod = "library";
             this.loadingImage = true;
@@ -76,7 +74,6 @@ export class StatementCreatorPage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            console.log("Canceled asking for image retrieval method");
           }
         }
       ]
@@ -172,7 +169,6 @@ export class StatementCreatorPage {
   }
 
   redoImageLoad() {
-    console.log("Redoing Image Load");
     this.statementImageUrl = null;
     this.imageReady = false;
     this.events.publish('redoUpload', this.imageRetrievalMethod, this.statementName);

@@ -134,7 +134,7 @@ export class GoalCreatorPage {
       this.dueDate = parseInt(dueDateString);
       this.displayDueDate = moment(date).fromNow();
       this.formateDueDate();
-    }, (err) => { console.error("Error: " + err); });
+    }, (err) => {});
   }
 
   formateDueDate() {
