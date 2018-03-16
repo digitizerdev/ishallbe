@@ -130,8 +130,7 @@ export class GoalCreatorPage {
       allowOldDates: false,
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
     }).then((date) => {
-      let dueDateString = moment(date).format('YYYYMMDD');
-      this.dueDate = parseInt(dueDateString);
+      this.dueDate = moment(date).unix();
       this.displayDueDate = moment(date).fromNow();
       this.formateDueDate();
     }, (err) => {});
