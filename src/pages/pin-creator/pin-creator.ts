@@ -35,7 +35,7 @@ export class PinCreatorPage {
   pinImageUrl: string;
   pinName: string;
   imageRetrievalMethod: string;
-  time: number;
+  timestamp: number;
   displayTimestamp: string;
   selectedDay: any;
   displaySelectedDay: string;
