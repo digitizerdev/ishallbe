@@ -54,7 +54,6 @@ export class LoginPage {
   }
 
   errorHandler(error) {
-    Pro.monitoring.exception(error);
     this.firebase.afa.auth.signOut(); 
     this.navCtrl.setRoot(this.navCtrl.getActive().component);
     let alert = this.alertCtrl.create({

@@ -35,7 +35,7 @@ export class PinCreatorPage {
   pinImageUrl: string;
   pinName: string;
   imageRetrievalMethod: string;
-  timestamp: number;
+  time: number;
   displayTimestamp: string;
   selectedDay: any;
   displaySelectedDay: string;
@@ -100,8 +100,7 @@ export class PinCreatorPage {
     if (this.dayOfWeek == "Monday") this.monday = true;
     else if (this.dayOfWeek == "Tuesday") this.tuesday = true;
     else this.wedToSun = true;
-    let timestampString = moment().format('YYYYMMDDhhmmss');
-    this.timestamp = parseInt(timestampString);
+    this.timestamp = moment().unix();
     this.displayTimestamp = moment().format('L');
     this.setPinForm();
   }

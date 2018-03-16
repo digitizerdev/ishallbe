@@ -42,8 +42,7 @@ export class StatementCreatorPage {
   }
 
   ionViewDidLoad() {
-    let timestampString = moment().format('YYYYMMDDhhmmss');
-    this.timestamp = parseInt(timestampString);
+    this.timestamp = moment().unix();
     this.displayTimestamp = moment().format('L');
     this.listenForCanceledUpload();
   }

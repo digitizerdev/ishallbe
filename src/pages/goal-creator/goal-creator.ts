@@ -56,8 +56,7 @@ export class GoalCreatorPage {
     private media: Media,
     private firebase: FirebaseProvider
   ) {
-    let timestampString = moment().format('YYYYMMDDhhmmss');
-    this.timestamp = parseInt(timestampString);
+    this.timestamp = moment().unix();
     this.displayTimestamp = moment().format('MMM D YYYY h:mmA');
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);

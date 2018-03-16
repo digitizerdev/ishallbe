@@ -13,8 +13,7 @@ export class HomePage {
 
   rawDate: number;
   displayDate: string;
-  rawTime: number;
-  displayTime: string;
+  time: any;
 
   constructor(
     private navCtrl: NavController,
@@ -27,12 +26,12 @@ export class HomePage {
     console.log("Timestamping");
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
-    console.log("RawDate is " + this.rawDate);
-    this.displayDate = moment().format('MMM D YYYY');
-    this.displayDate = this.displayDate.toUpperCase();
-    let rawTimeString = moment().format('YYYYMMDDhhmmss');
-    this.rawTime = parseInt(rawTimeString);
-    this.displayTime = moment().format('h:mma');
+    console.log("Raw Date is " + this.rawDate);
+    this.displayDate = moment().format('MMM D YYYY').toUpperCase();
+    console.log("Display Date is " + this.displayDate);
+    this.time = moment();
+    console.log("Raw time is " + this.time);
+    console.log(moment(this.time).format('llll'));
   }
 
   showNotifications() {
