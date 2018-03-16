@@ -44,7 +44,7 @@ export class UploadComponent {
   }
 
   ngOnInit() {
-    this.contentName = moment().format('YYYYMMDDhhmmss');
+    this.contentName = moment().unix().toString();
     this.loadMedia();
     this.listenToRedoEvents();
   }
