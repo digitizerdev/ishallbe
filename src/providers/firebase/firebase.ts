@@ -52,7 +52,7 @@ export class FirebaseProvider {
     this.userDoc = this.afs.doc(path);
     this.userDoc.valueChanges().subscribe((user) => {
       if (user) {
-        if (user.roles.editor) { this.events.publish("login: editor")};
+        if (user.editor) { this.events.publish("login: editor")};
         this.user = user;
       }
     });

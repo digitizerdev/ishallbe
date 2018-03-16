@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 
 import { HomePage } from '../home/home';
- 
+
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import { Statement } from '../../../test-data/statements/model';
@@ -17,14 +17,14 @@ import { Statement } from '../../../test-data/statements/model';
   templateUrl: 'statement-creator.html',
 })
 export class StatementCreatorPage {
- createStatementForm: {
+  createStatementForm: {
     title?: string;
-    description?: string, 
-  } = {};  
+    description?: string,
+  } = {};
   statementId: string;
-  statementImageUrl: string; 
+  statementImageUrl: string;
   statementName: string;
-  imageRetrievalMethod: string; 
+  imageRetrievalMethod: string;
   timestamp: number;
   displayTimestamp: string;
   submitted = false;
@@ -32,13 +32,13 @@ export class StatementCreatorPage {
   imageReady = false;
 
   constructor(
-    private navCtrl: NavController, 
+    private navCtrl: NavController,
     private alertCtrl: AlertController,
     private events: Events,
     private loadingCtrl: LoadingController,
     private actionSheetCtrl: ActionSheetController,
     private firebase: FirebaseProvider
-    ) {
+  ) {
   }
 
   ionViewDidLoad() {
@@ -93,9 +93,10 @@ export class StatementCreatorPage {
     if (!this.imageReady) this.displayNotReadyAlert();
     else {
       if (form.valid) {
-        let loading = this.loadingCtrl.create({ 
+        let loading = this.loadingCtrl.create({
           spinner: 'bubbles',
-          content: 'Loading...' });
+          content: 'Loading...'
+        });
         loading.present();
         this.buildStatement(form).subscribe((statement) => {
           this.createStatement(statement).then(() => {
@@ -121,11 +122,9 @@ export class StatementCreatorPage {
         filename: this.statementName,
         displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
-        user: {
-          uid: this.firebase.user.uid,
-          name: this.firebase.user.name,
-          photo: this.firebase.user.photo
-        }
+        uid: this.firebase.user.uid,
+        name: this.firebase.user.name,
+        face: this.firebase.user.photo
       }
       observer.next(statement);
     });
@@ -164,7 +163,7 @@ export class StatementCreatorPage {
         subTitle: 'Please Try Again',
         buttons: ['OK']
       });
-      alert.present();    
+      alert.present();
     });
   }
 

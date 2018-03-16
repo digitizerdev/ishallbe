@@ -173,11 +173,11 @@ export class PinCreatorPage {
   }
 
   submitValidPin(form) {
-    let loading = this.loadingCtrl.create({ 
+    let loading = this.loadingCtrl.create({
       spinner: 'bubbles',
       content: 'Loading...',
       cssClass: 'loading-hold'
-     });
+    });
     loading.present();
     this.buildPin(form).subscribe((pin) => {
       this.createPin(pin).then(() => {
@@ -213,11 +213,9 @@ export class PinCreatorPage {
         timestamp: this.timestamp,
         startTime: time,
         endTime: time,
-        user: {
-          uid: this.firebase.user.uid,
-          name: this.firebase.user.name,
-          photo: this.firebase.user.photo
-        }
+        uid: this.firebase.user.uid,
+        name: this.firebase.user.name,
+        face: this.firebase.user.photo
       }
       observer.next(pin);
     });

@@ -71,9 +71,10 @@ export class GoalCreatorPage {
     if (!this.audioReady || !this.dateSelected) this.displayNotReadyAlert();
     else {
       if (form.valid) {
-        let loading = this.loadingCtrl.create({ 
+        let loading = this.loadingCtrl.create({
           spinner: 'bubbles',
-          content: 'Loading...' });
+          content: 'Loading...'
+        });
         loading.present();
         this.buildGoal(form).subscribe((goal) => {
           this.createGoal(goal).then(() => {
@@ -103,11 +104,9 @@ export class GoalCreatorPage {
         dueDate: this.dueDate,
         displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
-        user: {
-          uid: this.firebase.user.uid,
-          name: this.firebase.user.name,
-          photo: this.firebase.user.photo
-        }
+        uid: this.firebase.user.uid,
+        name: this.firebase.user.name,
+        face: this.firebase.user.photo
       }
       observer.next(goal);
     });
@@ -133,7 +132,7 @@ export class GoalCreatorPage {
       this.dueDate = moment(date).unix();
       this.displayDueDate = moment(date).fromNow();
       this.formateDueDate();
-    }, (err) => {});
+    }, (err) => { });
   }
 
   formateDueDate() {
@@ -229,7 +228,7 @@ export class GoalCreatorPage {
         subTitle: 'Please Try Again',
         buttons: ['OK']
       });
-      alert.present();    
+      alert.present();
     });
   }
 

@@ -10,6 +10,8 @@ import { Observable } from 'rxjs/Observable';
 
 declare var cordova: any;
 
+import { mockGoals } from '../../../test-data/goals/mocks';
+
 @Component({
   selector: 'goals',
   templateUrl: 'goals.html'
@@ -21,6 +23,29 @@ export class GoalsComponent {
   goals: any[];
 
   constructor(
+    private fileTransfer: FileTransfer,
+    private media: Media
+  ) {
+    let rawDateString = moment().format('YYYYMMDD');
+    this.rawDate = parseInt(rawDateString);
+    this.rawNextWeekDate = this.rawDate + 7;
+    this.setGoals();
+  }
+
+  setGoals() {
+    this.goals = [];
+    mockGoals.forEach((goal) => {
+      if (!goal.complete) {
+        goal.displayDueDate = moment(goal.dueDate, "YYYYMMDDhhmmss").fromNow();
+        this.setDueDateWarningColor(goal).subscribe((goal) => {
+          this.goals.push(goal);
+        });
+      }
+    });
+  }
+
+
+/*   constructor(
     private fileTransfer: FileTransfer,
     private media: Media,
     private firebase: FirebaseProvider
@@ -36,7 +61,7 @@ export class GoalsComponent {
       console.log(goals);
       this.setGoals(goals);
     });
-  }
+  } */
 
   timestamp() {
     console.log("Timestamping Page");
@@ -44,18 +69,18 @@ export class GoalsComponent {
     this.rawNextWeekDate = this.rawDate + 7;
   }
 
-  loadGoals() {
+/*   loadGoals() {
     console.log("Loading Goals");
     return Observable.create((observer) => {
       console.log("My uid is " + this.firebase.user.uid);
-      let myGoals = this.firebase.afs.collection('goals', ref => ref.where('user.uid', "==", this.firebase.user.uid));
+      let myGoals = this.firebase.afs.collection('goals', ref => ref.where('uid', "==", this.firebase.user.uid));
       return myGoals.valueChanges().subscribe((goals) => {
         observer.next(goals);
       });
     });
-  }
+  } */
 
-  setGoals(goals) {
+/*   setGoals(goals) {
     console.log("Setting Goals");
     return Observable.create((observer) => {
       this.goals = [];
@@ -71,7 +96,7 @@ export class GoalsComponent {
       observer.next();
     });
   }
-
+ */
   setDueDateWarningColor(goal) {
     console.log("Setting Due Date Warning Color");
     return Observable.create((observer) => {

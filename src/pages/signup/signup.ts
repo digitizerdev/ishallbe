@@ -101,15 +101,11 @@ export class SignupPage {
         blocked: false,
         displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
-        social: {
-          instagram: "",
-          linkedin: "",
-          twitter: ""
-        },
-        roles: {
-          contributor: true,
-          editor: false
-        },
+        instagram: "",
+        linkedin: "",
+        twitter: "",
+        contributor: true,
+        editor: false
       }
       observer.next(user);
     });
