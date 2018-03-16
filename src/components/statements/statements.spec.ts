@@ -72,7 +72,7 @@ describe('StatementsComponent', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof StatementsComponent).toBe(true);
     });
 

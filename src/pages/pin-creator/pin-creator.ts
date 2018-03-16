@@ -80,6 +80,7 @@ export class PinCreatorPage {
       case 'Monday': {
         this.mondayForm.link = this.pin.link;
         this.pinImageUrl = this.pin.url;
+        this.pinName = this.pin.filename;
         this.loadingImage = false;
         this.imageReady = true;
       }
@@ -219,6 +220,8 @@ export class PinCreatorPage {
           photo: this.firebase.user.photo
         }
       }
+      console.log("Pin Built");
+      console.log(pin);
       observer.next(pin);
     });
   }

@@ -82,7 +82,7 @@ describe('ExplorePage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof ExplorePage).toBe(true);
     });
 

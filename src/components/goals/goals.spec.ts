@@ -83,7 +83,7 @@ describe('GoalsComponent', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof GoalsComponent).toBe(true);
     });
 
