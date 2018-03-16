@@ -8,15 +8,11 @@ export interface Notification {
   message: string,
   displayTimestamp: string,
   timestamp: number,
-  post: {
-    id: string,
-    type: string,
-    owner: string
-  }
-  user: {
-    uid: string,
-    name: string,
-    photo: string
-  }
+  postId: string,
+  postType: string,
+  owner: string
+  uid: string,
+  name: string,
+  face: string
 }
 

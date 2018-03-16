@@ -9,16 +9,12 @@ export const likedStatement = {
   message: "liked your statement",
   displayTimestamp: "FEB 19 2018 6:27PM",
   timestamp: 20180219182701,
-  post: {
-    id: "1",
-    type: "statement",
-    owner: "Troy Thompson"
-  },
-  user: {
-    uid: "1",
-    name: "Shelby Tinsley",
-    photo: "assets/img/headshot.png"
-  }
+  postId: "1",
+  postType: "statement",
+  owner: "Troy Thompson",
+  uid: "1",
+  name: "Shelby Tinsley",
+  face: "assets/img/headshot.png"
 }
 export const commentedOnStatement = {
   id: "2",
@@ -30,16 +26,12 @@ export const commentedOnStatement = {
   message: "commented on your statement",
   displayTimestamp: "FEB 19 2018 4:24PM",
   timestamp: 20180219162400,
-  post: {
-    id: "1",
-    type: "statement",
-    owner: "Troy Thompson"
-  },
-  user: {
-    uid: "1",
-    name: "Shelby Tinsley",
-    photo: "assets/img/headshot.png"
-  }
+  postId: "1",
+  postType: "statement",
+  owner: "Troy Thompson",
+  uid: "1",
+  name: "Shelby Tinsley",
+  face: "assets/img/headshot.png"
 }
 export const likedCommentOnStatement = {
   id: "3",
@@ -51,16 +43,12 @@ export const likedCommentOnStatement = {
   message: "liked your comment on Troy's statement",
   displayTimestamp: "FEB 17 2018 4:24PM",
   timestamp: 20180217162400,
-  post: {
-    id: "1",
-    type: "statement",
-    owner: "Troy Thompson"
-  },
-  user: {
-    uid: "1",
-    name: "Shelby Tinsley",
-    photo: "assets/img/headshot.png"
-  }
+  postId: "1",
+  postType: "statement",
+  owner: "Troy Thompson",
+  uid: "1",
+  name: "Shelby Tinsley",
+  face: "assets/img/headshot.png"
 }
 export const likedPin = {
   id: "4",
@@ -72,16 +60,12 @@ export const likedPin = {
   message: "liked your pin",
   displayTimestamp: "FEB 15 2018 8:48AM",
   timestamp: 20180215084800,
-  post: {
-    id: "1",
-    type: "pin",
-    owner: "Troy Thompson"
-  },
-  user: {
-    uid: "1",
-    name: "Shelby Tinsley",
-    photo: "assets/img/headshot.png"
-  }
+  postId: "1",
+  postType: "pin",
+  owner: "Troy Thompson",
+  uid: "1",
+  name: "Shelby Tinsley",
+  face: "assets/img/headshot.png"
 }
 export const commentedOnPin = {
   id: "5",
@@ -92,17 +76,13 @@ export const commentedOnPin = {
   reminder: false,
   message: "commented on your pin",
   displayTimestamp: "FEB 14 2018 4:24PM",
-  timestamp: 20180214162400, 
-  post: {
-    id: "1",
-    type: "pin",
-    owner: "Troy Thompson"
-  },
-  user: {
-    uid: "1",
-    name: "Shelby Tinsley",
-    photo: "assets/img/headshot.png"
-  }
+  timestamp: 20180214162400,
+  postId: "1",
+  postType: "pin",
+  owner: "Troy Thompson",
+  uid: "1",
+  name: "Shelby Tinsley",
+  face: "assets/img/headshot.png"
 }
 export const likedCommentOnPin = {
   id: "6",
@@ -114,16 +94,12 @@ export const likedCommentOnPin = {
   message: "liked your comment on iShallBe's pin",
   displayTimestamp: "FEB 13 2018 4:24PM",
   timestamp: 20180213162400,
-  post: {
-    id: "1",
-    type: "pin",
-    owner: "Troy Thompson"
-  },
-  user: {
-    uid: "1",
-    name: "Shelby Tinsley",
-    photo: "assets/img/headshot.png"
-  }
+  postId: "1",
+  postType: "pin",
+  owner: "Troy Thompson",
+  uid: "1",
+  name: "Shelby Tinsley",
+  face: "assets/img/headshot.png"
 }
 export const goalReminder = {
   id: "7",
@@ -135,15 +111,11 @@ export const goalReminder = {
   message: "Don't forget to record results on your September Goal",
   displayTimestamp: "FEB 05 2018 12:12PM",
   timestamp: 20180205121212,
-  post: {
-    id: "1",
-    type: "statement",
-    owner: "Troy Thompson"
-  },
-  user: {
-    uid: "1",
-    name: "Reminder: ",
-    photo: "assets/img/logo-square.png"
-  }
+  postId: "1",
+  postType: "statement",
+  owner: "Troy Thompson",
+  uid: "1",
+  name: "Reminder: ",
+  face: "assets/img/logo-square.png"
 }
 export const mockNotifications: Notification[] = [likedStatement, commentedOnStatement, likedCommentOnStatement, likedPin, commentedOnPin, likedCommentOnPin, goalReminder];       
