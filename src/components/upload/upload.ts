@@ -56,14 +56,14 @@ export class UploadComponent {
         this.getImage();
       }
       break;
-      case 'library': {
-        this.sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
-        this.getImage();
-      }
-      break;
       case 'audio': {
         this.contentName = this.contentName + ".m4a";
         this.getAudio();
+      }
+      break;
+      default: {
+        this.sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
+        this.getImage();
       }
     }
   }
@@ -72,7 +72,8 @@ export class UploadComponent {
     this.gettingImage = true;
     this.camera.getPicture(this.getCameraOptions()).then((image) => {
       this.imageElement.nativeElement.src = image;
-      this.cropImage();
+      if (this.contentType == "pin") this.cropPin();
+      else this.cropImage();
     }).catch((error) => { 
       this.events.publish("getImageCanceled");
     });;
@@ -81,7 +82,7 @@ export class UploadComponent {
 
   getCameraOptions() {
     let cameraOpts: CameraOptions = {
-      quality: 50,
+      quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
       sourceType: this.sourceType,
       encodingType: this.camera.EncodingType.JPEG,
@@ -108,8 +109,23 @@ export class UploadComponent {
     });
   }
 
+  cropPin() {
+    this.cropperInstance = new Cropper(this.imageElement.nativeElement, {
+      dragMode: 'move',
+      modal: true,
+      guides: true,
+      highlight: false,
+      background: false,
+      autoCrop: true,
+      autoCropArea: 0.9,
+      responsive: true,
+      zoomable: true,
+      movable: false
+    });
+  }
+
   uploadImage() {
-    this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Please Wait..' });
+    this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
     this.loader.present();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
     let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
@@ -153,7 +169,7 @@ export class UploadComponent {
 
   uploadAudio() {
     this.recording = false;
-    this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Please Wait..' });
+    this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
     this.loader.present();
     this.audio.stopRecord();
     this.storeAudio().subscribe((downloadURL) => {

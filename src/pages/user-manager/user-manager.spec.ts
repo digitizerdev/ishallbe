@@ -78,5 +78,29 @@ describe('UserManagerPage', () => {
         expect(component instanceof UserManagerPage).toBe(true);
     });
 
+    it('should display search bar', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#UserSearchbar'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display NoReportedUsersFeature if no reported users', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#NoReportedUsersFeature'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display ReportedUsers if reported users', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ReportedUsersFeature'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
 });
 

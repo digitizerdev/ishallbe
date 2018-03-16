@@ -72,9 +72,16 @@ describe('PinsComponent', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof PinsComponent).toBe(true);
     });
 
+    fit('should display pins slider', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PinsSlider'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
 });
 

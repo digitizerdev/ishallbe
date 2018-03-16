@@ -19,12 +19,15 @@ export class HomePage {
   constructor(
     private navCtrl: NavController,
   ) {
+    console.log("Hello Home Page");
     this.timestamp();
   }
 
   timestamp() {
+    console.log("Timestamping");
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
+    console.log("RawDate is " + this.rawDate);
     this.displayDate = moment().format('MMM D YYYY');
     this.displayDate = this.displayDate.toUpperCase();
     let rawTimeString = moment().format('YYYYMMDDhhmmss');

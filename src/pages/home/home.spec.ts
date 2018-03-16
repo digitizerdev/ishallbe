@@ -94,7 +94,7 @@ describe('HomePage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof HomePage).toBe(true);
     });
 

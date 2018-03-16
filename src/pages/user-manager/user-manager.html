@@ -5,12 +5,18 @@
     </button>
     <ion-title color='primary'>User Manager</ion-title>
   </ion-navbar>
-  <ion-toolbar no-border-top color='primary'>
-    <ion-searchbar color="light-yellow" [(ngModel)]="queryText" (ionInput)="updateSchedule()" placeholder="Search">
+  <ion-toolbar color='primary' id="UserSearchbar" no-border-top>
+    <ion-searchbar color="light-yellow" [(ngModel)]="queryText" (ionInput)="updateSchedule()" placeholder="Search by User Email">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <br>
-  <footer></footer>
+  <br>
+  <div class="feature" id="NoReportedUsersFeature" text-center>
+    <h5>There are no reported users</h5>
+  </div>
+  <div class="feature" id="ReportedUsersFeature" text-center>
+  </div>
+  <br>
 </ion-content>

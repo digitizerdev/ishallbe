@@ -82,7 +82,7 @@ describe('NotificationsPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof NotificationsPage).toBe(true);
     });
 

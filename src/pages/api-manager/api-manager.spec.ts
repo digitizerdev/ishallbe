@@ -93,5 +93,29 @@ describe('ApiManagerPage', () => {
         el = de.nativeElement.innerHTML;
         expect(el).toContain('API Manager')
     });
+
+    it('should display header', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('header'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display ChannelFeature', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ChannelFeature'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display AppBaseFeature', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#AppBaseFeature'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
 });
 

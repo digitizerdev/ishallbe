@@ -3,6 +3,7 @@ import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { IonicModule, Platform, NavController } from 'ionic-angular';
+import { NgCalendarModule } from 'ionic2-calendar';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -42,7 +43,8 @@ describe('PostManagerPage', () => {
             imports: [
                 IonicModule.forRoot(PostManagerPage),
                 AngularFireModule.initializeApp(environment.firebase),
-                ComponentsModule
+                ComponentsModule,
+                NgCalendarModule
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
@@ -78,5 +80,87 @@ describe('PostManagerPage', () => {
         expect(component instanceof PostManagerPage).toBe(true);
     });
 
+    it('should be titled Post Manager', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PostManagerTitle'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('Post Manager')
+    });
+
+    it('should display PinsSegment if postType is pins', () => {
+        component.postType = 'pins';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PinsSegment'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display PinsCalendar if pins are loaded', () => {
+        component.postType = 'pins';
+        component.pinsLoaded = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PinsCalendar'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display CreatePinButton if selectedDay does not already have a pin', () => {
+        component.postType = 'pins';
+        component.pinCreated = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#CreatePinButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display UpdatePinButton if selectedDay already has a pin', () => {
+        component.postType = 'pins';
+        component.pinCreated = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#UpdatePinButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display StatementsSegment if postType is statements', () => {
+        component.postType = 'statements';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#StatementsSegment'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display NoReportedStatements if there are no reported statements', () => {
+        component.postType = 'statements';
+        component.reportedStatements = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#NoReportedStatements'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display ReportedStatements if there are reported statements', () => {
+        component.postType = 'statements';
+        component.reportedStatements = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ReportedStatements'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
 });
 

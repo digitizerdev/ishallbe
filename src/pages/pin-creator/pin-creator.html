@@ -3,8 +3,113 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Create Pin</ion-title>
+    <ion-title id="PinCreatorTitle">Pin</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content>
+  <div id="selectedDateText" text-center>
+    <br>
+    <h2 color="primary" ion-text>{{displaySelectedDay}}</h2>
+  </div>
+  <div *ngIf="monday">
+    <div *ngIf="!imageReady && !loadingImage">
+      <br>
+      <ion-row id="UploadThumbnailButton">
+        <ion-col text-center padding-left padding-right>
+          <button ion-button (click)="loadImage()" color="secondary" icon-start round block large strong>
+            <ion-icon name="ios-image"></ion-icon>
+            UPLOAD THUMBNAIL
+          </button>
+        </ion-col>
+      </ion-row>
+    </div>
+    <upload *ngIf="loadingImage" (uploaded)="setImage($event)" [method]="imageRetrievalMethod" padding></upload>
+    <ion-row *ngIf="imageReady" id="PinImage">
+      <ion-col text-center>
+        <img (click)="redoImageLoad()" [src]="pinImageUrl" class="full-image">
+      </ion-col>
+    </ion-row>
+    <form id="MondayForm" novalidate padding>
+      <ion-item class="appForm">
+        <ion-input [(ngModel)]="mondayForm.title" class="myItem" name="title" type="text" #title="ngModel" spellcheck="false" autocapitalize="off"
+          required>
+        </ion-input>
+      </ion-item>
+      <br>
+      <ion-item class="appForm">
+        <ion-label stacked text-left>
+          <ion-icon name="logo-youtube" color="primary"></ion-icon>
+        </ion-label>
+        <ion-input [(ngModel)]="mondayForm.link" name="link" type="text" #link="ngModel" spellcheck="false" autocapitalize="off">
+        </ion-input>
+      </ion-item>
+      <br>
+      <ion-row>
+        <ion-col text-center class="submit">
+          <button *ngIf="!pin" id="CreatePinButton" ion-button (click)="submit(mondayForm)" color="primary" round block large strong>
+            CREATE PIN
+          </button>
+          <button *ngIf="pin" id="CreatePinButton" ion-button (click)="submit(mondayForm)" color="primary" round block large strong>
+            UPDATE PIN
+          </button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
+  <form *ngIf="tuesday" id="TuesdayForm" novalidate padding>
+    <ion-item class="appForm">
+      <ion-input class="myItem" [(ngModel)]="tuesdayForm.title" name="title" type="text" #title="ngModel" spellcheck="false" autocapitalize="off"
+        required>
+      </ion-input>
+    </ion-item>
+    <br>
+    <ion-item class="appForm">
+      <ion-label stacked text-left>
+        <ion-icon name="logo-youtube" color="primary"></ion-icon>
+      </ion-label>
+      <ion-input [(ngModel)]="tuesdayForm.link" name="link" type="text" #link="ngModel" spellcheck="false" autocapitalize="off">
+      </ion-input>
+    </ion-item>
+    <br>
+    <ion-item class="appFormTextArea">
+      <ion-textarea [attr.rows]="4" autosize placeholder=" Pin Description" [(ngModel)]="tuesdayForm.description" name="description"
+        type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" required>
+      </ion-textarea>
+    </ion-item>
+    <br>
+    <ion-row>
+      <ion-col text-center class="submit">
+        <button *ngIf="!pin" id="CreatePinButton" ion-button (click)="submit(tuesdayForm)" color="primary" round block large strong>
+          CREATE PIN
+        </button>
+        <button *ngIf="pin" id="CreatePinButton" ion-button (click)="submit(tuesdayForm)" color="primary" round block large strong>
+          UPDATE PIN
+        </button>
+      </ion-col>
+    </ion-row>
+  </form>
+  <form *ngIf="wedToSun" id="WedToSunForm" novalidate padding>
+    <ion-item class="appForm">
+      <ion-input class="myItem" placeholder="Pin Title" [(ngModel)]="wedToSunForm.title" name="title" type="text" #title="ngModel"
+        spellcheck="false" autocapitalize="off" required>
+      </ion-input>
+    </ion-item>
+    <br>
+    <ion-item class="appFormTextArea">
+      <ion-textarea [attr.rows]="4" autosize placeholder=" Pin Description" [(ngModel)]="wedToSunForm.description" name="description"
+        type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" required>
+      </ion-textarea>
+    </ion-item>
+    <br>
+    <ion-row>
+      <ion-col text-center class="submit">
+        <button *ngIf="!pin" id="CreatePinButton" ion-button (click)="submit(wedToSunForm)" color="primary" round block large strong>
+          CREATE PIN
+        </button>
+        <button *ngIf="pin" id="CreatePinButton" ion-button (click)="submit(wedToSunForm)" color="primary" round block large strong>
+          UPDATE PIN
+        </button>
+      </ion-col>
+    </ion-row>
+  </form>
 </ion-content>

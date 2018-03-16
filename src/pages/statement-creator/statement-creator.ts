@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, AlertController, Events, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, LoadingController, Events, ActionSheetController } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
@@ -35,6 +35,7 @@ export class StatementCreatorPage {
     private navCtrl: NavController, 
     private alertCtrl: AlertController,
     private events: Events,
+    private loadingCtrl: LoadingController,
     private actionSheetCtrl: ActionSheetController,
     private firebase: FirebaseProvider
     ) {
@@ -58,6 +59,7 @@ export class StatementCreatorPage {
           text: 'Camera',
           handler: () => {
             console.log("Chose Camera");
+            if (this.imageReady) this.redoImageLoad();
             this.imageRetrievalMethod = "camera";
             this.loadingImage = true;
           }
@@ -66,6 +68,7 @@ export class StatementCreatorPage {
           text: 'Library',
           handler: () => {
             console.log("Chose Library");
+            if (this.imageReady) this.redoImageLoad();
             this.imageRetrievalMethod = "library";
             this.loadingImage = true;
           }
@@ -94,9 +97,14 @@ export class StatementCreatorPage {
     if (!this.imageReady) this.displayNotReadyAlert();
     else {
       if (form.valid) {
+        let loading = this.loadingCtrl.create({ 
+          spinner: 'bubbles',
+          content: 'Loading...' });
+        loading.present();
         this.buildStatement(form).subscribe((statement) => {
           this.createStatement(statement).then(() => {
             this.navCtrl.setRoot(HomePage);
+            loading.dismiss();
           });
         });
       }
@@ -162,5 +170,12 @@ export class StatementCreatorPage {
       });
       alert.present();    
     });
+  }
+
+  redoImageLoad() {
+    console.log("Redoing Image Load");
+    this.statementImageUrl = null;
+    this.imageReady = false;
+    this.events.publish('redoUpload', this.imageRetrievalMethod, this.statementName);
   }
 }

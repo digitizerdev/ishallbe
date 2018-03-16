@@ -3,14 +3,45 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>Post Manager</ion-title>
+    <ion-title id="PostManagerTitle" color='primary'>Post Manager</ion-title>
   </ion-navbar>
-  <ion-toolbar no-border-top color='primary'>
-    <ion-searchbar color="light-yellow" [(ngModel)]="queryText" (ionInput)="updateSchedule()" placeholder="Search">
-    </ion-searchbar>
-  </ion-toolbar>
 </ion-header>
 <ion-content>
-  <br>
-  <footer></footer>
+  <ion-segment [(ngModel)]="postType" color="primary" padding-top padding-left padding-right>
+    <ion-segment-button value="pins">
+      <ion-icon name="calendar"></ion-icon>
+      <b>PINS</b>
+    </ion-segment-button>
+    <ion-segment-button value="statements">
+      <ion-icon name="images"></ion-icon>
+      <b>STATEMENTS</b>
+    </ion-segment-button>
+  </ion-segment>
+  <div *ngIf="postType=='pins'" id="PinsSegment" text-center>
+    <h4 color="primary" ion-text>
+      <b>{{viewTitle}}</b>
+    </h4>
+    <calendar *ngIf="pinsLoaded" id="PinsCalendar" [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate" allDayLabel="{{displaySelectedDay}}" noEventsLabel="No {{displaySelectedDay}} Pin"
+      (onEventSelected)="onEventSelected($event)" (onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="onTimeSelected($event)"
+      step="30" class="calendar" no-padding-bottom no-margin-bottom>
+    </calendar>
+    <ion-row no-padding-top no-margin-top>
+      <ion-col text-center padding-left padding-right>
+        <button *ngIf="!pinCreated" id="CreatePinButton" (click)="pushPinCreatorPage()" color="primary" ion-button round block large strong>CREATE PIN</button>
+        <button *ngIf="pinCreated" id="UpdatePinButton" (click)="pushPinCreatorPage()" color="primary" ion-button round block large strong>UPDATE PIN</button>
+      </ion-col>
+    </ion-row>
+    <br>
+  </div>
+  <div *ngIf="postType=='statements'" id="StatementsSegment">
+    <br>
+    <br>
+    <div *ngIf="!reportedStatements" class="feature" id="NoReportedStatements" text-center>
+      <h5>There are no reported statements</h5>
+    </div>
+    <div *ngIf="reportedStatements" class="feature" id="ReportedStatements" text-center>
+      <h5>Reported Statements</h5>
+    </div>
+    <br>
+  </div>
 </ion-content>
