@@ -42,7 +42,7 @@
     "@ionic/storage": "2.0.1",
     "angularfire2": "^5.0.0-rc.3",
     "babel-minify": "^0.2.0",
-    "cordova-android": "6.3.0",
+    "cordova-android": "6.4.0",
     "cordova-browser": "5.0.3",
     "cordova-ios": "4.5.4",
     "cordova-plugin-camera": "^3.0.0",
@@ -54,6 +54,7 @@
     "cordova-plugin-file-transfer": "^1.7.1",
     "cordova-plugin-inappbrowser": "^2.0.2",
     "cordova-plugin-ionic": "^3.1.3",
+    "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-media": "^5.0.2",
     "cordova-plugin-media-capture": "^3.0.1",
     "cordova-plugin-splashscreen": "^5.0.2",
@@ -68,7 +69,7 @@
     "ionic2-calendar": "^0.3.13-weekdayview-tpls",
     "ionicons": "3.0.0",
     "moment": "^2.20.1",
-    "phonegap-plugin-push": "^2.2.2",
+    "phonegap-plugin-push": "^1.9.0",
     "promise-polyfill": "^7.1.0",
     "rxjs": "5.4.0",
     "sw-toolbox": "3.6.0",
@@ -148,8 +149,8 @@
       "cordova-plugin-file-transfer": {}
     },
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   },
   "config": {

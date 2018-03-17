@@ -20,6 +20,7 @@
     <platform name="android">
         <allow-intent href="market:*" />
         <resource-file src="google-services.json" target="google-services.json" />
+        <preference name="AndroidPersistentFileLocation" value="Compatibility" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
         <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />
@@ -101,29 +102,26 @@
     <edit-config file="*-Info.plist" mode="merge" target="NSMicrophoneUsageDescription">
         <string>need microphone access to record sounds</string>
     </edit-config>
-    <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
-    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
     <plugin name="cordova-plugin-statusbar" spec="^2.4.1" />
     <plugin name="cordova-plugin-device" spec="^1.1.7" />
+    <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <plugin name="cordova-plugin-camera" spec="^3.0.0">
         <variable name="CAMERA_USAGE_DESCRIPTION" value="Access to Camera" />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Access to Library" />
     </plugin>
-    <plugin name="cordova-plugin-media" spec="^5.0.2">
-        <variable name="KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE" value="NO" />
+    <plugin name="cordova-plugin-media-capture" spec="^3.0.1">
+        <variable name="CAMERA_USAGE_DESCRIPTION" value="Access to Camera" />
         <variable name="MICROPHONE_USAGE_DESCRIPTION" value="Access to Microphone" />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Access to Photo Library" />
     </plugin>
     <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
         <variable name="APP_ID" value="1312020948874676" />
         <variable name="APP_NAME" value="iShallBe" />
     </plugin>
-    <plugin name="phonegap-plugin-push" spec="^2.1.3">
-        <variable name="SENDER_ID" value="1:881822459028:android:58c20c02735f7e42" />
-    </plugin>
     <plugin name="cordova-plugin-email-composer" spec="^0.8.15" />
     <plugin name="cordova-plugin-youtube-video-player" spec="^1.0.6" />
     <plugin name="cordova-plugin-inappbrowser" spec="^2.0.2" />
-    <plugin name="cordova-plugin-ionic" spec="^3.1.2">
+    <plugin name="cordova-plugin-ionic" spec="^3.1.3">
         <variable name="APP_ID" value="69d144ed" />
         <variable name="CHANNEL_NAME" value="Production" />
         <variable name="UPDATE_METHOD" value="none" />
@@ -132,8 +130,17 @@
         <variable name="MAX_STORE" value="2" />
     </plugin>
     <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
-    <plugin name="cordova-plugin-file" spec="^6.0.1" />
+    <plugin name="cordova-plugin-media" spec="^5.0.2">
+        <variable name="KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE" value="NO" />
+        <variable name="NSMicrophoneUsageDescription" value="Access to Microphone" />
+        <variable name="MICROPHONE_USAGE_DESCRIPTION" value="Access to Microphone" />
+    </plugin>
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
-    <engine name="android" spec="6.3.0" />
+    <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
+    <plugin name="phonegap-plugin-push" spec="^1.9.0">
+        <variable name="SENDER_ID" value="1:881822459028:android:58c20c02735f7e42" />
+    </plugin>
     <engine name="ios" spec="4.5.4" />
+    <engine name="android" spec="6.4.0" />
 </widget>
