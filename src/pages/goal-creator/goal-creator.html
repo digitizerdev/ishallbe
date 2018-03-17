@@ -61,7 +61,7 @@
     <form class="my-form" #createGoalForm="ngForm" novalidate padding>
       <ion-item class="appForm">
         <ion-input class="myItem" placeholder="Goal Title" [(ngModel)]="createGoalForm.title" name="title" type="text" #title="ngModel"
-          spellcheck="false" autocapitalize="off" required>
+          spellcheck="false" autocapitalize="off" autocorrect=“on” required>
         </ion-input>
       </ion-item>
       <p ion-text [hidden]="title.valid || submitted == false" color="danger" padding-left>
@@ -70,10 +70,10 @@
       <br>
       <ion-item class="appFormTextArea">
         <ion-textarea [attr.rows]="4" autosize placeholder="Goal Description" [(ngModel)]="createGoalForm.description" name="description"
-          type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" required>
+          type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on” required>
         </ion-textarea>
       </ion-item>
-      <p ion-text [hidden]="description.valid || submitted == false" color="danger" padding-left>
+      <p ion-text [hidden]="description.valid || submitted == false" color="danger"  padding-left>
         Goal Description is required
       </p>
       <br>

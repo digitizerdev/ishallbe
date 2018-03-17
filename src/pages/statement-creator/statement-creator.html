@@ -27,7 +27,7 @@
   <form #createStatementForm="ngForm" novalidate padding>
     <ion-item class="appForm">
       <ion-input class="myItem" placeholder="Statement Title" [(ngModel)]="createStatementForm.title" name="title" type="text"
-        #title="ngModel" spellcheck="false" autocapitalize="off" required>
+        #title="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on” required>
       </ion-input>
     </ion-item>
     <p ion-text [hidden]="title.valid || submitted == false" color="danger" padding-left>
@@ -36,7 +36,7 @@
     <br>
     <ion-item class="appFormTextArea">
       <ion-textarea [attr.rows]="4" autosize placeholder=" Statement Description" [(ngModel)]="createStatementForm.description"
-        name="description" type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" required>
+        name="description" type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on” required>
       </ion-textarea>
     </ion-item>
     <p ion-text [hidden]="description.valid || submitted == false" color="danger" padding-left>

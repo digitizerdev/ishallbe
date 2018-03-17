@@ -4,6 +4,8 @@ import moment from 'moment';
 
 import { NotificationsPage } from '../../pages/notifications/notifications';
 
+import { FirebaseProvider } from '../../providers/firebase/firebase';
+
 @IonicPage()
 @Component({
   selector: 'page-home',
@@ -14,12 +16,16 @@ export class HomePage {
   rawDate: number;
   displayDate: string;
   time: any;
+  uid: any;
 
   constructor(
     private navCtrl: NavController,
+    private firebase: FirebaseProvider
   ) {
     console.log("Hello Home Page");
     this.timestamp();
+    this.uid = "mQ2XaUVS46fKKJDo0u8ldPQdmnB3"
+    console.log("My uid is " + this.uid);
   }
 
   timestamp() {

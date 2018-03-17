@@ -9,8 +9,8 @@
       <ion-col *ngFor="let goal of goals" col-12 col-sm>
         <ion-card>
           <ion-item class="goal-header">
-            <ion-avatar (click)="viewUser(goal.user_id)" item-left>
-              <button (click)="openLink(pin.mediaUrl)" text-center ion-button small round>
+            <ion-avatar (click)="playAudio(goal)" item-left>
+              <button text-center ion-button small round>
                 <ion-icon name="play"></ion-icon>
               </button>
             </ion-avatar>

@@ -91,13 +91,13 @@
   <form *ngIf="wedToSun" id="WedToSunForm" novalidate padding>
     <ion-item class="appForm">
       <ion-input class="myItem" placeholder="Pin Title" [(ngModel)]="wedToSunForm.title" name="title" type="text" #title="ngModel"
-        spellcheck="false" autocapitalize="off" required>
+        spellcheck="false" autocapitalize="off" autocorrect=“on” required>
       </ion-input>
     </ion-item>
     <br>
     <ion-item class="appFormTextArea">
       <ion-textarea [attr.rows]="4" autosize placeholder=" Pin Description" [(ngModel)]="wedToSunForm.description" name="description"
-        type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" required>
+        type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on” required>
       </ion-textarea>
     </ion-item>
     <br>

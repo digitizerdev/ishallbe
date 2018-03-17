@@ -6,8 +6,6 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { Observable } from 'rxjs';
 import moment from 'moment';
 
-import { mockPins } from '../../../test-data/pins/mocks';
-
 @Component({
   selector: 'pins',
   templateUrl: 'pins.html'
@@ -30,25 +28,6 @@ export class PinsComponent {
   }
 
   ngAfterViewInit() {
-    this.setPins();
-    setTimeout(() => {
-      this.slides.slideTo(5);
-    }, 500);
-  }
-
-  refreshPage(refresh) {
-    this.navCtrl.setRoot(this.navCtrl.getActive().component);
-  }
-
-  setPins() {
-    this.pins = [];
-    mockPins.forEach((pin) => {
-      this.pins.push(pin);
-    });
-  }
-}
-
-/*   ngAfterViewInit() {
     console.log("View Initialized");
     this.timestamp();
     this.loadPins().subscribe((pins) => {
@@ -101,4 +80,3 @@ export class PinsComponent {
     });
   }
 }
- */

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 
 import moment from 'moment';
+import { Observable } from 'rxjs/Observable';
 
-import { mockStatements } from '../../../test-data/statements/mocks';
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @Component({
   selector: 'statements',
@@ -13,9 +14,16 @@ export class StatementsComponent {
   rawDate: number;
   statements: any[];
 
-  constructor() {
+  constructor(
+    private firebase: FirebaseProvider
+  ) {
+    console.log("Statements View Initialized")
     this.timestamp();
-    this.setStatements();
+    this.loadStatements().subscribe((statements) => {
+      console.log("Got statements");
+      console.log(statements);
+      this.setStatements(statements);
+    });
   }
 
   timestamp() {
@@ -23,9 +31,19 @@ export class StatementsComponent {
     this.rawDate = parseInt(rawDateString);
   }
 
-  setStatements() {
+  loadStatements() {
+    console.log("Loading Statements");
+    return Observable.create((observer) => {
+      let allStatements = this.firebase.afs.collection('statements', ref => ref.orderBy('timestamp'));
+      allStatements.valueChanges().subscribe((statements) => {
+        observer.next(statements);
+      });
+    });
+  }
+
+  setStatements(statements) {
     this.statements = [];
-    mockStatements.forEach((statement) => {
+    statements.forEach((statement) => {
         if (this.rawDate > statement.timestamp)
         statement.displayTimestamp = moment(statement.timestamp, "YYYYMMDD").fromNow();
         else statement.displayTimestamp= moment(statement.timestamp, "YYYYMMDDhhmmss").fromNow();

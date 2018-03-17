@@ -54,6 +54,8 @@ export class FirebaseProvider {
       if (user) {
         if (user.editor) { this.events.publish("login: editor")};
         this.user = user;
+        console.log("Loaded Firebase User");
+        console.log(user);
       }
     });
   }

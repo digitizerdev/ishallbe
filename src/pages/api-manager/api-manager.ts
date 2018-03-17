@@ -28,7 +28,7 @@ export class ApiManagerPage {
 
   ionViewDidLoad() {
     this.user = this.firebase.user;
-    if (this.user.roles.editor) {
+    if (this.user.editor) {
       this.editor = true;
       if (this.platform.is('cordova')) { this.checkChannel(); } 
     }
