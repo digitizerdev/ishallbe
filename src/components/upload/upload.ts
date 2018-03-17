@@ -44,12 +44,15 @@ export class UploadComponent {
   }
 
   ngOnInit() {
+    console.log("Upload initialized");
     this.contentName = moment().unix().toString();
     this.loadMedia();
     this.listenToRedoEvents();
   }
 
   loadMedia() {
+    console.log("Loading meedia");
+    console.log("Content Type is " + this.contentType);
     switch (this.contentType) {
       case 'camera': {
         this.sourceType = this.camera.PictureSourceType.CAMERA;
@@ -69,6 +72,7 @@ export class UploadComponent {
   }
 
   getImage() {
+    console.log("Getting Image");
     this.gettingImage = true;
     this.camera.getPicture(this.getCameraOptions()).then((image) => {
       this.imageElement.nativeElement.src = image;
@@ -81,6 +85,7 @@ export class UploadComponent {
   }
 
   getCameraOptions() {
+    console.log("Getting Camera Options");
     let cameraOpts: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
@@ -90,10 +95,12 @@ export class UploadComponent {
       allowEdit: false,
       correctOrientation: true
     }
+    console.log(cameraOpts);
     return cameraOpts;
   }
 
   cropImage() {
+    console.log("Cropping Image");
     this.cropperInstance = new Cropper(this.imageElement.nativeElement, {
       aspectRatio: 3 / 3,
       dragMode: 'move',
@@ -110,6 +117,7 @@ export class UploadComponent {
   }
 
   cropPin() {
+    console.log("Cropping Pin");
     this.cropperInstance = new Cropper(this.imageElement.nativeElement, {
       dragMode: 'move',
       modal: true,
@@ -125,21 +133,26 @@ export class UploadComponent {
   }
 
   uploadImage() {
+    console.log("Uploading Image");
     this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
     this.loader.present();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
     let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
+    console.log("Upload Path is " + uploadPath);
     this.storeImage(uploadPath, this.image).subscribe((snapshot) => {
       let image = {
         url: snapshot.downloadURL,
         name: this.contentName
       }
+      console.log("Stored Image");
+      console.log(image);
       this.uploaded.emit(image);
       this.loader.dismiss();
     });
   }
 
   storeImage(path, obj) {
+    console.log("Storing Image");
     return Observable.create((observer) => {
       let storagePath = firebase.storage().ref(path);
       return storagePath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
@@ -152,10 +165,14 @@ export class UploadComponent {
   }
 
   getAudio() {
+    console.log("Getting Audio");
     this.recording = true;
     this.file.createFile(this.file.tempDirectory, this.contentName, true).then(() => {
       const audio: MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + this.contentName);
       this.audio = audio;
+      console.log("Original Audio");
+      console.log(audio);
+      console.log(this.audio);
       this.audio.startRecord();
       window.setTimeout(() => {
         if (this.recording) this.uploadAudio();
@@ -168,6 +185,7 @@ export class UploadComponent {
   }
 
   uploadAudio() {
+    console.log("Uploading Audio");
     this.recording = false;
     this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
     this.loader.present();
@@ -177,6 +195,8 @@ export class UploadComponent {
         url: downloadURL,
         name: this.contentName
       }
+      console.log("Stored Audio");
+      console.log(audio);
       this.audio.release();
       this.audio = null;
       this.contentName = null;
@@ -190,6 +210,7 @@ export class UploadComponent {
   }
 
   storeAudio() {
+    console.log("Storing Audio");
     return Observable.create((observer) => {
       const filePath = `${this.file.tempDirectory}` + this.contentName;
       const readFile: any = window['resolveLocalFileSystemURL'];
@@ -200,6 +221,7 @@ export class UploadComponent {
             let arrayBuffer = result.target.result;
             let blob = new Blob([new Uint8Array(arrayBuffer)], { type: 'audio/m4a' });
             let uploadPath = 'content/' + this.firebase.user.uid + '/audio/' + this.contentName;
+            console.log("Upload path is " + uploadPath);
             var storageRef = firebase.storage().ref(uploadPath);
             var uploadTask = storageRef.put(blob);
             uploadTask.on('state_changed', (snapshot) => {
@@ -224,7 +246,11 @@ export class UploadComponent {
   }
 
   listenToRedoEvents() {
+    console.log("Listening to Redo Events");
     this.events.subscribe('redoUpload', (contentType, contentName) => {
+      console.log("Redo Upload triggered");
+      console.log("Content Type is " + contentType);
+      console.log("Content Name is " + contentName);
       this.contentType = contentType;
       this.resetUpload();
       this.loadMedia();
@@ -232,6 +258,7 @@ export class UploadComponent {
   }
 
   resetUpload() {
+    console.log("Reseting Upload");
     this.sourceType = null;
     this.cameraOptions = null;
     this.cropperInstance = null;
@@ -244,7 +271,9 @@ export class UploadComponent {
   }
 
   catchUploadTimeout() {
+    console.log("Catching Upload Timeout");
     setTimeout(() => {
+      console.log("Upload Timeout")
       this.loader.dismiss();
       this.resetUpload();
       this.events.publish("timeout");
