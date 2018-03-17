@@ -13,7 +13,7 @@
         <b>{{ statement.title }}</b>
       </h2>
       <h3 (click)="viewUser(statement.user_id)" ion-text color="primary">{{ statement.name }}</h3>
-      <h5>{{ statement.timestamp.displayTime }}</h5>
+      <h5>{{ statement.displayTimestamp }}</h5>
     </ion-item>
     <img class="full-image" *ngIf="statement.url" src="{{ statement.url }}">
     <ion-item text-wrap class="statement-body">

@@ -44,10 +44,9 @@ export class StatementsComponent {
   setStatements(statements) {
     this.statements = [];
     statements.forEach((statement) => {
-        if (this.rawDate > statement.timestamp)
-        statement.displayTimestamp = moment(statement.timestamp, "YYYYMMDD").fromNow();
-        else statement.displayTimestamp= moment(statement.timestamp, "YYYYMMDDhhmmss").fromNow();
-        this.statements.push(statement);
+      let date = moment.unix(statement.timestamp);
+      statement.displayTimestamp = moment(date).fromNow();
+      this.statements.push(statement);
     });
   }
 }

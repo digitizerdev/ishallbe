@@ -11,12 +11,12 @@
   <ion-list no-lines>
     <ion-item *ngFor="let unreadNotification of unreadNotifications" text-wrap>
       <ion-avatar item-left>
-        <img src="{{ unreadNotification.user.photo }}">
+        <img src="{{ unreadNotification.face }}">
       </ion-avatar>
       <ion-icon item-end *ngIf="unreadNotification.like || unreadNotification.commentLike" name="heart" color="primary"></ion-icon>
       <ion-icon item-end *ngIf="unreadNotification.comment" name="ios-chatboxes" color="primary"></ion-icon>
       <ion-icon item-end *ngIf="unreadNotification.reminder" name="ios-checkbox" color="primary"></ion-icon>
-      <span ion-text color="primary"> {{ unreadNotification.user.name }} </span>
+      <span ion-text color="primary"> {{ unreadNotification.name }} </span>
       <span> {{ unreadNotification.message }} </span>
       <br>
       <span ion-text color="dark">{{ unreadNotification.displayTimestamp }}</span>
@@ -26,12 +26,12 @@
   <ion-list no-lines>
     <ion-item *ngFor="let readNotification of readNotifications" text-wrap>
       <ion-avatar item-left>
-        <img src="{{ readNotification.user.photo }}">
+        <img src="{{ readNotification.face }}">
       </ion-avatar>
       <ion-icon item-end *ngIf="readNotification.like || readNotification.commentLike" name="heart" color="primary"></ion-icon>
       <ion-icon item-end *ngIf="readNotification.comment" name="ios-chatboxes" color="primary"></ion-icon>
       <ion-icon item-end *ngIf="readNotification.reminder" name="ios-checkbox" color="primary"></ion-icon>
-      <span ion-text color="primary"> {{ readNotification.user.name }} </span>
+      <span ion-text color="primary"> {{ readNotification.name }} </span>
       <span> {{ readNotification.message }} </span>
       <br>
       <span ion-text color="dark">{{ readNotification.displayTimestamp }}</span>

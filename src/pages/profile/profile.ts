@@ -29,17 +29,14 @@ export class ProfilePage {
     private inAppBrowser: InAppBrowser,
     private firebase: FirebaseProvider
   ) {
+    this.uid = "mQ2XaUVS46fKKJDo0u8ldPQdmnB3"
   }
 
   ionViewDidLoad() {
-    this.uid = this.navParams.get('uid');
-    if (!this.uid) {
       this.user = this.firebase.user;
       this.mine = true;
       this.loaded = true;
-    } else {
       this.loadUser();
-    }
   }
 
   loadUser() {
