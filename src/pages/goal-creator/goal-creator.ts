@@ -174,13 +174,17 @@ export class GoalCreatorPage {
     this.playingAudio = true;
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
     if (this.platform.is('ios')) var filepath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + this.audioName;
-    if (this.platform.is('android'))   filepath = cordova.file.externalDataDirectory + this.audioName;
+    if (this.platform.is('android')) filepath = cordova.file.externalDataDirectory + this.audioName;
     console.log("File path is " + filepath);
     fileTransfer.download(this.audioUrl, filepath, ).then((entry) => {
       let rawAudioURI = entry.toURL();
-      rawAudioURI = rawAudioURI.replace(/^file:\/\//, '/private');
+      if (this.platform.is('ios')) rawAudioURI = rawAudioURI.replace(/^file:\/\//, '/private');
+      console.log("Raw Audio URI is " + rawAudioURI);
       let audio: MediaObject = this.media.create(rawAudioURI);
+      console.log(audio);
       this.audio = audio;
+      console.log("This.audio ");
+      console.log(this.audio);
       this.audio.play();
       this.listenToAudioEvents();
     }, (error) => {
