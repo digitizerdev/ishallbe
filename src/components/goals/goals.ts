@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 
+import { Platform } from 'ionic-angular';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { Media, MediaObject } from '@ionic-native/media';
 
@@ -23,6 +24,7 @@ export class GoalsComponent {
   goals: any[];
 
   constructor(
+    private platform: Platform,
     private fileTransfer: FileTransfer,
     private media: Media,
     private firebase: FirebaseProvider
@@ -92,10 +94,12 @@ export class GoalsComponent {
     console.log("Playing Audio");
     console.log(goal);
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
-    var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + goal.filename;
-    fileTransfer.download(goal.url, destPath, ).then((entry) => {
+    if (this.platform.is('ios')) var filepath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + goal.filename;
+    if (this.platform.is('android')) filepath = cordova.file.externalDataDirectory + goal.filename;    
+    fileTransfer.download(goal.url, filepath, ).then((entry) => {
       let rawAudioURI = entry.toURL();
-      rawAudioURI = rawAudioURI.replace(/^file:\/\//, '/private');
+      if (this.platform.is('ios')) rawAudioURI = rawAudioURI.replace(/^file:\/\//, '/private');
+      console.log("Raw Audio URI is " + rawAudioURI);
       let downloadedAudio: MediaObject = this.media.create(rawAudioURI);
       downloadedAudio.play();
     }, (error) => {
