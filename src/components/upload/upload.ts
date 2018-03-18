@@ -33,6 +33,7 @@ export class UploadComponent {
   gettingImage = false;
   imageCropped = false;
   recording = false;
+  complete = false;
 
   constructor(
     private platform: Platform,
@@ -149,6 +150,7 @@ export class UploadComponent {
       }
       console.log("Stored Image");
       console.log(image);
+      this.complete = true;
       this.uploaded.emit(image);
       this.loader.dismiss();
     });
@@ -220,9 +222,13 @@ export class UploadComponent {
       this.audio = null;
       this.contentName = null;
       this.recording = false;
+      this.complete = true;
       this.uploaded.emit(audio);
       this.loader.dismiss();
     }, (error) => {
+      console.error("ERROR");
+      console.error(error);
+      this.complete = true;
       this.events.publish("getAudioCanceled");
       this.loader.dismiss();
     });
@@ -298,10 +304,12 @@ export class UploadComponent {
   waitForStorageTimeout() {
     console.log("Listening for Storage Timeout");
     setTimeout(() => {
-      console.log("Storage Timeout")
-      this.loader.dismiss();
-      this.resetUpload();
-      this.events.publish("timeout");
+      if (!this.complete) {
+        console.log("Storage Timeout");
+        this.loader.dismiss();
+        this.resetUpload();
+        this.events.publish("timeout");
+      }
     },
       7000);
   }
