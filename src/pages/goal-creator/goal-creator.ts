@@ -61,9 +61,8 @@ export class GoalCreatorPage {
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
     this.rawNextWeekDate = this.rawDate + 7;
-  }
-
-  ionViewDidLoad() {
+    this.listenForUploadTimeout();
+    this.listenForCanceledUpload();
   }
 
   submit(form) {
@@ -218,7 +217,9 @@ export class GoalCreatorPage {
   }
 
   listenForUploadTimeout() {
+    console.log("Listening for Upload Timeout ")
     this.events.subscribe('timeout', () => {
+      console.log("Upload Component Timed Out");
       this.goalId = null;
       this.audioUrl = null;
       this.audioName = null;

@@ -28,6 +28,7 @@ export class UploadComponent {
   audio: any;
   contentBlob: any;
   contentName: string;
+  filepath: string;
   loader: any;
   gettingImage = false;
   imageCropped = false;
@@ -154,7 +155,7 @@ export class UploadComponent {
   }
 
   storeImage(path, obj) {
-    console.log("Storing Image");
+    console.log("Storing Image"); 
     this.waitForStorageTimeout();
     return Observable.create((observer) => {
       let storagePath = firebase.storage().ref(path);
@@ -170,9 +171,9 @@ export class UploadComponent {
   getAndroidAudio() {
     console.log("Getting Audio");
     this.recording = true;
-    let androidFilePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.contentName;
-    console.log("Android File Path is " + androidFilePath);
-    const audio: MediaObject = this.media.create(androidFilePath);
+    this.filepath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.contentName;
+    console.log("Android File Path is " + this.filepath);
+    const audio: MediaObject = this.media.create(this.filepath);
     console.log("Original Audio");
     console.log(audio);
     this.audio = audio;
@@ -186,8 +187,10 @@ export class UploadComponent {
 
   getIOSAudio() {
     this.recording = true;
+    this.filepath = this.file.tempDirectory.replace(/^file:\/\//, '') + this.contentName;
+    console.log("iOS File Path is " + this.filepath);
     this.file.createFile(this.file.tempDirectory, this.contentName, true).then(() => {
-      const audio: MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + this.contentName);
+      const audio: MediaObject = this.media.create(this.filepath);
       this.audio = audio;
       this.audio.startRecord();
       window.setTimeout(() => {
@@ -229,12 +232,16 @@ export class UploadComponent {
     console.log("Storing Audio");
     this.waitForStorageTimeout();
     return Observable.create((observer) => {
-      const filePath = `${this.file.tempDirectory}` + this.contentName;
+      console.log("File Path is " + this.filepath);
       const readFile: any = window['resolveLocalFileSystemURL'];
-      return readFile(filePath, (fileEntry) => {
+      console.log("Read file");
+      console.log(readFile);
+      return readFile(this.filepath, (fileEntry) => {
         return fileEntry.file((file) => {
           const fileReader = new FileReader();
           fileReader.onloadend = (result: any) => {
+            console.log("File loaded");
+            console.log(result);
             let arrayBuffer = result.target.result;
             let blob = new Blob([new Uint8Array(arrayBuffer)], { type: 'audio/m4a' });
             let uploadPath = 'content/' + this.firebase.user.uid + '/audio/' + this.contentName;
@@ -243,6 +250,7 @@ export class UploadComponent {
             var uploadTask = storageRef.put(blob);
             uploadTask.on('state_changed', (snapshot) => {
             }, (e) => {
+              console.error(e);
               observer.error(e);
             }, () => {
               var downloadURL = uploadTask.snapshot.downloadURL;
@@ -290,7 +298,7 @@ export class UploadComponent {
   waitForStorageTimeout() {
     console.log("Listening for Storage Timeout");
     setTimeout(() => {
-      console.log("StorageTimeout")
+      console.log("Storage Timeout")
       this.loader.dismiss();
       this.resetUpload();
       this.events.publish("timeout");
