@@ -168,10 +168,11 @@ export class UploadComponent {
     console.log("Getting Audio");
     this.recording = true;
     this.file.createFile(this.file.tempDirectory, this.contentName, true).then(() => {
-      const audio: MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + this.contentName);
-      this.audio = audio;
+      const audio: MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '').toString() + this.contentName);
       console.log("Original Audio");
       console.log(audio);
+      this.audio = audio;
+      console.log("Assigned Audio");
       console.log(this.audio);
       this.audio.startRecord();
       window.setTimeout(() => {
