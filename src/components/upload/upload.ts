@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 
-import { Events, LoadingController } from 'ionic-angular';
+import { Platform, Events, LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Media, MediaObject } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
@@ -34,6 +34,7 @@ export class UploadComponent {
   recording = false;
 
   constructor(
+    private platform: Platform,
     private events: Events,
     private loadingCtrl: LoadingController,
     private camera: Camera,
@@ -58,12 +59,14 @@ export class UploadComponent {
         this.sourceType = this.camera.PictureSourceType.CAMERA;
         this.getImage();
       }
-      break;
+        break;
       case 'audio': {
         this.contentName = this.contentName + ".m4a";
-        this.getAudio();
+        console.log(this.platform.platforms());
+        if (this.platform.is('ios')) this.getIOSAudio();
+        if (this.platform.is('android')) this.getAndroidAudio(); 
       }
-      break;
+        break;
       default: {
         this.sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
         this.getImage();
@@ -78,10 +81,9 @@ export class UploadComponent {
       this.imageElement.nativeElement.src = image;
       if (this.contentType == "pin") this.cropPin();
       else this.cropImage();
-    }).catch((error) => { 
+    }).catch((error) => {
       this.events.publish("getImageCanceled");
     });;
-    this.catchUploadTimeout();
   }
 
   getCameraOptions() {
@@ -153,6 +155,7 @@ export class UploadComponent {
 
   storeImage(path, obj) {
     console.log("Storing Image");
+    this.waitForStorageTimeout();
     return Observable.create((observer) => {
       let storagePath = firebase.storage().ref(path);
       return storagePath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
@@ -164,25 +167,37 @@ export class UploadComponent {
     });
   }
 
-  getAudio() {
+  getAndroidAudio() {
     console.log("Getting Audio");
     this.recording = true;
+    let androidFilePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.contentName;
+    console.log("Android File Path is " + androidFilePath);
+    const audio: MediaObject = this.media.create(androidFilePath);
+    console.log("Original Audio");
+    console.log(audio);
+    this.audio = audio;
+    console.log("Assigned Audio");
+    console.log(this.audio);
+    this.audio.startRecord();
+    window.setTimeout(() => {
+      if (this.recording) this.uploadAudio();
+    }, 10000);
+  }
+
+  getIOSAudio() {
+    this.recording = true;
     this.file.createFile(this.file.tempDirectory, this.contentName, true).then(() => {
-      const audio: MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '').toString() + this.contentName);
-      console.log("Original Audio");
-      console.log(audio);
+      const audio: MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + this.contentName);
       this.audio = audio;
-      console.log("Assigned Audio");
-      console.log(this.audio);
       this.audio.startRecord();
       window.setTimeout(() => {
         if (this.recording) this.uploadAudio();
       }, 10000);
     }, (error) => {
+      console.error("ERROR");
+      console.error(error);
       this.events.publish("getAudioCanceled");
-      this.loader.dismiss();
     });
-    this.catchUploadTimeout();
   }
 
   uploadAudio() {
@@ -212,6 +227,7 @@ export class UploadComponent {
 
   storeAudio() {
     console.log("Storing Audio");
+    this.waitForStorageTimeout();
     return Observable.create((observer) => {
       const filePath = `${this.file.tempDirectory}` + this.contentName;
       const readFile: any = window['resolveLocalFileSystemURL'];
@@ -271,14 +287,14 @@ export class UploadComponent {
     this.recording = false;
   }
 
-  catchUploadTimeout() {
-    console.log("Catching Upload Timeout");
+  waitForStorageTimeout() {
+    console.log("Listening for Storage Timeout");
     setTimeout(() => {
-      console.log("Upload Timeout")
+      console.log("StorageTimeout")
       this.loader.dismiss();
       this.resetUpload();
       this.events.publish("timeout");
     },
-    5000);
+      7000);
   }
 }
