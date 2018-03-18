@@ -173,7 +173,7 @@ export class UploadComponent {
   getAndroidAudio() {
     console.log("Getting Audio");
     this.recording = true;
-    this.filepath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.contentName;
+    this.filepath = this.file.externalDataDirectory + this.contentName;
     console.log("Android File Path is " + this.filepath);
     const audio: MediaObject = this.media.create(this.filepath);
     console.log("Original Audio");
@@ -226,7 +226,6 @@ export class UploadComponent {
       this.uploaded.emit(audio);
       this.loader.dismiss();
     }, (error) => {
-      console.error("ERROR");
       console.error(error);
       this.complete = true;
       this.events.publish("getAudioCanceled");
