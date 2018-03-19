@@ -1,8 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
+
 import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
+import { FCM } from '@ionic-native/fcm';
 import { Pro } from '@ionic/pro';
 
 import { Observable } from 'rxjs/Rx';
@@ -43,6 +45,7 @@ export class iShallBe {
     private splashScreen: SplashScreen,
     private events: Events,
     private push: Push,
+    private fcm: FCM,
     private firebase: FirebaseProvider,
   ) {
     this.rootPage = LoginPage;
@@ -110,7 +113,8 @@ export class iShallBe {
   platformReady() {
     this.platform.ready().then(() => {
       if (this.platform.is('cordova')) {
-        this.listenToPushNotificationEvents()
+        this.listenToPushNotificationEvents();
+        this.listenToFCMPushNotifications();
         this.deployUpdate().subscribe(() => { this.checkForSession(); });
       } else this.checkForSession();
       this.statusBar.styleDefault();
@@ -180,5 +184,24 @@ export class iShallBe {
     pushObject.on('registration').subscribe((data: any) => {
     }, err => {
     });
+  }
+
+  listenToFCMPushNotifications() {
+    console.log("Listening FCM Push Notifications")
+    this.fcm.getToken().then(token => {
+      console.log("Got Token");
+      console.log(token);
+    })
+    this.fcm.onNotification().subscribe(data => {
+      console.log("Got Notification")
+      if (data.wasTapped) {
+        console.log("Received in background");
+      } else {
+        console.log("Received in foreground");
+      };
+    })
+    this.fcm.onTokenRefresh().subscribe(token => {
+      console.log("Token Refreshed ")
+    })
   }
 }

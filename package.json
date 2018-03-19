@@ -30,6 +30,7 @@
     "@ionic-native/date-picker": "^4.5.3",
     "@ionic-native/email-composer": "^4.5.2",
     "@ionic-native/facebook": "4.4.2",
+    "@ionic-native/fcm": "^4.5.3",
     "@ionic-native/file": "4.4.2",
     "@ionic-native/file-transfer": "^4.5.3",
     "@ionic-native/in-app-browser": "^4.5.3",
@@ -50,6 +51,7 @@
     "cordova-plugin-device": "^1.1.7",
     "cordova-plugin-email-composer": "^0.8.15",
     "cordova-plugin-facebook4": "^1.9.1",
+    "cordova-plugin-fcm": "^2.1.2",
     "cordova-plugin-file": "^6.0.1",
     "cordova-plugin-file-transfer": "^1.7.1",
     "cordova-plugin-inappbrowser": "^2.0.2",
@@ -148,7 +150,8 @@
         "NSMicrophoneUsageDescription": "Access to Microphone",
         "MICROPHONE_USAGE_DESCRIPTION": "Access to Microphone"
       },
-      "cordova-plugin-file-transfer": {}
+      "cordova-plugin-file-transfer": {},
+      "cordova-plugin-fcm": {}
     },
     "platforms": [
       "android",

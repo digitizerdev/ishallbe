@@ -1,9 +1,10 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
+
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Pro } from '@ionic/pro';
-import { iShallBe } from './app.component';
+import { NgCalendarModule } from 'ionic2-calendar';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -14,12 +15,14 @@ import { File } from '@ionic-native/file';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { Media } from '@ionic-native/media';
 import { DatePicker } from '@ionic-native/date-picker';
+import { FCM } from '@ionic-native/fcm';
+
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { NgCalendarModule } from 'ionic2-calendar';
-
 import { environment } from '../environments/environment';
+
+import { iShallBe } from './app.component';
 
 import { SignupPage } from '../pages/signup/signup';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
@@ -123,6 +126,7 @@ Pro.init('69d144ed', {
     FileTransfer,
     Media,
     DatePicker,
+    FCM,
     Facebook,
     Camera,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
