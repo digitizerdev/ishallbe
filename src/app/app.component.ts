@@ -161,11 +161,12 @@ export class iShallBe {
       });
 
     const options: PushOptions = {
-      android: {},
+      android: {
+      },
       ios: {
         alert: 'true',
         badge: true,
-        sound: 'false',
+        sound: 'true',
         topics: ['notifications']
       },
       windows: {},
