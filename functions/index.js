@@ -11,7 +11,7 @@ exports.createPin = functions.firestore.document('pins/{pinId}').onCreate(event 
     console.log("Create Pin Triggered");
     var newValue = event.data.data();
     console.log(newValue);
-    var message = "New Pin Added : " + newValue.title;
+    var message = "New Pin Added : " + newValue.description;
     pushMessage(message);
     return true;
 });
@@ -24,7 +24,9 @@ function pushMessage(message) {
             title: message,
         }
     };
-    admin.messaging().sendToTopic("notifications", payload)
+    let deviceId = "Sadfadsfdas;"
+    console.log("Device Id is " + deviceId);
+    admin.messaging().sendToDevice("deviceId", payload)
         .then(function (response) {
             console.log("Successfully sent message:", response);
             return response;
