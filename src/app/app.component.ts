@@ -166,7 +166,7 @@ export class iShallBe {
         alert: 'true',
         badge: true,
         sound: 'false',
-
+        topics: ['notifications']
       },
       windows: {},
       browser: {

@@ -17,6 +17,9 @@ export class StatementsComponent {
   constructor(
     private firebase: FirebaseProvider
   ) {
+  }
+
+  ngAfterViewInit() {
     console.log("Statements View Initialized")
     this.timestamp();
     this.loadStatements().subscribe((statements) => {
