@@ -10,6 +10,8 @@ import { HomePage } from '../../pages/home/home';
 import firebase from 'firebase';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
+import { User } from '../../../test-data/users/model';
+
 @Component({
   selector: 'login-facebook',
   templateUrl: 'login-facebook.html'
@@ -19,12 +21,10 @@ export class LoginFacebookComponent {
   uid: any;
   authToken: any;
   user: any;
-  registering = false;
-  rawDate: number;
-  displayDate: string;
-  rawTime: number;
-  displayTime: string;
   loader: any;
+  registering = false;
+  timestamp: number;
+  displayTimestamp: string;
 
   constructor(
     private firebase: FirebaseProvider,
@@ -48,12 +48,8 @@ export class LoginFacebookComponent {
   }
 
   timeStampPage() {
-    let rawDateString = moment().format('YYYYMMDD');
-    this.rawDate = parseInt(rawDateString);
-    this.displayDate = moment().format('MMM D, YYYY');
-    let rawTimeString = moment().format('YYYYMMDDhhmmss');
-    this.rawTime = parseInt(rawTimeString);
-    this.displayTime = moment().format('h:mma');
+    this.timestamp = moment().unix();
+    this.displayTimestamp = moment().format('MMM D YYYY h:mmA');
   }
 
   determineAuthType(cordova) {
@@ -139,7 +135,7 @@ export class LoginFacebookComponent {
     this.registering = true;
     return Observable.create((observer) => {
       return this.presentEULA().subscribe((accepted) => {
-        if (accepted) this.createUser().then((newUserObject) => { 
+        if (accepted) this.createUser().subscribe((newUserObject) => { 
           observer.next(); 
         });
         else observer.error();
@@ -172,26 +168,39 @@ export class LoginFacebookComponent {
     });
   }
 
-  createUser() {
-    let user = {
-      uid: this.uid,
-      name: this.authToken.name,
-      email: this.authToken.email,
-      photo: this.authToken.photo,
-      blocked: false,
-      roles: {
+  buildUser() {
+    console.log("Building User");
+    return Observable.create((observer) => {
+      const user: User = {
+        uid: this.uid,
+        fcmToken: this.firebase.fcmToken,
+        name: this.authToken.name,
+        bio: "",
+        email: this.authToken.email,
+        photo: this.authToken.photo,
+        blocked: false,
+        displayTimestamp: this.displayTimestamp,
+        timestamp: this.timestamp,
+        instagram: "",
+        linkedin: "",
+        twitter: "",
         contributor: true,
         editor: false
-      },
-      timestamp: {
-        rawDate: this.rawDate,
-        displayDate: this.displayDate,
-        rawTime: this.rawTime,
-        displayTime: this.displayTime
       }
-    }
-    let path = 'users/' + this.uid;
-    return this.firebase.afs.doc(path).set(user)
+      console.log(user);
+      observer.next(user);
+    });
+  }
+
+  createUser() {
+    return Observable.create((observer) => {
+      this.buildUser().suscbribe((user) => {
+        let path = 'users/' + this.uid;
+        return this.firebase.afs.doc(path).set(user).then(() => {
+          observer.next();
+        });
+      });
+    });
   }
 
   errorHandler(error) {

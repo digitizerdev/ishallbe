@@ -191,6 +191,7 @@ export class iShallBe {
     this.fcm.getToken().then(token => {
       console.log("Got Token");
       console.log(token);
+      this.firebase.fcmToken = token;
     })
     this.fcm.onNotification().subscribe(data => {
       console.log("Got Notification")

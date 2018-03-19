@@ -91,9 +91,11 @@ export class SignupPage {
   }
 
   buildUser(signupForm) {
+    console.log("Building User");
     return Observable.create((observer) => {
       const user: User = {
         uid: this.uid,
+        fcmToken: this.firebase.fcmToken,
         name: signupForm.name,
         bio: "",
         email: signupForm.email,
@@ -107,6 +109,7 @@ export class SignupPage {
         contributor: true,
         editor: false
       }
+      console.log(user);
       observer.next(user);
     });
   }

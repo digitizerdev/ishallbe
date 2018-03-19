@@ -142,6 +142,6 @@
     <plugin name="phonegap-plugin-push" spec="^1.10.6">
         <variable name="SENDER_ID" value="1:881822459028:android:58c20c02735f7e42" />
     </plugin>
-    <engine name="ios" spec="~4.5.4" />
     <plugin name="cordova-plugin-fcm" spec="^2.1.2" />
+    <engine name="ios" spec="~4.5.4" />
 </widget>
