@@ -63,6 +63,8 @@
     "cordova-plugin-youtube-video-player": "^1.0.6",
     "cropperjs": "^1.2.2",
     "firebase": "^4.9.1",
+    "firebase-admin": "^5.10.0",
+    "firebase-functions": "^0.8.2",
     "intl": "^1.2.5",
     "ionic-angular": "3.9.2",
     "ionic-plugin-keyboard": "^2.2.1",
