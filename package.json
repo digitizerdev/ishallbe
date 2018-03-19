@@ -73,7 +73,7 @@
     "ionic2-calendar": "^0.3.13-weekdayview-tpls",
     "ionicons": "3.0.0",
     "moment": "^2.20.1",
-    "phonegap-plugin-push": "^1.10.6",
+    "phonegap-plugin-push": "^2.1.2",
     "promise-polyfill": "^7.1.0",
     "rxjs": "5.4.0",
     "sw-toolbox": "3.6.0",

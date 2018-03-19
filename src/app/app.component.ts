@@ -187,6 +187,9 @@ export class iShallBe {
   }
 
   listenToFCMPushNotifications() {
+    if (!this.platform.is('cordova')) {
+      return;
+    }
     console.log("Listening FCM Push Notifications")
     this.fcm.getToken().then(token => {
       console.log("Got Token");
