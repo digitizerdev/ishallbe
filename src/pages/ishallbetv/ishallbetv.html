@@ -1,31 +1,27 @@
 <ion-header no-border>
-  <ion-navbar color='primary' no-border-bottom>
+  <ion-navbar color="light-yellow">
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon color="primary" name="menu"></ion-icon>
     </button>
     <div text-center>
       <img src="assets/img/logo.png" style="display:inline-block" height="40px" />
     </div>
     <ion-buttons end>
-      <button ion-button icon-only (click)="setRootProfilePage()">
-        <ion-icon name="ios-person"></ion-icon>
+      <button ion-button icon-only (click)="pushHomePage()">
+        <ion-icon color="primary" name="md-home"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-toolbar no-border-top color='primary'>
-    <ion-searchbar [(ngModel)]="queryText" (ionInput)="updateSchedule()" placeholder="Search">
-    </ion-searchbar>
-  </ion-toolbar>
 </ion-header>
-<ion-content class=explore-content>
+<ion-content no-border class="ishallbetv-content">
   <ion-refresher (ionRefresh)="refreshPage($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="dots" refreshingText="Refeshing">
     </ion-refresher-content>
   </ion-refresher>
   <div class="images" padding>
-    <div *ngFor="let statement of statements">
-      <img class="one-image" src="{{ statement.url }}">
+    <div *ngFor="let video of videos" text-center padding>
+      <h4>{{ video.displayAffirmationDate }}</h4>
+      <img class="one-image" src="{{ video.url }}">
     </div>
   </div>
-  <footer></footer>
 </ion-content>

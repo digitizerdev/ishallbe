@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the StartupPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { IonicPage, Platform, NavController, NavParams } from 'ionic-angular';
+import { Push } from '@ionic-native/push';
+
+import { LoginPage } from '../login/login';
+import { HomePage } from '../home/home';
+
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()
 @Component({
@@ -15,11 +15,44 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class StartupPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  loaded = false;
+
+  constructor(
+    private platform: Platform,
+    private navCtrl: NavController, 
+    private navParams: NavParams,
+    private push: Push,
+    private firebase: FirebaseProvider
+  ) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad StartupPage');
+    this.checkForSession();
+    this.initPushNotifications();
   }
 
+  checkForSession() {
+    console.log("Checking For Session");
+    if (this.firebase.session) this.navCtrl.setRoot(HomePage);
+    else {
+      this.firebase.sessionExists().subscribe((session) => {
+        if (!this.loaded) {
+          this.loaded = true;
+          if (session) this.navCtrl.setRoot(HomePage);
+          else this.navCtrl.setRoot(LoginPage);
+        }
+      });
+    }
+  }
+
+  initPushNotifications() {
+    console.log("Initializing Push Notifications")
+    if (!this.platform.is('cordova')) return;
+    this.push.hasPermission()
+    .then((res: any) => {
+      if (res.isEnabled) console.log("Push Already Enabled")
+      else console.log("Push Not Enabled");
+    });
+  }
 }

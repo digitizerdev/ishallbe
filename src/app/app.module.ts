@@ -24,6 +24,7 @@ import { environment } from '../environments/environment';
 
 import { iShallBe } from './app.component';
 
+import { StartupPage } from '../pages/startup/startup';
 import { SignupPage } from '../pages/signup/signup';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
 import { LoginPage } from '../pages/login/login';
@@ -38,7 +39,7 @@ import { StatementCreatorPage } from '../pages/statement-creator/statement-creat
 import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
 import { ProfilePage } from '../pages/profile/profile';
 import { PostPage } from '../pages/post/post';
-import { ExplorePage } from '../pages/explore/explore';
+import { IshallbetvPage } from '../pages/ishallbetv/ishallbetv';
 import { HomePage } from '../pages/home/home';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { PinCreatorPage } from '../pages/pin-creator/pin-creator';
@@ -59,6 +60,7 @@ Pro.init('69d144ed', {
 @NgModule({
   declarations: [
     iShallBe,
+    StartupPage,
     SignupPage,
     PasswordResetPage,
     LoginPage,
@@ -73,7 +75,7 @@ Pro.init('69d144ed', {
     NotificationsPage,
     ProfilePage,
     PostPage,
-    ExplorePage,
+    IshallbetvPage,
     HomePage,
     TutorialPage,
     PinCreatorPage,
@@ -95,6 +97,7 @@ Pro.init('69d144ed', {
   bootstrap: [IonicApp],
   entryComponents: [
     iShallBe,
+    StartupPage,
     SignupPage,
     PasswordResetPage,
     LoginPage,
@@ -109,7 +112,7 @@ Pro.init('69d144ed', {
     GoalCreatorPage,
     ProfilePage,
     PostPage,
-    ExplorePage,
+    IshallbetvPage,
     HomePage,
     TutorialPage,
     PinCreatorPage,

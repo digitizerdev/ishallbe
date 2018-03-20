@@ -25,7 +25,7 @@
         </button>
       </ion-list>
     </div>
-    <div *ngIf="editor">
+    <div>
       <ion-list class="list-full-border">
         <button class="menu-pages" menuClose ion-item *ngFor="let p of editorMenuPages" (click)="openPage(p)">
           <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>

@@ -1,11 +1,11 @@
 pins {
     .feature {
         background: color($colors, light-yellow);
-        border-bottom: thick solid color($colors, primary);
     }
     .pin-image {
         max-width: 67%;
-        max-height: 150px;           
+        max-height: 150px;
+        border-radius: 15px;    
     }
     ion-grid {
         height: 100%;

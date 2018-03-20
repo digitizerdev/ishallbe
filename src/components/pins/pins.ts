@@ -47,8 +47,9 @@ export class PinsComponent {
   timestamp() {
     console.log("Date is " + this.inputDate);
     this.endDate = parseInt((moment.unix(this.inputDate).format('YYYYMMDD')));
-    this.dayNumber = moment(this.inputDate).isoWeekday();
-    console.log("Day Number is " + this.dayNumber);
+    console.log("End Date is " + this.endDate);
+    this.dayNumber = moment(this.endDate, 'YYYYMMDD').isoWeekday();
+    console.log("Day number is " + this.dayNumber);
   }
 
   refreshPage(refresh) {
@@ -59,10 +60,10 @@ export class PinsComponent {
   loadPins() {
     console.log("Loading Pins");
     return Observable.create((observer) => {
-      this.startDate = this.endDate - this.dayNumber;
-      console.log("Input Date is " + this.startDate);
       console.log("End Date is " + this.endDate);
-      let weeklyPins = this.firebase.afs.collection('pins', ref => ref.orderBy('affirmationDate').endAt(this.endDate));
+      this.startDate = this.endDate - this.dayNumber;
+      console.log("Start Date is " + this.startDate);
+      let weeklyPins = this.firebase.afs.collection('pins', ref => ref.orderBy('affirmationDate').startAt(this.startDate).endAt(this.endDate));
       return weeklyPins.valueChanges().subscribe((pins) => {
         observer.next(pins);
       });

@@ -9,12 +9,12 @@ import { Pro } from '@ionic/pro';
 
 import { Observable } from 'rxjs/Rx';
 
-import { LoginPage } from '../pages/login/login';
+import { StartupPage } from '../pages/startup/startup';
 import { AboutPage } from '../pages/about/about';
 import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
 import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
 import { ProfilePage } from '../pages/profile/profile';
-import { ExplorePage } from '../pages/explore/explore';
+import { IshallbetvPage } from '../pages/ishallbetv/ishallbetv';
 import { HomePage } from '../pages/home/home';
 import { ApiManagerPage } from '../pages/api-manager/api-manager';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
@@ -48,9 +48,8 @@ export class iShallBe {
     private fcm: FCM,
     private firebase: FirebaseProvider,
   ) {
-    this.rootPage = LoginPage;
+    this.rootPage = StartupPage;
     this.platformReady();
-    this.listenToAuthEvents();
     this.exploreMenuPages = [
       {
         title: 'Home',
@@ -63,9 +62,9 @@ export class iShallBe {
         component: AboutPage
       },
       {
-        title: 'Explore',
-        icon: 'md-globe',
-        component: ExplorePage
+        title: 'iShallBe TV',
+        icon: 'ios-desktop',
+        component: IshallbetvPage
       }
     ];
 
@@ -113,57 +112,33 @@ export class iShallBe {
   platformReady() {
     this.platform.ready().then(() => {
       if (this.platform.is('cordova')) {
+        console.log("Platform Ready");
+        this.listenToAuthEvents();
         this.listenToPushNotificationEvents();
         this.listenToFCMPushNotifications();
-        this.deployUpdate().subscribe(() => { this.checkForSession(); });
-      } else this.checkForSession();
+        this.deployUpdate().subscribe(() => {
+          this.splashScreen.hide();
+          ;
+        });
+      } else this.splashScreen.hide();
       this.statusBar.styleDefault();
     });
   }
 
-  deployUpdate() {
-    return Observable.create((observer) => {
-      Pro.deploy.checkAndApply(true).then((resp) => {
-        if (!resp.update) observer.next();
-      });
-    });
-  }
-
-  checkForSession() {
-    if (this.firebase.session) this.inSession();
-    else {
-      this.firebase.sessionExists().subscribe((session) => {
-        if (!this.loaded) {
-          this.loaded = true;
-          if (session) this.inSession();
-          else this.splashScreen.hide();
-        }
-      });
-    }
-  }
-
-  inSession() {
-    this.session = true;
-    this.nav.setRoot(HomePage);
-    this.splashScreen.hide();
-  }
-
   listenToAuthEvents() {
-    this.events.subscribe('login: editor', () => { this.editor = true });
+    console.log("Listening To Auth Events");
+    this.events.subscribe('login: editor', () => {
+      console.log("Editor Login")
+      this.editor = true
+    });
     this.events.subscribe('logout', () => { this.editor = false });
   }
 
   listenToPushNotificationEvents() {
+    console.log("Listening to Push Notification Events");
     if (!this.platform.is('cordova')) {
       return;
     }
-
-    this.push.hasPermission()
-      .then((res: any) => {
-        if (res.isEnabled) {
-        } else { }
-      });
-
     const options: PushOptions = {
       android: {
       },
@@ -178,15 +153,16 @@ export class iShallBe {
         pushServiceURL: 'http://push.api.phonegap.com/v1/push'
       }
     };
-
     const pushObject: PushObject = this.push.init(options);
-
     pushObject.on('registration').subscribe((data: any) => {
+      console.log("Push Notifications Registered");
+      console.log(data);
     }, err => {
     });
   }
 
   listenToFCMPushNotifications() {
+    console.log("Listening to FCM Push Notifications");
     if (!this.platform.is('cordova')) {
       return;
     }
@@ -205,7 +181,18 @@ export class iShallBe {
       };
     })
     this.fcm.onTokenRefresh().subscribe(token => {
-      console.log("Token Refreshed ")
+      console.log("Token Refreshed ");
+      console.log(token);
     })
+  }
+
+
+  deployUpdate() {
+    console.log("Deploying Update");
+    return Observable.create((observer) => {
+      Pro.deploy.checkAndApply(true).then((resp) => {
+        if (!resp.update) observer.next();
+      });
+    });
   }
 }
