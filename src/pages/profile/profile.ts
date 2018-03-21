@@ -17,11 +17,10 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 })
 export class ProfilePage {
 
-  uid: any;
   user: any;
   mine = false;
   loaded = false;
-  postType = "goals";
+  myAffirmations = true;
 
   constructor(
     private navCtrl: NavController,
@@ -29,18 +28,17 @@ export class ProfilePage {
     private inAppBrowser: InAppBrowser,
     private firebase: FirebaseProvider
   ) {
-    this.uid = "mQ2XaUVS46fKKJDo0u8ldPQdmnB3"
   }
 
   ionViewDidLoad() {
-      this.user = this.firebase.user;
-      this.mine = true;
-      this.loaded = true;
-      this.loadUser();
+    this.user = this.firebase.user;
+    this.mine = true;
+    this.loaded = true;
+    this.loadUser();
   }
 
   loadUser() {
-    let path = "users/" + this.uid;
+    let path = "users/" + this.firebase.uid;
     this.user = this.firebase.afs.doc(path);
     this.user.valueChanges().subscribe((user) => {
       this.user = user;

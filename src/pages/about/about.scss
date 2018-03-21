@@ -1,12 +1,8 @@
 page-about {
-
-    .main {
-        background: color($colors, light-yellow);
+    .feature {
+        color: color($colors, primary);
+        background-color: #FFF;
         border-top: thick solid color($colors, primary);                  
         border-bottom: thick solid color($colors, primary);  
-    }
-
-    .tagline {
-        color: color($colors, primary)
     }
 }

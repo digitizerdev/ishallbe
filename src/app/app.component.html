@@ -9,7 +9,7 @@
     </div>
     <div>
       <ion-list class="list-full-border">
-        <button class="menu-pages" menuClose ion-item *ngFor="let p of exploreMenuPages" (click)="openPage(p)">
+        <button class="menu-pages" menuClose ion-item *ngFor="let p of affirmationsMenu" (click)="openPage(p)">
           <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>
           {{ p.title }}
           <ion-icon class="menu-icon"color="gray" item-right name="ios-arrow-forward"></ion-icon>
@@ -18,7 +18,7 @@
     </div>
     <div>
       <ion-list class="list-full-border">
-        <button class="menu-pages" menuClose ion-item *ngFor="let p of engageMenuPages" (click)="openPage(p)">
+        <button class="menu-pages" menuClose ion-item *ngFor="let p of accountMenu" (click)="openPage(p)">
           <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>
           {{ p.title }}
           <ion-icon class="menu-icon" color="gray" item-right name="ios-arrow-forward"></ion-icon>
@@ -26,8 +26,8 @@
       </ion-list>
     </div>
     <div>
-      <ion-list class="list-full-border">
-        <button class="menu-pages" menuClose ion-item *ngFor="let p of editorMenuPages" (click)="openPage(p)">
+      <ion-list *ngIf="editor" class="list-full-border">
+        <button class="menu-pages" menuClose ion-item *ngFor="let p of editorMenu" (click)="openPage(p)">
           <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>
           {{ p.title }}
           <ion-icon class="menu-icon" color="gray" item-right name="ios-arrow-forward"></ion-icon>

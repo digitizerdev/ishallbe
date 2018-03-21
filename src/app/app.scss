@@ -9,7 +9,7 @@
     }
 }
 .menu-pages {
-    background: color($colors, light-yellow);
+    background: #FFF;
 }
 .editor {
     color: color($colors, primary);
@@ -17,3 +17,6 @@
 .ios .menu-icon {
   padding-left: 25%;
 }
+.toolbar-title.toolbar-title-md, 
+.toolbar-title.toolbar-title-ios, 
+.toolbar-title.toolbar-title-wp { color: map-get($colors, primary); }

@@ -21,6 +21,7 @@ export class FirebaseProvider {
   session = false;
   loaded = false;
   hasSeenTutorial = false;
+  loggingInWithFacebook = false; 
 
   constructor(
     public events: Events,
@@ -81,10 +82,12 @@ export class FirebaseProvider {
         console.log(user);
       } else {
         console.log("No user found");
-        this.generateUser().subscribe(() => {
-          console.log("Generated User");
-          this.loadUser();
-        });
+        if (!this.loggingInWithFacebook) {
+          this.generateUser().subscribe(() => {
+            console.log("Generated User");
+            this.loadUser();
+          });
+        }
       }
     });
   }
@@ -105,6 +108,11 @@ export class FirebaseProvider {
   buildUser() {
     console.log("Building User");
     return Observable.create((observer) => {
+      if (!this.fcmToken) this.fcmToken = "0";
+      let timestamp = moment().unix();
+      console.log("Timestamp is " + timestamp);
+      let displayTimestamp = moment().format('MMM D YYYY h:mmA');
+      console.log("Display timestamp is " + displayTimestamp);
       const user: User = {
         uid: this.uid,
         fcmToken: this.fcmToken,

@@ -10,7 +10,7 @@ import { Pro } from '@ionic/pro';
 import { Observable } from 'rxjs/Rx';
 
 import { StartupPage } from '../pages/startup/startup';
-import { AboutPage } from '../pages/about/about';
+import { AccountPage } from '../pages/account/account';
 import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
 import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
 import { ProfilePage } from '../pages/profile/profile';
@@ -30,9 +30,9 @@ export class iShallBe {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any;
-  exploreMenuPages: Array<{ title: string, icon: string, component: any }>;
-  engageMenuPages: Array<{ title: string, icon: string, component: any }>;
-  editorMenuPages: Array<{ title: string, icon: string, component: any }>;
+  affirmationsMenu: Array<{ title: string, icon: string, component: any }>;
+  accountMenu: Array<{ title: string, icon: string, component: any }>;
+  editorMenu: Array<{ title: string, icon: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
   pages: Array<{ title: string, component: any }>;
   session = false;
@@ -50,25 +50,26 @@ export class iShallBe {
   ) {
     this.rootPage = StartupPage;
     this.platformReady();
-    this.exploreMenuPages = [
+    this.affirmationsMenu = [
       {
         title: 'Home',
         icon: 'md-home',
         component: HomePage
       },
       {
-        title: 'About',
-        icon: 'ios-information-circle',
-        component: AboutPage
-      },
-      {
         title: 'iShallBe TV',
         icon: 'ios-desktop',
         component: IshallbetvPage
-      }
+      },
+      {
+        title: 'Manage Profile',
+        icon: 'ios-person',
+        component: ProfilePage
+      },
+
     ];
 
-    this.engageMenuPages = [
+    this.accountMenu = [
       {
         title: 'Create Goal',
         icon: 'ios-microphone',
@@ -80,13 +81,13 @@ export class iShallBe {
         component: StatementCreatorPage
       },
       {
-        title: 'Manage Profile',
-        icon: 'ios-person',
-        component: ProfilePage
+        title: 'Manage Account',
+        icon: 'ios-settings',
+        component: AccountPage
       }
     ];
 
-    this.editorMenuPages = [
+    this.editorMenu = [
       {
         title: 'User Manager',
         icon: 'ios-people',
@@ -111,22 +112,31 @@ export class iShallBe {
 
   platformReady() {
     this.platform.ready().then(() => {
+      console.log(this.platform.platforms());
       if (this.platform.is('cordova')) {
-        console.log("Platform Ready");
-        this.listenToAuthEvents();
-        this.listenToPushNotificationEvents();
-        this.listenToFCMPushNotifications();
-        this.deployUpdate().subscribe(() => {
-          this.splashScreen.hide();
-          ;
-        });
-      } else this.splashScreen.hide();
-      this.statusBar.styleDefault();
+        this.initDevicePlatforms();
+        this.statusBar.styleDefault();
+      } else this.initBrowserPlatforms();
     });
   }
 
+  initDevicePlatforms() {
+    console.log("Initializing Device Platforms");
+    this.listenToPushNotificationEvents();
+    this.listenToFCMPushNotifications();
+    this.deployUpdate().subscribe(() => {
+      this.splashScreen.hide();
+    });
+  }
+
+  initBrowserPlatforms() {
+    console.log("Initializing Browser Platforms");
+    this.listenToAuthEvents();
+    this.splashScreen.hide();
+  }
+
   listenToAuthEvents() {
-    console.log("Listening To Auth Events");
+    console.log("Listening to Auth Events");
     this.events.subscribe('login: editor', () => {
       console.log("Editor Login")
       this.editor = true
@@ -136,9 +146,6 @@ export class iShallBe {
 
   listenToPushNotificationEvents() {
     console.log("Listening to Push Notification Events");
-    if (!this.platform.is('cordova')) {
-      return;
-    }
     const options: PushOptions = {
       android: {
       },

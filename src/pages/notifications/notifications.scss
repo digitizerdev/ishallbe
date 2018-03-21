@@ -2,6 +2,9 @@ page-notifications {
     .feature {
         border-top: thick solid color($colors, primary);
         border-bottom: thick solid color($colors, primary);
-        background: color($colors, light-yellow);
+        background: #FFF;
+    }
+    ion-header ion-icon.back-button-icon.icon {
+        color: map-get($colors, primary);
     }
 }

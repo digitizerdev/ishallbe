@@ -8,17 +8,16 @@
     </div>
     <ion-buttons end>
       <button ion-button icon-only (click)="showNotifications()">
-        <ion-icon color="primary" name="notifications-outline"></ion-icon>
+        <ion-icon color="primary" name="notifications"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content class="home-content" text-center>
-  <ion-refresher (ionRefresh)="refreshPage($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="dots" refreshingText="Refeshing">
+<ion-content class="home-content" text-center no-border>
+  <ion-refresher (ionRefresh)="refreshPage($event)" color="primary" no-border>
+    <ion-refresher-content refreshingSpinner="dots" refreshingText="Refeshing" no-border>
     </ion-refresher-content>
   </ion-refresher>
-  <pins [pinsStartDate]="rawDate"></pins>
-  <goals [userUid]="uid"></goals>
-  <statements></statements>
+  <pins></pins>
+  <statements [mine]="myAffirmations"></statements>
 </ion-content>

@@ -1,5 +1,6 @@
 footer {
-    background: color($colors, light-yellow);
+    background: #FFF;
+    border-top: thick solid color($colors, primary); 
     .footer-image {
         max-height: 40px;
     }

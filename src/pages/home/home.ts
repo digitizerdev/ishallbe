@@ -12,32 +12,13 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
   templateUrl: 'home.html',
 })
 export class HomePage {
-
-  rawDate: number;
-  displayDate: string;
-  time: any;
-  uid: any;
+  myAffirmations = false;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private firebase: FirebaseProvider
   ) {
-    console.log("Hello Home Page");
-    this.timestamp();
-    this.uid = "mQ2XaUVS46fKKJDo0u8ldPQdmnB3"
-    console.log("My uid is " + this.uid);
-  }
-
-  timestamp() {
-    console.log("Timestamping");
-    this.rawDate = moment().unix();
-    console.log("Raw Date is " + this.rawDate);
-    this.displayDate = moment().format('MMM D YYYY').toUpperCase();
-    console.log("Display Date is " + this.displayDate);
-    this.time = moment();
-    console.log("Raw time is " + this.time);
-    console.log(moment(this.time).format('llll'));
   }
 
   showNotifications() {

@@ -17,7 +17,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
   templateUrl: 'goals.html'
 })
 export class GoalsComponent {
-  @Input('userUid') uid;
+  @Input('mine') myGoals;
 
   rawDate: number;
   rawNextWeekDate: number;
@@ -34,8 +34,7 @@ export class GoalsComponent {
 
   ngAfterViewInit() {
     console.log("Goals View Initialized");
-    console.log("Got uid");
-    console.log(this.uid);
+    console.log("My Goals: " + this.myGoals);
     this.timestamp();
     this.loadGoals().subscribe((goals) => {
       console.log("Got goals");
@@ -53,8 +52,7 @@ export class GoalsComponent {
   loadGoals() {
     console.log("Loading Goals");
     return Observable.create((observer) => {
-      console.log("My uid is " + this.uid);
-      let myGoals = this.firebase.afs.collection('goals', ref => ref.where('uid', "==", this.uid));
+      let myGoals = this.firebase.afs.collection('goals');
       return myGoals.valueChanges().subscribe((goals) => {
         observer.next(goals);
       });

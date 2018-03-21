@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import moment from 'moment';
 import { Observable } from 'rxjs/Observable';
@@ -10,6 +10,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
   templateUrl: 'statements.html'
 })
 export class StatementsComponent {
+  @Input('mine') myStatements;
 
   rawDate: number;
   statements: any[];
@@ -20,7 +21,8 @@ export class StatementsComponent {
   }
 
   ngAfterViewInit() {
-    console.log("Statements View Initialized")
+    console.log("Statements View Initialized");
+    console.log("My Statments: " + this.myStatements);
     this.timestamp();
     this.loadStatements().subscribe((statements) => {
       console.log("Got statements");

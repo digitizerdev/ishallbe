@@ -45,8 +45,7 @@ export class PinsComponent {
   }
 
   timestamp() {
-    console.log("Date is " + this.inputDate);
-    this.endDate = parseInt((moment.unix(this.inputDate).format('YYYYMMDD')));
+    this.endDate = parseInt(moment().format('YYYYMMDD'));
     console.log("End Date is " + this.endDate);
     this.dayNumber = moment(this.endDate, 'YYYYMMDD').isoWeekday();
     console.log("Day number is " + this.dayNumber);

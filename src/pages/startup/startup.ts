@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, Platform, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, Platform, NavController } from 'ionic-angular';
 import { Push } from '@ionic-native/push';
 
 import { LoginPage } from '../login/login';
@@ -20,7 +20,6 @@ export class StartupPage {
   constructor(
     private platform: Platform,
     private navCtrl: NavController, 
-    private navParams: NavParams,
     private push: Push,
     private firebase: FirebaseProvider
   ) {
@@ -39,8 +38,14 @@ export class StartupPage {
       this.firebase.sessionExists().subscribe((session) => {
         if (!this.loaded) {
           this.loaded = true;
-          if (session) this.navCtrl.setRoot(HomePage);
-          else this.navCtrl.setRoot(LoginPage);
+          if (session) {
+            console.log("Session Found");
+            console.log("User ID is " + this.firebase.uid);
+            this.navCtrl.setRoot(HomePage);
+          } else {
+            console.log("No Session Found");
+            this.navCtrl.setRoot(LoginPage);
+          }
         }
       });
     }

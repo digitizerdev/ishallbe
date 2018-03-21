@@ -1,12 +1,14 @@
 <ion-header no-border>
-  <ion-navbar color='primary'>
+  <ion-navbar color='light-yellow'>
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon name="menu" color="primary"></ion-icon>
     </button>
-    <ion-title color='primary'>NOTIFICATIONS</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
+  <h2 color="primary" ion-text text-center padding-bottom>
+    <b>NOTIFICATIONS</b>
+  </h2>
   <h5 class="feature" color="primary" ion-text padding>NEW</h5>
   <ion-list no-lines>
     <ion-item *ngFor="let unreadNotification of unreadNotifications" text-wrap>
