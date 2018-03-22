@@ -1,48 +1,42 @@
 <div *ngIf="statements" class="statements-content">
-  <div>
-    <h2 color="primary" ion-text padding text-center>
-      <b>STATEMENTS</b>
-    </h2>
-  </div>
+  <br>
   <ion-card *ngFor="let statement of statements">
-    <ion-item class="statement-header">
+    <ion-item>
       <ion-avatar item-left (click)="viewUser(statement.user_id)">
-        <img src="{{ statement.face }}">
+        <img src="{{statement.face}}">
       </ion-avatar>
-      <h2>
-        <b>{{ statement.title }}</b>
-      </h2>
-      <h3 (click)="viewUser(statement.user_id)" ion-text color="primary">{{ statement.name }}</h3>
-      <h5>{{ statement.displayTimestamp }}</h5>
+      <h3 color="primary" ion-text>
+        <b>{{statement.title}}</b>
+      </h3>
+      <h5 (click)="viewUser(statement.user_id)"><b>{{statement.name}}</b></h5>
+      <h6 color="dark" ion-text>Posted {{statement.displayTimestamp}}</h6>
     </ion-item>
-    <img class="full-image" *ngIf="statement.url" src="{{ statement.url }}">
+    <img class="full-image" *ngIf="statement.url" src="{{statement.url}}">
     <ion-item text-wrap class="statement-body">
       <div (click)="viewStatement(statement.id)">
-        <h3 padding-top padding-bottom>{{ statement.description }}</h3>
+        <h3 padding-top padding-bottom>{{statement.description}}</h3>
       </div>
       <div>
         <h6>
-          <a *ngIf="statement.likeCount > 1 || statement.likeCount == 0" class="subdued">{{ statement?.likeCount}} Likes</a>
-          <a *ngIf="statement.likeCount == 1" class="subdued">{{ statement?.likeCount}} Like</a>
-          <a *ngIf="statement.commentCount > 1 || statement.commentCount == 0" class="subdued" margin-left>{{ statement?.commentCount}} Comments</a>
-          <a *ngIf="statement.commentCount == 1" class="subdued" margin-left>{{ statement?.commentCount}} Comment</a>
+          <a *ngIf="statement.likeCount > 1 || statement.likeCount == 0" class="subdued">{{statement?.likeCount}} Likes</a>
+          <a *ngIf="statement.likeCount == 1" class="subdued">{{statement?.likeCount}} Like</a>
+          <a *ngIf="statement.commentCount > 1 || statement.commentCount == 0" class="subdued" margin-left>{{statement?.commentCount}} Comments</a>
+          <a *ngIf="statement.commentCount == 1" class="subdued" margin-left>{{statement?.commentCount}} Comment</a>
         </h6>
       </div>
     </ion-item>
-    <ion-grid class="statement-actions">
+    <ion-grid>
       <ion-row>
-        <ion-col width-33 text-center (click)="toggleLike(statement)">
+        <ion-col width-50 text-center (click)="toggleLike(statement)">
           <ion-icon name="thumbs-up" color="primary" *ngIf="statement.liked"></ion-icon>
           <ion-icon name="thumbs-up" *ngIf="!statement.liked"></ion-icon>
         </ion-col>
-        <ion-col width-33 text-center (click)="viewStatement(statement.id)">
+        <ion-col width-50 text-center (click)="viewStatement(statement.id)">
           <ion-icon name="chatboxes"></ion-icon>
-        </ion-col>
-        <ion-col width-33 text-center>
-          <ion-icon name="share-alt"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-card>
+  <br>
   <footer></footer>
 </div>

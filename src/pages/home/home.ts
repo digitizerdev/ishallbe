@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import moment from 'moment';
 
 import { NotificationsPage } from '../../pages/notifications/notifications';
-
-import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()
 @Component({
@@ -12,12 +10,12 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
   templateUrl: 'home.html',
 })
 export class HomePage {
+
   myAffirmations = false;
+  postType = "statements";
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
-    private firebase: FirebaseProvider
   ) {
   }
 

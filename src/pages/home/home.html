@@ -19,5 +19,15 @@
     </ion-refresher-content>
   </ion-refresher>
   <pins></pins>
-  <statements [mine]="myAffirmations"></statements>
+  <ion-segment class="post-segment" [(ngModel)]="postType" color="light-yellow" padding-top padding-left padding-right>
+    <ion-segment-button value="statements">
+      <b>STATEMENTS</b>
+    </ion-segment-button>
+    <ion-segment-button value="goals">
+      <b>GOALS</b>
+    </ion-segment-button>
+    <br>
+  </ion-segment>
+  <statements *ngIf="postType=='statements'" [mine]="myAffirmations"></statements>
+  <goals *ngIf="postType=='goals'" [mine]="myAffirmations"></goals>
 </ion-content>
