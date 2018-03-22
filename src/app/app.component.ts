@@ -3,7 +3,6 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { FCM } from '@ionic-native/fcm';
 import { Pro } from '@ionic/pro';
 
@@ -44,7 +43,6 @@ export class iShallBe {
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
     private events: Events,
-    private push: Push,
     private fcm: FCM,
     private firebase: FirebaseProvider,
   ) {
@@ -122,7 +120,6 @@ export class iShallBe {
 
   initDevicePlatforms() {
     console.log("Initializing Device Platforms");
-    this.listenToPushNotificationEvents();
     this.listenToFCMPushNotifications();
     this.deployUpdate().subscribe(() => {
       this.splashScreen.hide();
@@ -142,30 +139,6 @@ export class iShallBe {
       this.editor = true
     });
     this.events.subscribe('logout', () => { this.editor = false });
-  }
-
-  listenToPushNotificationEvents() {
-    console.log("Listening to Push Notification Events");
-    const options: PushOptions = {
-      android: {
-      },
-      ios: {
-        alert: 'true',
-        badge: true,
-        sound: 'true',
-        topics: ['notifications']
-      },
-      windows: {},
-      browser: {
-        pushServiceURL: 'http://push.api.phonegap.com/v1/push'
-      }
-    };
-    const pushObject: PushObject = this.push.init(options);
-    pushObject.on('registration').subscribe((data: any) => {
-      console.log("Push Notifications Registered");
-      console.log(data);
-    }, err => {
-    });
   }
 
   listenToFCMPushNotifications() {

@@ -10,7 +10,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { Media } from '@ionic-native/media';
@@ -124,7 +123,6 @@ Pro.init('69d144ed', {
     StatusBar,
     SplashScreen,
     EmailComposer,
-    Push,
     File,
     FileTransfer,
     Media,

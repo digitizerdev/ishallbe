@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 import { IonicModule, Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Push } from '@ionic-native/push';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -25,7 +24,6 @@ import {
   NavMock,
   StatusBarMock,
   SplashScreenMock,
-  PushMock,
   FirebaseProviderMock,
 } from '../../test-config/mocks-ionic';
 
@@ -59,7 +57,6 @@ describe('iShallBe 1.2', () => {
         { provide: Nav, useClass: NavMock },
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
-        { provide: Push, useClass: PushMock },
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
         { provide: AngularFireAuth, useValue: angularFireAuthStub },
         { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -74,7 +71,6 @@ describe('iShallBe 1.2', () => {
     nav = fixture.componentRef.injector.get(Nav);
     statusBar = fixture.componentRef.injector.get(StatusBar);
     splashScreen = fixture.componentRef.injector.get(SplashScreen);
-    push = fixture.componentRef.injector.get(Push);
     firebase = fixture.componentRef.injector.get(FirebaseProvider);
   });
 
@@ -85,7 +81,6 @@ describe('iShallBe 1.2', () => {
     nav = null;
     statusBar = null;
     splashScreen = null;
-    push = null;
     firebase = null;
     afa = null;
     afs = null;

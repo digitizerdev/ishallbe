@@ -36,7 +36,6 @@
     "@ionic-native/in-app-browser": "^4.5.3",
     "@ionic-native/media": "^4.5.3",
     "@ionic-native/pro": "^4.5.3",
-    "@ionic-native/push": "4.4.2",
     "@ionic-native/splash-screen": "4.4.2",
     "@ionic-native/status-bar": "4.4.2",
     "@ionic/pro": "^1.0.19",
@@ -73,7 +72,6 @@
     "ionic2-calendar": "^0.3.13-weekdayview-tpls",
     "ionicons": "3.0.0",
     "moment": "^2.20.1",
-    "phonegap-plugin-push": "^2.2.2",
     "promise-polyfill": "^7.1.0",
     "rxjs": "5.4.0",
     "sw-toolbox": "3.6.0",
@@ -129,9 +127,6 @@
       "cordova-plugin-facebook4": {
         "APP_ID": "1312020948874676",
         "APP_NAME": "iShallBe"
-      },
-      "phonegap-plugin-push": {
-        "SENDER_ID": "1:881822459028:android:58c20c02735f7e42"
       },
       "cordova-plugin-email-composer": {},
       "cordova-plugin-youtube-video-player": {},

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, Platform, NavController } from 'ionic-angular';
-import { Push } from '@ionic-native/push';
+import { IonicPage, NavController } from 'ionic-angular';
 
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
@@ -18,9 +17,7 @@ export class StartupPage {
   loaded = false;
 
   constructor(
-    private platform: Platform,
     private navCtrl: NavController, 
-    private push: Push,
     private firebase: FirebaseProvider
   ) {
   }
@@ -28,7 +25,6 @@ export class StartupPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad StartupPage');
     this.checkForSession();
-    this.initPushNotifications();
   }
 
   checkForSession() {
@@ -49,15 +45,5 @@ export class StartupPage {
         }
       });
     }
-  }
-
-  initPushNotifications() {
-    console.log("Initializing Push Notifications")
-    if (!this.platform.is('cordova')) return;
-    this.push.hasPermission()
-    .then((res: any) => {
-      if (res.isEnabled) console.log("Push Already Enabled")
-      else console.log("Push Not Enabled");
-    });
   }
 }

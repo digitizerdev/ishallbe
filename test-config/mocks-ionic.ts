@@ -3,7 +3,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
-import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { DatePicker } from '@ionic-native/date-picker';
@@ -106,12 +105,6 @@ export class FacebookMock extends Facebook {
 }
 
 export class FileMock extends File {
-  hide() {
-    return;
-  }
-}
-
-export class PushMock extends Push {
   hide() {
     return;
   }
