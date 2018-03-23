@@ -111,15 +111,14 @@ export class iShallBe {
   platformReady() {
     this.platform.ready().then(() => {
       console.log(this.platform.platforms());
-      if (this.platform.is('cordova')) {
-        this.initDevicePlatforms();
-        this.statusBar.styleDefault();
-      } else this.initBrowserPlatforms();
+      if (this.platform.is('cordova')) this.initDevicePlatforms();
+      else this.initBrowserPlatforms();
     });
   }
 
   initDevicePlatforms() {
     console.log("Initializing Device Platforms");
+    this.statusBar.styleDefault();
     this.listenToFCMPushNotifications();
     this.deployUpdate().subscribe(() => {
       this.splashScreen.hide();

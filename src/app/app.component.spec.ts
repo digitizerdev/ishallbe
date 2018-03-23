@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { IonicModule, Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { FCM } from '@ionic-native/fcm';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -13,7 +14,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../environments/environment';
 
-import { LoginPage } from '../pages/login/login';
+import { StartupPage } from '../pages/startup/startup';
 
 import { } from 'jasmine';
 
@@ -24,17 +25,18 @@ import {
   NavMock,
   StatusBarMock,
   SplashScreenMock,
+  FCMMock,
   FirebaseProviderMock,
 } from '../../test-config/mocks-ionic';
 
-describe('iShallBe 1.2', () => {
+describe('iShallBe 1.4', () => {
   let fixture;
   let component;
   let platform: Platform;
   let nav: Nav;
   let statusBar: StatusBar;
   let splashScreen: SplashScreen;
-  let push: Push;
+  let fcm: FCM;
   let firebase: FirebaseProvider;
   let afa: AngularFireAuth;
   let afs: AngularFirestore;
@@ -57,6 +59,7 @@ describe('iShallBe 1.2', () => {
         { provide: Nav, useClass: NavMock },
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
+        { provide: FCM, useClass: FCMMock },
         { provide: FirebaseProvider, useClass: FirebaseProviderMock },
         { provide: AngularFireAuth, useValue: angularFireAuthStub },
         { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -71,6 +74,7 @@ describe('iShallBe 1.2', () => {
     nav = fixture.componentRef.injector.get(Nav);
     statusBar = fixture.componentRef.injector.get(StatusBar);
     splashScreen = fixture.componentRef.injector.get(SplashScreen);
+    fcm = fixture.componentRef.injector.get(FCM);
     firebase = fixture.componentRef.injector.get(FirebaseProvider);
   });
 
@@ -81,6 +85,7 @@ describe('iShallBe 1.2', () => {
     nav = null;
     statusBar = null;
     splashScreen = null;
+    fcm = null;
     firebase = null;
     afa = null;
     afs = null;
@@ -90,36 +95,20 @@ describe('iShallBe 1.2', () => {
     expect(component instanceof iShallBe).toBe(true);
   });
 
-  fit('should have explore menu with three pages', () => {
-    expect(component.exploreMenuPages.length).toBe(3);
-  });
-
-  fit('should have engage menu with three pages', () => {
-    expect(component.engageMenuPages.length).toBe(3);
-  });
-
-  fit('should have editor menu with three pages', () => {
-    expect(component.editorMenuPages.length).toBe(3);
-  });
-
   fit('should initialize root page to StartupPage', () => {
-    expect(component['rootPage']).toBe(LoginPage);
+    expect(component['rootPage']).toBe(StartupPage);
   });
 
-  fit('should be able to ready platform', () => {
-    expect(component.platformReady).toBeDefined();
+  fit('should display affirmations menu with three pages if user contributor', () => {
+    expect(component.affirmationsMenu.length).toBe(3);
   });
 
-  fit('should be able to open a page', () => {
-    expect(component.openPage).toBeDefined();
+  fit('should display account menu with three pages if user contributor', () => {
+    expect(component.accountMenu.length).toBe(3);
   });
 
-  fit('should listen to auth events', () => {
-    expect(component.listenToAuthEvents).toBeDefined();
-  });
-
-  fit('should listen to push notification events', () => {
-    expect(component.listenToPushNotificationEvents).toBeDefined();
+  fit('should display editor menu with three pages if user editor', () => {
+    expect(component.editorMenu.length).toBe(3);
   });
 
 });
