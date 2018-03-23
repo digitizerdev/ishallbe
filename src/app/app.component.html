@@ -8,7 +8,7 @@
       </a>
     </div>
     <div>
-      <ion-list class="list-full-border">
+      <ion-list class="list-full-border" no-lines>
         <button class="menu-pages" menuClose ion-item *ngFor="let p of affirmationsMenu" (click)="openPage(p)">
           <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>
           {{ p.title }}
@@ -17,7 +17,7 @@
       </ion-list>
     </div>
     <div>
-      <ion-list class="list-full-border">
+      <ion-list class="list-full-border" no-lines>
         <button class="menu-pages" menuClose ion-item *ngFor="let p of accountMenu" (click)="openPage(p)">
           <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>
           {{ p.title }}
@@ -26,7 +26,7 @@
       </ion-list>
     </div>
     <div>
-      <ion-list *ngIf="editor" class="list-full-border">
+      <ion-list *ngIf="editor" class="list-full-border" no-lines>
         <button class="menu-pages" menuClose ion-item *ngFor="let p of editorMenu" (click)="openPage(p)">
           <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>
           {{ p.title }}

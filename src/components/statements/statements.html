@@ -13,8 +13,8 @@
     </ion-item>
     <img class="full-image" *ngIf="statement.url" src="{{statement.url}}">
     <ion-item text-wrap class="statement-body">
-      <div (click)="viewStatement(statement.id)">
-        <h3 padding-top padding-bottom>{{statement.description}}</h3>
+      <div (click)="viewStatement(statement.id)" padding-top padding-bottom>
+        <h3>{{statement.description}}</h3>
       </div>
       <div>
         <h6>

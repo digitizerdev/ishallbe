@@ -70,11 +70,11 @@
       <br>
       <ion-item class="appFormTextArea">
         <ion-textarea [attr.rows]="4" autosize placeholder="Goal Description" [(ngModel)]="createGoalForm.description" name="description"
-          type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on” required>
+          type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on” minlength="40" required>
         </ion-textarea>
       </ion-item>
       <p ion-text [hidden]="description.valid || submitted == false" color="danger"  padding-left>
-        Goal Description is required
+        Goal Description is required to be at least 40 characters long
       </p>
       <br>
       <ion-row>

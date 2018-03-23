@@ -1,8 +1,12 @@
 page-notifications {
     .feature {
+        padding: 10px 10px 10px 20px;
         border-top: thick solid color($colors, primary);
         border-bottom: thick solid color($colors, primary);
         background: #FFF;
+    }
+    .unread {
+        background: color($colors, light-green);
     }
     ion-header ion-icon.back-button-icon.icon {
         color: map-get($colors, primary);

@@ -1,47 +1,50 @@
 <div *ngIf="goals" class="goals-content">
-  <ion-grid id="goalsCards">
-    <ion-row>
-      <ion-col *ngFor="let goal of goals" col-12 col-sm>
-        <ion-card>
-          <ion-item>
-            <ion-avatar item-left (click)="viewUser(goal.user_id)">
-              <img src="{{goal.face}}">
-            </ion-avatar>
-            <h3 color="primary" ion-text>
-              <b>{{ goal.title }}</b>
-            </h3>
-            <h5 (click)="viewUser(goal.user_id)">
-              <b>{{goal.name}}</b>
-            </h5>
-            <h6 color="dark" ion-text>Due {{ goal.displayDueDate }}</h6>
-          </ion-item>
-          <div class="audio" text-center padding-top>
-            <button color="primary" ion-button strong round>
-              <ion-icon color="light-yellow" name="play"></ion-icon>
-            </button>
-          </div>
-          <ion-item text-wrap class="goal-body">
-            <div (click)="viewGoal(goal.id)">
-              <h3>
-                {{ goal.description }}
-              </h3>
-            </div>
-          </ion-item>
-          <ion-grid>
-            <ion-row>
-              <ion-col width-50 text-center (click)="toggleLike(goal)">
-                <ion-icon name="thumbs-up" color="primary" *ngIf="goal.liked"></ion-icon>
-                <ion-icon name="thumbs-up" *ngIf="!goal.liked"></ion-icon>
-              </ion-col>
-              <ion-col width-50 text-center (click)="viewStatement(goal.id)">
-                <ion-icon name="chatboxes"></ion-icon>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <br>
+  <ion-card *ngFor="let goal of goals">
+    <ion-item>
+      <ion-avatar item-left (click)="viewUser(goal.user_id)">
+        <img src="{{goal.face}}">
+      </ion-avatar>
+      <h3 color="primary" ion-text>
+        <b>{{ goal.title }}</b>
+      </h3>
+      <h5 (click)="viewUser(goal.user_id)">
+        <b>{{goal.name}}</b>
+      </h5>
+      <h6 color="dark" ion-text>Due {{ goal.displayDueDate }}</h6>
+    </ion-item>
+    <div class="audio" text-center padding-top>
+      <button color="primary" ion-button strong round>
+        <ion-icon color="light-yellow" name="play"></ion-icon>
+      </button>
+    </div>
+    <ion-item text-wrap class="goal-body">
+      <div (click)="viewGoal(goal.id)" padding-top padding-bottom>
+        <h3>
+          {{ goal.description }}
+        </h3>
+      </div>
+      <div>
+        <h6>
+          <a *ngIf="goal.likeCount > 1 || goal.likeCount == 0" class="subdued">{{goal?.likeCount}} Likes</a>
+          <a *ngIf="goal.likeCount == 1" class="subdued">{{goal?.likeCount}} Like</a>
+          <a *ngIf="goal.commentCount > 1 || goal.commentCount == 0" class="subdued" margin-left>{{goal?.commentCount}} Comments</a>
+          <a *ngIf="goal.commentCount == 1" class="subdued" margin-left>{{goal?.commentCount}} Comment</a>
+        </h6>
+      </div>
+    </ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col width-50 text-center (click)="toggleLike(goal)">
+          <ion-icon name="thumbs-up" color="primary" *ngIf="goal.liked"></ion-icon>
+          <ion-icon name="thumbs-up" *ngIf="!goal.liked"></ion-icon>
+        </ion-col>
+        <ion-col width-50 text-center (click)="viewStatement(goal.id)">
+          <ion-icon name="chatboxes"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
   <br>
   <footer></footer>
 </div>
