@@ -111,8 +111,9 @@ export class iShallBe {
   platformReady() {
     this.platform.ready().then(() => {
       console.log(this.platform.platforms());
+      this.listenToAuthEvents();
       if (this.platform.is('cordova')) this.initDevicePlatforms();
-      else this.initBrowserPlatforms();
+      else this.splashScreen.hide();
     });
   }
 
@@ -123,12 +124,6 @@ export class iShallBe {
     this.deployUpdate().subscribe(() => {
       this.splashScreen.hide();
     });
-  }
-
-  initBrowserPlatforms() {
-    console.log("Initializing Browser Platforms");
-    this.listenToAuthEvents();
-    this.splashScreen.hide();
   }
 
   listenToAuthEvents() {
