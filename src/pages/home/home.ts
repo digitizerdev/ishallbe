@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
-import moment from 'moment';
 
 import { NotificationsPage } from '../../pages/notifications/notifications';
 

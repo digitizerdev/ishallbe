@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { HomePage } from '../home/home';
 import { ProfileUpdatePage } from '../profile-update/profile-update';
-import { AccountPage } from '../account/account';
+import { MessagesPage } from '../messages/messages';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -25,7 +25,6 @@ export class ProfilePage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
     private inAppBrowser: InAppBrowser,
     private firebase: FirebaseProvider
   ) {
@@ -60,8 +59,8 @@ export class ProfilePage {
     this.navCtrl.push(ProfileUpdatePage);
   }
 
-  pushAccountPage() {
-    this.navCtrl.push(AccountPage);
+  pushMessagesPage() {
+    this.navCtrl.push(MessagesPage);
   }
 
   setRootHomePage() {
