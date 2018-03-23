@@ -1,4 +1,4 @@
-<div *ngIf="goals" class="goals-content">
+<div *ngIf="goals" class="goals-content" text-center>
   <br>
   <ion-card *ngFor="let goal of goals">
     <ion-item>
@@ -11,26 +11,32 @@
       <h5 (click)="viewUser(goal.user_id)">
         <b>{{goal.name}}</b>
       </h5>
-      <h6 color="dark" ion-text>Due {{ goal.displayDueDate }}</h6>
+      <h6 color="dark" ion-text>{{goal.displayTimestamp}}</h6>
     </ion-item>
-    <div class="audio" text-center padding-top>
-      <button color="primary" ion-button strong round>
-        <ion-icon color="light-yellow" name="play"></ion-icon>
+    <div>
+      <button color="primary" ion-button round strong>
+        <ion-icon padding-right name="play"></ion-icon>
+        LISTEN TO GOAL
       </button>
     </div>
-    <ion-item text-wrap class="goal-body">
-      <div (click)="viewGoal(goal.id)" padding-top padding-bottom>
+    <div padding-top>
+      <h3 color="dark" ion-text>
+        <b>DUE {{goal.displayDueDate}}</b>
+      </h3>
+    </div>
+    <ion-item text-wrap>
+      <div (click)="viewGoal(goal.id)">
         <h3>
           {{ goal.description }}
         </h3>
       </div>
-      <div>
-        <h6>
+      <div padding-top>
+        <p>
           <a *ngIf="goal.likeCount > 1 || goal.likeCount == 0" class="subdued">{{goal?.likeCount}} Likes</a>
           <a *ngIf="goal.likeCount == 1" class="subdued">{{goal?.likeCount}} Like</a>
           <a *ngIf="goal.commentCount > 1 || goal.commentCount == 0" class="subdued" margin-left>{{goal?.commentCount}} Comments</a>
           <a *ngIf="goal.commentCount == 1" class="subdued" margin-left>{{goal?.commentCount}} Comment</a>
-        </h6>
+        </p>
       </div>
     </ion-item>
     <ion-grid>

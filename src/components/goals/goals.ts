@@ -65,9 +65,12 @@ export class GoalsComponent {
       goals.forEach((goal) => {
         if (!goal.complete) {
           console.log("This goal is not complete");
-          let date = moment.unix(goal.dueDate);
-          goal.displayDueDate = moment(date).fromNow();
+          let dueDate = moment.unix(goal.dueDate);
+          goal.displayDueDate = moment(dueDate).fromNow().toUpperCase();
           console.log("Goal Display Due Date is " + goal.displayDueDate);
+          let timestamp = moment.unix(goal.timestamp);
+          goal.displayTimestamp= moment(timestamp).fromNow();
+          console.log("Goal Timestamp is " + goal.displayTimestamp);
           this.setDueDateWarningColor(goal).subscribe((goal) => {
             console.log("Pushing Goal");
             console.log(goal);

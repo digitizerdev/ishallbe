@@ -9,6 +9,8 @@ import { DatePicker } from '@ionic-native/date-picker';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Media } from '@ionic-native/media';
+import { FCM } from '@ionic-native/fcm';
+
 import { Observable } from 'rxjs/Observable';
 
 import { HomePage } from '../src/pages/home/home';
@@ -271,6 +273,16 @@ export class FileTransferMock extends FileTransfer {
   _getPortal(): any { return {} };
 
   public download(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+}
+
+export class FCMMock extends FCM {
+  _getPortal(): any { return {} };
+
+  public getToken(): any {
     return new Promise(function (resolve: Function): void {
       resolve();
     });

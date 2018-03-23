@@ -9,11 +9,11 @@
         <b>{{statement.title}}</b>
       </h3>
       <h5 (click)="viewUser(statement.user_id)"><b>{{statement.name}}</b></h5>
-      <h6 color="dark" ion-text>Posted {{statement.displayTimestamp}}</h6>
+      <h6 color="dark" ion-text>{{statement.displayTimestamp}}</h6>
     </ion-item>
     <img class="full-image" *ngIf="statement.url" src="{{statement.url}}">
-    <ion-item text-wrap class="statement-body">
-      <div (click)="viewStatement(statement.id)" padding-top padding-bottom>
+    <ion-item text-wrap>
+      <div (click)="viewStatement(statement.id)" padding-bottom>
         <h3>{{statement.description}}</h3>
       </div>
       <div>

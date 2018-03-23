@@ -1,14 +1,15 @@
 <div class="feature" padding-bottom>
   <ion-slides id="PinsSlider" [speed]="2000">
-    <ion-slide *ngFor="let pin of pins" >
+    <ion-slide *ngFor="let pin of pins">
       <div *ngIf="pin.day !== 'Monday' && pin.day !== 'Tuesday'">
         <br>
       </div>
       <h2 ion-text color="primary" padding-bottom>
         <b>{{pin.title}}</b>
       </h2>
-      <button *ngIf="pin.day == 'Tuesday'" (click)="openLink(pin.url)" color="primary" text-center ion-button strong round>
-        <ion-icon color="light-yellow" name="play"></ion-icon>
+      <button *ngIf="pin.day == 'Tuesday'" (click)="openLink(pin.url)" color="primary" text-center ion-button round large strong>
+        <ion-icon padding-right name="musical-notes"></ion-icon>
+        OPEN TUNE
       </button>
       <img *ngIf="pin.day == 'Monday'" class="pin-image" src="{{ pin?.url }}">
       <h5 *ngIf="pin.description" padding-left>{{pin.description}}</h5>
