@@ -67,13 +67,27 @@ export class iShallBe {
   }
 
   listenToUserPermissionsEvents() {
+    this.listenToAccessControlEvents();
     this.listenToContributorPermissionEvents();
     this.listenToEditorPermissionEvents();
   }
 
+  listenToAccessControlEvents() {
+    this.events.subscribe('user blocked', () => {
+      this.nav.setRoot(LoginPage);
+      this.fcm.unsubscribeFromTopic('affirmations');
+      if (this.editor) {
+        this.editor = false;
+        this.fcm.unsubscribeFromTopic('editor');
+      }
+    });
+  }
+
   listenToContributorPermissionEvents() {
-    this.events.subscribe('contributor permission granted', () => 
-      this.nav.setRoot(HomePage));
+    this.events.subscribe('contributor permission granted', () => {
+      this.nav.setRoot(HomePage);
+      this.fcm.subscribeToTopic('affirmations');
+    });
     this.events.subscribe('contributor permission not granted', () => {
       this.nav.setRoot(LoginPage);
       this.editor = false;
@@ -81,10 +95,14 @@ export class iShallBe {
   }
 
   listenToEditorPermissionEvents() {
-    this.events.subscribe('editor permission granted', () =>
-      this.editor = true);
-    this.events.subscribe('editor permission not granted', () => 
-      this.editor = false);
+    this.events.subscribe('editor permission granted', () => {
+      this.fcm.subscribeToTopic('editor');
+      this.editor = true;
+    });
+    this.events.subscribe('editor permission not granted', () => {
+      this.fcm.unsubscribeFromTopic('editor');
+      this.editor = false;
+    });
   }
 
   initDevicePlatforms() {
