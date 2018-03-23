@@ -76,7 +76,10 @@ export class FirebaseProvider {
     this.userDoc = this.afs.doc(path);
     this.userDoc.valueChanges().subscribe((user) => {
       if (user) {
-        if (user.editor) { this.events.publish("login: editor") };
+        console.log("Editor is " + user.editor);
+        if (user.editor) { 
+          this.events.publish("login: editor") 
+        };
         this.user = user;
         console.log("Loaded Firebase User");
         console.log(user);

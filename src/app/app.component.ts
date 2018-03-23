@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { Nav, Platform, Events } from 'ionic-angular';
+import { Nav, Platform, Events, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
@@ -43,11 +43,79 @@ export class iShallBe {
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
     private events: Events,
+    private alertCtrl: AlertController,
     private fcm: FCM,
     private firebase: FirebaseProvider,
   ) {
     this.rootPage = StartupPage;
     this.platformReady();
+    this.setMenus();
+  }
+
+  openPage(page) {
+    this.nav.setRoot(page.component);
+  }
+
+  platformReady() {
+    this.platform.ready().then(() => {
+      this.listenToEditorLogin();
+      if (this.platform.is('cordova'))
+        this.initDevicePlatforms();
+      else this.splashScreen.hide();
+    });
+  }
+
+  initDevicePlatforms() {
+    this.statusBar.styleDefault();
+    this.listenToFCMPushNotifications();
+    this.deployUpdate().subscribe(() =>
+      this.splashScreen.hide());
+  }
+
+  listenToEditorLogin() {
+    this.events.subscribe('login: editor', () =>
+      this.editor = true);
+    this.events.subscribe('logout', () =>
+      this.editor = false);
+  }
+
+  listenToFCMPushNotifications() {
+    this.fcm.getToken().then(token => {
+      console.log("Got token");
+      console.log(token);
+      this.firebase.fcmToken = token;
+    });
+    this.fcm.onNotification().subscribe(notification => {
+      console.log("Received a notification");
+      console.log(notification);
+      if (!notification.wasTapped)
+        this.displayNotificationAlert(notification)
+    });
+    this.fcm.onTokenRefresh().subscribe(token =>
+      this.firebase.fcmToken = token);
+  }
+
+  displayNotificationAlert(notification) {
+    console.log("Displaying Notification Alert");
+    let alert = this.alertCtrl.create({
+      title: 'Notification',
+      subTitle: notification.message,
+      buttons: ['OK']
+    });
+    console.log("Built Alert");
+    console.log(alert);
+    alert.present();
+  }
+
+  deployUpdate() {
+    return Observable.create((observer) => {
+      Pro.deploy.checkAndApply(true).then((resp) => {
+        if (!resp.update) observer.next();
+      });
+    });
+  }
+
+  setMenus() {
     this.affirmationsMenu = [
       {
         title: 'Home',
@@ -63,10 +131,8 @@ export class iShallBe {
         title: 'Manage Profile',
         icon: 'ios-person',
         component: ProfilePage
-      },
-
+      }
     ];
-
     this.accountMenu = [
       {
         title: 'Create Goal',
@@ -84,7 +150,6 @@ export class iShallBe {
         component: AccountPage
       }
     ];
-
     this.editorMenu = [
       {
         title: 'User Manager',
@@ -102,67 +167,5 @@ export class iShallBe {
         component: ApiManagerPage
       }
     ];
-  }
-
-  openPage(page) {
-    this.nav.setRoot(page.component);
-  }
-
-  platformReady() {
-    this.platform.ready().then(() => {
-      console.log(this.platform.platforms());
-      this.listenToAuthEvents();
-      if (this.platform.is('cordova')) this.initDevicePlatforms();
-      else this.splashScreen.hide();
-    });
-  }
-
-  initDevicePlatforms() {
-    console.log("Initializing Device Platforms");
-    this.statusBar.styleDefault();
-    this.listenToFCMPushNotifications();
-    this.deployUpdate().subscribe(() => {
-      this.splashScreen.hide();
-    });
-  }
-
-  listenToAuthEvents() {
-    console.log("Listening to Auth Events");
-    this.events.subscribe('login: editor', () => {
-      console.log("Editor Login")
-      this.editor = true
-    });
-    this.events.subscribe('logout', () => { this.editor = false });
-  }
-
-  listenToFCMPushNotifications() {
-    console.log("Listening to FCM Push Notifications");
-    this.fcm.getToken().then(token => {
-      console.log("Got Token");
-      console.log(token);
-      this.firebase.fcmToken = token;
-    })
-    this.fcm.onNotification().subscribe(data => {
-      console.log("Got Notification")
-      if (data.wasTapped) {
-        console.log("Received in background");
-      } else {
-        console.log("Received in foreground");
-      };
-    })
-    this.fcm.onTokenRefresh().subscribe(token => {
-      console.log("Token Refreshed ");
-      console.log(token);
-    })
-  }
-
-
-  deployUpdate() {
-    console.log("Deploying Update");
-    return Observable.create((observer) => {
-      Pro.deploy.checkAndApply(true).then((resp) => {
-        if (!resp.update) observer.next();
-      });
-    });
   }
 }
