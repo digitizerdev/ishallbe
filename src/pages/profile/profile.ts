@@ -21,6 +21,7 @@ export class ProfilePage {
   mine = false;
   loaded = false;
   myAffirmations = true;
+  postType = "statements";
 
   constructor(
     private navCtrl: NavController,

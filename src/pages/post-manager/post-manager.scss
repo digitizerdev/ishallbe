@@ -9,7 +9,6 @@ page-post-manager {
         }
     }
     .monthview-primary-with-event {
-        background-color: color($colors, light-yellow) !important;
         color: black !important;
     }
     .monthview-selected {
@@ -21,11 +20,11 @@ page-post-manager {
         color: white !important; 
     }
     .monthview-eventdetail-timecolumn {
-        color: color($colors, dark) !important;
+        color: color($colors, charcoal) !important;
         font-weight: bold;
     }
     .no-events-label {
-        color: color($colors, dark) !important;
+        color: color($colors, charcoal) !important;
         font-weight: bold;
     }
     .event-detail {
@@ -33,7 +32,6 @@ page-post-manager {
         color: color($colors, primary) !important
     }
     .feature {
-        background: color($colors, light-yellow);
         border-top: thick solid color($colors, primary);                  
         border-bottom: thick solid color($colors, primary);                  
     }

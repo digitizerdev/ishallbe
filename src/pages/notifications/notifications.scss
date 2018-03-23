@@ -5,9 +5,6 @@ page-notifications {
         border-bottom: thick solid color($colors, primary);
         background: #FFF;
     }
-    .unread {
-        background: color($colors, light-green);
-    }
     ion-header ion-icon.back-button-icon.icon {
         color: map-get($colors, primary);
     }

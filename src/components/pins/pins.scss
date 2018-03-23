@@ -1,11 +1,8 @@
 pins {
-    .feature {
-        background: color($colors, light-yellow);
-    }
     .pin-image {
         max-width: 67%;
         max-height: 150px;
-        border-radius: 15px;    
+        border-radius: 15px;
     }
     ion-grid {
         height: 100%;
@@ -14,14 +11,10 @@ pins {
     .pin-actions {
         font-size: .75em;
         max-width: 50%;
-        background-color: #FFF;
+        background-color: white;
         border-radius: 15px;
     }
     .pin-interaction-counts {
         padding-top: 10px;
     }
-    .swiper-pagination-bullet-active{
-        background: color($colors, dark) !important;
-        opacity: 1;
-      }
 }

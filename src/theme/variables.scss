@@ -1,48 +1,28 @@
 @import "ionic.globals";
-
-$text-color:        #000;
-$background-color:  #faf6ed;
-$borderColor:       #DDD;
-$textColor:         #666;
-
+$text-color : #444;
+$background-color : #faf6ed;
+$borderColor : #DDD;
+$textColor : #444;
 $refresher-icon-color: #0EA57E;
 $refresher-text-color: #0EA57E;
 $refresher-border-color: #faf6ed;
-
-$colors: (
-  facebook:   #3b5998,  
-  linkedin:   #0077B5,
-  twitter:    #0084b4,
-  instagram:  #8a3ab9,
-  primary:    #0EA57E,
-  secondary:  #CEAA51,
-  danger:     #f53d3d,
-  love:       #DC143C,
-  light:      #f4f4f4,
-  light-gray: #fafafa,
-  dark:       #444,
-  favorite:   #69BB7B,
-  gray:     #8A8A8A,
-  grayer:     #7C7C7C,
-  green:    #33cd5f,
-  yellow:   #ffc900,
-  light-green: #e6f6f1,
-  light-yellow: #faf6ed
-);
-
+$colors: ( 
+  background: #faf6ed, 
+  primary : #0EA57E, 
+  secondary : #CEAA51, 
+  danger : #f53d3d, 
+  charcoal : #444, 
+  steel : #7C7C7C, 
+  facebook : #3b5998
+  );
 @import "ionic.theme.default";
-
 @font-face {
-  font-family: "Orkney";
-  src: url('../assets/fonts/orkney.woff') format('woff');
-  }
- 
-  $font-family-md-base: "Orkney";
-  $font-family-ios-base: "Orkney";
-  $font-family-wp-base: "Orkney";
+    font-family: "Orkney";
+    src: url('../assets/fonts/orkney.woff') format('woff');
+}
 
+$font-family-md-base: "Orkney";
+$font-family-ios-base: "Orkney";
+$font-family-wp-base: "Orkney";
 $ionicons-font-path: "../assets/fonts";
 @import "ionic.ionicons";
-
-
- 
