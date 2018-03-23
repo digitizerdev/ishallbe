@@ -58,11 +58,20 @@ export class iShallBe {
 
   platformReady() {
     this.platform.ready().then(() => {
-      this.listenToEditorLogin();
+      this.listenToUserPermissionsEvents();
       if (this.platform.is('cordova'))
         this.initDevicePlatforms();
       else this.splashScreen.hide();
     });
+  }
+
+  listenToUserPermissionsEvents() {
+    this.events.subscribe('editor permission granted', () =>
+      this.editor = true);
+    this.events.subscribe('editor permission not granted', () => 
+      this.editor = false);
+    this.events.subscribe('logout', () =>
+      this.editor = false);
   }
 
   initDevicePlatforms() {
@@ -72,20 +81,11 @@ export class iShallBe {
       this.splashScreen.hide());
   }
 
-  listenToEditorLogin() {
-    this.events.subscribe('login: editor', () =>
-      this.editor = true);
-    this.events.subscribe('logout', () =>
-      this.editor = false);
-  }
-
   listenToFCMPushNotifications() {
     this.fcm.getToken().then(token => {
       this.firebase.fcmToken = token;
     });
     this.fcm.onNotification().subscribe(notification => {
-      console.log("Received a notification");
-      console.log(notification);
       if (!notification.wasTapped)
         this.displayNotificationAlert(notification)
     });
@@ -94,14 +94,11 @@ export class iShallBe {
   }
 
   displayNotificationAlert(notification) {
-    console.log("Displaying Notification Alert");
     let alert = this.alertCtrl.create({
       title: 'Notification',
       subTitle: notification.aps.alert,
       buttons: ['OK']
     });
-    console.log("Built Alert");
-    console.log(alert);
     alert.present();
   }
 
