@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, LoadingController, Events } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { PasswordResetPage } from '../password-reset/password-reset';
 import { SignupPage } from '../signup/signup';
-import { HomePage } from '../home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -25,6 +24,7 @@ export class LoginPage {
     private navCtrl: NavController, 
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
+    private events: Events,
     private firebase: FirebaseProvider
   ) {
   }
@@ -35,7 +35,7 @@ export class LoginPage {
       let loading = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Please Wait..' });
       loading.present();
       return this.authenticate(loginForm).subscribe((token) => {  
-        this.navCtrl.setRoot(HomePage);
+        this.events.publish("contributor permission granted");
         loading.dismiss();
       }, error => { this.errorHandler(error); loading.dismiss(); 
     })};    

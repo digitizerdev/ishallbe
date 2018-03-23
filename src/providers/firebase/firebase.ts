@@ -50,35 +50,39 @@ export class FirebaseProvider {
 
   startSession() {
     this.uid = this.afa.auth.currentUser.uid
-    this.loadUser();
+    this.userExists();
     this.session = true;
-    this.events.publish('user:login');
+    this.events.publish('contributor permission granted');
   }
 
-  loadUser() {
+  userExists() {
     let path = "users/" + this.uid;
     this.userDoc = this.afs.doc(path);
     this.userDoc.valueChanges().subscribe((user) => {
-      if (user) {
-        this.setUser(user);
-      } else this.generateUser();
+      if (user)
+        this.loadUser(user);
+      else
+        this.generateUser();
     });
   }
 
-  setUser(user) {
+  loadUser(user) {
+    if(this.fcmToken) 
+      user.fcmToken = this.fcmToken;
     this.user = user;
     if (user.editor)
       this.events.publish("editor permission granted");
-    else {
+    else
       this.events.publish("editor permission not granted")
-    }
+    this.setUser();
   }
 
   generateUser() {
     if (!this.loggingInWithFacebook) {
       this.buildUser().subscribe((user) => {
-        this.createUser(user).then(() => {
-          this.loadUser();
+        this.user = user;
+        this.setUser().then(() => {
+          this.loadUser(user);
         });
       });
     }
@@ -109,13 +113,13 @@ export class FirebaseProvider {
     });
   }
 
-  createUser(user) {
+  setUser() {
     let path = '/users/' + this.uid;
-    return this.afs.doc(path).set(user);
+    return this.afs.doc(path).set(this.user);
   }
 
   endSession() {
     this.session = false;
-    this.events.publish('user:logout');
+    this.events.publish('contributor permission not granted');
   }
 }

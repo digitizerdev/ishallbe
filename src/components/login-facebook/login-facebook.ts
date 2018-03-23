@@ -121,8 +121,7 @@ export class LoginFacebookComponent {
   login() {
     console.log("Logging In");
     this.firebase.loggingInWithFacebook = false;
-    this.events.publish('user:login');
-    this.navCtrl.setRoot(HomePage)
+    this.events.publish('contributor permission granted');
   }
 
   checkForExistingUser() {

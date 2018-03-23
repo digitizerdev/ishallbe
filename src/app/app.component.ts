@@ -9,15 +9,16 @@ import { Pro } from '@ionic/pro';
 import { Observable } from 'rxjs/Rx';
 
 import { StartupPage } from '../pages/startup/startup';
-import { AccountPage } from '../pages/account/account';
-import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
-import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
-import { ProfilePage } from '../pages/profile/profile';
-import { IshallbetvPage } from '../pages/ishallbetv/ishallbetv';
+import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
-import { ApiManagerPage } from '../pages/api-manager/api-manager';
+import { IshallbetvPage } from '../pages/ishallbetv/ishallbetv';
+import { ProfilePage } from '../pages/profile/profile';
+import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
+import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
+import { AccountPage } from '../pages/account/account';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { UserManagerPage } from '../pages/user-manager/user-manager';
+import { ApiManagerPage } from '../pages/api-manager/api-manager';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
@@ -66,11 +67,23 @@ export class iShallBe {
   }
 
   listenToUserPermissionsEvents() {
+    this.listenToContributorPermissionEvents();
+    this.listenToEditorPermissionEvents();
+  }
+
+  listenToContributorPermissionEvents() {
+    this.events.subscribe('contributor permission granted', () => 
+      this.nav.setRoot(HomePage));
+    this.events.subscribe('contributor permission not granted', () => {
+      this.nav.setRoot(LoginPage);
+      this.editor = false;
+    });
+  }
+
+  listenToEditorPermissionEvents() {
     this.events.subscribe('editor permission granted', () =>
       this.editor = true);
     this.events.subscribe('editor permission not granted', () => 
-      this.editor = false);
-    this.events.subscribe('logout', () =>
       this.editor = false);
   }
 
@@ -82,12 +95,11 @@ export class iShallBe {
   }
 
   listenToFCMPushNotifications() {
-    this.fcm.getToken().then(token => {
-      this.firebase.fcmToken = token;
-    });
+    this.fcm.getToken().then(token =>
+      this.firebase.fcmToken = token);
     this.fcm.onNotification().subscribe(notification => {
       if (!notification.wasTapped)
-        this.displayNotificationAlert(notification)
+        this.displayNotificationAlert(notification);
     });
     this.fcm.onTokenRefresh().subscribe(token =>
       this.firebase.fcmToken = token);
@@ -147,14 +159,14 @@ export class iShallBe {
     ];
     this.editorMenu = [
       {
-        title: 'User Manager',
-        icon: 'ios-people',
-        component: UserManagerPage
-      },
-      {
         title: 'Post Manager',
         icon: 'ios-albums',
         component: PostManagerPage
+      },
+      {
+        title: 'User Manager',
+        icon: 'ios-people',
+        component: UserManagerPage
       },
       {
         title: 'API Manager',

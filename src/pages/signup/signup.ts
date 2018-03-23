@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, LoadingController, Events } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 
-import { HomePage } from '../home/home';
 import { LoginPage } from '../login/login';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -33,6 +32,7 @@ export class SignupPage {
     private navCtrl: NavController,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
+    private events: Events,
     private firebase: FirebaseProvider,
   ) {
   }
@@ -57,7 +57,7 @@ export class SignupPage {
           });
           this.loader.present();
           this.signup(signupForm).subscribe(() => {
-            this.navCtrl.setRoot(HomePage);
+            this.events.publish("contributor permission granted");
             this.loader.dismiss();
           });
         }
