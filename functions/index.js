@@ -20,7 +20,9 @@ function pushMessage(message) {
     console.log("Push Message Triggered");
     console.log("Message is " + message);
     var payload = {
-        alert: message
+        notification: {
+            title: message,
+        }
     };
     admin.messaging().sendToTopic("editor", payload)
         .then(function (response) {

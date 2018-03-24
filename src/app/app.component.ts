@@ -124,6 +124,8 @@ export class iShallBe {
   }
 
   displayNotificationAlert(notification) {
+    console.log("Displaying notification");
+    console.log(notification);
     let alert = this.alertCtrl.create({
       title: 'Notification',
       subTitle: notification.aps.alert,
