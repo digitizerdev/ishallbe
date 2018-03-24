@@ -29,5 +29,11 @@ function pushEditorNotification(payload) {
 
 exports.hourly_job =
     functions.pubsub.topic('hourly-tick').onPublish((event) => {
-        console.log("This job is ran every hour!")
+        console.log("This job is ran every hour!");
+        let allNotifications = firestore.collection('notifications', ref => ref.orderBy('timestamp'));
+        allNotifications.valueChanges().subscribe((notificaitons) => {
+            console.log("Got Notifications");
+            console.log(notifications);
+        });
+        return;
     });

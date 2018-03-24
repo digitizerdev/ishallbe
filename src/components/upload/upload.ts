@@ -234,28 +234,22 @@ export class UploadComponent {
   }
 
   storeAudio() {
-    console.log("Storing Audio");
-    this.waitForStorageTimeout();
     return Observable.create((observer) => {
-      console.log("File Path is " + this.filepath);
+      this.waitForStorageTimeout();
+      const filePath = `${this.file.tempDirectory}` + this.contentName;
+      console.log("Filepath is " + filePath);
       const readFile: any = window['resolveLocalFileSystemURL'];
-      console.log("Read file");
-      console.log(readFile);
-      return readFile(this.filepath, (fileEntry) => {
+      return readFile(filePath, (fileEntry) => {
         return fileEntry.file((file) => {
           const fileReader = new FileReader();
           fileReader.onloadend = (result: any) => {
-            console.log("File loaded");
-            console.log(result);
             let arrayBuffer = result.target.result;
             let blob = new Blob([new Uint8Array(arrayBuffer)], { type: 'audio/m4a' });
             let uploadPath = 'content/' + this.firebase.user.uid + '/audio/' + this.contentName;
-            console.log("Upload path is " + uploadPath);
             var storageRef = firebase.storage().ref(uploadPath);
             var uploadTask = storageRef.put(blob);
             uploadTask.on('state_changed', (snapshot) => {
             }, (e) => {
-              console.error(e);
               observer.error(e);
             }, () => {
               var downloadURL = uploadTask.snapshot.downloadURL;
