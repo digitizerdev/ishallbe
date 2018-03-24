@@ -8,7 +8,7 @@
   <form #loginForm="ngForm" novalidate padding>
     <ion-list no-lines>
       <div>
-        <ion-item class="authForm">
+        <ion-item class="tdct-form">
           <ion-input [(ngModel)]="loginForm.email" name="email" placeholder="E-mail" type="email" #email="ngModel" spellcheck="false"
             autocapitalize="off" required>
           </ion-input>
@@ -17,7 +17,7 @@
           Email is required
         </p>
         <br>
-        <ion-item class="authForm">
+        <ion-item class="tdct-form">
           <ion-input [(ngModel)]="loginForm.password" name="password" placeholder="Password" type="password" #password="ngModel" required>
           </ion-input>
         </ion-item>

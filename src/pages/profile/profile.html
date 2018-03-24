@@ -1,22 +1,24 @@
 <ion-header no-border>
-  <ion-navbar color='primary'>
+  <ion-navbar>
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon color="primary" name="menu"></ion-icon>
     </button>
-    <ion-title id="ProfilePageTitle" color='primary'>{{ user?.name }}</ion-title>
     <ion-buttons id="pushUpdateProfilePageIcon" *ngIf="mine" end>
       <button ion-button icon-only (click)="pushProfileUpdatePage()">
-        <ion-icon name="md-options"></ion-icon>
+        <ion-icon color="primary" name="md-options"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content class="profile-content">
+<ion-content>
   <ion-refresher (ionRefresh)="refreshPage($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="dots" refreshingText="Refeshing">
     </ion-refresher-content>
   </ion-refresher>
-  <div class="user-profile" id="UserProfile" text-center padding>
+  <div id="UserProfile" text-center padding>
+    <h2 color="primary" ion-text text-center>
+      <b>{{ user?.name }}</b>
+    </h2>
     <img class="avatar" src="{{ user?.photo }}">
     <ion-row *ngIf="this.user?.instagram || this.user?.twitter || this.user?.linkedin" class="social" text-center>
       <ion-col *ngIf="this.user?.instagram" (click)="openLink(this.user.instagram)" text-center>
@@ -29,7 +31,7 @@
         <ion-icon name="logo-linkedin"></ion-icon>
       </ion-col>
     </ion-row>
-    <h5 class="bio">{{ user?.bio}} </h5>
+    <h5 class="bio" padding-left padding-right>{{ user?.bio}} </h5>
     <ion-row>
       <ion-col>
         <button ion-button id="pushMessagesPageButton" (click)="pushMessagesPage()" color="primary" small round strong>Messages</button>
@@ -41,7 +43,7 @@
       </ion-col>
     </ion-row>
   </div>
-  <ion-segment mode="ios" class="post-segment" [(ngModel)]="postType" color="light-yellow" padding-top padding-left padding-right>
+  <ion-segment mode="ios" class="post-segment" [(ngModel)]="postType" color="background" padding-top padding-left padding-right>
     <ion-segment-button value="statements">
       <b>STATEMENTS</b>
     </ion-segment-button>

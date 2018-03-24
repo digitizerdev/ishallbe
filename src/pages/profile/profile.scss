@@ -17,13 +17,7 @@ page-profile {
         margin-right: auto;
         text-align: center;
     }
-    .bio {
-        padding-left: 7px;
-        padding-right: 7px;
-    }
-    .edit-photo {
-        color: color($colors, primary);
-        font-size: 1.5em;
-        text-align: right;
+    .post-segment {
+        background-color: color($colors, primary);
     }
 }

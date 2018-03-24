@@ -3,10 +3,9 @@
     <button ion-button menuToggle>
       <ion-icon color="primary" name="menu"></ion-icon>
     </button>
-    <ion-title id="StatementCreatorTitle"><b>Statement</b></ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content padding>
   <div *ngIf="!imageReady && !loadingImage" id="SeeItButton">
     <br>
     <ion-row>
@@ -25,7 +24,7 @@
     </ion-col>
   </ion-row>
   <form #createStatementForm="ngForm" novalidate padding>
-    <ion-item class="appForm">
+    <ion-item class="tdct-form">
       <ion-input class="myItem" placeholder="Statement Title" [(ngModel)]="createStatementForm.title" name="title" type="text"
         #title="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on” required>
       </ion-input>
@@ -34,7 +33,7 @@
       Statement Title is required
     </p>
     <br>
-    <ion-item class="appFormTextArea">
+    <ion-item class="tdct-textarea">
       <ion-textarea [attr.rows]="4" autosize placeholder=" Statement Description" [(ngModel)]="createStatementForm.description"
         name="description" type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on” minlength="40" required>
       </ion-textarea>

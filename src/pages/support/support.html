@@ -1,15 +1,13 @@
 <ion-header no-border>
-    <ion-navbar color='primary'>
+    <ion-navbar>
         <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
+            <ion-icon color="primary" name="menu"></ion-icon>
         </button>
-        <ion-title id="SupportPageTitle" color='primary'>Support</ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content>
-    <header></header>
+<ion-content padding>
     <form #supportForm="ngForm" novalidate padding>
-        <ion-item class="appForm">
+        <ion-item class="tdct-form">
             <ion-input class="myItem" placeholder="Subject" [(ngModel)]="supportForm.subject" name="subject" type="text" #subject="ngModel"
                 spellcheck="false" autocapitalize="off" required>
             </ion-input>
@@ -18,7 +16,7 @@
             Subject is required
         </p>
         <br>
-        <ion-item class="appFormTextArea">
+        <ion-item class="tdct-textarea">
             <ion-textarea [attr.rows]="4" autosize placeholder="Body" [(ngModel)]="supportForm.body" name="body" type="text-area" #body="ngModel"
                 spellcheck="false" autocapitalize="off" required>
             </ion-textarea>

@@ -9,14 +9,15 @@ page-post-manager {
         }
     }
     .monthview-primary-with-event {
+        background-color: color($colors, primary) !important;
         color: black !important;
     }
     .monthview-selected {
-        background-color: color($colors, primary) !important;
+        background-color: color($colors, secondary) !important;
         color: white !important;
     }
     .calendar-title {
-        background-color: color($colors, primary) !important;
+        background-color: color($colors, secondary) !important;
         color: white !important; 
     }
     .monthview-eventdetail-timecolumn {

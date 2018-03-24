@@ -1,34 +1,38 @@
 <ion-header no-border>
-  <ion-navbar color='primary' no-border-bottom>
+  <ion-navbar no-border-bottom>
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon color='primary' name="menu"></ion-icon>
     </button>
     <ion-title id="PostManagerTitle" color='primary'>Post Manager</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-segment [(ngModel)]="postType" color="primary" padding-top padding-left padding-right>
+  <ion-segment mode="ios" [(ngModel)]="postType" color="primary" padding-top padding-left padding-right>
     <ion-segment-button value="pins">
-      <ion-icon name="calendar"></ion-icon>
       <b>PINS</b>
     </ion-segment-button>
     <ion-segment-button value="statements">
-      <ion-icon name="images"></ion-icon>
       <b>STATEMENTS</b>
+    </ion-segment-button>
+    <ion-segment-button value="goals">
+      <b>GOALS</b>
     </ion-segment-button>
   </ion-segment>
   <div *ngIf="postType=='pins'" id="PinsSegment" text-center>
     <h4 color="primary" ion-text>
       <b>{{viewTitle}}</b>
     </h4>
-    <calendar *ngIf="pinsLoaded" id="PinsCalendar" [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate" allDayLabel="{{displaySelectedDay}}" noEventsLabel="No {{displaySelectedDay}} Pin"
-      (onEventSelected)="onEventSelected($event)" (onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="onTimeSelected($event)"
-      step="30" class="calendar" no-padding-bottom no-margin-bottom>
+    <calendar *ngIf="pinsLoaded" id="PinsCalendar" [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate"
+      allDayLabel="{{displaySelectedDay}}" noEventsLabel="No {{displaySelectedDay}} Pin" (onEventSelected)="onEventSelected($event)"
+      (onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="onTimeSelected($event)" step="30" class="calendar" no-padding-bottom
+      no-margin-bottom>
     </calendar>
     <ion-row no-padding-top no-margin-top>
       <ion-col text-center padding-left padding-right>
-        <button *ngIf="!pinCreated" id="CreatePinButton" (click)="pushPinCreatorPage()" color="primary" ion-button round block large strong>CREATE PIN</button>
-        <button *ngIf="pinCreated" id="UpdatePinButton" (click)="pushPinCreatorPage()" color="primary" ion-button round block large strong>UPDATE PIN</button>
+        <button *ngIf="!pinCreated" id="CreatePinButton" (click)="pushPinCreatorPage()" color="primary" ion-button round block large
+          strong>CREATE PIN</button>
+        <button *ngIf="pinCreated" id="UpdatePinButton" (click)="pushPinCreatorPage()" color="primary" ion-button round block large
+          strong>UPDATE PIN</button>
       </ion-col>
     </ion-row>
     <br>
@@ -43,5 +47,8 @@
       <h5>Reported Statements</h5>
     </div>
     <br>
+  </div>
+  <div *ngIf="postType=='goals'">
+    Goals Area
   </div>
 </ion-content>

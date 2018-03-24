@@ -1,18 +1,17 @@
 <ion-header no-border>
-  <ion-navbar color='primary'>
+  <ion-navbar >
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon color='primary' name="menu"></ion-icon>
     </button>
-    <ion-title id="AccountPageTitle" color='primary'>Account</ion-title>
     <ion-buttons id="setRootHomePageIcon" end>
       <button ion-button icon-only (click)="setRootHomePage()">
-        <ion-icon name="md-home"></ion-icon>
+        <ion-icon color='primary' name="md-home"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <header></header>
+  <header padding></header>
   <div class="feature" id="AccountEmail" text-center>
     <h5 padding>{{user?.email}}</h5>
   </div>

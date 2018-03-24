@@ -13,7 +13,7 @@ page-profile-update {
         max-width: 170px;
         border-radius: 50%;
       }
-    .appForm {
+    .profile-update-form {
         background-color: white !important;
         border-radius: 30px;
         padding: 0 20px;
@@ -22,22 +22,6 @@ page-profile-update {
         max-width: 500px;
         margin: auto;
         text-align: center;
-    }
-    .appFormTextArea {
-        background-color: white !important;
-        border-radius: 30px;
-        padding: 0 20px;
-        font-size: 1.25em !important;
-        border: 1px solid transparent;
-        max-width: 500px;
-        margin: auto;
-        text-align: center;
-        min-height: 20vh;
-    }
-    .item-inner,
-    ion-item {
-        border-bottom-color: transparent !important;
-        box-shadow: none !important;
     }
     ion-icon {
         font-size: 2em;

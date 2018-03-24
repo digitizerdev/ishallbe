@@ -3,11 +3,9 @@
       <button ion-button menuToggle>
         <ion-icon color="primary" name="menu"></ion-icon>
       </button>
-      <ion-title id="GoalCreatorTitle" color='primary'><b>Goal</b></ion-title>
     </ion-navbar>
   </ion-header>
-  <ion-content>
-    <br>
+  <ion-content padding>
     <ion-row *ngIf="!dateSelected" id="SelectDueDateButton">
       <ion-col text-center padding-left padding-right>
         <button (click)="pickDate()" color="grayer" ion-button icon-start clear round block large strong>
