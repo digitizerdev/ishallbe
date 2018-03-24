@@ -20,13 +20,9 @@ function pushMessage(message) {
     console.log("Push Message Triggered");
     console.log("Message is " + message);
     var payload = {
-        notification: {
-            title: message,
-        }
+        alert: message
     };
-    let deviceId = "Sadfadsfdas;"
-    console.log("Device Id is " + deviceId);
-    admin.messaging().sendToDevice("deviceId", payload)
+    admin.messaging().sendToTopic("editor", payload)
         .then(function (response) {
             console.log("Successfully sent message:", response);
             return response;

@@ -5,8 +5,6 @@ import { Facebook } from '@ionic-native/facebook';
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 
-import { HomePage } from '../../pages/home/home';
-
 import firebase from 'firebase';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
