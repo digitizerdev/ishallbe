@@ -147,16 +147,17 @@ export class iShallBe {
   }
 
   initSession() {
+    this.splashScreen.hide();
     if (this.firebase.session) {
-      this.splashScreen.hide();
-      this.nav.setRoot(HomePage);
+      setTimeout(() => {
+        this.nav.setRoot(HomePage);
+      }, 500);
     }
     else this.getSession();
   }
 
   getSession() {
     this.firebase.sessionExists().subscribe((session) => {
-      this.splashScreen.hide();
       if (session) this.nav.setRoot(HomePage);
       else this.nav.setRoot(LoginPage);
     })
