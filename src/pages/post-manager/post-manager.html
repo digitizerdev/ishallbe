@@ -3,7 +3,6 @@
     <button ion-button menuToggle>
       <ion-icon color='primary' name="menu"></ion-icon>
     </button>
-    <ion-title id="PostManagerTitle" color='primary'>Post Manager</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
@@ -37,18 +36,12 @@
     </ion-row>
     <br>
   </div>
-  <div *ngIf="postType=='statements'" id="StatementsSegment">
+  <div *ngIf="postType=='statements'">
     <br>
-    <br>
-    <div *ngIf="!reportedStatements" class="feature" id="NoReportedStatements" text-center>
-      <h5>There are no reported statements</h5>
-    </div>
-    <div *ngIf="reportedStatements" class="feature" id="ReportedStatements" text-center>
-      <h5>Reported Statements</h5>
-    </div>
-    <br>
+    <h5 class="feature">There are no reported statements</h5>
   </div>
   <div *ngIf="postType=='goals'">
-    Goals Area
+    <br>
+    <h5 class="feature">There are no reported goals</h5>
   </div>
 </ion-content>

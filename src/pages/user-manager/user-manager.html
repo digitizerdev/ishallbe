@@ -1,20 +1,19 @@
 <ion-header no-border>
-  <ion-navbar color='primary' no-border-bottom>
+  <ion-navbar  no-border-bottom>
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon color='primary' name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>User Manager</ion-title>
   </ion-navbar>
   <ion-toolbar color='primary' id="UserSearchbar" no-border-top>
-    <ion-searchbar color="light-yellow" [(ngModel)]="queryText" (ionInput)="updateSchedule()" placeholder="Search by User Email">
+    <ion-searchbar [(ngModel)]="queryText" (ionInput)="updateSchedule()" placeholder="Search by User Email">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <br>
   <br>
-  <div class="feature" id="NoReportedUsersFeature" text-center>
-    <h5>There are no reported users</h5>
+  <div id="NoReportedUsersFeature" text-center>
+    <h5 class="feature" >There are no reported users</h5>
   </div>
   <br>
 </ion-content>

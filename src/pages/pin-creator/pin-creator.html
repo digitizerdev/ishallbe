@@ -1,15 +1,13 @@
 <ion-header no-border>
-  <ion-navbar color='primary'>
+  <ion-navbar >
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon color='primary' name="menu"></ion-icon>
     </button>
-    <ion-title id="PinCreatorTitle">Pin</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
   <div id="selectedDateText" text-center>
-    <br>
-    <h2 color="primary" ion-text>{{displaySelectedDay}}</h2>
+    <h2 color="primary" ion-text><b>{{displaySelectedDay}}</b></h2>
   </div>
   <div *ngIf="monday">
     <div *ngIf="!imageReady && !loadingImage">

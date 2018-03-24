@@ -37,7 +37,6 @@ export class iShallBe {
   pages: Array<{ title: string, component: any }>;
   session = false;
   editor = false;
-  loaded = false;
 
   constructor(
     private platform: Platform,
@@ -61,9 +60,22 @@ export class iShallBe {
     this.platform.ready().then(() => {
       this.listenToUserPermissionsEvents();
       if (this.platform.is('cordova'))
-        this.initDevicePlatforms();
-      else this.splashScreen.hide();
+        this.initDevicePlatforms().subscribe(() => {
+          this.initSession();
+        });
+      else this.initSession();
     });
+  }
+
+  initSession() {
+    if (this.firebase.session) this.nav.setRoot(HomePage);
+    else {
+      this.firebase.sessionExists().subscribe((session) => {
+        if (session) this.nav.setRoot(HomePage);
+        else this.nav.setRoot(LoginPage);
+        this.splashScreen.hide();
+      })
+    };
   }
 
   listenToUserPermissionsEvents() {
@@ -106,10 +118,12 @@ export class iShallBe {
   }
 
   initDevicePlatforms() {
-    this.statusBar.styleDefault();
-    this.listenToFCMPushNotifications();
-    this.deployUpdate().subscribe(() =>
-      this.splashScreen.hide());
+    return Observable.create((observer) => {
+      this.statusBar.styleDefault();
+      this.listenToFCMPushNotifications();
+      return this.deployUpdate().subscribe(() =>
+        observer.next());
+    });
   }
 
   listenToFCMPushNotifications() {
@@ -124,8 +138,6 @@ export class iShallBe {
   }
 
   displayNotificationAlert(notification) {
-    console.log("Got notification");
-    console.log(notification);
     let alert = this.alertCtrl.create({
       title: 'Notification',
       subTitle: notification.aps.alert.title,
@@ -138,7 +150,7 @@ export class iShallBe {
     return Observable.create((observer) => {
       Pro.deploy.checkAndApply(true).then((resp) => {
         if (!resp.update) observer.next();
-      });
+      })
     });
   }
 

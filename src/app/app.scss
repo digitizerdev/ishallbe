@@ -8,28 +8,36 @@
         }
     }
 }
+
 .menu-pages {
-    background: #FFF;
+    background: white;
 }
+
 .ios .menu-icon {
     padding-left: 25%;
 }
+
 .toolbar-title.toolbar-title-md,
 .toolbar-title.toolbar-title-ios,
 .toolbar-title.toolbar-title-wp {
     color: map-get($colors, primary);
 }
+
 .toolbar-background {
     background-color: map-get($colors, background);
 }
+
 ion-header ion-icon.back-button-icon.icon {
     color: map-get($colors, primary);
 }
+
 .feature {
-    background-color: white;
-    border-top: thick solid color($colors, primary);                  
-    border-bottom: thick solid color($colors, primary);                  
+    padding: 10px 10px 10px 20px;
+    border-top: thick solid color($colors, primary);
+    border-bottom: thick solid color($colors, primary);
+    background: #FFF;
 }
+
 .tdct-form {
     background-color: white !important;
     border-radius: 30px;
@@ -41,6 +49,7 @@ ion-header ion-icon.back-button-icon.icon {
     margin: auto;
     text-align: center;
 }
+
 .tdct-textarea {
     background-color: white !important;
     border-radius: 30px;
@@ -52,16 +61,19 @@ ion-header ion-icon.back-button-icon.icon {
     text-align: center;
     height: 20vh;
 }
+
 .item-input {
     background-color: white;
     border-radius: 30px;
     border: 1px solid transparent;
 }
+
 .item-input {
     background-color: white;
     border-radius: 30px;
     border: 1px solid transparent;
 }
+
 .item-inner,
 ion-item {
     border-bottom-color: transparent !important;
