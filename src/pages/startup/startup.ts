@@ -10,9 +10,5 @@ import { IonicPage } from 'ionic-angular';
 export class StartupPage {
 
   constructor(
-  ) {
-  }
-
-  ionViewDidLoad() {
-  }
+  ) {}
 }

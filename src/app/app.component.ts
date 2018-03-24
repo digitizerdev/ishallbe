@@ -129,7 +129,6 @@ export class iShallBe {
 
   initDevicePlatform() {
     return Observable.create((observer) => {
-      console.log("Initializing Device Platform");
       this.statusBar.styleDefault();
       this.listenToFCMPushNotifications();
       this.deployUpdate().subscribe(() => {
@@ -149,17 +148,17 @@ export class iShallBe {
 
   initSession() {
     if (this.firebase.session) {
-      this.nav.setRoot(HomePage);
       this.splashScreen.hide();
+      this.nav.setRoot(HomePage);
     }
     else this.getSession();
   }
 
   getSession() {
     this.firebase.sessionExists().subscribe((session) => {
+      this.splashScreen.hide();
       if (session) this.nav.setRoot(HomePage);
       else this.nav.setRoot(LoginPage);
-      this.splashScreen.hide();
     })
   }
 
