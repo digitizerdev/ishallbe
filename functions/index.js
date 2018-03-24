@@ -11,7 +11,7 @@ exports.createPin = functions.firestore.document('pins/{pinId}').onCreate(event 
     console.log("Create Pin Triggered");
     var newValue = event.data.data();
     console.log(newValue);
-    var message = "New Pin Added : " + newValue.description;
+    var message = "New Pin Published - " + newValue.description;
     pushMessage(message);
     return true;
 });

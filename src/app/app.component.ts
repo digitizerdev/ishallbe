@@ -128,7 +128,7 @@ export class iShallBe {
     console.log(notification);
     let alert = this.alertCtrl.create({
       title: 'Notification',
-      subTitle: notification.aps.alert,
+      subTitle: notification.aps.alert.title,
       buttons: ['OK']
     });
     alert.present();
