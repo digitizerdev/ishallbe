@@ -59,14 +59,11 @@ export class iShallBe {
   platformReady() {
     this.platform.ready().then(() => {
       this.listenToUserPermissionsEvents();
-      if (this.platform.is('cordova'))
-        this.deployUpdate().subscribe(() => {
-          console.log("No Update Available");
-          this.initDevicePlatforms().subscribe(() => {
-            console.log("Initialized Device ")
+      if (this.platform.is('cordova')) {
+          this.initDevicePlatform().subscribe(() => {
             this.initSession();
-          });
-        })
+        });
+      }
       else this.initSession();
     });
   }
@@ -110,21 +107,6 @@ export class iShallBe {
     });
   }
 
-  deployUpdate() {
-    return Observable.create((observer) => {
-      Pro.deploy.checkAndApply(true).then((resp) => {
-        if (!resp.update) observer.next();
-      })
-    });
-  }
-
-  initDevicePlatforms() {
-    return Observable.create((observer) => {
-      this.statusBar.styleDefault();
-      this.listenToFCMPushNotifications();
-    });
-  }
-
   listenToFCMPushNotifications() {
     this.fcm.getToken().then(token =>
       this.firebase.fcmToken = token);
@@ -145,16 +127,35 @@ export class iShallBe {
     alert.present();
   }
 
+  initDevicePlatform() {
+    return Observable.create((observer) => {
+      console.log("Initializing Device Platform");
+      this.statusBar.styleDefault();
+      this.listenToFCMPushNotifications();
+      this.deployUpdate().subscribe(() => {
+        console.log("No Deploy Available");
+        observer.next();
+      });
+    });
+  }
+
+  deployUpdate() {
+    return Observable.create((observer) => {
+      Pro.deploy.checkAndApply(true).then((resp) => {
+        if (!resp.update) observer.next();
+      });
+    });
+  }
+
   initSession() {
-    console.log("Initializing Session")
+    this.splashScreen.hide();
     if (this.firebase.session) this.nav.setRoot(HomePage);
     else {
       this.firebase.sessionExists().subscribe((session) => {
         if (session) this.nav.setRoot(HomePage);
         else this.nav.setRoot(LoginPage);
-        this.splashScreen.hide();
       })
-    };
+    }
   }
 
   setMenus() {
