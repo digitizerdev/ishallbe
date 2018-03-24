@@ -60,8 +60,8 @@ export class iShallBe {
     this.platform.ready().then(() => {
       this.listenToUserPermissionsEvents();
       if (this.platform.is('cordova')) {
-          this.initDevicePlatform().subscribe(() => {
-            this.initSession();
+        this.initDevicePlatform().subscribe(() => {
+          this.initSession();
         });
       }
       else this.initSession();
@@ -148,14 +148,19 @@ export class iShallBe {
   }
 
   initSession() {
-    this.splashScreen.hide();
-    if (this.firebase.session) this.nav.setRoot(HomePage);
-    else {
-      this.firebase.sessionExists().subscribe((session) => {
-        if (session) this.nav.setRoot(HomePage);
-        else this.nav.setRoot(LoginPage);
-      })
+    if (this.firebase.session) {
+      this.nav.setRoot(HomePage);
+      this.splashScreen.hide();
     }
+    else this.getSession();
+  }
+
+  getSession() {
+    this.firebase.sessionExists().subscribe((session) => {
+      if (session) this.nav.setRoot(HomePage);
+      else this.nav.setRoot(LoginPage);
+      this.splashScreen.hide();
+    })
   }
 
   setMenus() {
