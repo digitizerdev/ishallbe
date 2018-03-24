@@ -60,22 +60,15 @@ export class iShallBe {
     this.platform.ready().then(() => {
       this.listenToUserPermissionsEvents();
       if (this.platform.is('cordova'))
-        this.initDevicePlatforms().subscribe(() => {
-          this.initSession();
-        });
+        this.deployUpdate().subscribe(() => {
+          console.log("No Update Available");
+          this.initDevicePlatforms().subscribe(() => {
+            console.log("Initialized Device ")
+            this.initSession();
+          });
+        })
       else this.initSession();
     });
-  }
-
-  initSession() {
-    if (this.firebase.session) this.nav.setRoot(HomePage);
-    else {
-      this.firebase.sessionExists().subscribe((session) => {
-        if (session) this.nav.setRoot(HomePage);
-        else this.nav.setRoot(LoginPage);
-        this.splashScreen.hide();
-      })
-    };
   }
 
   listenToUserPermissionsEvents() {
@@ -117,12 +110,18 @@ export class iShallBe {
     });
   }
 
+  deployUpdate() {
+    return Observable.create((observer) => {
+      Pro.deploy.checkAndApply(true).then((resp) => {
+        if (!resp.update) observer.next();
+      })
+    });
+  }
+
   initDevicePlatforms() {
     return Observable.create((observer) => {
       this.statusBar.styleDefault();
       this.listenToFCMPushNotifications();
-      return this.deployUpdate().subscribe(() =>
-        observer.next());
     });
   }
 
@@ -146,12 +145,16 @@ export class iShallBe {
     alert.present();
   }
 
-  deployUpdate() {
-    return Observable.create((observer) => {
-      Pro.deploy.checkAndApply(true).then((resp) => {
-        if (!resp.update) observer.next();
+  initSession() {
+    console.log("Initializing Session")
+    if (this.firebase.session) this.nav.setRoot(HomePage);
+    else {
+      this.firebase.sessionExists().subscribe((session) => {
+        if (session) this.nav.setRoot(HomePage);
+        else this.nav.setRoot(LoginPage);
+        this.splashScreen.hide();
       })
-    });
+    };
   }
 
   setMenus() {
