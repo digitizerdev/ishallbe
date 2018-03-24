@@ -236,7 +236,9 @@ export class UploadComponent {
   storeAudio() {
     return Observable.create((observer) => {
       this.waitForStorageTimeout();
-      const filePath = `${this.file.tempDirectory}` + this.contentName;
+      let filePath = "";
+      if (this.platform.is('ios')) filePath = `${this.file.tempDirectory}` + this.contentName;
+      else filePath = this.filepath;
       console.log("Filepath is " + filePath);
       const readFile: any = window['resolveLocalFileSystemURL'];
       return readFile(filePath, (fileEntry) => {

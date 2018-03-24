@@ -11,16 +11,16 @@
       <h5 (click)="viewUser(goal.user_id)">
         <b>{{goal.name}}</b>
       </h5>
-      <h6 color="dark" ion-text>{{goal.displayTimestamp}}</h6>
+      <h6 ion-text>{{goal.displayTimestamp}}</h6>
     </ion-item>
     <div>
-      <button color="primary" ion-button round strong small>
+      <button (click)="playAudio(goal)" color="primary" ion-button round strong>
         <ion-icon padding-right name="play"></ion-icon>
         LISTEN TO GOAL
       </button>
     </div>
     <div padding-top>
-      <h3 color="dark" ion-text>
+      <h3 ion-text>
         <b>DUE {{goal.displayDueDate}}</b>
       </h3>
     </div>
