@@ -4,13 +4,15 @@
     <post-header [postDoc]="goal"></post-header>
     <ion-row (click)="viewGoal(goal.id)">
       <ion-col text-center>
-        <h4  padding-top>
+        <h2>
           <ion-icon name="alarm" color="secondary"></ion-icon>
           <b>Due {{goal?.displayDueDate}}</b>
-        </h4>
+        </h2>
       </ion-col>
-      <ion-col *ngIf="goal?.url" text-left>
-        <audio-player [postDoc]="goal"></audio-player>
+    </ion-row>
+    <ion-row *ngIf="goal?.url">
+      <ion-col text-center>
+        <audio-player [postDoc]="goal" ></audio-player>
       </ion-col>
     </ion-row>
     <h2 class="post-description" (click)="viewGoal(goal.id)">

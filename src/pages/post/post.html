@@ -12,13 +12,15 @@
   <post-header *ngIf="post && postType !== 'pin'" [postDoc]="post"></post-header>
   <img *ngIf="postType == 'statement' && post?.url" src="{{post?.url}}">
   <ion-row *ngIf="postType == 'goal'" text-center>
-    <ion-col>
-      <h6>
+    <ion-col text-center>
+      <h5>
         <ion-icon name="alarm" color="secondary"></ion-icon>
         <b>Due {{post?.displayDueDate}}</b>
-      </h6>
+      </h5>
     </ion-col>
-    <ion-col>
+  </ion-row>
+  <ion-row *ngIf="postType == 'goal' && post?.url">
+    <ion-col text-center>
       <audio-player [postDoc]="post"></audio-player>
     </ion-col>
   </ion-row>

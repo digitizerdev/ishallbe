@@ -69,7 +69,7 @@ export class GoalCreatorPage {
   submit(form) {
     console.log("Submitting Form");
     this.submitted = true;
-    if (!this.audioReady || !this.dateSelected) this.displayNotReadyAlert();
+    if (!this.dateSelected) this.displayNotReadyAlert();
     else {
       if (form.valid) {
         let loading = this.loadingCtrl.create({

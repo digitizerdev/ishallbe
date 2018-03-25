@@ -1,9 +1,13 @@
-  <p color="steel" ion-text text-center>
-    <a *ngIf="post.likeCount > 1 || post.likeCount == 0" class="subdued">{{post.likeCount}} Likes</a>
-    <a *ngIf="post.likeCount == 1" class="subdued">{{post.likeCount}} Like</a>
-    <a *ngIf="post.commentCount > 1 || post.commentCount == 0" class="subdued" margin-left>{{post.commentCount}} Comments</a>
-    <a *ngIf="post.commentCount == 1" class="subdued" margin-left>{{post.commentCount}} Comment</a>
-  </p>
+<ion-row>
+  <ion-col text-center>
+      <p color="steel" ion-text>
+          <a *ngIf="post.likeCount > 1 || post.likeCount == 0" class="subdued">{{post.likeCount}} Likes</a>
+          <a *ngIf="post.likeCount == 1" class="subdued">{{post.likeCount}} Like</a>
+          <a *ngIf="post.commentCount > 1 || post.commentCount == 0" class="subdued" margin-left>{{post.commentCount}} Comments</a>
+          <a *ngIf="post.commentCount == 1" class="subdued" margin-left>{{post.commentCount}} Comment</a>
+        </p>
+  </ion-col>
+</ion-row>
 <ion-grid>
   <ion-row>
     <ion-col width-50 text-center (click)="toggleLike(post)">
