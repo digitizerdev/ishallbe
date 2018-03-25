@@ -1,4 +1,4 @@
-import { ViewChild, Component, Input } from '@angular/core';
+import { ViewChild, Component } from '@angular/core';
 import { NavController, Slides } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -11,9 +11,7 @@ import moment from 'moment';
   templateUrl: 'pins.html'
 })
 export class PinsComponent {
-
   @ViewChild(Slides) slides: Slides;
-  @Input('pinsStartDate') inputDate;
   startDate: number;
   endDate: number;
   dayNumber: number;
@@ -24,18 +22,12 @@ export class PinsComponent {
     private navCtrl: NavController,
     private firebase: FirebaseProvider
   ) {
-    console.log("Loaded Pins Component");
   }
 
   ngAfterViewInit() {
-    console.log("View Initialized");
     this.timestamp();
     this.loadPins().subscribe((pins) => {
-      console.log("Got Pins");
-      console.log(pins);
       this.setPins(pins).subscribe(() => {
-        console.log("Pins set");
-        console.log(this.pins);
         setTimeout(() => {
           this.pinsLoaded = true;
           this.slides.slideTo(this.dayNumber);
@@ -46,22 +38,16 @@ export class PinsComponent {
 
   timestamp() {
     this.endDate = parseInt(moment().format('YYYYMMDD'));
-    console.log("End Date is " + this.endDate);
     this.dayNumber = moment(this.endDate, 'YYYYMMDD').isoWeekday();
-    console.log("Day number is " + this.dayNumber);
   }
 
   refreshPage(refresh) {
-    console.log("Refreshing Page");
     this.navCtrl.setRoot(this.navCtrl.getActive().component);
   }
 
   loadPins() {
-    console.log("Loading Pins");
     return Observable.create((observer) => {
-      console.log("End Date is " + this.endDate);
       this.startDate = this.endDate - this.dayNumber;
-      console.log("Start Date is " + this.startDate);
       let weeklyPins = this.firebase.afs.collection('pins', ref => ref.orderBy('affirmationDate').startAt(this.startDate).endAt(this.endDate));
       return weeklyPins.valueChanges().subscribe((pins) => {
         observer.next(pins);
@@ -70,7 +56,6 @@ export class PinsComponent {
   }
 
   setPins(pins) {
-    console.log("Setting Pins");
     return Observable.create((observer) => {
       this.pins = [];
       pins.forEach((pin) => {

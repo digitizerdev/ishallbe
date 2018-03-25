@@ -1,41 +1,12 @@
 <div *ngIf="statements" class="statements-content">
   <br>
   <ion-card *ngFor="let statement of statements">
-    <ion-item>
-      <ion-avatar item-left (click)="viewUser(statement.user_id)">
-        <img src="{{statement.face}}">
-      </ion-avatar>
-      <h3 color="primary" ion-text>
-        <b>{{statement.title}}</b>
-      </h3>
-      <h5 (click)="viewUser(statement.user_id)"><b>{{statement.name}}</b></h5>
-      <h6 color="dark" ion-text>{{statement.displayTimestamp}}</h6>
-    </ion-item>
+    <post-header [postDoc]="statement"></post-header>
     <img class="full-image" *ngIf="statement.url" src="{{statement.url}}">
-    <ion-item text-wrap>
-      <div (click)="viewStatement(statement.id)" padding-bottom>
-        <h3>{{statement.description}}</h3>
-      </div>
-      <div>
-        <h6>
-          <a *ngIf="statement.likeCount > 1 || statement.likeCount == 0" class="subdued">{{statement?.likeCount}} Likes</a>
-          <a *ngIf="statement.likeCount == 1" class="subdued">{{statement?.likeCount}} Like</a>
-          <a *ngIf="statement.commentCount > 1 || statement.commentCount == 0" class="subdued" margin-left>{{statement?.commentCount}} Comments</a>
-          <a *ngIf="statement.commentCount == 1" class="subdued" margin-left>{{statement?.commentCount}} Comment</a>
-        </h6>
-      </div>
-    </ion-item>
-    <ion-grid>
-      <ion-row>
-        <ion-col width-50 text-center (click)="toggleLike(statement)">
-          <ion-icon name="thumbs-up" color="primary" *ngIf="statement.liked"></ion-icon>
-          <ion-icon name="thumbs-up" *ngIf="!statement.liked"></ion-icon>
-        </ion-col>
-        <ion-col width-50 text-center (click)="viewStatement(statement.id)">
-          <ion-icon name="chatboxes"></ion-icon>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <div text-wrap text-left (click)="viewStatement(statement.id)" padding>
+      <h3>{{statement.description}}</h3>
+    </div>
+    <post-footer [postDoc]="statement"></post-footer>
   </ion-card>
   <br>
   <footer></footer>

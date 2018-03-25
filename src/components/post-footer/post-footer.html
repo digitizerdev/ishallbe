@@ -1,0 +1,17 @@
+  <p color="steel" ion-text>
+    <a *ngIf="post.likeCount > 1 || post.likeCount == 0" class="subdued">{{post.likeCount}} Likes</a>
+    <a *ngIf="post.likeCount == 1" class="subdued">{{post.likeCount}} Like</a>
+    <a *ngIf="post.commentCount > 1 || post.commentCount == 0" class="subdued" margin-left>{{post.commentCount}} Comments</a>
+    <a *ngIf="post.commentCount == 1" class="subdued" margin-left>{{post.commentCount}} Comment</a>
+  </p>
+<ion-grid>
+  <ion-row>
+    <ion-col width-50 text-center (click)="toggleLike(post)">
+      <ion-icon name="thumbs-up" color="primary" *ngIf="post.liked"></ion-icon>
+      <ion-icon name="thumbs-up" color="charcoal" *ngIf="!post.liked"></ion-icon>
+    </ion-col>
+    <ion-col width-50 text-center (click)="viewStatement(post.id)">
+      <ion-icon name="chatboxes" color="charcoal"></ion-icon>
+    </ion-col>
+  </ion-row>
+</ion-grid>

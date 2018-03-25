@@ -1,55 +1,23 @@
 <div *ngIf="goals" class="goals-content" text-center>
   <br>
   <ion-card *ngFor="let goal of goals">
-    <ion-item>
-      <ion-avatar item-left (click)="viewUser(goal.user_id)">
-        <img src="{{goal.face}}">
-      </ion-avatar>
-      <h3 color="primary" ion-text>
-        <b>{{ goal.title }}</b>
+    <post-header [postDoc]="goal"></post-header>
+    <button (click)="playAudio(goal)" color="primary" ion-button round strong>
+      <ion-icon name="play" padding-right></ion-icon>
+      PLAY GOAL
+    </button>
+    <div (click)="viewGoal(goal.id)" text-left padding>
+      <h3>
+        {{ goal.description }}
       </h3>
-      <h5 (click)="viewUser(goal.user_id)">
-        <b>{{goal.name}}</b>
-      </h5>
-      <h6 ion-text>{{goal.displayTimestamp}}</h6>
-    </ion-item>
-    <div>
-      <button (click)="playAudio(goal)" color="primary" ion-button round strong>
-        <ion-icon padding-right name="play"></ion-icon>
-        PLAY GOAL
-      </button>
     </div>
-    <div padding-top>
-      <h3 ion-text>
+    <div class="due-date" padding-bottom>
+      <h5 color="primary" ion-text text-left padding-left>
+        <ion-icon name="alarm" color="primary"></ion-icon>
         <b>DUE {{goal.displayDueDate}}</b>
-      </h3>
+      </h5>
     </div>
-    <ion-item text-wrap>
-      <div (click)="viewGoal(goal.id)">
-        <h3>
-          {{ goal.description }}
-        </h3>
-      </div>
-      <div padding-top>
-        <p>
-          <a *ngIf="goal.likeCount > 1 || goal.likeCount == 0" class="subdued">{{goal?.likeCount}} Likes</a>
-          <a *ngIf="goal.likeCount == 1" class="subdued">{{goal?.likeCount}} Like</a>
-          <a *ngIf="goal.commentCount > 1 || goal.commentCount == 0" class="subdued" margin-left>{{goal?.commentCount}} Comments</a>
-          <a *ngIf="goal.commentCount == 1" class="subdued" margin-left>{{goal?.commentCount}} Comment</a>
-        </p>
-      </div>
-    </ion-item>
-    <ion-grid>
-      <ion-row>
-        <ion-col width-50 text-center (click)="toggleLike(goal)">
-          <ion-icon name="thumbs-up" color="primary" *ngIf="goal.liked"></ion-icon>
-          <ion-icon name="thumbs-up" *ngIf="!goal.liked"></ion-icon>
-        </ion-col>
-        <ion-col width-50 text-center (click)="viewStatement(goal.id)">
-          <ion-icon name="chatboxes"></ion-icon>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <post-footer [postDoc]="goal"></post-footer>
   </ion-card>
   <br>
   <footer></footer>

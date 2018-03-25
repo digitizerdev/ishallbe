@@ -7,13 +7,13 @@
       <h2 ion-text color="primary" padding-bottom>
         <b>{{pin.title}}</b>
       </h2>
+      <img *ngIf="pin.day == 'Monday'" class="pin-image" src="{{ pin?.url }}">
+      <h5 *ngIf="pin.description" padding-left padding-right>{{pin.description}}</h5>
       <button *ngIf="pin.day == 'Tuesday'" (click)="openLink(pin.url)" color="primary" text-center ion-button round strong>
         <ion-icon padding-right name="musical-notes"></ion-icon>
         OPEN TUNE
       </button>
-      <img *ngIf="pin.day == 'Monday'" class="pin-image" src="{{ pin?.url }}">
-      <h5 *ngIf="pin.description" padding-left padding-right>{{pin.description}}</h5>
-      <div class="pin-interaction-counts" (click)="viewPin(pin.id)">
+      <div padding-top (click)="viewPin(pin.id)">
         <h6>
           <a *ngIf="pin.likeCount > 1 || pin.likeCount == 0" class="subdued">{{ pin?.likeCount}} Likes</a>
           <a *ngIf="pin.likeCount == 1" class="subdued">{{ pin?.likeCount}} Like</a>
@@ -21,13 +21,13 @@
           <a *ngIf="pin.commentCount == 1" class="subdued" margin-left>{{ pin?.commentCount}} Comment</a>
         </h6>
       </div>
-      <ion-grid class="pin-actions">
+      <ion-grid>
         <ion-row>
           <ion-col width-50 text-center (click)="togglePinLike(pin)">
-            <ion-icon color="dark" name="thumbs-up"></ion-icon>
+            <ion-icon color="charcoal" name="thumbs-up"></ion-icon>
           </ion-col>
           <ion-col width-50 text-center (click)="viewPin(pin?.id)">
-            <ion-icon color="dark" name="chatboxes"></ion-icon>
+            <ion-icon color="charcoal" name="chatboxes"></ion-icon>
           </ion-col>
         </ion-row>
       </ion-grid>

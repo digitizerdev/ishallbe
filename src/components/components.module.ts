@@ -10,6 +10,9 @@ import { StatementsComponent } from './statements/statements';
 import { GoalsComponent } from './goals/goals';
 import { UploadComponent } from './upload/upload';
 import { ToolbarLogoComponent } from './toolbar-logo/toolbar-logo';
+import { PostHeaderComponent } from './post-header/post-header';
+import { PostFooterComponent } from './post-footer/post-footer';
+import { AudioPlayerComponent } from './audio-player/audio-player';
 
 @NgModule({
     declarations: [
@@ -22,6 +25,9 @@ import { ToolbarLogoComponent } from './toolbar-logo/toolbar-logo';
         StatementsComponent,
         UploadComponent,
         ToolbarLogoComponent,
+        PostHeaderComponent,
+        PostFooterComponent,
+    AudioPlayerComponent,
     ],
     imports: [
         IonicModule,
@@ -35,7 +41,10 @@ import { ToolbarLogoComponent } from './toolbar-logo/toolbar-logo';
         GoalsComponent,
         StatementsComponent,
         UploadComponent,
-        ToolbarLogoComponent
+        ToolbarLogoComponent,
+        PostHeaderComponent,
+        PostFooterComponent,
+    AudioPlayerComponent
     ],
     providers: [
         InAppBrowser
