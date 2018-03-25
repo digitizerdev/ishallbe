@@ -4,11 +4,11 @@
     <post-header [postDoc]="goal"></post-header>
     <audio-player [postDoc]="goal"></audio-player>
     <div padding-top>
-        <h6>
-          <ion-icon name="alarm" color="secondary"></ion-icon>
-          <b>DUE {{goal.displayDueDate}}</b>
-        </h6>
-      </div>
+      <h6>
+        <ion-icon name="alarm" color="secondary"></ion-icon>
+        <b>DUE {{goal.displayDueDate}}</b>
+      </h6>
+    </div>
     <div (click)="viewGoal(goal.id)" text-left padding>
       <h2>
         {{ goal.description }}
