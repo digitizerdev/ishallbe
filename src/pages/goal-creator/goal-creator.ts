@@ -188,7 +188,7 @@ export class GoalCreatorPage {
       this.audio.play();
       this.listenToAudioEvents();
     }, (error) => {
-    });
+    }); 
   }
 
   stopPlayback() {

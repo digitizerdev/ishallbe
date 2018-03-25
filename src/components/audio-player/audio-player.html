@@ -1,4 +1,8 @@
-<button (click)="playAudio(goal)" color="primary" ion-button round strong>
-    <ion-icon name="play" padding-right></ion-icon>
-    PLAY GOAL
-  </button>
+<button *ngIf="!playingAudio" (click)="loadAudio()" color="primary" ion-button round strong>
+  <ion-icon name="play" padding-right></ion-icon>
+  PLAY GOAL
+</button>
+<button *ngIf="playingAudio" (click)="pauseAudio()" color="danger" ion-button round strong>
+  <ion-icon name="pause" padding-right></ion-icon>
+  PAUSE GOAL
+</button>

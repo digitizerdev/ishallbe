@@ -132,7 +132,6 @@ export class iShallBe {
       this.statusBar.styleDefault();
       this.listenToFCMPushNotifications();
       this.deployUpdate().subscribe(() => {
-        console.log("No Deploy Available");
         observer.next();
       });
     });
