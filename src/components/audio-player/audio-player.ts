@@ -43,12 +43,6 @@ export class AudioPlayerComponent {
     this.listenToAudioEvents();
   }
 
-  pauseAudio() {
-    console.log("Pausing Audio");
-    this.audio.pause();
-    this.playingAudio = false;
-  }
-
   stopPlayback() {
     console.log("Stopping Playback");
     this.audio.stop();
