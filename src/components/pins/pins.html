@@ -4,16 +4,16 @@
       <div *ngIf="pin.day !== 'Monday' && pin.day !== 'Tuesday'">
         <br>
       </div>
-      <h2 ion-text color="primary" padding-bottom>
+      <h2 ion-text color="primary">
         <b>{{pin.title}}</b>
       </h2>
-      <img (click)="viewPin(pin?.id)" *ngIf="pin.day == 'Monday'" class="pin-image" src="{{ pin?.url }}">
-      <h5 (click)="viewPin(pin?.id)" *ngIf="pin.description" padding-left padding-right>{{pin.description}}</h5>
+      <img *ngIf="pin.day == 'Monday'" class="pin-image" (click)="viewPin(pin?.id)"  src="{{ pin?.url }}" padding-top>
+      <h5 *ngIf="pin.description" class="post-description" (click)="viewPin(pin?.id)">{{pin.description}}</h5>
       <button *ngIf="pin.day == 'Tuesday'" (click)="openLink(pin.url)" color="primary" text-center ion-button round strong>
         <ion-icon padding-right name="musical-notes"></ion-icon>
         OPEN TUNE
       </button>
-      <div padding-top (click)="viewPin(pin?.id)">
+      <div (click)="viewPin(pin?.id)">
         <h6>
           <a *ngIf="pin.likeCount > 1 || pin.likeCount == 0" class="subdued">{{ pin?.likeCount}} Likes</a>
           <a *ngIf="pin.likeCount == 1" class="subdued">{{ pin?.likeCount}} Like</a>

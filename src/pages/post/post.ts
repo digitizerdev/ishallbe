@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+
+import moment from 'moment';
+import { Observable } from 'rxjs';
+
+import { HomePage } from '../home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -11,12 +16,16 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 export class PostPage {
   id: string;
   postType: string;
+  postPath: string;
   postDoc: any;
   post: any;
   mine = false;
+  deleted = false;
 
   constructor(
+    private navCtrl: NavController,
     private navParams: NavParams,
+    private alertCtrl: AlertController,
     private firebase: FirebaseProvider
   ) {
   }
@@ -32,15 +41,60 @@ export class PostPage {
 
   loadPost() {
     console.log("Loading Post");
-    let postPath = this.postType + 's/' + this.id;
-    console.log("Post path is " + postPath);
-    this.postDoc = this.firebase.afs.doc(postPath);
+    this.postPath = this.postType + 's/' + this.id;
+    console.log("Post path is " + this.postPath);
+    this.postDoc = this.firebase.afs.doc(this.postPath);
     this.postDoc.valueChanges().subscribe((post) => {
       console.log("Got Post");
       console.log(post);
-      if (post.uid == this.firebase.uid) this.mine = true;
-      this.post = post;
+      let date = moment.unix(post.timestamp);
+      post.displayTimestamp = moment(date).fromNow();
+      if (!this.deleted) {
+        if (post.uid == this.firebase.uid) this.mine = true;
+        this.post = post;
+      }
     });
   }
 
+  removePost() {
+    console.log("Removing Post");
+    this.confirmPostRemoval().subscribe((confirmed) => {
+      if (confirmed) this.deletePost();
+    });
+  }
+
+  confirmPostRemoval() {
+    console.log("Confirming Post Removal")
+    return Observable.create((observer) => {
+      let alert = this.alertCtrl.create({
+        title: 'Hold It!',
+        message: 'Are you sure you want to delete this post?',
+        buttons: [
+          {
+            text: 'NO',
+            role: 'cancel',
+            handler: () => {
+              observer.next(false);
+            }
+          },
+          {
+            text: 'YES',
+            handler: () => {
+              observer.next(true);
+            }
+          }
+        ]
+      });
+      alert.present();
+    });
+  }
+
+  deletePost() {
+    console.log("Deleting Post");
+    console.log("Post path is " + this.postPath);
+    this.deleted = true;
+    this.firebase.afs.doc(this.postPath).delete().then(() => {
+      this.navCtrl.setRoot(HomePage, {});
+    });
+  }
 }

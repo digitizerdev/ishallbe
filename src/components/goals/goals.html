@@ -1,19 +1,21 @@
-<div *ngIf="goals" class="goals-content" text-center>
+<div *ngIf="goals" class="goals-content">
   <br>
   <ion-card *ngFor="let goal of goals">
     <post-header [postDoc]="goal"></post-header>
-    <audio-player [postDoc]="goal"></audio-player>
-    <div padding-top>
-      <h6>
-        <ion-icon name="alarm" color="secondary"></ion-icon>
-        <b>DUE {{goal.displayDueDate}}</b>
-      </h6>
-    </div>
-    <div (click)="viewGoal(goal.id)" text-left padding>
-      <h2>
-        {{ goal.description }}
-      </h2>
-    </div>
+    <ion-row (click)="viewGoal(goal.id)">
+      <ion-col text-center>
+        <h4  padding-top>
+          <ion-icon name="alarm" color="secondary"></ion-icon>
+          <b>Due {{goal?.displayDueDate}}</b>
+        </h4>
+      </ion-col>
+      <ion-col *ngIf="goal?.url" text-left>
+        <audio-player [postDoc]="goal"></audio-player>
+      </ion-col>
+    </ion-row>
+    <h2 class="post-description" (click)="viewGoal(goal.id)">
+      {{ goal.description }}
+    </h2>
     <post-footer [postDoc]="goal"></post-footer>
   </ion-card>
   <br>

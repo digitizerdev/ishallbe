@@ -26,6 +26,8 @@ export class GoalCreatorPage {
     title?: string;
     description?: string,
   } = {};
+  audioUrl = "";
+  audioName = "";
   goalId: string;
   contentMethod: string;
   timestamp: number;
@@ -34,8 +36,6 @@ export class GoalCreatorPage {
   rawNextWeekDate: number;
   dueDate: number;
   displayDueDate: string;
-  audioUrl: string;
-  audioName: string;
   audio: any;
   submitted = false;
   dateSelected = false;
@@ -110,6 +110,8 @@ export class GoalCreatorPage {
         name: this.firebase.user.name,
         face: this.firebase.user.photo
       }
+      console.log("Goal Built");
+      console.log(goal);
       observer.next(goal);
     });
   }
@@ -210,8 +212,7 @@ export class GoalCreatorPage {
 
   displayNotReadyAlert() {
     console.log("Display Not Ready Alert");
-    let alertMessage = "Please Speak Your Goal";
-    if (!this.dateSelected) alertMessage = "Please Set a Goal Due Date";
+    let alertMessage = "Please Set a Due Date";
     let alert = this.alertCtrl.create({
       title: 'Almost There!',
       subTitle: alertMessage,

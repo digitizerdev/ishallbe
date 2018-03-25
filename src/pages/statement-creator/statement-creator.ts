@@ -17,13 +17,14 @@ import { Statement } from '../../../test-data/statements/model';
   templateUrl: 'statement-creator.html',
 })
 export class StatementCreatorPage {
+  
   createStatementForm: {
     title?: string;
     description?: string,
   } = {};
+  statementImageUrl = "";
+  statementName = "";
   statementId: string;
-  statementImageUrl: string;
-  statementName: string;
   imageRetrievalMethod: string;
   timestamp: number;
   displayTimestamp: string;
@@ -90,21 +91,18 @@ export class StatementCreatorPage {
 
   submit(form) {
     this.submitted = true;
-    if (!this.imageReady) this.displayNotReadyAlert();
-    else {
-      if (form.valid) {
-        let loading = this.loadingCtrl.create({
-          spinner: 'bubbles',
-          content: 'Loading...'
+    if (form.valid) {
+      let loading = this.loadingCtrl.create({
+        spinner: 'bubbles',
+        content: 'Loading...'
+      });
+      loading.present();
+      this.buildStatement(form).subscribe((statement) => {
+        this.createStatement(statement).then(() => {
+          this.navCtrl.setRoot(HomePage);
+          loading.dismiss();
         });
-        loading.present();
-        this.buildStatement(form).subscribe((statement) => {
-          this.createStatement(statement).then(() => {
-            this.navCtrl.setRoot(HomePage);
-            loading.dismiss();
-          });
-        });
-      }
+      });
     }
   }
 
@@ -126,6 +124,8 @@ export class StatementCreatorPage {
         name: this.firebase.user.name,
         face: this.firebase.user.photo
       }
+      console.log("Statement Built");
+      console.log(statement);
       observer.next(statement);
     });
   }
@@ -133,16 +133,6 @@ export class StatementCreatorPage {
   createStatement(statement) {
     let statementPath = "/statements/" + this.statementId;
     return this.firebase.afs.doc(statementPath).set(statement);
-  }
-
-  displayNotReadyAlert() {
-    let alertMessage = "Please Add Image to Statement";
-    let alert = this.alertCtrl.create({
-      title: 'Almost There!',
-      subTitle: alertMessage,
-      buttons: ['OK']
-    });
-    alert.present();
   }
 
   listenForCanceledUpload() {

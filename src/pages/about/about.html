@@ -1,25 +1,20 @@
 <ion-header no-border>
-  <ion-navbar color='light-yellow'>
+  <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon color="primary" name="menu"></ion-icon>
     </button>
   </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content text-center>
   <header></header>
-  <div class="feature" text-center>
-    <h2 ion-text text-center padding>If You Speak It, It Shall Be!</h2>
-  </div>
-  <div id="AboutPageDescription" padding>
-    <h5 padding>
-      iShallBe is your daily boost to get you started and through each day. Through daily quotes, inspirational videos, motivational
-      messages, and testimonials it is our goal to give users that daily motivation to clear your mind, achieve a dream,
-      or fulfill a goal.
-    </h5>
-    <ion-row>
-      <ion-col text-center>
-        <button ion-button id="launchWebsiteLearnMoreButton" (click)="openLink()" color="primary" large round>LEARN MORE</button>
-      </ion-col>
-    </ion-row>
+  <h2 class="feature">If You Speak It, It Shall Be!</h2>
+  <h5 padding>
+    iShallBe is your daily boost to get you started and through each day. Through daily quotes, inspirational videos, motivational
+    messages, and testimonials it is our goal to give users that daily motivation to clear your mind, achieve a dream, or
+    fulfill a goal.
+  </h5>
+  <button (click)="openLink()" color="primary"  ion-button id="launchWebsiteLearnMoreButton" large round padding>LEARN MORE</button>
+  <div padding>
+    <br>
   </div>
 </ion-content>

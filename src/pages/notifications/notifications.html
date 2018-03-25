@@ -15,10 +15,12 @@
       <ion-icon item-end *ngIf="unreadNotification.like || unreadNotification.commentLike" name="heart" color="primary"></ion-icon>
       <ion-icon item-end *ngIf="unreadNotification.comment" name="ios-chatboxes" color="primary"></ion-icon>
       <ion-icon item-end *ngIf="unreadNotification.reminder" name="ios-checkbox" color="primary"></ion-icon>
-      <span ion-text color="primary"> {{ unreadNotification.name }} </span>
+      <span ion-text color="primary">
+        <b>{{ unreadNotification.name }}</b>
+      </span>
       <span> {{ unreadNotification.message }} </span>
       <br>
-      <span ion-text color="dark">{{ unreadNotification.displayTimestamp }}</span>
+      <span ion-text color="steel">{{ unreadNotification.displayTimestamp }}</span>
     </ion-item>
   </ion-list>
   <h5 class="feature">Earlier</h5>
@@ -30,10 +32,12 @@
       <ion-icon item-end *ngIf="readNotification.like || readNotification.commentLike" name="heart" color="grayer"></ion-icon>
       <ion-icon item-end *ngIf="readNotification.comment" name="ios-chatboxes" color="grayer"></ion-icon>
       <ion-icon item-end *ngIf="readNotification.reminder" name="ios-checkbox" color="grayer"></ion-icon>
-      <span ion-text color="primary"> {{ readNotification.name }} </span>
+      <span ion-text color="primary">
+        <b>{{ readNotification.name }}</b>
+      </span>
       <span> {{ readNotification.message }} </span>
       <br>
-      <span ion-text color="dark">{{ readNotification.displayTimestamp }}</span>
+      <span ion-text color="steel">{{ readNotification.displayTimestamp }}</span>
     </ion-item>
   </ion-list>
   <footer></footer>

@@ -61,7 +61,7 @@ export class GoalsComponent {
         if (!goal.complete) {
           console.log("This goal is not complete");
           let dueDate = moment.unix(goal.dueDate);
-          goal.displayDueDate = moment(dueDate).fromNow().toUpperCase();
+          goal.displayDueDate = moment(dueDate).fromNow();
           console.log("Goal Display Due Date is " + goal.displayDueDate);
           let timestamp = moment.unix(goal.timestamp);
           goal.displayTimestamp= moment(timestamp).fromNow();
