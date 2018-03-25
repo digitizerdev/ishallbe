@@ -1,16 +1,9 @@
 import { Component, Input } from '@angular/core';
 
-import { Platform } from 'ionic-angular';
-import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
-import { Media, MediaObject } from '@ionic-native/media';
-
 import moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 
-declare var cordova: any;
-
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-
 
 @Component({
   selector: 'goals',
@@ -24,9 +17,7 @@ export class GoalsComponent {
   goals: any[];
 
   constructor(
-    private platform: Platform,
-    private fileTransfer: FileTransfer,
-    private media: Media,
+
     private firebase: FirebaseProvider
   ) {
     console.log("Loaded Goals Component");
@@ -88,22 +79,6 @@ export class GoalsComponent {
       else if (goal.dueDate < this.rawNextWeekDate) goal.dueInNextSevenDays = true;
       else goal.dueLater = true;
       observer.next(goal);
-    });
-  }
-
-  playAudio(goal) {
-    console.log("Playing Audio");
-    console.log(goal);
-    const fileTransfer: FileTransferObject = this.fileTransfer.create();
-    if (this.platform.is('ios')) var filepath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + goal.filename;
-    if (this.platform.is('android')) filepath = cordova.file.externalDataDirectory + goal.filename;    
-    fileTransfer.download(goal.url, filepath, ).then((entry) => {
-      let rawAudioURI = entry.toURL();
-      if (this.platform.is('ios')) rawAudioURI = rawAudioURI.replace(/^file:\/\//, '/private');
-      console.log("Raw Audio URI is " + rawAudioURI);
-      let downloadedAudio: MediaObject = this.media.create(rawAudioURI);
-      downloadedAudio.play();
-    }, (error) => {
     });
   }
 }
