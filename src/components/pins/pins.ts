@@ -1,6 +1,8 @@
 import { ViewChild, Component } from '@angular/core';
 import { NavController, Slides } from 'ionic-angular';
 
+import { PostPage } from '../../pages/post/post';
+
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import { Observable } from 'rxjs';
@@ -63,5 +65,12 @@ export class PinsComponent {
       });
       observer.next();
     });
+  }
+
+  viewPin(id) {
+    this.navCtrl.push(PostPage, { 
+      id: id,
+      type: "pin"
+     });
   }
 }

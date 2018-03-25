@@ -1,8 +1,8 @@
-<button *ngIf="!playingAudio" (click)="loadAudio()" color="primary" ion-button round strong>
-  <ion-icon name="play" padding-right></ion-icon>
+<button *ngIf="!playingAudio" (click)="loadAudio()" color="primary" ion-button icon-start round strong>
+  <ion-icon name="play"></ion-icon>
   PLAY
 </button>
-<button *ngIf="playingAudio" (click)="stopPlayback()" color="danger" ion-button round strong>
-  <ion-icon name="stop" padding-right></ion-icon>
+<button *ngIf="playingAudio" (click)="stopPlayback()" color="danger" ion-button icon-start round strong>
+  <ion-icon name="square"></ion-icon>
   STOP
 </button>

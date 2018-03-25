@@ -1,7 +1,11 @@
 import { Component, Input } from '@angular/core';
 
+import { NavController } from 'ionic-angular';
+
 import moment from 'moment';
 import { Observable } from 'rxjs/Observable';
+
+import { PostPage } from '../../pages/post/post';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -16,6 +20,7 @@ export class StatementsComponent {
   statements: any[];
 
   constructor(
+    private navCtrl: NavController,
     private firebase: FirebaseProvider
   ) {
   }
@@ -53,5 +58,14 @@ export class StatementsComponent {
       statement.displayTimestamp = moment(date).fromNow();
       this.statements.push(statement);
     });
+  }
+
+  viewStatement(id) {
+    console.log("Viewing Statement");
+    console.log(id);
+    this.navCtrl.push(PostPage, { 
+      id: id,
+      type: "statement"
+     });
   }
 }

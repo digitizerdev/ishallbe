@@ -56,6 +56,9 @@ describe('GoalsComponent', () => {
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
             ],
+            schemas: [
+                CUSTOM_ELEMENTS_SCHEMA
+            ]
         })
     }));
 

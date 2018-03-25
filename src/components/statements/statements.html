@@ -2,7 +2,7 @@
   <br>
   <ion-card *ngFor="let statement of statements">
     <post-header [postDoc]="statement"></post-header>
-    <img class="full-image" *ngIf="statement.url" src="{{statement.url}}">
+    <img class="full-image" (click)="viewStatement(statement.id)" *ngIf="statement.url" src="{{statement.url}}">
     <div text-wrap text-left (click)="viewStatement(statement.id)" padding>
       <h2>{{statement.description}}</h2>
     </div>

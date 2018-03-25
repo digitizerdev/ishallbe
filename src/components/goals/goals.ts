@@ -1,7 +1,11 @@
 import { Component, Input } from '@angular/core';
 
+import { NavController } from 'ionic-angular';
+
 import moment from 'moment';
 import { Observable } from 'rxjs/Observable';
+
+import { PostPage } from '../../pages/post/post';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -17,7 +21,7 @@ export class GoalsComponent {
   goals: any[];
 
   constructor(
-
+    private navCtrl: NavController,
     private firebase: FirebaseProvider
   ) {
     console.log("Loaded Goals Component");
@@ -79,6 +83,13 @@ export class GoalsComponent {
       else if (goal.dueDate < this.rawNextWeekDate) goal.dueInNextSevenDays = true;
       else goal.dueLater = true;
       observer.next(goal);
+    });
+  }
+
+  viewGoal(id) {
+    this.navCtrl.push(PostPage, { 
+      id: id,
+      type: "goal"
     });
   }
 }
