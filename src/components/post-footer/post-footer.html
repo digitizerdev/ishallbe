@@ -10,8 +10,8 @@
 </ion-row>
 <ion-row>
   <ion-col text-center>
-      <ion-icon (click)="addLike()" name="thumbs-up" color="charcoal" *ngIf="post?.likeCount == 0"></ion-icon>
-    <ion-icon (click)="removeLike()" name="thumbs-up" color="primary" *ngIf="post?.likeCount > 0"></ion-icon>
+      <ion-icon (click)="addLike()" name="thumbs-up" color="charcoal" *ngIf="!post?.liked"></ion-icon>
+    <ion-icon (click)="removeLike()" name="thumbs-up" color="primary" *ngIf="post?.liked"></ion-icon>
   </ion-col>
   <ion-col text-center (click)="viewStatement(post?.id)">
     <ion-icon name="chatboxes" color="charcoal"></ion-icon>

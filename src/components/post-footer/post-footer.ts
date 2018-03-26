@@ -26,6 +26,7 @@ export class PostFooterComponent {
 
   addLike() {
     console.log("Add like clicked");
+    this.post.liked = true;
     ++this.post.likeCount;
     let type = this.setPostType();
     let postLike = {
@@ -99,13 +100,15 @@ export class PostFooterComponent {
   updatePost() {
     console.log("Updating Post");
     let likePath = this.post.collection + '/' + this.post.id;
-    console.log("Like Path is " + likePath);
-    this.firebase.afs.doc(likePath).set(this.post);
+    this.firebase.afs.doc(likePath).update({
+      likeCount: this.post.likeCount
+    });
   }
 
   removeLike() {
     console.log("Remove like clicked");
     --this.post.likeCount;
+    this.post.liked = false;
     this.removePostLike().subscribe(() => {
       this.updatePost();
     })

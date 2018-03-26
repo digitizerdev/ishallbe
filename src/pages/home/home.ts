@@ -25,6 +25,7 @@ export class HomePage {
   pinEndDate: number;
   dayNumber: number;
   timestamp: number;
+  pinsLoaded = false;
 
   constructor(
     private navCtrl: NavController,
@@ -51,13 +52,14 @@ export class HomePage {
   }
 
   loadPins() {
-   /*  let pins = this.firebase.afs.collection('pins', ref =>
-      ref.orderBy('affirmationDate').startAt(this.pinStartDate).endAt(this.pinEndDate)); */
     let pins = this.firebase.afs.collection('pins');
     pins.valueChanges().subscribe((pins) => {
-      this.setPins(pins).subscribe(() => {
-        this.setSlider();
-      })
+      if (!this.pinsLoaded) {
+        this.pinsLoaded = true;
+        this.setPins(pins).subscribe(() => {
+          this.setSlider();
+        });
+      }
     });
   }
 
