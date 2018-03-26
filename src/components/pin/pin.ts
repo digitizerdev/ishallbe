@@ -36,11 +36,9 @@ export class PinComponent {
     let pinPath = "pins/" + this.post.id;
     this.pinDoc = this.firebase.afs.doc<Pin>(pinPath);
     this.pinDoc.valueChanges().subscribe((pin) => {
-      this.pinLiked(pin).subscribe((pin) => {
         this.setImage(pin);
         this.pin = pin;
         this.loaded = true;
-      });
     })
   }
 
@@ -49,24 +47,10 @@ export class PinComponent {
     this.imageLoaded = true;
   }
 
-  pinLiked(pin) {
-    pin.liked = false;
-    return Observable.create((observer) => {
-      let pinLikePath = "pins/" + pin.id + "/likes/" + this.firebase.user.uid;
-      this.firebase.afs.doc(pinLikePath).valueChanges().subscribe((like) => {
-        if (!this.loaded) {
-          if (like) pin.liked = true;
-          observer.next(pin);
-        }
-      });
-    });
-  }
-
   viewPin() {
     this.navCtrl.push(PostPage, { 
       id: this.post.id,
       type: "pin"
      });
   }
-
 }

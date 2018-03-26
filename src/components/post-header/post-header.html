@@ -1,10 +1,10 @@
 <ion-item *ngIf="this.post">
-    <ion-avatar item-left (click)="viewUser(post.user_id)">
+    <ion-avatar item-left (click)="viewUser(post.uid)">
     <img src="{{post.face}}">
   </ion-avatar>
   <h3 color="primary" ion-text>
     <b>{{post.title}}</b>
   </h3>
-  <h5 (click)="viewUser(post.user_id)">{{post.name}}</h5>
+  <h5 (click)="viewUser(post.uid)">{{post.name}}</h5>
   <h6 color="steel" ion-text>{{post.displayTimestamp}}</h6>
 </ion-item>

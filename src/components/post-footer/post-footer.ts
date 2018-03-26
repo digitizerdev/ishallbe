@@ -13,6 +13,7 @@ import { Like } from '../../../test-data/likes/model';
 })
 export class PostFooterComponent {
   @Input('postDoc') post;
+  loaded = false;
 
   constructor(
     private firebase: FirebaseProvider
@@ -20,8 +21,20 @@ export class PostFooterComponent {
     console.log('Hello PostFooterComponent Component');
   }
 
-  ngAfterViewInit() {
-    console.log(this.post);
+  ngOnChanges() {
+    console.log("Post Footer Input Changed");
+    this.postLiked();
+  }
+
+  postLiked() {
+    this.post.liked = false;
+    let postLikePath = this.post.collection + "/" + this.post.id + "/likes/" + this.firebase.user.uid;
+    this.firebase.afs.doc(postLikePath).valueChanges().subscribe((like) => {
+      if (!this.loaded) {
+        this.loaded = true;
+        if (like) this.post.liked = true;
+      }
+    });
   }
 
   addLike() {
@@ -31,7 +44,7 @@ export class PostFooterComponent {
     let type = this.setPostType();
     let postLike = {
       postId: this.post.id,
-      pin: type.pin,
+      post: type.post,
       statement: type.statement,
       goal: type.goal
     }
@@ -43,12 +56,12 @@ export class PostFooterComponent {
   setPostType() {
     console.log("Setting Post Type");
     let type = {
-      pin: false,
+      post: false,
       statement: false,
       goal: false
     }
     switch (this.post.collection) {
-      case 'pins': type.pin = true;
+      case 'posts': type.post = true;
         break;
       case 'statements': type.statement = true;
         break;
@@ -82,7 +95,7 @@ export class PostFooterComponent {
       let like: Like = {
         id: id,
         postId: postLike.postId,
-        pin: postLike.pin,
+        post: postLike.post,
         statement: postLike.statement,
         goal: postLike.goal,
         displayTimestamp: displayTimestamp,

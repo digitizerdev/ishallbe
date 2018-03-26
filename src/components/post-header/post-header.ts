@@ -10,7 +10,8 @@ import { ProfilePage } from '../../pages/profile/profile';
 })
 export class PostHeaderComponent {
   @Input('postDoc') post;
-  loaded = false;
+  image: any;
+  avatarLoaded = false;
 
   constructor(
     private navCtrl: NavController
@@ -21,9 +22,12 @@ export class PostHeaderComponent {
     this.navCtrl.push(ProfilePage, { uid: uid});
   }
 
-  ngAfterViewInit() {
-    console.log("Post Header View Initialized");
-    this.loaded = true;
+  ngOnChanges() {
+    console.log("Post Header Input changed");
+    if (!this.avatarLoaded) {
+      this.image = this.post.face;
+      this.avatarLoaded = true;
+    }
   }
 }
 
