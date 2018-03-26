@@ -13,6 +13,7 @@ import { ToolbarLogoComponent } from './toolbar-logo/toolbar-logo';
 import { PostHeaderComponent } from './post-header/post-header';
 import { PostFooterComponent } from './post-footer/post-footer';
 import { AudioPlayerComponent } from './audio-player/audio-player';
+import { PinComponent } from './pin/pin';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,8 @@ import { AudioPlayerComponent } from './audio-player/audio-player';
         ToolbarLogoComponent,
         PostHeaderComponent,
         PostFooterComponent,
-    AudioPlayerComponent,
+        AudioPlayerComponent,
+        PinComponent,
     ],
     imports: [
         IonicModule,
@@ -44,7 +46,8 @@ import { AudioPlayerComponent } from './audio-player/audio-player';
         ToolbarLogoComponent,
         PostHeaderComponent,
         PostFooterComponent,
-    AudioPlayerComponent
+        AudioPlayerComponent,
+        PinComponent
     ],
     providers: [
         InAppBrowser

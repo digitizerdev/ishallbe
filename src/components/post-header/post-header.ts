@@ -10,13 +10,20 @@ import { ProfilePage } from '../../pages/profile/profile';
 })
 export class PostHeaderComponent {
   @Input('postDoc') post;
+  loaded = false;
 
   constructor(
     private navCtrl: NavController
-  ) {}
+  ) {
+  }
 
   viewUser(uid) {
-    this.navCtrl.push(ProfilePage, { uid: uid})
+    this.navCtrl.push(ProfilePage, { uid: uid});
+  }
+
+  ngAfterViewInit() {
+    console.log("Post Header View Initialized");
+    this.loaded = true;
   }
 }
 

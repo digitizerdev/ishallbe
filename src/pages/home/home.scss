@@ -2,6 +2,9 @@ page-home {
     .refresher-icon-color {
         color: color($colors, primary);
     }
+    .pins-slider {
+        max-height: 300px;
+    }
     .post-segment {
         background-color: color($colors, primary);
     }

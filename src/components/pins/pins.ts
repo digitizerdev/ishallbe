@@ -25,7 +25,8 @@ export class PinsComponent {
     private firebase: FirebaseProvider
   ) {
   }
-
+}
+/* 
   ngAfterViewInit() {
     this.timestamp();
     this.loadPins().subscribe((pins) => {
@@ -73,4 +74,4 @@ export class PinsComponent {
       type: "pin"
      });
   }
-}
+} */

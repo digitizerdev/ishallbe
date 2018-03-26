@@ -16,7 +16,11 @@
     <ion-refresher-content refreshingSpinner="dots" refreshingText="Refeshing" no-border>
     </ion-refresher-content>
   </ion-refresher>
-  <pins></pins>
+  <ion-slides class="pins-slider" [speed]="2000">
+    <ion-slide *ngFor="let pin of pins">
+      <pin [post]="pin"></pin>
+    </ion-slide>
+  </ion-slides>
   <ion-segment mode="ios" class="post-segment" [(ngModel)]="postType" color="background" padding-top padding-left padding-right>
     <ion-segment-button value="statements">
       <b>STATEMENTS</b>
