@@ -7,7 +7,7 @@
       <h2 ion-text color="primary">
         <b>{{pin.title}}</b>
       </h2>
-      <div *ngIf="pin.day == 'Monday'" padding-top>
+      <div *ngIf="pin.day == 'Monday' && !pinLoaded" padding-top>
         <img class="pin-image" (click)="viewPin(pin?.id)"  src="{{ pin?.url }}">
       </div>
       <h5 *ngIf="pin.description" class="post-description" (click)="viewPin(pin?.id)">{{pin.description}}</h5>
