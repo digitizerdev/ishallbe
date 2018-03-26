@@ -19,6 +19,8 @@ export class PinComponent {
   @Input('post') post;
   private pinDoc: AngularFirestoreDocument<Pin>;
   pin: any;
+  image:string;
+  imageLoaded = false;
   loaded = false;
 
   constructor(
@@ -35,10 +37,16 @@ export class PinComponent {
     this.pinDoc = this.firebase.afs.doc<Pin>(pinPath);
     this.pinDoc.valueChanges().subscribe((pin) => {
       this.pinLiked(pin).subscribe((pin) => {
+        this.setImage(pin);
         this.pin = pin;
         this.loaded = true;
       });
     })
+  }
+
+  setImage(pin) {
+    if (pin.day == 'Monday') this.image = pin.url;
+    this.imageLoaded = true;
   }
 
   pinLiked(pin) {
