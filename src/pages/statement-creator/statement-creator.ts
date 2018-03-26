@@ -109,7 +109,7 @@ export class StatementCreatorPage {
   buildStatement(form) {
     return Observable.create((observer) => {
       this.statementId = this.firebase.afs.createId();
-      const statement: Statement = {
+      let statement: Statement = {
         id: this.statementId,
         title: form.title,
         description: form.description,
@@ -118,6 +118,7 @@ export class StatementCreatorPage {
         private: false,
         url: this.statementImageUrl,
         filename: this.statementName,
+        collection: "statements",
         displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
         uid: this.firebase.user.uid,

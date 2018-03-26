@@ -1,3 +1,11 @@
+.loading-ios .loading-md {
+    background-color: color($colors, primary);
+    opacity: 1 !important;
+    position: fixed;
+    top: 44px;
+    bottom: 49.5px;
+}
+
 .list-full-border {
     border-top: thick solid color($colors, primary);
     border-bottom: thick solid color($colors, primary);
@@ -79,9 +87,11 @@ ion-item {
     border-bottom-color: transparent !important;
     box-shadow: none !important;
 }
+
 .subdued {
     color: color($colors, steel);
 }
+
 .post-description {
     text-align: left;
     padding: 10px 20px 5px 20px;

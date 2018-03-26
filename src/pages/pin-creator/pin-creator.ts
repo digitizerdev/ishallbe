@@ -207,6 +207,7 @@ export class PinCreatorPage {
         link: form.link,
         day: this.dayOfWeek,
         filename: this.pinName,
+        collection: "pins",
         displayAffirmationDate: this.displaySelectedDay,
         affirmationDate: this.affirmationDate,
         displayTimestamp: this.displayTimestamp,

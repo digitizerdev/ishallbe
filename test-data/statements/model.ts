@@ -7,6 +7,7 @@ export interface Statement {
   private: boolean,
   url: string,
   filename: string,
+  collection: string,
   displayTimestamp: string,
   timestamp: number,
   uid: string,

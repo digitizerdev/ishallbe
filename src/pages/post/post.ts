@@ -4,8 +4,6 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import moment from 'moment';
 import { Observable } from 'rxjs';
 
-import { HomePage } from '../home/home';
-
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()
@@ -45,13 +43,13 @@ export class PostPage {
     console.log("Post path is " + this.postPath);
     this.postDoc = this.firebase.afs.doc(this.postPath);
     this.postDoc.valueChanges().subscribe((post) => {
-      console.log("Got Post");
+      console.log("Got Post on Post Page");
       console.log(post);
-      let date = moment.unix(post.timestamp);
-      post.displayTimestamp = moment(date).fromNow();
       if (!this.deleted) {
-        if (post.uid == this.firebase.uid) this.mine = true;
-        this.post = post;
+        let date = moment.unix(post.timestamp);
+        post.displayTimestamp = moment(date).fromNow();
+          if (post.uid == this.firebase.uid) this.mine = true;
+          this.post = post;
       }
     });
   }
@@ -94,7 +92,7 @@ export class PostPage {
     console.log("Post path is " + this.postPath);
     this.deleted = true;
     this.firebase.afs.doc(this.postPath).delete().then(() => {
-      this.navCtrl.setRoot(HomePage, {});
+      this.navCtrl.pop();
     });
   }
 }

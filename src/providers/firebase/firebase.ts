@@ -122,8 +122,4 @@ export class FirebaseProvider {
     this.session = false;
     this.events.publish('contributor permission not granted');
   }
-
-  setNotification() {
-    console.log("Set Notification Triggered");
-  }
 }

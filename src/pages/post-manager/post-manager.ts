@@ -62,14 +62,18 @@ export class PostManagerPage {
   onTimeSelected(ev) {
     this.selectedDay = ev.selectedTime;
     this.displaySelectedDay = moment(this.selectedDay).format("MMM D");
-    if (ev.events.length == 0 ) this.pinCreated = false;
+    if (ev.events.length == 0) this.pinCreated = false;
     else this.pinCreated = true;
   }
 
   onEventSelected(event) {
-    this.navCtrl.push(PostPage, { id: event.id })
+    this.navCtrl.push(PostPage,
+      {
+        id: event.id,
+        type: 'pin'
+      });
   }
-  
+
   loadPins() {
     return Observable.create((observer) => {
       this.pins = this.firebase.afs.collection("pins");

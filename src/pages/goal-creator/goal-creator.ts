@@ -104,6 +104,7 @@ export class GoalCreatorPage {
         filename: this.audioName,
         displayDueDate: this.displayDueDate,
         dueDate: this.dueDate,
+        collection: "goals",
         displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
         uid: this.firebase.user.uid,

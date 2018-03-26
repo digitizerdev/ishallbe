@@ -61,8 +61,6 @@ export class StatementsComponent {
   }
 
   viewStatement(id) {
-    console.log("Viewing Statement");
-    console.log(id);
     this.navCtrl.push(PostPage, { 
       id: id,
       type: "statement"

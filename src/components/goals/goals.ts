@@ -86,10 +86,10 @@ export class GoalsComponent {
     });
   }
 
-  viewGoal(id) {
+  viewGoal(id){
     this.navCtrl.push(PostPage, { 
       id: id,
       type: "goal"
-    });
+     });
   }
 }

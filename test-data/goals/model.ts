@@ -10,6 +10,7 @@ export interface Goal {
   filename: string,
   displayDueDate: string;
   dueDate: number,
+  collection: string,
   displayTimestamp: string;
   timestamp: number,
   uid: string,
