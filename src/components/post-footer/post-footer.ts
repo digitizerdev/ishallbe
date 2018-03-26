@@ -13,38 +13,32 @@ import { Like } from '../../../test-data/likes/model';
 })
 export class PostFooterComponent {
   @Input('postDoc') post;
-  loaded = false;
+  liked: boolean;
 
   constructor(
     private firebase: FirebaseProvider
-  ) {
-    console.log('Hello PostFooterComponent Component');
-  }
+  ) { }
 
   ngOnChanges() {
-    console.log("Post Footer Input Changed");
     this.postLiked();
   }
 
   postLiked() {
-    this.post.liked = false;
+    console.log(this.post);
     let postLikePath = this.post.collection + "/" + this.post.id + "/likes/" + this.firebase.user.uid;
-    this.firebase.afs.doc(postLikePath).valueChanges().subscribe((like) => {
-      if (!this.loaded) {
-        this.loaded = true;
-        if (like) this.post.liked = true;
-      }
+    let postLike = this.firebase.afs.doc(postLikePath).valueChanges().take(1);
+    postLike.subscribe((like) => {
+      if (like) this.liked = true;
+      else this.liked = false;
     });
   }
 
   addLike() {
-    console.log("Add like clicked");
-    this.post.liked = true;
     ++this.post.likeCount;
     let type = this.setPostType();
     let postLike = {
       postId: this.post.id,
-      post: type.post,
+      pin: type.pin,
       statement: type.statement,
       goal: type.goal
     }
@@ -54,14 +48,13 @@ export class PostFooterComponent {
   }
 
   setPostType() {
-    console.log("Setting Post Type");
     let type = {
-      post: false,
+      pin: false,
       statement: false,
       goal: false
     }
     switch (this.post.collection) {
-      case 'posts': type.post = true;
+      case 'pins': type.pin = true;
         break;
       case 'statements': type.statement = true;
         break;
@@ -73,11 +66,8 @@ export class PostFooterComponent {
 
   addPostLike(postLike) {
     return Observable.create((observer) => {
-      console.log("Adding post like");
-      console.log(postLike);
       return this.buildPostLike(postLike).subscribe((like) => {
         let postLikePath = this.post.collection + "/" + this.post.id + "/likes/" + this.firebase.user.uid;
-        console.log("Post Like Path is " + postLikePath);
         this.firebase.afs.doc(postLikePath).set(like).then(() => {
           observer.next();
         });
@@ -87,8 +77,6 @@ export class PostFooterComponent {
 
   buildPostLike(postLike) {
     return Observable.create((observer) => {
-      console.log("Building Post Like");
-      console.log(postLike);
       let displayTimestamp = moment().format('MMM D YYYY h:mmA');
       let timestamp = moment().unix();
       let id = this.firebase.afs.createId();
@@ -104,14 +92,11 @@ export class PostFooterComponent {
         name: this.firebase.user.name,
         face: this.firebase.user.photo
       }
-      console.log("Post Like Built");
-      console.log(like);
       observer.next(like);
     });
   }
 
   updatePost() {
-    console.log("Updating Post");
     let likePath = this.post.collection + '/' + this.post.id;
     this.firebase.afs.doc(likePath).update({
       likeCount: this.post.likeCount
@@ -119,19 +104,15 @@ export class PostFooterComponent {
   }
 
   removeLike() {
-    console.log("Remove like clicked");
     --this.post.likeCount;
-    this.post.liked = false;
     this.removePostLike().subscribe(() => {
       this.updatePost();
     })
   }
 
   removePostLike() {
-    console.log("Removing Post Like");
     return Observable.create((observer) => {
       let postLikePath = this.post.collection + "/" + this.post.id + "/likes/" + this.firebase.user.uid;
-      console.log("Post Like Path is " + postLikePath);
       return this.firebase.afs.doc(postLikePath).delete().then(() => {
         observer.next();
       })

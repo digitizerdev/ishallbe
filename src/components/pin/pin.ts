@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
 
-import { Observable } from 'rxjs';
-
 import { NavController } from 'ionic-angular';
 
 import { PostPage } from '../../pages/post/post';

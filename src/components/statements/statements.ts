@@ -26,12 +26,8 @@ export class StatementsComponent {
   }
 
   ngAfterViewInit() {
-    console.log("Statements View Initialized");
-    console.log("My Statments: " + this.myStatements);
     this.timestamp();
     this.loadStatements().subscribe((statements) => {
-      console.log("Got statements");
-      console.log(statements);
       this.setStatements(statements);
     });
   }
@@ -42,7 +38,6 @@ export class StatementsComponent {
   }
 
   loadStatements() {
-    console.log("Loading Statements");
     return Observable.create((observer) => {
       let allStatements = this.firebase.afs.collection('statements', ref => ref.orderBy('timestamp'));
       allStatements.valueChanges().subscribe((statements) => {
