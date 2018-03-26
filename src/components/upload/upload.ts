@@ -128,7 +128,7 @@ export class UploadComponent {
       guides: true,
       highlight: false,
       background: false,
-      autoCrop: true,
+      autoCrop: false,
       autoCropArea: 0.9,
       responsive: true,
       zoomable: true,

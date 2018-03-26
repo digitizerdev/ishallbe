@@ -8,6 +8,7 @@ export interface Notification {
   message: string,
   displayTimestamp: string,
   timestamp: number,
+  sendTime: number,
   postId: string,
   postType: string,
   owner: string

@@ -21,7 +21,7 @@
         </ion-col>
       </ion-row>
     </div>
-    <upload *ngIf="loadingImage" (uploaded)="setImage($event)" [method]="imageRetrievalMethod" padding></upload>
+    <upload *ngIf="loadingImage" (uploaded)="setImage($event)" [method]="imageRetrievalMethod"></upload>
     <ion-row *ngIf="imageReady" id="PinImage">
       <ion-col text-center>
         <img (click)="redoImageLoad()" [src]="pinImageUrl" class="full-image">
