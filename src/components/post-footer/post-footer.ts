@@ -95,7 +95,7 @@ export class PostFooterComponent {
       let like: Like = {
         id: id,
         postId: postLike.postId,
-        post: postLike.post,
+        pin: postLike.pin,
         statement: postLike.statement,
         goal: postLike.goal,
         displayTimestamp: displayTimestamp,
