@@ -2,7 +2,7 @@ import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { IonicModule, Platform, NavController } from 'ionic-angular';
+import { IonicModule, Platform, NavController, NavParams } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -19,6 +19,7 @@ import {
     PlatformMock,
     NavMock,
     FirebaseProviderMock,
+    NavParamsMock,
 } from '../../../test-config/mocks-ionic';
 
 describe('PostPage', () => {
@@ -26,6 +27,7 @@ describe('PostPage', () => {
     let component;
     let platform: Platform;
     let nav: NavController;
+    let navParams: NavParams;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -47,6 +49,7 @@ describe('PostPage', () => {
             providers: [
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
+                { provide: NavParams, useClass: NavParamsMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -59,6 +62,7 @@ describe('PostPage', () => {
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
+        navParams = TestBed.get(NavParams);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -69,6 +73,7 @@ describe('PostPage', () => {
         component = null;
         platform = null;
         nav = null;
+        navParams = null;
         firebase = null;
         afa = null;
         afs = null;

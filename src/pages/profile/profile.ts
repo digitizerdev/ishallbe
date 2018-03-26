@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
@@ -18,6 +18,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 export class ProfilePage {
 
   user: any;
+  uid: string;
   mine = false;
   loaded = false;
   myAffirmations = true;
@@ -25,20 +26,23 @@ export class ProfilePage {
 
   constructor(
     private navCtrl: NavController,
+    private navParams: NavParams,
     private inAppBrowser: InAppBrowser,
     private firebase: FirebaseProvider
   ) {
   }
 
   ionViewDidLoad() {
-    this.user = this.firebase.user;
-    this.mine = true;
-    this.loaded = true;
+    this.uid = this.navParams.get('uid');
+    if (!this.uid) {
+      this.mine = true;
+      this.uid = this.firebase.uid;
+    }
     this.loadUser();
   }
 
   loadUser() {
-    let path = "users/" + this.firebase.uid;
+    let path = "users/" + this.uid;
     this.user = this.firebase.afs.doc(path);
     this.user.valueChanges().subscribe((user) => {
       this.user = user;

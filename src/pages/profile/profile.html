@@ -15,7 +15,7 @@
     <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="dots" refreshingText="Refeshing">
     </ion-refresher-content>
   </ion-refresher>
-  <div id="UserProfile" text-center padding>
+  <div *ngIf="loaded" id="UserProfile" text-center padding>
     <h2 color="primary" ion-text text-center>
       <b>{{ user?.name }}</b>
     </h2>
