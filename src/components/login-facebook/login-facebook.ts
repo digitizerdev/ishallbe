@@ -102,6 +102,7 @@ export class LoginFacebookComponent {
   loadUser() {
     console.log("Loading User");
     this.checkForExistingUser().subscribe((user) => {
+      console.log("Existing User: " + user);
       if (user) { this.login(); this.loader.dismiss() }
       else {
         this.registerUser().subscribe(() => {

@@ -33,8 +33,10 @@ export class FirebaseProvider {
     if (!this.loaded) {
       this.loaded = true;
       this.sessionExists().subscribe((session) => {
-        if (session) this.startSession();
-        else this.endSession();
+        if (!this.loggingInWithFacebook) {
+          if (session) this.startSession();
+          else this.endSession();
+        }
       });
     }
   }
