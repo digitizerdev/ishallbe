@@ -50,7 +50,6 @@ export class ProfileUpdatePage {
     })
   }
 
-
   loadProfileForm() {
     return Observable.create((observer: any) => {
       this.profileForm.linkedin = this.user.linkedin;
