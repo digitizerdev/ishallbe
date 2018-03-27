@@ -97,7 +97,7 @@ export class PostFooterComponent {
         goal: postLike.goal,
         displayTimestamp: displayTimestamp,
         timestamp: timestamp,
-        uid: this.firebase.uid,
+        uid: this.firebase.user.uid,
         name: this.firebase.user.name,
         face: this.firebase.user.photo
       }

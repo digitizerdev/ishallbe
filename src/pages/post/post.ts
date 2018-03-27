@@ -48,7 +48,7 @@ export class PostPage {
       if (!this.deleted) {
         let date = moment.unix(post.timestamp);
         post.displayTimestamp = moment(date).fromNow();
-          if (post.uid == this.firebase.uid) this.mine = true;
+          if (post.uid == this.firebase.afa.auth.currentUser.uid) this.mine = true;
           this.post = post;
       }
     });
