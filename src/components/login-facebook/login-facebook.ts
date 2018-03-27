@@ -37,10 +37,10 @@ export class LoginFacebookComponent {
   authenticate() {
     console.log("Authenticating");
     this.firebase.loggingInWithFacebook = true;
-    console.log("Loggin In With Facebook")
-    this.loader = this.loadingCtrl.create({ 
+    console.log("Logging In With Facebook")
+    this.loader = this.loadingCtrl.create({
       spinner: 'bubbles',
-      content: 'Loading...' 
+      content: 'Loading...'
     });
     this.loader.present();
     this.determineAuthType(this.platform.is('cordova'));
@@ -102,7 +102,6 @@ export class LoginFacebookComponent {
   loadUser() {
     console.log("Loading User");
     this.checkForExistingUser().subscribe((user) => {
-      this.user.unsubscribe;
       if (user) { this.login(); this.loader.dismiss() }
       else {
         this.registerUser().subscribe(() => {
@@ -138,9 +137,11 @@ export class LoginFacebookComponent {
     this.registering = true;
     return Observable.create((observer) => {
       return this.presentEULA().subscribe((accepted) => {
-        if (accepted) this.createUser().subscribe((newUserObject) => { 
-          observer.next(); 
-        });
+        if (accepted) {
+          this.createUser().subscribe((newUserObject) => {
+            observer.next();
+          });
+        }
         else observer.error();
       });
     });
