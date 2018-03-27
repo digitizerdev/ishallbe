@@ -28,7 +28,8 @@ export class LoginFacebookComponent {
 
   authenticate() {
     console.log("Authenticating");
-    console.log("Logging In With Facebook")
+    console.log("Logging In With Facebook");
+    this.firebase.socialAuthentication = true;
     this.loader = this.loadingCtrl.create({
       spinner: 'bubbles',
       content: 'Loading...'
@@ -51,7 +52,6 @@ export class LoginFacebookComponent {
       this.facebook.getAccessToken().then((accessToken) => {
         let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(accessToken);
         firebase.auth().signInWithCredential(facebookProviderCredential).then((token) => {
-          this.firebase.photo = "https://graph.facebook.com/" + token.providerData[0].uid + "/picture?type=large";
           this.loadUser();
         }).catch((error) => { this.errorHandler(error) });;
       }).catch((error) => { this.errorHandler(error) });
@@ -61,7 +61,6 @@ export class LoginFacebookComponent {
   browserAuth() {
     console.log("Browser Authentication");
     firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((token) => {
-      this.firebase.photo = "https://graph.facebook.com/" + token.user.providerData[0].uid + "/picture?type=large";
       this.loadUser();
     });
   }

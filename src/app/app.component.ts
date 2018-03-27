@@ -58,14 +58,42 @@ export class iShallBe {
 
   platformReady() {
     this.platform.ready().then(() => {
-      this.listenToUserPermissionsEvents();
-      if (this.platform.is('cordova')) {
-        this.initDevicePlatform().subscribe(() => {
-          this.initSession();
-        });
-      }
-      else this.initSession();
+      if (this.platform.is('cordova'))
+        this.initDevicePlatform();
+      else
+        this.listenToUserPermissionsEvents();
     });
+  }
+
+  initDevicePlatform() {
+    this.statusBar.styleDefault();
+    this.listenToFCMPushNotifications();
+    this.deployUpdate().subscribe((updateAvailable) => {
+      if (!updateAvailable)
+        this.listenToUserPermissionsEvents();
+    });
+  }
+
+  deployUpdate() {
+    return Observable.create((observer) => {
+      return Pro.deploy.checkAndApply(true).then((resp) => {
+        console.log("Got Update Status");
+        console.log(resp);
+        if (resp.update) observer.next(true);
+        else observer.next(false);
+      });
+    });
+  }
+
+  listenToFCMPushNotifications() {
+    this.fcm.getToken().then(token =>
+      this.firebase.fcmToken = token);
+    this.fcm.onNotification().subscribe(notification => {
+      if (!notification.wasTapped)
+        this.displayNotificationAlert(notification);
+    });
+    this.fcm.onTokenRefresh().subscribe(token =>
+      this.firebase.fcmToken = token);
   }
 
   listenToUserPermissionsEvents() {
@@ -88,6 +116,7 @@ export class iShallBe {
   listenToContributorPermissionEvents() {
     this.events.subscribe('contributor permission granted', () => {
       this.nav.setRoot(HomePage);
+      this.splashScreen.hide();
       this.fcm.subscribeToTopic('affirmations');
     });
     this.events.subscribe('contributor permission not granted', () => {
@@ -107,17 +136,6 @@ export class iShallBe {
     });
   }
 
-  listenToFCMPushNotifications() {
-    this.fcm.getToken().then(token =>
-      this.firebase.fcmToken = token);
-    this.fcm.onNotification().subscribe(notification => {
-      if (!notification.wasTapped)
-        this.displayNotificationAlert(notification);
-    });
-    this.fcm.onTokenRefresh().subscribe(token =>
-      this.firebase.fcmToken = token);
-  }
-
   displayNotificationAlert(notification) {
     let alert = this.alertCtrl.create({
       title: 'Notification',
@@ -125,40 +143,6 @@ export class iShallBe {
       buttons: ['OPEN']
     });
     alert.present();
-  }
-
-  initDevicePlatform() {
-    return Observable.create((observer) => {
-      this.statusBar.styleDefault();
-      this.listenToFCMPushNotifications();
-      this.deployUpdate().subscribe(() => {
-        observer.next();
-      });
-    });
-  }
-
-  deployUpdate() {
-    return Observable.create((observer) => {
-      Pro.deploy.checkAndApply(true).then((resp) => {
-        if (!resp.update) observer.next();
-      });
-    });
-  }
-
-  initSession() {
-    if (this.firebase.session) {
-      this.splashScreen.hide();
-      this.nav.setRoot(HomePage);
-    }
-    else this.getSession();
-  }
-
-  getSession() {
-    this.firebase.sessionExists().subscribe((session) => {
-      this.splashScreen.hide();
-      if (session) this.nav.setRoot(HomePage);
-      else this.nav.setRoot(LoginPage);
-    })
   }
 
   setMenus() {

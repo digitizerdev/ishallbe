@@ -14,12 +14,14 @@ export class FirebaseProvider {
 
   userDoc: any;
   user: any;
-  photo: any;
   fcmToken: string;
   session = false;
   loaded = false;
   hasSeenTutorial = false;
+  deployingUpdate = false;
   signingup = false;
+  socialAuthentication = false;
+  loggedOut = false;
 
   constructor(
     public alertCtrl: AlertController,
@@ -32,7 +34,7 @@ export class FirebaseProvider {
 
   checkForSession() {
     console.log("Checking for Firebase Session");
-    if (!this.loaded) {
+    if (!this.loaded && !this.deployingUpdate) {
       this.loaded = true;
       this.sessionExists().subscribe((session) => {
         if (session) this.userExists();
@@ -45,7 +47,14 @@ export class FirebaseProvider {
     console.log("Checking for Existance of Firebase Session");
     return Observable.create((observer) => {
       return this.afa.authState.subscribe((session) => {
-        if (session) observer.next(true);
+        if (session) {
+          if (this.socialAuthentication) {
+            console.log("Authenticating through social provider");
+          } else {
+            console.log("Not signing up");
+            observer.next(true);
+          }
+        }
         else observer.next(false);
       });
     });
@@ -59,16 +68,13 @@ export class FirebaseProvider {
     this.userDoc.valueChanges().subscribe((user) => {
       console.log("Got Firebase User");
       console.log(user);
-      if (user)
+      if (!this.loggedOut) {
+        if (user)
         this.startSession(user);
       else
         this.signupUser();
+      }
     });
-  }
-
-  loadUser(user) {
-    console.log("Loading User");
-
   }
 
   signupUser() {
@@ -119,7 +125,6 @@ export class FirebaseProvider {
   buildUser() {
     console.log("Building User");
     return Observable.create((observer) => {
-      if (!this.photo) this.photo = "assets/img/default-profile.png"
       if (!this.fcmToken) this.fcmToken = "0";
       let timestamp = moment().unix();
       let displayTimestamp = moment().format('MMM D YYYY h:mmA');
@@ -129,7 +134,7 @@ export class FirebaseProvider {
         name: this.afa.auth.currentUser.displayName,
         bio: "",
         email: this.afa.auth.currentUser.email,
-        photo: this.photo,
+        photo: this.afa.auth.currentUser.photoURL,
         blocked: false,
         displayTimestamp: displayTimestamp,
         timestamp: timestamp,
@@ -157,15 +162,16 @@ export class FirebaseProvider {
     if (user.editor) this.events.publish("editor permission granted");
     else this.events.publish("editor permission not granted")
     this.session = true;
+    this.socialAuthentication = false;
     this.events.publish('contributor permission granted');
   }
 
   endSession() {
     console.log("Ending Session");
+    this.loggedOut = true;
     this.session = false;
     this.userDoc = null;
     this.user = null;
-    this.photo = null;
     this.loaded = false;
     this.events.publish('contributor permission not granted');
   }
