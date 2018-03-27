@@ -41,7 +41,7 @@ export class ProfilePage {
     this.uid = this.navParams.get('uid');
     if (!this.uid) {
       this.mine = true;
-      this.uid = this.firebase.uid;
+      this.uid = this.firebase.afa.auth.currentUser.uid;
     }
     this.loadUser();
     this.loadPosts();

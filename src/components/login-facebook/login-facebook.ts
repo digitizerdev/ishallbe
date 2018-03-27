@@ -1,14 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, Platform, Events } from 'ionic-angular';
+import { AlertController, LoadingController, Platform } from 'ionic-angular';
 import { Pro } from '@ionic/pro';
 import { Facebook } from '@ionic-native/facebook';
-import { Observable } from 'rxjs/Observable';
-import moment from 'moment';
 
 import firebase from 'firebase';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-
-import { User } from '../../../test-data/users/model';
 
 @Component({
   selector: 'login-facebook',
@@ -24,15 +20,11 @@ export class LoginFacebookComponent {
 
   constructor(
     private firebase: FirebaseProvider,
-    private navCtrl: NavController,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
-    private events: Events,
     private platform: Platform,
     private facebook: Facebook,
-  ) {
-    console.log("Hello Facebook Login Component");
-  }
+  ) { }
 
   authenticate() {
     console.log("Authenticating");
@@ -59,168 +51,25 @@ export class LoginFacebookComponent {
       this.facebook.getAccessToken().then((accessToken) => {
         let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(accessToken);
         firebase.auth().signInWithCredential(facebookProviderCredential).then((token) => {
-          this.unpackageCordovaAuthToken(token);
+          this.firebase.photo = "https://graph.facebook.com/" + token.providerData[0].uid + "/picture?type=large";
+          this.loadUser();
         }).catch((error) => { this.errorHandler(error) });;
       }).catch((error) => { this.errorHandler(error) });
     }).catch((error) => { this.errorHandler(error) });
   }
 
-  unpackageCordovaAuthToken(token) {
-    console.log("Unpackaging Cordova Auth Token");
-    this.uid = token.uid;
-    this.authToken = token.providerData[0];
-    let photoURL = "https://graph.facebook.com/" + token.providerData[0].uid + "/picture?type=large";
-    let data = {
-      "name": token.providerData[0].displayName,
-      "email": token.providerData[0].email,
-      "photo": photoURL,
-    }
-    this.firebase.facebookAuth = data;
-    this.loadUser();
-  }
-
   browserAuth() {
     console.log("Browser Authentication");
     firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((token) => {
-      this.unpackageBrowserAuthToken(token);
+      this.firebase.photo = "https://graph.facebook.com/" + token.user.providerData[0].uid + "/picture?type=large";
+      this.loadUser();
     });
-  }
-
-  unpackageBrowserAuthToken(token) {
-    console.log("Unpackaging Browser Auth Token");
-    this.uid = token.user.uid;
-    let photoURL = "https://graph.facebook.com/" + token.user.providerData[0].uid + "/picture?type=large";
-    let data = {
-      "name": token.user.displayName,
-      "email": token.user.email,
-      "photo": photoURL,
-    }
-    this.firebase.facebookAuth = data;
-    this.loadUser();
   }
 
   loadUser() {
     console.log("Loading User");
-    this.checkForExistingUser().subscribe((user) => {
-      console.log("Existing User: ");
-      console.log(user);
-      if (!this.loaded) {
-        this.loaded = true;
-        if (user) { this.login(); this.loader.dismiss() }
-        else 
-          this.signup();
-      }
-    });
-  }
-
-  checkForExistingUser() {
-    console.log("Checking for existing user");
-    return Observable.create((observer) => {
-      let path = '/users/' + this.uid;
-      this.user = this.firebase.afs.doc(path);
-      return this.user.valueChanges().subscribe((user) => {
-        observer.next(user);
-      })
-    });
-  }
-
-  login() {
-    console.log("Logging In");
-    this.events.publish('contributor permission granted');
-    this.firebase.facebookRegistration = false;
-  }
-
-  signup() {
-    this.firebase.facebookRegistration = true;
-    this.registerUser().subscribe(() => {
-      this.login();
-      this.loader.dismiss();
-    }, error => {
-      this.firebase.afa.auth.signOut();
-      this.navCtrl.setRoot(this.navCtrl.getActive().component);
-      this.loader.dismiss();
-    });
-  }
-
-  registerUser() {
-    console.log("Registering User");
-    return Observable.create((observer) => {
-      return this.presentEULA().subscribe((accepted) => {
-        if (accepted) {
-          this.createUser().subscribe((newUserObject) => {
-            observer.next();
-          });
-        }
-        else observer.error();
-      });
-    });
-  }
-
-  presentEULA() {
-    console.log("Presenting EULA");
-    return Observable.create((observer: any) => {
-      let alert = this.alertCtrl.create({
-        title: 'Accept Terms of Service',
-        message: 'Please confirm to continue',
-        buttons: [
-          {
-            text: 'Cancel',
-            role: 'cancel',
-            handler: () => {
-              observer.next(false);
-            }
-          },
-          {
-            text: 'Confirm',
-            handler: () => {
-              observer.next(true);
-            }
-          }
-        ]
-      });
-      alert.present();
-    });
-  }
-
-  createUser() {
-    console.log("Creating User");
-    return Observable.create((observer) => {
-      this.buildUser().subscribe((user) => {
-        let path = 'users/' + this.uid;
-        return this.firebase.afs.doc(path).set(user).then(() => {
-          observer.next();
-        });
-      });
-    });
-  }
-
-  buildUser() {
-    console.log("Building User");
-    return Observable.create((observer) => {
-      if (!this.firebase.fcmToken) this.firebase.fcmToken = "0";
-      let timestamp = moment().unix();
-      console.log("Timestamp is " + timestamp);
-      let displayTimestamp = moment().format('MMM D YYYY h:mmA');
-      console.log("Display timestamp is " + displayTimestamp);
-      const user: User = {
-        uid: this.uid,
-        fcmToken: this.firebase.fcmToken,
-        name: this.firebase.facebookAuth.name,
-        bio: "",
-        email: this.firebase.facebookAuth.email,
-        photo: this.firebase.facebookAuth.photo,
-        blocked: false,
-        displayTimestamp: displayTimestamp,
-        timestamp: timestamp,
-        instagram: "",
-        linkedin: "",
-        twitter: "",
-        contributor: true,
-        editor: false
-      }
-      console.log(user);
-      observer.next(user);
-    });
+    this.loader.dismiss();
+    this.firebase.userExists();
   }
 
   errorHandler(error) {
@@ -233,5 +82,4 @@ export class LoginFacebookComponent {
     });
     alert.present();
   }
-
 }

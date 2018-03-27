@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Events } from 'ionic-angular';
+import { AlertController, Events } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 
@@ -14,15 +14,15 @@ export class FirebaseProvider {
 
   userDoc: any;
   user: any;
-  facebookAuth: any;
-  uid: string;
+  photo: any;
   fcmToken: string;
   session = false;
   loaded = false;
   hasSeenTutorial = false;
-  facebookRegistration = false;
+  signingup = false;
 
   constructor(
+    public alertCtrl: AlertController,
     public events: Events,
     public afs: AngularFirestore,
     public afa: AngularFireAuth
@@ -35,7 +35,7 @@ export class FirebaseProvider {
     if (!this.loaded) {
       this.loaded = true;
       this.sessionExists().subscribe((session) => {
-        if (session) this.startSession();
+        if (session) this.userExists();
         else this.endSession();
       });
     }
@@ -51,65 +51,85 @@ export class FirebaseProvider {
     });
   }
 
-  startSession() {
-    console.log("Starting Session");
-    this.uid = this.afa.auth.currentUser.uid
-    this.userExists();
-    this.session = true;
-    this.events.publish('contributor permission granted');
-  }
-
   userExists() {
     console.log("User Exists?");
-    let path = "users/" + this.uid;
-    this.userDoc = this.afs.doc(path);
+    let userPath = "users/" + this.afa.auth.currentUser.uid;
+    console.log("User path is " + userPath);
+    this.userDoc = this.afs.doc(userPath);
     this.userDoc.valueChanges().subscribe((user) => {
       console.log("Got Firebase User");
       console.log(user);
-      if (!this.facebookRegistration) {
-        if (user)
-          this.loadUser(user);
-        else
-          this.generateUser();
-      }
+      if (user)
+        this.startSession(user);
+      else
+        this.signupUser();
     });
   }
 
   loadUser(user) {
     console.log("Loading User");
-    if (this.fcmToken)
-      user.fcmToken = this.fcmToken;
-    this.user = user;
-    if (user.editor)
-      this.events.publish("editor permission granted");
-    else
-      this.events.publish("editor permission not granted")
-    this.setUser();
+
   }
 
-  generateUser() {
-    console.log("Generating User");
-    this.buildUser().subscribe((user) => {
-      this.user = user;
-      this.setUser().then(() => {
-        this.loadUser(user);
-      });
+  signupUser() {
+    console.log("Signing Up User");
+    this.presentEULA().subscribe((accepted) => {
+      if (accepted) {
+        this.buildUser().subscribe((user) => {
+          this.user = user;
+          this.setUser().then(() => {
+            this.startSession(user);
+          });
+        });
+      } else this.endSession();
+    });
+  }
+
+  presentEULA() {
+    console.log("Presenting EULA");
+    return Observable.create((observer: any) => {
+      if (!this.signingup) {
+        this.signingup = true;
+        let alert = this.alertCtrl.create({
+          title: 'Accept Terms of Service',
+          message: 'Please confirm to continue',
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              handler: () => {
+                this.signingup = false;
+                observer.next(false);
+              }
+            },
+            {
+              text: 'Confirm',
+              handler: () => {
+                this.signingup = false;
+                observer.next(true);
+              }
+            }
+          ]
+        });
+        alert.present();
+      }
     });
   }
 
   buildUser() {
     console.log("Building User");
     return Observable.create((observer) => {
+      if (!this.photo) this.photo = "assets/img/default-profile.png"
       if (!this.fcmToken) this.fcmToken = "0";
       let timestamp = moment().unix();
       let displayTimestamp = moment().format('MMM D YYYY h:mmA');
       const user: User = {
-        uid: this.uid,
+        uid: this.afa.auth.currentUser.uid,
         fcmToken: this.fcmToken,
         name: this.afa.auth.currentUser.displayName,
         bio: "",
         email: this.afa.auth.currentUser.email,
-        photo: "assets/img/default-profile.png",
+        photo: this.photo,
         blocked: false,
         displayTimestamp: displayTimestamp,
         timestamp: timestamp,
@@ -119,19 +139,34 @@ export class FirebaseProvider {
         contributor: true,
         editor: false
       }
+      console.log("User Built");
+      console.log(user);
       observer.next(user);
     });
   }
 
   setUser() {
     console.log("Setting User");
-    let path = '/users/' + this.uid;
+    let path = '/users/' + this.afa.auth.currentUser.uid;
     return this.afs.doc(path).set(this.user);
+  }
+
+  startSession(user) {
+    console.log("Starting Session");
+    this.user = user;
+    if (user.editor) this.events.publish("editor permission granted");
+    else this.events.publish("editor permission not granted")
+    this.session = true;
+    this.events.publish('contributor permission granted');
   }
 
   endSession() {
     console.log("Ending Session");
     this.session = false;
+    this.userDoc = null;
+    this.user = null;
+    this.photo = null;
+    this.loaded = false;
     this.events.publish('contributor permission not granted');
   }
 }
