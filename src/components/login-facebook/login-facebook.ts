@@ -102,7 +102,8 @@ export class LoginFacebookComponent {
   loadUser() {
     console.log("Loading User");
     this.checkForExistingUser().subscribe((user) => {
-      console.log("Existing User: " + user);
+      console.log("Existing User: ");
+      console.log(user);
       if (user) { this.login(); this.loader.dismiss() }
       else {
         this.registerUser().subscribe(() => {
@@ -128,7 +129,7 @@ export class LoginFacebookComponent {
       let path = '/users/' + this.uid;
       this.user = this.firebase.afs.doc(path);
       return this.user.valueChanges().subscribe((user) => {
-        if (!this.registering) observer.next(user);
+         observer.next(user);
       })
     });
   }

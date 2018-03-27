@@ -4,7 +4,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
-import { Observable } from 'rxjs';
 import moment from 'moment';
 
 import { HomePage } from '../home/home';

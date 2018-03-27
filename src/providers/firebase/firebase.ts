@@ -30,6 +30,7 @@ export class FirebaseProvider {
   }
 
   checkForSession() {
+    console.log("Checking for Firebase Session");
     if (!this.loaded) {
       this.loaded = true;
       this.sessionExists().subscribe((session) => {
@@ -42,6 +43,7 @@ export class FirebaseProvider {
   }
 
   sessionExists() {
+    console.log("Checking for Existance of Firebase Session");
     return Observable.create((observer) => {
       return this.afa.authState.subscribe((session) => {
         if (session) observer.next(true);
@@ -51,6 +53,7 @@ export class FirebaseProvider {
   }
 
   startSession() {
+    console.log("Starting Session");
     this.uid = this.afa.auth.currentUser.uid
     this.userExists();
     this.session = true;
@@ -58,9 +61,12 @@ export class FirebaseProvider {
   }
 
   userExists() {
+    console.log("User Exists?");
     let path = "users/" + this.uid;
     this.userDoc = this.afs.doc(path);
     this.userDoc.valueChanges().subscribe((user) => {
+      console.log("Got Firebase User");
+      console.log(user);
       if (user)
         this.loadUser(user);
       else
@@ -69,6 +75,7 @@ export class FirebaseProvider {
   }
 
   loadUser(user) {
+    console.log("Loading User");
     if(this.fcmToken) 
       user.fcmToken = this.fcmToken;
     this.user = user;
@@ -80,6 +87,7 @@ export class FirebaseProvider {
   }
 
   generateUser() {
+    console.log("Generating User");
     if (!this.loggingInWithFacebook) {
       this.buildUser().subscribe((user) => {
         this.user = user;
@@ -91,6 +99,7 @@ export class FirebaseProvider {
   }
 
   buildUser() {
+    console.log("Building User");
     return Observable.create((observer) => {
       if (!this.fcmToken) this.fcmToken = "0";
       let timestamp = moment().unix();
@@ -116,11 +125,13 @@ export class FirebaseProvider {
   }
 
   setUser() {
+    console.log("Setting User");
     let path = '/users/' + this.uid;
     return this.afs.doc(path).set(this.user);
   }
 
   endSession() {
+    console.log("Ending Session");
     this.session = false;
     this.events.publish('contributor permission not granted');
   }
