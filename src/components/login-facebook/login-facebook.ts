@@ -20,7 +20,7 @@ export class LoginFacebookComponent {
   authToken: any;
   user: any;
   loader: any;
-  registering = false;
+  loaded = false;
 
   constructor(
     private firebase: FirebaseProvider,
@@ -36,7 +36,6 @@ export class LoginFacebookComponent {
 
   authenticate() {
     console.log("Authenticating");
-    this.firebase.loggingInWithFacebook = true;
     console.log("Logging In With Facebook")
     this.loader = this.loadingCtrl.create({
       spinner: 'bubbles',
@@ -48,9 +47,10 @@ export class LoginFacebookComponent {
 
   determineAuthType(cordova) {
     console.log("Determining Auth Type");
-    if (cordova) {
+    if (cordova)
       this.cordovaAuth();
-    } else { this.browserAuth(); }
+    else
+      this.browserAuth();
   }
 
   cordovaAuth() {
@@ -75,7 +75,7 @@ export class LoginFacebookComponent {
       "email": token.providerData[0].email,
       "photo": photoURL,
     }
-    this.authToken = data;
+    this.firebase.facebookAuth = data;
     this.loadUser();
   }
 
@@ -95,7 +95,7 @@ export class LoginFacebookComponent {
       "email": token.user.email,
       "photo": photoURL,
     }
-    this.authToken = data;
+    this.firebase.facebookAuth = data;
     this.loadUser();
   }
 
@@ -104,23 +104,13 @@ export class LoginFacebookComponent {
     this.checkForExistingUser().subscribe((user) => {
       console.log("Existing User: ");
       console.log(user);
-      if (user) { this.login(); this.loader.dismiss() }
-      else {
-        this.registerUser().subscribe(() => {
-          this.login(); this.loader.dismiss();
-        }, error => {
-          this.firebase.afa.auth.signOut();
-          this.navCtrl.setRoot(this.navCtrl.getActive().component);
-          this.loader.dismiss();
-        })
-      };
+      if (!this.loaded) {
+        this.loaded = true;
+        if (user) { this.login(); this.loader.dismiss() }
+        else 
+          this.signup();
+      }
     });
-  }
-
-  login() {
-    console.log("Logging In");
-    this.firebase.loggingInWithFacebook = false;
-    this.events.publish('contributor permission granted');
   }
 
   checkForExistingUser() {
@@ -129,14 +119,31 @@ export class LoginFacebookComponent {
       let path = '/users/' + this.uid;
       this.user = this.firebase.afs.doc(path);
       return this.user.valueChanges().subscribe((user) => {
-         observer.next(user);
+        observer.next(user);
       })
+    });
+  }
+
+  login() {
+    console.log("Logging In");
+    this.events.publish('contributor permission granted');
+    this.firebase.facebookRegistration = false;
+  }
+
+  signup() {
+    this.firebase.facebookRegistration = true;
+    this.registerUser().subscribe(() => {
+      this.login();
+      this.loader.dismiss();
+    }, error => {
+      this.firebase.afa.auth.signOut();
+      this.navCtrl.setRoot(this.navCtrl.getActive().component);
+      this.loader.dismiss();
     });
   }
 
   registerUser() {
     console.log("Registering User");
-    this.registering = true;
     return Observable.create((observer) => {
       return this.presentEULA().subscribe((accepted) => {
         if (accepted) {
@@ -198,10 +205,10 @@ export class LoginFacebookComponent {
       const user: User = {
         uid: this.uid,
         fcmToken: this.firebase.fcmToken,
-        name: this.authToken.name,
+        name: this.firebase.facebookAuth.name,
         bio: "",
-        email: this.authToken.email,
-        photo: this.authToken.photo,
+        email: this.firebase.facebookAuth.email,
+        photo: this.firebase.facebookAuth.photo,
         blocked: false,
         displayTimestamp: displayTimestamp,
         timestamp: timestamp,

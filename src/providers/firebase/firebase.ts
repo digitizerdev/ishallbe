@@ -14,12 +14,13 @@ export class FirebaseProvider {
 
   userDoc: any;
   user: any;
+  facebookAuth: any;
   uid: string;
   fcmToken: string;
   session = false;
   loaded = false;
   hasSeenTutorial = false;
-  loggingInWithFacebook = false;
+  facebookRegistration = false;
 
   constructor(
     public events: Events,
@@ -34,10 +35,8 @@ export class FirebaseProvider {
     if (!this.loaded) {
       this.loaded = true;
       this.sessionExists().subscribe((session) => {
-        if (!this.loggingInWithFacebook) {
-          if (session) this.startSession();
-          else this.endSession();
-        }
+        if (session) this.startSession();
+        else this.endSession();
       });
     }
   }
@@ -67,16 +66,18 @@ export class FirebaseProvider {
     this.userDoc.valueChanges().subscribe((user) => {
       console.log("Got Firebase User");
       console.log(user);
-      if (user)
-        this.loadUser(user);
-      else
-        this.generateUser();
+      if (!this.facebookRegistration) {
+        if (user)
+          this.loadUser(user);
+        else
+          this.generateUser();
+      }
     });
   }
 
   loadUser(user) {
     console.log("Loading User");
-    if(this.fcmToken) 
+    if (this.fcmToken)
       user.fcmToken = this.fcmToken;
     this.user = user;
     if (user.editor)
@@ -88,14 +89,12 @@ export class FirebaseProvider {
 
   generateUser() {
     console.log("Generating User");
-    if (!this.loggingInWithFacebook) {
-      this.buildUser().subscribe((user) => {
-        this.user = user;
-        this.setUser().then(() => {
-          this.loadUser(user);
-        });
+    this.buildUser().subscribe((user) => {
+      this.user = user;
+      this.setUser().then(() => {
+        this.loadUser(user);
       });
-    }
+    });
   }
 
   buildUser() {
