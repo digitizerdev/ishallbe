@@ -16,16 +16,17 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 export class HomePage {
   @ViewChild(Slides) slider: Slides;
 
-  myAffirmations = false;
-  postType = "statements";
-  pins: any;
-  statements: any;
-  goals: any;
+  pins: any[] = [];
+  statements: any[] = [];
+  goals: any[] = [];
   pinStartDate: number;
   pinEndDate: number;
   dayNumber: number;
   timestamp: number;
   pinsLoaded = false;
+  statementsLoaded = false;
+  goalsLoaded = false;
+  postSegment = 'statements';
 
   constructor(
     private navCtrl: NavController,
@@ -55,8 +56,8 @@ export class HomePage {
     let pins = this.firebase.afs.collection('pins');
     pins.valueChanges().subscribe((pins) => {
       if (!this.pinsLoaded) {
-        this.pinsLoaded = true;
         this.setPins(pins).subscribe(() => {
+          this.pinsLoaded = true;
           this.setSlider();
         });
       }
@@ -65,7 +66,6 @@ export class HomePage {
 
   setPins(pins) {
     return Observable.create((observer) => {
-      this.pins = [];
       pins.forEach((pin) => {
         this.pins.push(pin);
       });
@@ -83,28 +83,29 @@ export class HomePage {
     let statements = this.firebase.afs.collection('statements', ref =>
       ref.orderBy('timestamp'));
     statements.valueChanges().subscribe((statements) => {
-      this.setStatements(statements);
+      if (!this.statementsLoaded) 
+        this.setStatements(statements);
     });
   }
 
   setStatements(statements) {
-    this.statements = [];
     statements.forEach((statement) => {
       let date = moment.unix(statement.timestamp);
       statement.displayTimestamp = moment(date).fromNow();
       this.statements.push(statement);
     });
+    this.statementsLoaded = true;
   }
 
   loadGoals() {
     let goals = this.firebase.afs.collection('goals');
     goals.valueChanges().subscribe((goals) => {
-      this.setGoals(goals);
+      if(!this.goalsLoaded)
+        this.setGoals(goals);
     });
   }
 
   setGoals(goals) {
-    this.goals = [];
     goals.forEach((goal) => {
       if (!goal.complete) {
         let dueDate = moment.unix(goal.dueDate);
@@ -114,6 +115,7 @@ export class HomePage {
         this.goals.push(goal);
       }
     });
+    this.goalsLoaded = true;
   }
 
   showNotifications() {

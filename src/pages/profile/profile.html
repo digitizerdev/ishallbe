@@ -43,15 +43,27 @@
       </ion-col>
     </ion-row>
   </div>
-  <ion-segment mode="ios" class="post-segment" [(ngModel)]="postType" color="background" padding-top padding-left padding-right>
-    <ion-segment-button value="statements">
-      <b>STATEMENTS</b>
-    </ion-segment-button>
-    <ion-segment-button value="goals">
-      <b>GOALS</b>
-    </ion-segment-button>
+  <div class="posts-scroller">
+    <ion-segment mode="ios" class="post-segment" [(ngModel)]="postSegment" color="background" padding-top padding-left padding-right>
+      <ion-segment-button value="statements">
+        <b>STATEMENTS</b>
+      </ion-segment-button>
+      <ion-segment-button value="goals">
+        <b>GOALS</b>
+      </ion-segment-button>
+      <br>
+    </ion-segment>
+    <div *ngIf="postSegment=='statements'">
+      <ion-card *ngFor="let statement of statements">
+        <statement [post]="statement"></statement>
+      </ion-card>
+    </div>
+    <div *ngIf="postSegment=='goals'">
+      <ion-card *ngFor="let goal of goals">
+        <goal [post]="goal"></goal>
+      </ion-card>
+    </div>
     <br>
-  </ion-segment>
-  <statements *ngIf="postType=='statements'" [mine]="myAffirmations"></statements>
-  <goals *ngIf="postType=='goals'" [mine]="myAffirmations"></goals>
+  </div>
+  <footer></footer>
 </ion-content>

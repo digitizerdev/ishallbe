@@ -5,20 +5,20 @@ import { NavController } from 'ionic-angular';
 import { PostPage } from '../../pages/post/post';
 
 @Component({
-  selector: 'pin',
-  templateUrl: 'pin.html'
+  selector: 'goal',
+  templateUrl: 'goal.html'
 })
-export class PinComponent {
-  @Input('post') pin;
-
+export class GoalComponent {
+  @Input('post') goal;
+  
   constructor(
-    private navCtrl: NavController,
+    private navCtrl: NavController
   ) {}
 
-  viewPin() {
+  viewGoal() {
     this.navCtrl.push(PostPage, { 
-      id: this.pin.id,
-      type: "pin"
+      id: this.goal.id,
+      type: "goal"
      });
   }
 }

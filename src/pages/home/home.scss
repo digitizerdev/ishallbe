@@ -3,9 +3,12 @@ page-home {
         color: color($colors, primary);
     }
     .pins-slider {
-        max-height: 300px;
+        max-height: 65%;
     }
-    .post-segment {
-        background-color: color($colors, primary);
+    .posts-scroller {
+        background-color: color($colors, primary) !important;
+    }
+    .card {
+        border-radius: 15px;
     }
 }

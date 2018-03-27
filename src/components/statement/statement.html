@@ -1,0 +1,4 @@
+<post-header [postDoc]="statement"></post-header>
+<img *ngIf="statement.url" class="full-image" (click)="viewStatement(statement.id)" src="{{statement.url}}">
+<h2 class="post-description" (click)="viewStatement(statement.id)" text-wrap>{{statement.description}}</h2>
+<post-footer [postDoc]="statement"></post-footer>

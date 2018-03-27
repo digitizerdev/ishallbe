@@ -9,9 +9,9 @@ import { ProfilePage } from '../../pages/profile/profile';
   templateUrl: 'post-header.html'
 })
 export class PostHeaderComponent {
-  @Input('postDoc') post;
-  image: any;
-  avatarLoaded = false;
+  @Input('postDoc') postDoc;
+  post: any;
+  loaded: any;
 
   constructor(
     private navCtrl: NavController
@@ -23,10 +23,9 @@ export class PostHeaderComponent {
   }
 
   ngOnChanges() {
-    console.log("Post Header Input changed");
-    if (!this.avatarLoaded) {
-      this.image = this.post.face;
-      this.avatarLoaded = true;
+    if (!this.loaded) {
+      this.loaded = true;
+      this.post = this.postDoc;
     }
   }
 }

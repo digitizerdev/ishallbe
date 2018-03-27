@@ -17,7 +17,7 @@ page-profile {
         margin-right: auto;
         text-align: center;
     }
-    .post-segment {
-        background-color: color($colors, primary);
+    .posts-scroller {
+        background-color: color($colors, primary) !important;
     }
 }

@@ -13,6 +13,8 @@ import { PostHeaderComponent } from './post-header/post-header';
 import { PostFooterComponent } from './post-footer/post-footer';
 import { AudioPlayerComponent } from './audio-player/audio-player';
 import { PinComponent } from './pin/pin';
+import { StatementComponent } from './statement/statement';
+import { GoalComponent } from './goal/goal';
 
 @NgModule({
     declarations: [
@@ -28,6 +30,8 @@ import { PinComponent } from './pin/pin';
         PostFooterComponent,
         AudioPlayerComponent,
         PinComponent,
+        StatementComponent,
+    GoalComponent,
     ],
     imports: [
         IonicModule,
@@ -44,7 +48,9 @@ import { PinComponent } from './pin/pin';
         PostHeaderComponent,
         PostFooterComponent,
         AudioPlayerComponent,
-        PinComponent
+        PinComponent,
+        StatementComponent,
+    GoalComponent
     ],
     providers: [
         InAppBrowser

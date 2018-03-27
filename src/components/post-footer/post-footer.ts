@@ -12,28 +12,38 @@ import { Like } from '../../../test-data/likes/model';
   templateUrl: 'post-footer.html'
 })
 export class PostFooterComponent {
-  @Input('postDoc') post;
-  liked: boolean;
+  @Input('postDoc') postDoc;
+  post: any;
+  liked = false;
+  loaded = false;
 
   constructor(
     private firebase: FirebaseProvider
   ) { }
 
-  ngOnChanges() {
-    this.postLiked();
+  ngAfterViewInit() {
+    if (!this.loaded) {
+      this.checkUserPostLike().subscribe((liked) => {
+        if (liked) this.liked = true;
+        this.post = this.postDoc;
+      });
+  
+    }
   }
 
-  postLiked() {
-    console.log(this.post);
-    let postLikePath = this.post.collection + "/" + this.post.id + "/likes/" + this.firebase.user.uid;
-    let postLike = this.firebase.afs.doc(postLikePath).valueChanges().take(1);
-    postLike.subscribe((like) => {
-      if (like) this.liked = true;
-      else this.liked = false;
+  checkUserPostLike() {
+    return Observable.create((observer) => {
+      let postLikePath = this.postDoc.collection + "/" + this.postDoc.id + "/likes/" + this.firebase.user.uid;
+      let postLike = this.firebase.afs.doc(postLikePath).valueChanges();
+      postLike.subscribe((like) => {
+        if (like) observer.next(true);
+        else observer.next(false);
+      });
     });
   }
 
   addLike() {
+    this.liked = true;
     ++this.post.likeCount;
     let type = this.setPostType();
     let postLike = {
@@ -60,7 +70,6 @@ export class PostFooterComponent {
         break;
       case 'goals': type.goal = true;
     }
-    console.log(type);
     return type;
   }
 
@@ -104,6 +113,7 @@ export class PostFooterComponent {
   }
 
   removeLike() {
+    this.liked = false;
     --this.post.likeCount;
     this.removePostLike().subscribe(() => {
       this.updatePost();
