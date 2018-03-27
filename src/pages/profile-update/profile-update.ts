@@ -143,7 +143,7 @@ export class ProfileUpdatePage {
         spinner: 'bubbles',
         content: 'Loading...' });
       loading.present();   
-      this.user.photo = content;
+      this.user.photo = content.url;
       this.updateUser().then(() => {
         loading.dismiss();
         this.updatingProfilePhoto = false;
