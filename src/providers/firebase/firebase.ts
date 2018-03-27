@@ -21,8 +21,7 @@ export class FirebaseProvider {
   deployingUpdate = false;
   signingup = false;
   socialAuthentication = false;
-  loggedOut = false;
-
+  
   constructor(
     public alertCtrl: AlertController,
     public events: Events,
@@ -44,7 +43,6 @@ export class FirebaseProvider {
   }
 
   sessionExists() {
-    console.log("Checking for Existance of Firebase Session");
     return Observable.create((observer) => {
       return this.afa.authState.subscribe((session) => {
         if (session) {
@@ -68,12 +66,10 @@ export class FirebaseProvider {
     this.userDoc.valueChanges().subscribe((user) => {
       console.log("Got Firebase User");
       console.log(user);
-      if (!this.loggedOut) {
-        if (user)
+      if (user)
         this.startSession(user);
       else
         this.signupUser();
-      }
     });
   }
 
@@ -168,7 +164,6 @@ export class FirebaseProvider {
 
   endSession() {
     console.log("Ending Session");
-    this.loggedOut = true;
     this.session = false;
     this.userDoc = null;
     this.user = null;

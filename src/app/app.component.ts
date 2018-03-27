@@ -35,8 +35,9 @@ export class iShallBe {
   editorMenu: Array<{ title: string, icon: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
   pages: Array<{ title: string, component: any }>;
-  session = false;
   editor = false;
+  session = false;
+  ready = false;
 
   constructor(
     private platform: Platform,
@@ -47,6 +48,7 @@ export class iShallBe {
     private fcm: FCM,
     private firebase: FirebaseProvider,
   ) {
+    this.listenToUserPermissionsEvents();
     this.rootPage = StartupPage;
     this.platformReady();
     this.setMenus();
@@ -58,19 +60,29 @@ export class iShallBe {
 
   platformReady() {
     this.platform.ready().then(() => {
-      if (this.platform.is('cordova'))
-        this.initDevicePlatform();
+      this.ready = true;
+      if (!this.platform.is('cordova'))
+        this.setSession();
       else
-        this.listenToUserPermissionsEvents();
+        this.initDevicePlatform();
     });
   }
 
+  setSession() {
+    if (this.session)
+      this.nav.setRoot(HomePage);
+    else
+      this.nav.setRoot(LoginPage);
+    this.splashScreen.hide();
+  }
+
   initDevicePlatform() {
+    this.splashScreen.show();
     this.statusBar.styleDefault();
     this.listenToFCMPushNotifications();
     this.deployUpdate().subscribe((updateAvailable) => {
       if (!updateAvailable)
-        this.listenToUserPermissionsEvents();
+        this.setSession();
     });
   }
 
@@ -114,13 +126,17 @@ export class iShallBe {
   }
 
   listenToContributorPermissionEvents() {
+    console.log("Listening to Contributor Permission Events");
     this.events.subscribe('contributor permission granted', () => {
-      this.nav.setRoot(HomePage);
-      this.splashScreen.hide();
+      console.log("Session Granted");
       this.fcm.subscribeToTopic('affirmations');
+      if (this.ready) this.nav.setRoot(HomePage);
+      this.session = true;
     });
     this.events.subscribe('contributor permission not granted', () => {
-      this.nav.setRoot(LoginPage);
+      console.log("Session not granted");
+      if (this.ready) this.nav.setRoot(LoginPage);
+      this.session = false;
       this.editor = false;
     });
   }
