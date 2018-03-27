@@ -9,24 +9,14 @@ import { ProfilePage } from '../../pages/profile/profile';
   templateUrl: 'post-header.html'
 })
 export class PostHeaderComponent {
-  @Input('postDoc') postDoc;
-  post: any;
-  loaded: any;
+  @Input('postDoc') post;
 
   constructor(
     private navCtrl: NavController
-  ) {
-  }
+  ) { }
 
   viewUser(uid) {
     this.navCtrl.push(ProfilePage, { uid: uid});
-  }
-
-  ngOnChanges() {
-    if (!this.loaded) {
-      this.loaded = true;
-      this.post = this.postDoc;
-    }
   }
 }
 
