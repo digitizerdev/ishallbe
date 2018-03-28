@@ -13,7 +13,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 })
 export class PostPage {
   id: string;
-  postType: string;
+  collection: string;
   postPath: string;
   postDoc: any;
   post: any;
@@ -33,14 +33,14 @@ export class PostPage {
     console.log("Loaded Post Page");
     this.id = this.navParams.get("id");
     console.log("Post Id is " + this.id);
-    this.postType = this.navParams.get("type");
-    console.log("Post type is " + this.postType);
+    this.collection = this.navParams.get("type");
+    console.log("Post type is " + this.collection);
     this.loadPost();
   }
 
   loadPost() {
     console.log("Loading Post");
-    this.postPath = this.postType + 's/' + this.id;
+    this.postPath = this.collection + '/' + this.id;
     console.log("Post path is " + this.postPath);
     this.postDoc = this.firebase.afs.doc(this.postPath);
     this.postDoc.valueChanges().subscribe((post) => {

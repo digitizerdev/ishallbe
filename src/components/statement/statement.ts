@@ -20,7 +20,7 @@ export class StatementComponent {
   viewStatement() {
     this.navCtrl.push(PostPage, { 
       id: this.statement.id,
-      type: "statement"
+      type: "statements"
      });
   }
 

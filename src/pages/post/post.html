@@ -9,9 +9,9 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <post-header *ngIf="post && postType !== 'pin'" [postDoc]="post"></post-header>
-  <img *ngIf="postType == 'statement' && post?.url" src="{{post?.url}}">
-  <ion-row *ngIf="postType == 'goal'" text-center>
+  <post-header *ngIf="post && collection !== 'pins'" [postDoc]="post"></post-header>
+  <img *ngIf="collection == 'statements' && post?.url" src="{{post?.url}}">
+  <ion-row *ngIf="collection == 'goals'" text-center>
     <ion-col text-center>
       <h5>
         <ion-icon name="alarm" color="secondary"></ion-icon>
@@ -19,12 +19,12 @@
       </h5>
     </ion-col>
   </ion-row>
-  <ion-row *ngIf="postType == 'goal' && post?.url">
+  <ion-row *ngIf="collection == 'goals' && post?.url">
     <ion-col text-center>
       <audio-player [postDoc]="post"></audio-player>
     </ion-col>
   </ion-row>
-  <div *ngIf="postType == 'pin'" text-center>
+  <div *ngIf="collection == 'pins'" text-center>
     <h2 color="primary" ion-text>
       <b>{{post?.title}}</b>
     </h2>
@@ -33,6 +33,6 @@
   <div text-center>
     <iframe *ngIf="post?.day == 'Monday'" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
   </div>
-  <h5 *ngIf="postType !== 'pin'" padding-left padding-right>{{post?.description}}</h5>
+  <h5 *ngIf="collection !== 'pins'" padding-left padding-right>{{post?.description}}</h5>
   <post-footer *ngIf="post" [postDoc]="post"></post-footer>
 </ion-content>

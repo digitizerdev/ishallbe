@@ -13,7 +13,7 @@
     <ion-icon (click)="addLike()" name="thumbs-up" color="charcoal" *ngIf="!liked"></ion-icon>
     <ion-icon (click)="removeLike()" name="thumbs-up" color="primary" *ngIf="liked"></ion-icon>
   </ion-col>
-  <ion-col text-center (click)="viewStatement(post?.id)">
+  <ion-col text-center (click)="viewPost(post?.id)">
     <ion-icon name="chatboxes" color="charcoal"></ion-icon>
   </ion-col>
 </ion-row>
