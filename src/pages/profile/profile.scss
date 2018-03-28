@@ -20,4 +20,7 @@ page-profile {
     .posts-scroller {
         background-color: color($colors, primary) !important;
     }
+    .card {
+        border-radius: 15px;
+    }
 }

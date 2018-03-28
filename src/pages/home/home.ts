@@ -53,7 +53,8 @@ export class HomePage {
   }
 
   loadPins() {
-    let pins = this.firebase.afs.collection('pins');
+    let pins = this.firebase.afs.collection('pins', ref =>
+      ref.orderBy('affirmationDate').startAt(this.pinStartDate).endAt(this.pinEndDate));
     pins.valueChanges().subscribe((pins) => {
       if (!this.pinsLoaded) {
         this.setPins(pins).subscribe(() => {
@@ -81,9 +82,9 @@ export class HomePage {
 
   loadStatements() {
     let statements = this.firebase.afs.collection('statements', ref =>
-      ref.orderBy('timestamp'));
+      ref.orderBy('timestamp', 'desc'));
     statements.valueChanges().subscribe((statements) => {
-      if (!this.statementsLoaded) 
+      if (!this.statementsLoaded)
         this.setStatements(statements);
     });
   }
@@ -98,9 +99,10 @@ export class HomePage {
   }
 
   loadGoals() {
-    let goals = this.firebase.afs.collection('goals');
+    let goals = this.firebase.afs.collection('goals', ref =>
+      ref.orderBy('timestamp', 'desc'));
     goals.valueChanges().subscribe((goals) => {
-      if(!this.goalsLoaded)
+      if (!this.goalsLoaded)
         this.setGoals(goals);
     });
   }
