@@ -42,7 +42,7 @@ export class ProfileUpdatePage {
   ionViewDidLoad() {
     this.photo = this.navParams.get('photo');
     this.user = this.firebase.user;
-    if (this.photo) this.user.photo = this.photo;
+    if (!this.photo) this.photo = this.user.photo;
     this.loadProfileForm().subscribe(() => {
       this.populateEmptySocialFields().subscribe(() => {
         this.loaded = true;

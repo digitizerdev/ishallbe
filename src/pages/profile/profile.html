@@ -19,7 +19,7 @@
     <h2 color="primary" ion-text text-center>
       <b>{{ user?.name }}</b>
     </h2>
-    <img class="avatar" src="{{ user?.photo }}">
+    <img class="avatar" src="{{ photo }}">
     <ion-row *ngIf="this.user?.instagram || this.user?.twitter || this.user?.linkedin" class="social" text-center>
       <ion-col *ngIf="this.user?.instagram" (click)="openLink(this.user.instagram)" text-center>
         <ion-icon name="logo-instagram"></ion-icon>

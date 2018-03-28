@@ -36,7 +36,6 @@ export class iShallBe {
   providers: Array<{ title: string, component: any }>;
   pages: Array<{ title: string, component: any }>;
   editor = false;
-  session = false;
   ready = false;
 
   constructor(
@@ -62,17 +61,14 @@ export class iShallBe {
     this.platform.ready().then(() => {
       this.ready = true;
       if (!this.platform.is('cordova'))
-        this.setSession();
+        this.startup();
       else
         this.initDevicePlatform();
     });
   }
 
-  setSession() {
-    if (this.session)
-      this.nav.setRoot(HomePage);
-    else
-      this.nav.setRoot(LoginPage);
+  startup() {
+    this.nav.setRoot(StartupPage);
     this.splashScreen.hide();
   }
 
@@ -82,7 +78,7 @@ export class iShallBe {
     this.listenToFCMPushNotifications();
     this.deployUpdate().subscribe((updateAvailable) => {
       if (!updateAvailable)
-        this.setSession();
+        this.startup();
     });
   }
 
@@ -131,12 +127,10 @@ export class iShallBe {
       console.log("Session Granted");
       this.fcm.subscribeToTopic('affirmations');
       if (this.ready) this.nav.setRoot(HomePage);
-      this.session = true;
     });
     this.events.subscribe('contributor permission not granted', () => {
       console.log("Session not granted");
       if (this.ready) this.nav.setRoot(LoginPage);
-      this.session = false;
       this.editor = false;
     });
   }

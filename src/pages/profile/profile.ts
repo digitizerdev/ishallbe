@@ -23,6 +23,7 @@ export class ProfilePage {
   goals: any[] = [];
   user: any;
   uid: string;
+  photo: string;
   mine = false;
   loaded = false;
   statementsLoaded = false;
@@ -54,6 +55,7 @@ export class ProfilePage {
       console.log("Got user");
       console.log(user);
       this.user = user;
+      this.photo = user.photo;
       this.loaded = true;
     });
   }
