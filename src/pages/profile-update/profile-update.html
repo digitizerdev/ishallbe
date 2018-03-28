@@ -2,7 +2,7 @@
   <ion-navbar>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content>
   <div (click)="updateProfilePhoto()">
     <div class="update-photo">
       <ion-icon *ngIf="!updatingProfilePhoto" name="md-create" color="primary"></ion-icon>
@@ -14,8 +14,8 @@
   <upload *ngIf="updatingProfilePhoto" (uploaded)="setProfilePhoto($event)" [method]="imageRetrievalMethod" padding></upload>
   <form *ngIf="!updatingProfilePhoto" novalidate padding text-center>
     <ion-list no-lines>
-      <ion-item class="tdct-form">
-        <ion-label color="primary" text-left><b>Name :</b></ion-label>
+      <ion-item class="profile-update-form">
+        <ion-label stacked color="primary" text-left><b>Name :</b></ion-label>
         <ion-input [(ngModel)]="profileForm.name" name="name" type="text" #name="ngModel" spellcheck="false" autocapitalize="off"
           maxlength="16">
         </ion-input>
@@ -40,9 +40,9 @@
         </ion-input>
       </ion-item>
       <br>
-      <ion-item class="tdct-textarea">
-        <ion-label color="primary" text-left no-padding-right><b>Bio :</b></ion-label>
-        <ion-textarea [attr.rows]="4" autosize [(ngModel)]="profileForm.bio" name="bio" type="text" #bio="ngModel" spellcheck="false"
+      <ion-item class="profile-update-textarea">
+        <ion-label stacked color="primary" text-left no-padding-right><b>Bio :</b></ion-label>
+        <ion-textarea [attr.rows]="5" autosize [(ngModel)]="profileForm.bio" name="bio" type="text" #bio="ngModel" spellcheck="false"
           autocapitalize="off" maxlength="250">
         </ion-textarea>
       </ion-item>
