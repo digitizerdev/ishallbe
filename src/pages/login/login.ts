@@ -18,7 +18,6 @@ export class LoginPage {
     password?: string
   } = {};  
   submitted = false;
-  uid: any;
 
   constructor(
     private navCtrl: NavController, 
@@ -34,8 +33,7 @@ export class LoginPage {
     if (loginForm.valid) {
       let loading = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Please Wait..' });
       loading.present();
-      return this.authenticate(loginForm).subscribe((token) => {  
-        this.events.publish("contributor permission granted");
+      return this.authenticate(loginForm).subscribe(() => {  
         loading.dismiss();
       }, error => { this.errorHandler(error); loading.dismiss(); 
     })};    
@@ -43,9 +41,8 @@ export class LoginPage {
 
   authenticate(loginForm) {
     return Observable.create((observer) => {
-      return this.firebase.afa.auth.signInWithEmailAndPassword(loginForm.email, loginForm.password).then((token)=> {
-        this.uid = token.uid;              
-        observer.next(token);
+      return this.firebase.afa.auth.signInWithEmailAndPassword(loginForm.email, loginForm.password).then(()=> {
+        observer.next();
       }, (error) => {
         observer.error(error);
       });
