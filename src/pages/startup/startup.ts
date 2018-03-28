@@ -22,18 +22,7 @@ export class StartupPage {
 
   ionViewDidLoad() {
     console.log("Startup Page");
-    this.listenToContributorPermissionEvents();
-  }
-
-  listenToContributorPermissionEvents() {
-    console.log("Listening to Contributor Permission Events");
-    this.events.subscribe('contributor permission granted', () => {
-      console.log("Setting Root to HomePage");
-      this.navCtrl.setRoot(HomePage);
-    });
-    this.events.subscribe('contributor permission not granted', () => {
-      console.log("Setting Root to LoginPage");
-      this.navCtrl.setRoot(LoginPage);
-    });
+    if (this.firebase.session) this.navCtrl.setRoot(HomePage);
+    else this.navCtrl.setRoot(LoginPage);
   }
 }
