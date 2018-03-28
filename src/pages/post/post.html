@@ -30,7 +30,9 @@
     </h2>
     <h5 class="post-description" text-left>{{post?.description}}</h5>
   </div>
-  <iframe *ngIf="post?.day == 'Monday'" class="monday-video" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
+  <div text-center>
+    <iframe *ngIf="post?.day == 'Monday'" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
+  </div>
   <h5 *ngIf="postType !== 'pin'" padding-left padding-right>{{post?.description}}</h5>
   <post-footer *ngIf="post" [postDoc]="post"></post-footer>
 </ion-content>

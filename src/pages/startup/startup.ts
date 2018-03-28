@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, Events } from 'ionic-angular';
 
 import { LoginPage } from '../../pages/login/login';
 import { HomePage } from '../../pages/home/home';
@@ -16,15 +16,24 @@ export class StartupPage {
 
   constructor(
     private navCtrl: NavController,
+    private events: Events,
     private firebase: FirebaseProvider
   ) { }
 
   ionViewDidLoad() {
     console.log("Startup Page");
-    console.log("Session: " + this.firebase.session);
-    if (this.firebase.session)
+    this.listenToContributorPermissionEvents();
+  }
+
+  listenToContributorPermissionEvents() {
+    console.log("Listening to Contributor Permission Events");
+    this.events.subscribe('contributor permission granted', () => {
+      console.log("Setting Root to HomePage");
       this.navCtrl.setRoot(HomePage);
-    else
+    });
+    this.events.subscribe('contributor permission not granted', () => {
+      console.log("Setting Root to LoginPage");
       this.navCtrl.setRoot(LoginPage);
+    });
   }
 }
