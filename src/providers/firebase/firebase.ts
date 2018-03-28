@@ -14,84 +14,119 @@ export class FirebaseProvider {
 
   userDoc: any;
   user: any;
+  name: string;
   fcmToken: string;
   session = false;
   loaded = false;
   hasSeenTutorial = false;
   deployingUpdate = false;
-  signingup = false;
+  signingUp = false;
   socialAuthentication = false;
-  
+
   constructor(
     public alertCtrl: AlertController,
     public events: Events,
     public afs: AngularFirestore,
     public afa: AngularFireAuth
   ) {
-    this.checkForSession();
+    if (!this.loaded && !this.deployingUpdate) {
+      this.loaded = true;
+      this.checkForSession();
+    }
   }
 
   checkForSession() {
     console.log("Checking for Firebase Session");
-    if (!this.loaded && !this.deployingUpdate) {
-      this.loaded = true;
-      this.sessionExists().subscribe((session) => {
-        if (session) this.userExists();
-        else this.endSession();
-      });
-    }
+    this.sessionExists().subscribe((session) => {
+      console.log("New Session");
+      console.log(session);
+      if (session) this.userExists();
+      else this.endSession();
+    });
+  }
+
+  endSession() {
+    console.log("Ending Session");
+    this.session = false;
+    this.userDoc = null;
+    this.user = null;
+    this.loaded = false;
+    if (this.afa.auth.currentUser)
+      this.afa.auth.signOut();
+    this.events.publish('contributor permission not granted');
   }
 
   sessionExists() {
     return Observable.create((observer) => {
       return this.afa.authState.subscribe((session) => {
-        if (session) {
-          if (this.socialAuthentication) {
-            console.log("Authenticating through social provider");
-          } else {
-            console.log("Not signing up");
-            observer.next(true);
-          }
-        }
-        else observer.next(false);
+        if (session)
+          observer.next(true);
+        else
+          observer.next(false);
       });
     });
   }
 
   userExists() {
-    console.log("User Exists?");
     let userPath = "users/" + this.afa.auth.currentUser.uid;
-    console.log("User path is " + userPath);
     this.userDoc = this.afs.doc(userPath);
     this.userDoc.valueChanges().subscribe((user) => {
-      console.log("Got Firebase User");
-      console.log(user);
-      if (user)
-        this.startSession(user);
-      else
+      console.log("Existing User: ");
+      console.log(user)
+      if (user) this.startSession(user);
+      else this.registerUser();
+    });
+  }
+
+  startSession(user) {
+    console.log("Starting Session");
+    this.user = user;
+    if (user.editor) this.events.publish("editor permission granted");
+    else this.events.publish("editor permission not granted")
+    this.session = true;
+    this.socialAuthentication = false;
+    this.events.publish('contributor permission granted');
+  }
+
+  registerUser() {
+    console.log("Registering User");
+    if (this.socialAuthentication) this.signupUser();
+    else {
+      this.createNonSocialUser().then(() => {
+        console.log("Creating non social user");
+        console.log(this.afa.auth.currentUser);
         this.signupUser();
+      });
+    }
+  }
+
+  createNonSocialUser() {
+    return this.afa.auth.currentUser.updateProfile({
+      displayName: this.name,
+      photoURL: "assets/img/default-profile.png"
     });
   }
 
   signupUser() {
     console.log("Signing Up User");
     this.presentEULA().subscribe((accepted) => {
-      if (accepted) {
+      if (!accepted) this.deleteUser();
+      else {
         this.buildUser().subscribe((user) => {
           this.user = user;
           this.setUser().then(() => {
             this.startSession(user);
           });
         });
-      } else this.endSession();
+      }
     });
   }
 
   presentEULA() {
     console.log("Presenting EULA");
     return Observable.create((observer: any) => {
-      if (!this.signingup) {
-        this.signingup = true;
+      if (!this.signingUp) {
+        this.signingUp = true;
         let alert = this.alertCtrl.create({
           title: 'Accept Terms of Service',
           message: 'Please confirm to continue',
@@ -100,14 +135,14 @@ export class FirebaseProvider {
               text: 'Cancel',
               role: 'cancel',
               handler: () => {
-                this.signingup = false;
+                this.signingUp = false;
                 observer.next(false);
               }
             },
             {
               text: 'Confirm',
               handler: () => {
-                this.signingup = false;
+                this.signingUp = false;
                 observer.next(true);
               }
             }
@@ -116,6 +151,13 @@ export class FirebaseProvider {
         alert.present();
       }
     });
+  }
+
+  deleteUser() {
+    console.log("Deleting User");
+    this.afa.auth.currentUser.delete().then(() => {
+      this.endSession();
+    })
   }
 
   buildUser() {
@@ -150,24 +192,5 @@ export class FirebaseProvider {
     console.log("Setting User");
     let path = '/users/' + this.afa.auth.currentUser.uid;
     return this.afs.doc(path).set(this.user);
-  }
-
-  startSession(user) {
-    console.log("Starting Session");
-    this.user = user;
-    if (user.editor) this.events.publish("editor permission granted");
-    else this.events.publish("editor permission not granted")
-    this.session = true;
-    this.socialAuthentication = false;
-    this.events.publish('contributor permission granted');
-  }
-
-  endSession() {
-    console.log("Ending Session");
-    this.session = false;
-    this.userDoc = null;
-    this.user = null;
-    this.loaded = false;
-    this.events.publish('contributor permission not granted');
   }
 }

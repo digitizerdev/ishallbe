@@ -52,7 +52,7 @@ export class LoginFacebookComponent {
       this.facebook.getAccessToken().then((accessToken) => {
         let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(accessToken);
         firebase.auth().signInWithCredential(facebookProviderCredential).then((token) => {
-          this.loadUser();
+          this.loader.dismiss();
         }).catch((error) => { this.errorHandler(error) });;
       }).catch((error) => { this.errorHandler(error) });
     }).catch((error) => { this.errorHandler(error) });
@@ -61,14 +61,8 @@ export class LoginFacebookComponent {
   browserAuth() {
     console.log("Browser Authentication");
     firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((token) => {
-      this.loadUser();
+      this.loader.dismiss();
     });
-  }
-
-  loadUser() {
-    console.log("Loading User");
-    this.loader.dismiss();
-    this.firebase.userExists();
   }
 
   errorHandler(error) {

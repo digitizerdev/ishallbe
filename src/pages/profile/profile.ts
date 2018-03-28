@@ -52,8 +52,6 @@ export class ProfilePage {
     let path = "users/" + this.uid;
     this.user = this.firebase.afs.doc(path);
     this.user.valueChanges().subscribe((user) => {
-      console.log("Got user");
-      console.log(user);
       this.user = user;
       this.photo = user.photo;
       this.loaded = true;
