@@ -22,13 +22,15 @@ export class PostFooterComponent {
   ) { }
 
   ngAfterViewInit() {
-    if (!this.loaded) {
-      this.checkUserPostLike().subscribe((liked) => {
-        if (liked) this.liked = true;
-        this.post = this.postDoc;
-      });
-  
-    }
+    let postPath = this.postDoc.collection + "/" + this.postDoc.id;
+    let postFooter = this.firebase.afs.doc(postPath);
+    postFooter.valueChanges().subscribe((post) => {
+      this.post = post;
+    });
+    this.checkUserPostLike().subscribe((liked) => {
+      if (liked) this.liked = true;
+      else this.liked = false;
+    });
   }
 
   checkUserPostLike() {
@@ -40,6 +42,10 @@ export class PostFooterComponent {
         else observer.next(false);
       });
     });
+  }
+
+  getLikeCount() {
+
   }
 
   addLike() {

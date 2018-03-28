@@ -106,26 +106,8 @@ export class PinCreatorPage {
   }
 
   setPinForm() {
-    switch (this.dayOfWeek) {
-      case 'Monday': this.setMondayForm();
-        break;
-      case 'Tuesday': this.setTuesdayForm();
-        break;
-      default: this.setWedToSunForm();
-    }
-  }
-
-  setMondayForm() {
-    this.mondayForm.title = "Motivational Monday";
-    this.mondayForm.link = "https://youtube.com/embed/";
-  }
-
-  setTuesdayForm() {
-    this.tuesdayForm.title = "Tuesday's Tune of the Day";
-    this.tuesdayForm.link = "https://youtu.be/";
-  }
-
-  setWedToSunForm() {
+    if (this.dayOfWeek == 'Monday') this.mondayForm.title = "Motivational Monday";
+    if (this.dayOfWeek == 'Tuesday') this.tuesdayForm.title = "Tuesday's Tune of the Day";
     if (this.dayOfWeek == 'Wednesday') this.wedToSunForm.title = "Wise Words Wednesday";
     if (this.dayOfWeek == 'Thursday') this.wedToSunForm.title = "Treat Yourself Thursday";
     if (this.dayOfWeek == 'Friday') this.wedToSunForm.title = "Faith Over Fear Friday";
@@ -155,7 +137,7 @@ export class PinCreatorPage {
       case 'Monday': {
         if (!this.imageReady) this.displaySubmissionErrorAlert("Please Add Image to Pin");
         else if (!form.title || !form.link) this.displaySubmissionErrorAlert("Please Complete All Fields");
-        else if (form.link == 'https://youtube.com/embed/') this.displaySubmissionErrorAlert("Please Add YouTube Video ID");
+        else if (form.link == '') this.displaySubmissionErrorAlert("Please Add YouTube Link");
         else this.submitValidPin(form);
       }
         break;
@@ -195,8 +177,11 @@ export class PinCreatorPage {
       let time = this.selectedDay.toISOString();
       if (this.monday) form.description = ""
       if (!this.monday) this.pinName = "";
-      if (!this.monday) this.pinImageUrl = "";
+      if (this.monday) this.pinImageUrl = "";
       if (!this.monday && !this.tuesday) form.link = "";
+      let youtubeID = form.link.slice(17);
+      let link = "https://youtube.com/embed/" + youtubeID;
+      console.log("YouTube link is " + link);
       const pin: Pin = {
         id: this.pinId,
         title: form.title,
@@ -204,7 +189,7 @@ export class PinCreatorPage {
         commentCount: 0,
         likeCount: 0,
         url: this.pinImageUrl,
-        link: form.link,
+        link: link,
         day: this.dayOfWeek,
         filename: this.pinName,
         collection: "pins",

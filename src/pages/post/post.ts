@@ -17,6 +17,7 @@ export class PostPage {
   postPath: string;
   postDoc: any;
   post: any;
+  video: any;
   mine = false;
   deleted = false;
 
@@ -48,8 +49,9 @@ export class PostPage {
       if (!this.deleted) {
         let date = moment.unix(post.timestamp);
         post.displayTimestamp = moment(date).fromNow();
-          if (post.uid == this.firebase.afa.auth.currentUser.uid) this.mine = true;
-          this.post = post;
+        if (post.uid == this.firebase.afa.auth.currentUser.uid) this.mine = true;
+        if (post.day == 'Monday') this.video = post.link;
+        this.post = post;
       }
     });
   }

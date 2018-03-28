@@ -34,7 +34,8 @@ export class HomePage {
   ) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
+    console.log("Home Page Entered");
     this.timestampPage();
     this.loadPosts();
   }
