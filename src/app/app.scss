@@ -10,7 +10,6 @@
     border-top: thick solid color($colors, primary);
     border-bottom: thick solid color($colors, primary);
     .item {
-        border-top: thin solid $borderColor;
         .item-inner {
             border: none;
         }
