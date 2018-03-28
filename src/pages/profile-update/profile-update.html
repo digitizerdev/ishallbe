@@ -7,7 +7,7 @@
     <div class="update-photo">
       <ion-icon *ngIf="!updatingProfilePhoto" name="md-create" color="primary"></ion-icon>
     </div>
-    <div *ngIf="!updatingProfilePhoto" id="UpdateProfilePhoto" text-center>
+    <div *ngIf="!updatingProfilePhoto && loaded" id="UpdateProfilePhoto" text-center>
       <img class="avatar" src="{{ user.photo }}">
     </div>
   </div>

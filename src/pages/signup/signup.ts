@@ -1,15 +1,10 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, AlertController, LoadingController, Events } from 'ionic-angular';
-
-import { Observable } from 'rxjs/Observable';
-import moment from 'moment';
+import { IonicPage, NavController, AlertController, LoadingController } from 'ionic-angular';
 
 import { LoginPage } from '../login/login';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-
-import { User } from '../../../test-data/users/model';
 
 @IonicPage()
 @Component({
@@ -29,7 +24,6 @@ export class SignupPage {
     private navCtrl: NavController,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
-    private events: Events,
     private firebase: FirebaseProvider,
   ) { }
 
@@ -46,7 +40,6 @@ export class SignupPage {
   };
 
   signup(signupForm) {
-    this.firebase.name = signupForm.name
     this.firebase.afa.auth.createUserWithEmailAndPassword(signupForm.email, signupForm.password).then((token) => {
       this.loader.dismiss();
     }).catch((error) => {

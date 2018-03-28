@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, AlertController, LoadingController, Events } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { PasswordResetPage } from '../password-reset/password-reset';
@@ -23,7 +23,6 @@ export class LoginPage {
     private navCtrl: NavController, 
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
-    private events: Events,
     private firebase: FirebaseProvider
   ) {
   }
@@ -33,7 +32,7 @@ export class LoginPage {
     if (loginForm.valid) {
       let loading = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Please Wait..' });
       loading.present();
-      return this.authenticate(loginForm).subscribe(() => {  
+      return this.authenticate(loginForm).subscribe(() => { 
         loading.dismiss();
       }, error => { this.errorHandler(error); loading.dismiss(); 
     })};    

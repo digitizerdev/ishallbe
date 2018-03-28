@@ -8,14 +8,6 @@
   <form #signupForm="ngForm" novalidate padding>
     <ion-list no-lines>
       <ion-item class="tdct-form">
-        <ion-input [(ngModel)]="signupForm.name" name="name" placeholder="Name" type="text" #name="ngModel" required maxlength="20">
-        </ion-input>
-      </ion-item>
-      <p ion-text [hidden]="name.valid || submitted == false" color="danger" padding-left>
-        Name is required
-      </p>
-      <br>
-      <ion-item class="tdct-form">
         <ion-input [(ngModel)]="signupForm.email" name="email" placeholder="E-mail" type="text" #email="ngModel" required>
         </ion-input>
       </ion-item>

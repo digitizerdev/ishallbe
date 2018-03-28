@@ -14,7 +14,6 @@ export class FirebaseProvider {
 
   userDoc: any;
   user: any;
-  name: string;
   fcmToken: string;
   session = false;
   loaded = false;
@@ -38,7 +37,7 @@ export class FirebaseProvider {
   checkForSession() {
     console.log("Checking for Firebase Session");
     this.sessionExists().subscribe((session) => {
-      console.log("New Session");
+      console.log("Session Exists: ");
       console.log(session);
       if (session) this.userExists();
       else this.endSession();
@@ -102,7 +101,7 @@ export class FirebaseProvider {
 
   createNonSocialUser() {
     return this.afa.auth.currentUser.updateProfile({
-      displayName: this.name,
+      displayName: "Unnamed User",
       photoURL: "assets/img/default-profile.png"
     });
   }
