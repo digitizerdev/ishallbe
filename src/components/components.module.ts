@@ -5,8 +5,6 @@ import { HeaderComponent } from './header/header';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service';
 import { LoginFacebookComponent } from './login-facebook/login-facebook';
 import { FooterComponent } from './footer/footer';
-import { StatementsComponent } from './statements/statements';
-import { GoalsComponent } from './goals/goals';
 import { UploadComponent } from './upload/upload';
 import { ToolbarLogoComponent } from './toolbar-logo/toolbar-logo';
 import { PostHeaderComponent } from './post-header/post-header';
@@ -22,8 +20,6 @@ import { GoalComponent } from './goal/goal';
         TermsOfServiceComponent,
         LoginFacebookComponent,
         FooterComponent,
-        GoalsComponent,
-        StatementsComponent,
         UploadComponent,
         ToolbarLogoComponent,
         PostHeaderComponent,
@@ -41,8 +37,6 @@ import { GoalComponent } from './goal/goal';
         TermsOfServiceComponent,
         LoginFacebookComponent,
         FooterComponent,
-        GoalsComponent,
-        StatementsComponent,
         UploadComponent,
         ToolbarLogoComponent,
         PostHeaderComponent,
