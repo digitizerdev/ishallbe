@@ -1,3 +1,11 @@
+.rlt {
+    position: relative;
+}
+
+.cf {
+    clear: both;
+}
+
 .loading-ios .loading-md {
     background-color: color($colors, primary);
     opacity: 1 !important;

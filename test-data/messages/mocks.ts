@@ -1,41 +1,47 @@
 import { Message } from './model';
 export const textMessage = {
     id: "1",
+    received: true,
+    sent: false,
+    text: true,
     image: false,
     audio: false,
     url: "",
     filename: "",
+    face: "assets/img/default-profile.png",
+    name: "Brittanie Russell",
     description: "Test Text Message",
     displayTimestamp: "FEB 16 2018",
     timestamp: 20180216121212,
-    uid: "2",
-    name: "Test Editor",
-    face: "assets/img/headshot.png"
 }
 export const imageMessage = {
     id: "2",
+    received: false,
+    sent: true,
+    text: false,
     image: true,
     audio: false,
     url: "image.png",
     filename: "image.png",
     description: "Test Image Message",
+    face: "assets/img/default-profile.png",
+    name: "Troy Thompson",
     displayTimestamp: "FEB 16 2018",
     timestamp: 20180216121212,
-    uid: "2",
-    name: "Test Editor",
-    face: "assets/img/headshot.png"
 }
 export const audioMessage = {
     id: "3",
+    received: true,
+    text: false,
+    sent: false,
     image: false,
     audio: true,
     url: "message.m4a",
     filename: "message.m4a",
     description: "Test Audio Message",
+    face: "assets/img/default-profile.png",
+    name: "Brittanie Russell",
     displayTimestamp: "FEB 16 2018",
     timestamp: 20180216121212,
-    uid: "2",
-    name: "Test Editor",
-    face: "assets/img/headshot.png"
 }
 export const mockMessages: Message[] = [textMessage, imageMessage, audioMessage]; 

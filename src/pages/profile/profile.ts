@@ -8,7 +8,7 @@ import moment from 'moment';
 
 import { HomePage } from '../home/home';
 import { ProfileUpdatePage } from '../profile-update/profile-update';
-import { MessagesPage } from '../messages/messages';
+import { ChatsPage } from '../chats/chats';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -115,8 +115,8 @@ export class ProfilePage {
     this.navCtrl.push(ProfileUpdatePage);
   }
 
-  pushMessagesPage() {
-    this.navCtrl.push(MessagesPage);
+  pushChatsPage() {
+    this.navCtrl.push(ChatsPage);
   }
 
   setRootHomePage() {

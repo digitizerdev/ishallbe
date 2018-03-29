@@ -6,10 +6,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <h2 color="primary" ion-text text-center>
-    <b>Notifications</b>
-  </h2>
-  <h5 class="feature">New</h5>
+  <h5 class="feature">New Notifications</h5>
   <ion-list no-lines>
     <ion-item *ngFor="let unreadNotification of unreadNotifications" text-wrap>
       <ion-avatar item-left>
@@ -26,7 +23,7 @@
       <span ion-text color="steel">{{ unreadNotification.displayTimestamp }}</span>
     </ion-item>
   </ion-list>
-  <h5 class="feature">Earlier</h5>
+  <h5 class="feature">Earlier Notifications</h5>
   <ion-list no-lines>
     <ion-item *ngFor="let readNotification of readNotifications" text-wrap>
       <ion-avatar item-left>

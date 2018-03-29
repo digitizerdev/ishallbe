@@ -1,13 +1,15 @@
 export interface Message {
     id: string,
+    received: boolean,
+    sent: boolean,
+    text: boolean,
     image: boolean,
     audio: boolean,
     url: string,
     filename: string,
+    face: string,
+    name: string,
     description: string,
     displayTimestamp: string,
     timestamp: number,
-    uid: string,
-    name: string,
-    face: string,
 }

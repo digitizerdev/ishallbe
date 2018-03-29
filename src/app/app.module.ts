@@ -36,7 +36,8 @@ import { AccountPage } from '../pages/account/account';
 import { ProfileUpdatePage } from '../pages/profile-update/profile-update';
 import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
 import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
-import { MessagesPage } from '../pages/messages/messages';
+import { ChatsPage } from '../pages/chats/chats';
+import { ChatPage } from '../pages/chat/chat';
 import { ProfilePage } from '../pages/profile/profile';
 import { PinCreatorPage } from '../pages/pin-creator/pin-creator';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
@@ -74,7 +75,8 @@ Pro.init('69d144ed', {
     ProfileUpdatePage,
     GoalCreatorPage,
     StatementCreatorPage,
-    MessagesPage,
+    ChatsPage,
+    ChatPage,
     ProfilePage,
     PostPage,
     IshallbetvPage,
@@ -113,7 +115,8 @@ Pro.init('69d144ed', {
     ProfileUpdatePage,
     GoalCreatorPage,
     StatementCreatorPage,
-    MessagesPage,
+    ChatsPage,
+    ChatPage,
     ProfilePage,
     PostPage,
     IshallbetvPage,

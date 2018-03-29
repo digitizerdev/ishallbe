@@ -5,12 +5,12 @@ import { mockMessages } from '../../../test-data/messages/mocks';
 
 @IonicPage()
 @Component({
-  selector: 'page-messages',
-  templateUrl: 'messages.html',
+  selector: 'page-chat',
+  templateUrl: 'chat.html',
 })
-export class MessagesPage {
+export class ChatPage {
 
-  chats: any[] = [];
+  messages: any[] = [];
 
   constructor(
     private navCtrl: NavController,
@@ -19,14 +19,14 @@ export class MessagesPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MessagesPage');
+    console.log('ionViewDidLoad ChatPage');
     this.setMessages();
   }
 
   setMessages() {
     mockMessages.forEach((message) => {
-      this.chats.push(message);
+      this.messages.push(message);
     });
+    console.log(this.messages);
   }
-
 }

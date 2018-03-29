@@ -1,0 +1,51 @@
+<ion-header no-border>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu" color="primary"></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <h5 class="feature">New Messages</h5>
+  <ion-list class="chats">
+    <ion-item-sliding >
+      <ion-item *ngFor="let newChat of newChats"text-wrap (click)="viewChat(newChat.id)" class="chat">
+        <ion-avatar item-left>
+          <img class="profile-picture" src="{{ newChat.face }}" alt="" />
+        </ion-avatar>
+        <h2 ion-text color="primary"><b>{{newChat.name}}</b></h2>
+        <p ion-text color="dark">{{newChat.description}}</p>
+        <h6 color="steel" ion-text>{{newChat.lastMessageDisplayTimestamp}}</h6>
+      </ion-item>
+      <ion-item-options>
+        <button ion-button color="secondary">
+          Mute
+        </button>
+        <button ion-button color="danger">
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <h5 class="feature">Earlier Messages</h5>
+  <ion-list class="chats">
+    <ion-item-sliding >
+      <ion-item *ngFor="let earlierChat of earlierChats"text-wrap (click)="viewChat(earlierChat.id)" class="chat">
+        <ion-avatar item-left>
+          <img class="profile-picture" src="{{ earlierChat.face }}" alt="" />
+        </ion-avatar>
+        <h2 ion-text color="primary"><b>{{earlierChat.name}}</b></h2>
+        <p ion-text color="dark">{{earlierChat.description}}</p>
+        <h6 color="steel" ion-text>{{earlierChat.lastMessageDisplayTimestamp}}</h6>
+      </ion-item>
+      <ion-item-options>
+        <button ion-button color="secondary">
+          Mute
+        </button>
+        <button ion-button color="danger">
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
