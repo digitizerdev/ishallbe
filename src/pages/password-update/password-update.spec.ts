@@ -77,11 +77,11 @@ describe('PasswordUpdatePage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it(('should be created', () => {
         expect(component instanceof PasswordUpdatePage).toBe(true);
     });
 
-    fit('should display HeaderComponent', () => {
+    it(('should display HeaderComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('header'));
@@ -89,7 +89,7 @@ describe('PasswordUpdatePage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display form', () => {
+    it(('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));

@@ -75,11 +75,11 @@ describe('EmailUpdatePage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof EmailUpdatePage).toBe(true);
     });
 
-    fit('should display HeaderComponent', () => {
+    it('should display HeaderComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('header'));
@@ -87,7 +87,7 @@ describe('EmailUpdatePage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display form', () => {
+    it('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
