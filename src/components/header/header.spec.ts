@@ -72,11 +72,11 @@ describe('HeaderComponent', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof HeaderComponent).toBe(true);
     });
 
-    it('should display header', () => {
+    fit('should display header', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('img'));

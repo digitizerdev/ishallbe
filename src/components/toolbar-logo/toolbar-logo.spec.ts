@@ -10,7 +10,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
-import { FooterComponent } from '../footer/footer';
+import { ToolbarLogoComponent } from '../toolbar-logo/toolbar-logo';
 
 import { } from 'jasmine';
 
@@ -20,7 +20,7 @@ import {
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
-describe('FooterComponent', () => {
+describe('ToolbarLogoComponent', () => {
     let fixture;
     let component;
     let platform: Platform;
@@ -37,9 +37,9 @@ describe('FooterComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [FooterComponent],
+            declarations: [ToolbarLogoComponent],
             imports: [
-                IonicModule.forRoot(FooterComponent),
+                IonicModule.forRoot(ToolbarLogoComponent),
                 AngularFireModule.initializeApp(environment.firebase),
             ],
             providers: [
@@ -53,7 +53,7 @@ describe('FooterComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(FooterComponent);
+        fixture = TestBed.createComponent(ToolbarLogoComponent);
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(Nav);
@@ -73,16 +73,7 @@ describe('FooterComponent', () => {
     });
 
     fit('should be created', () => {
-        expect(component instanceof FooterComponent).toBe(true);
+        expect(component instanceof ToolbarLogoComponent).toBe(true);
     });
-
-    fit('should display footer', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('img'));
-        el = de.nativeElement.src;
-        expect(el).toContain('assets/img/logo.png');
-    });
-
 });
 

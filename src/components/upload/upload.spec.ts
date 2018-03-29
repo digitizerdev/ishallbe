@@ -100,18 +100,11 @@ describe('UploadComponent', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof UploadComponent).toBe(true);
     });
 
-    it('should record if content type audio', () => {
-        component.contentType = "audio"
-        spyOn(component, 'getAudio');
-        component.loadMedia()
-        expect(component.getAudio).toHaveBeenCalled();
-    });
-
-    it('should display StopRecordingButton if recording', () => {
+    fit('should display StopRecordingButton if recording', () => {
         component.recording = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -121,17 +114,4 @@ describe('UploadComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should get picture via photo library if content type library', () => {
-        component.contentType = "library"
-        spyOn(component, 'getImage');
-        component.loadMedia()
-        expect(component.getImage).toHaveBeenCalled();
-    });
-
-    it('should get picture via camera if content type camera', () => {
-        component.contentType = "camera"
-        spyOn(component, 'getImage');
-        component.loadMedia()
-        expect(component.getImage).toHaveBeenCalled();
-    });
 });

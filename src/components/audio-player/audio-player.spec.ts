@@ -3,6 +3,8 @@ import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { IonicModule, Platform, Nav } from 'ionic-angular';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
+import { Media, MediaObject } from '@ionic-native/media';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -10,21 +12,25 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
-import { FooterComponent } from '../footer/footer';
+import { AudioPlayerComponent } from '../audio-player/audio-player';
 
 import { } from 'jasmine';
 
 import {
     PlatformMock,
     NavMock,
+    FileTransferMock,
+    MediaMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
-describe('FooterComponent', () => {
+describe('AudioPlayerComponent', () => {
     let fixture;
     let component;
     let platform: Platform;
     let nav: Nav;
+    let fileTransfer: FileTransfer;
+    let media: Media;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -37,14 +43,16 @@ describe('FooterComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [FooterComponent],
+            declarations: [AudioPlayerComponent],
             imports: [
-                IonicModule.forRoot(FooterComponent),
+                IonicModule.forRoot(AudioPlayerComponent),
                 AngularFireModule.initializeApp(environment.firebase),
             ],
             providers: [
                 { provide: Platform, useClass: PlatformMock },
                 { provide: Nav, useClass: NavMock },
+                { provide: FileTransfer, useClass: FileTransferMock },
+                { provide: Media, useClass: MediaMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -53,10 +61,12 @@ describe('FooterComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(FooterComponent);
+        fixture = TestBed.createComponent(AudioPlayerComponent);
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(Nav);
+        fileTransfer = TestBed.get(FileTransfer);
+        media = TestBed.get(Media);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -67,21 +77,15 @@ describe('FooterComponent', () => {
         component = null;
         platform = null;
         nav = null;
+        media = null;
+        fileTransfer = null;
         firebase = null;
         afa = null;
         afs = null;
     });
 
     fit('should be created', () => {
-        expect(component instanceof FooterComponent).toBe(true);
-    });
-
-    fit('should display footer', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('img'));
-        el = de.nativeElement.src;
-        expect(el).toContain('assets/img/logo.png');
+        expect(component instanceof AudioPlayerComponent).toBe(true);
     });
 
 });
