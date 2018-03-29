@@ -79,14 +79,6 @@ describe('AccountPage', () => {
         expect(component instanceof AccountPage).toBe(true);
     });
 
-    fit('should be titled Account', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#AccountPageTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Account');
-    });
-
     fit('should display setRootHomePageIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;

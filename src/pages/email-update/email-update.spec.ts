@@ -79,14 +79,6 @@ describe('EmailUpdatePage', () => {
         expect(component instanceof EmailUpdatePage).toBe(true);
     });
 
-    fit('should be titled Email', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#EmailUpdatePageTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Email');
-    });
-
     fit('should display HeaderComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
