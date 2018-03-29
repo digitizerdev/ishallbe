@@ -177,7 +177,7 @@ export class PinCreatorPage {
       let time = this.selectedDay.toISOString();
       if (this.monday) form.description = ""
       if (!this.monday) this.pinName = "";
-      if (this.monday) this.pinImageUrl = "";
+      if (!this.monday) this.pinImageUrl = "";
       if (!this.monday && !this.tuesday) form.link = "";
       let youtubeID = form.link.slice(17);
       let link = "https://youtube.com/embed/" + youtubeID;

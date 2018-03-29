@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, Events } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
 import { LoginPage } from '../../pages/login/login';
 import { HomePage } from '../../pages/home/home';
@@ -16,7 +16,6 @@ export class StartupPage {
 
   constructor(
     private navCtrl: NavController,
-    private events: Events,
     private firebase: FirebaseProvider
   ) { }
 

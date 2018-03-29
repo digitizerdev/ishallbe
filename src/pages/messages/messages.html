@@ -9,7 +9,7 @@
   <h2 color="primary" ion-text text-center>
     <b>Messages</b>
   </h2>
-  <ion-list class="list-full-border">
+  <ion-list>
     <ion-item-sliding *ngFor="let chat of chats">
       <ion-item text-wrap (click)="viewChat(chat.id)" class="chat">
         <ion-avatar item-left>
