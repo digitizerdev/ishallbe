@@ -70,7 +70,7 @@ export class PostManagerPage {
     this.navCtrl.push(PostPage,
       {
         id: event.id,
-        type: 'pin'
+        type: 'pins'
       });
   }
 
