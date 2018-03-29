@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { ProfilePage } from '../profile/profile';
+
 import { mockMessages } from '../../../test-data/messages/mocks';
 
 @IonicPage()
@@ -10,6 +12,7 @@ import { mockMessages } from '../../../test-data/messages/mocks';
 })
 export class ChatPage {
 
+  chatId: string;
   messages: any[] = [];
 
   constructor(
@@ -20,6 +23,7 @@ export class ChatPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ChatPage');
+    this.chatId = this.navParams.get("id");
     this.setMessages();
   }
 
@@ -28,5 +32,9 @@ export class ChatPage {
       this.messages.push(message);
     });
     console.log(this.messages);
+  }
+
+  viewUser(user) {
+    this.navCtrl.push(ProfilePage, { uid: user.uid});
   }
 }
