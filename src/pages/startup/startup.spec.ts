@@ -80,8 +80,16 @@ describe('StartupPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof StartupPage).toBe(true);
+    });
+
+    it('should display toolbar logo', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css("toolbar-logo"));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 });
 

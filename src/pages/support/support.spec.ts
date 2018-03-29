@@ -83,11 +83,11 @@ describe('SupportPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof SupportPage).toBe(true);
     });
 
-    it('should be titled Support', () => {
+    fit('should be titled Support', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#SupportPageTitle'));
@@ -95,7 +95,7 @@ describe('SupportPage', () => {
         expect(el).toContain('Support');
     });
 
-    it('should display HeaderComponent', () => {
+    fit('should display HeaderComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('header'));
@@ -103,7 +103,7 @@ describe('SupportPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display form', () => {
+    fit('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
@@ -111,7 +111,7 @@ describe('SupportPage', () => {
         expect(el).toContain('SEND EMAIL');
     });
 
-    it('should display direct email', () => {
+    fit('should display direct email', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#SupportPageDirectEmail'));

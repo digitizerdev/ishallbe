@@ -75,11 +75,11 @@ describe('AccountPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof AccountPage).toBe(true);
     });
 
-    it('should be titled Account', () => {
+    fit('should be titled Account', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#AccountPageTitle'));
@@ -87,7 +87,7 @@ describe('AccountPage', () => {
         expect(el).toContain('Account');
     });
 
-    it('should display setRootHomePageIcon', () => {
+    fit('should display setRootHomePageIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#setRootHomePageIcon'));
@@ -95,7 +95,7 @@ describe('AccountPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display HeaderComponent', () => {
+    fit('should display HeaderComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('header'));
@@ -103,7 +103,7 @@ describe('AccountPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display account email', () => {
+    fit('should display account email', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#AccountEmail'));
@@ -111,7 +111,7 @@ describe('AccountPage', () => {
         expect(el).toContain('h5');
     });
 
-    it('should display pushEmailUpdatePageButton', () => {
+    fit('should display pushEmailUpdatePageButton', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#pushEmailUpdatePageButton'));
@@ -119,7 +119,7 @@ describe('AccountPage', () => {
         expect(el).toContain('UPDATE EMAIL');
     });
 
-    it('should display pushPasswordUpdatePageButton', () => {
+    fit('should display pushPasswordUpdatePageButton', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#pushPasswordUpdatePageButton'));
@@ -127,7 +127,7 @@ describe('AccountPage', () => {
         expect(el).toContain('UPDATE PASSWORD');
     });
 
-    it('should display pushSupportPageButton', () => {
+    fit('should display pushSupportPageButton', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#pushSupportPageButton'));
@@ -135,7 +135,7 @@ describe('AccountPage', () => {
         expect(el).toContain('SUPPORT');
     });
 
-    it('should display logoutButton', () => {
+    fit('should display logoutButton', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#logoutButton'));
@@ -143,7 +143,7 @@ describe('AccountPage', () => {
         expect(el).toContain('LOGOUT');
     });
 
-    it('should display TermsOfServiceComponent', () => {
+    fit('should display TermsOfServiceComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('terms-of-service'));

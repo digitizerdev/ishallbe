@@ -79,7 +79,7 @@ describe('PostPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof PostPage).toBe(true);
     });
 

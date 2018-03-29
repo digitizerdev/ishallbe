@@ -91,23 +91,23 @@ describe('iShallBe 1.4', () => {
     afs = null;
   });
 
-  fit('should be created', () => {
+  it('should be created', () => {
     expect(component instanceof iShallBe).toBe(true);
   });
 
-  fit('should initialize root page to StartupPage', () => {
+  it('should initialize root page to StartupPage', () => {
     expect(component['rootPage']).toBe(StartupPage);
   });
 
-  fit('should display affirmations menu with three pages if user contributor', () => {
+  it('should display affirmations menu with three pages if user contributor', () => {
     expect(component.affirmationsMenu.length).toBe(3);
   });
 
-  fit('should display account menu with three pages if user contributor', () => {
+  it('should display account menu with three pages if user contributor', () => {
     expect(component.accountMenu.length).toBe(3);
   });
 
-  fit('should display editor menu with three pages if user editor', () => {
+  it('should display editor menu with three pages if user editor', () => {
     expect(component.editorMenu.length).toBe(3);
   });
 
