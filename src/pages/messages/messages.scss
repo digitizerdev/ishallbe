@@ -1,4 +1,8 @@
 page-messages {
+    .chats {
+        border-top: thick solid color($colors, primary);
+    border-bottom: thick solid color($colors, primary);
+    }
     .chat {
         background: white;
     }
