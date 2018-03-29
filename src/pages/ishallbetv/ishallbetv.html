@@ -19,7 +19,7 @@
     <b>iShallBe TV</b>
   </h2>
   <div class="images" padding>
-    <div *ngFor="let video of videos" text-center padding>
+    <div *ngFor="let video of videos" (click)="openAffirmation(video)" text-center padding>
       <h4>{{ video.displayAffirmationDate }}</h4>
       <img class="one-image" src="{{ video.url }}">
     </div>

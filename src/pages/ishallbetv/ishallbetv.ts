@@ -5,6 +5,8 @@ import { IonicPage, NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 
+import { PostPage } from '../post/post';
+
 import { AboutPage } from '../about/about';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -34,7 +36,7 @@ export class IshallbetvPage {
   loadVideos() {
     console.log("Loading Videos");
     return Observable.create((observer) => {
-      let allVideos = this.firebase.afs.collection('pins', ref => 
+      let allVideos = this.firebase.afs.collection('pins', ref =>
         ref.orderBy('affirmationDate'));
       allVideos.valueChanges().subscribe((videos) => {
         observer.next(videos);
@@ -55,5 +57,12 @@ export class IshallbetvPage {
 
   pushAboutPage() {
     this.navCtrl.push(AboutPage);
+  }
+
+  openPin(pin) {
+    this.navCtrl.push(PostPage, {
+      id: pin.id,
+      type: "pins"
+    });
   }
 }

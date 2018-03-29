@@ -49,8 +49,9 @@ export class PostFooterComponent {
     });
   }
 
-  getLikeCount() {
-
+  toggleLike() {
+    if (!this.liked) this.addLike();
+    else this.removeLike();
   }
 
   addLike() {
