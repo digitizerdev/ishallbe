@@ -110,11 +110,11 @@ describe('LoginFacebookComponent', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof LoginFacebookComponent).toBe(true);
     });
 
-    fit('should display Facebook login button', async(() => {
+    it('should display Facebook login button', async(() => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#FacebookIconLoginButton'));

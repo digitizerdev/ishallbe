@@ -79,11 +79,11 @@ describe('TermsOfServiceComponent', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof TermsOfServiceComponent).toBe(true);
     });
 
-    fit('should display terms of service link', () => {
+    it('should display terms of service link', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#TermsOfServiceLink'));

@@ -81,11 +81,11 @@ describe('GoalComponent', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof GoalComponent).toBe(true);
     });
 
-    fit('should display PostHeaderComponent', () => {
+    it('should display PostHeaderComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('post-header'));
@@ -93,7 +93,7 @@ describe('GoalComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display due date', () => {
+    it('should display due date', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#GoalDueDate'));
@@ -101,7 +101,7 @@ describe('GoalComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display AudioPlayerComponent if goal url', () => {
+    it('should display AudioPlayerComponent if goal url', () => {
         component.goal = mockGoals[0];
         fixture.detectChanges();
         let de: DebugElement;
@@ -111,7 +111,7 @@ describe('GoalComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display goal description', () => {
+    it('should display goal description', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#GoalDescription'));
@@ -119,7 +119,7 @@ describe('GoalComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display PostFooterComponent', () => {
+    it('should display PostFooterComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('post-footer'));

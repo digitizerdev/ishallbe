@@ -81,11 +81,11 @@ describe('PostHeaderComponent', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof PostHeaderComponent).toBe(true);
     });
 
-    fit('should display user avatar', () => {
+    it('should display user avatar', () => {
         component.post = mockStatements[0];
         fixture.detectChanges();
         let de: DebugElement;
@@ -95,7 +95,7 @@ describe('PostHeaderComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display post title', () => {
+    it('should display post title', () => {
         component.post = mockStatements[0];
         fixture.detectChanges();
         let de: DebugElement;
@@ -105,7 +105,7 @@ describe('PostHeaderComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display user name', () => {
+    it('should display user name', () => {
         component.post = mockStatements[0];
         fixture.detectChanges();
         let de: DebugElement;
@@ -115,7 +115,7 @@ describe('PostHeaderComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display timestamp', () => {
+    it('should display timestamp', () => {
         component.post = mockStatements[0];
         fixture.detectChanges();
         let de: DebugElement;

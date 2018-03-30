@@ -72,11 +72,11 @@ describe('ToolbarLogoComponent', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof ToolbarLogoComponent).toBe(true);
     });
 
-    fit('should display logo in toolbar', () => {
+    it('should display logo in toolbar', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('img'));

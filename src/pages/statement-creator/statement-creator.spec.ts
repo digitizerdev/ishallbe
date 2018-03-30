@@ -117,11 +117,11 @@ describe('StatementCreatorPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof StatementCreatorPage).toBe(true);
     });
 
-    it('should be titled Statement', () => {
+    fit('should be titled Statement', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#StatementCreatorTitle'));
@@ -129,7 +129,7 @@ describe('StatementCreatorPage', () => {
         expect(el).toContain('Statement')
     });
 
-    it('should display SeeItButton if image not loaded and not loading image', () => {
+    fit('should display SeeItButton if image not loaded and not loading image', () => {
         component.imageLoaded = false;
         component.loadingImage = false;
         fixture.detectChanges();
@@ -140,7 +140,7 @@ describe('StatementCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display upload component if loading image', () => {
+    fit('should display upload component if loading image', () => {
         component.loadingImage = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -150,7 +150,7 @@ describe('StatementCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display StatementImage if image ready', () => {
+    fit('should display StatementImage if image ready', () => {
         component.imageReady = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -160,7 +160,7 @@ describe('StatementCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display form', () => {
+    fit('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));

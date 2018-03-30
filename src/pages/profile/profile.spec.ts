@@ -93,11 +93,11 @@ describe('ProfilePage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof ProfilePage).toBe(true);
     });
 
-    it('should display user profile', () => {
+    fit('should display user profile', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#UserProfile'));
@@ -105,7 +105,7 @@ describe('ProfilePage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display pushUpdateProfilePageIcon if mine', () => {
+    fit('should display pushUpdateProfilePageIcon if mine', () => {
         component.mine = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -115,7 +115,7 @@ describe('ProfilePage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display pushAccountPageButton', () => {
+    fit('should display pushAccountPageButton', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#pushAccountPageButton'));
@@ -123,7 +123,7 @@ describe('ProfilePage', () => {
         expect(el).toContain('MANAGE ACCOUNT');
     });
     
-    it('should display GoalsComponent', () => {
+    fit('should display GoalsComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('goals'));
@@ -131,7 +131,7 @@ describe('ProfilePage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display StatementsComponent', () => {
+    fit('should display StatementsComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('statements'));

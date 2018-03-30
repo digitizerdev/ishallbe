@@ -1,86 +1,99 @@
 <ion-header no-border>
-    <ion-navbar color='light-yellow'>
-      <button ion-button menuToggle>
-        <ion-icon color="primary" name="menu"></ion-icon>
+  <ion-navbar color='light-yellow'>
+    <button ion-button menuToggle>
+      <ion-icon color="primary" name="menu"></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-row *ngIf="!dateSelected" id="SelectDueDateButton">
+    <ion-col text-center padding-left padding-right>
+      <button (click)="pickDate()" color="steel" ion-button icon-start clear round block large strong>
+        <ion-icon name="ios-calendar"></ion-icon>
+        SELECT DUE DATE
       </button>
-    </ion-navbar>
-  </ion-header>
-  <ion-content padding>
-    <ion-row *ngIf="!dateSelected" id="SelectDueDateButton">
-      <ion-col text-center padding-left padding-right>
-        <button (click)="pickDate()" color="steel" ion-button icon-start clear round block large strong>
-          <ion-icon name="ios-calendar"></ion-icon>
-          SELECT DUE DATE
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="dateSelected" id="DueDateText">
+    <ion-col (click)="pickDate()" text-center>
+      <h4 *ngIf="dueToday" color="danger" ion-text>
+        <b>Due {{ displayDueDate }}</b>
+      </h4>
+      <h4 *ngIf="dueThisWeek" color="dark" ion-text>
+        <b>Due {{ displayDueDate }}</b>
+      </h4>
+      <h4 *ngIf="dueLater" color="primary" ion-text>
+        <b>Due {{ displayDueDate }}</b>
+      </h4>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="!recording" id="SpeakItButton">
+    <ion-col text-center padding-left padding-right>
+      <button (click)="recordAudio()" color="secondary" ion-button icon-start round block large strong>
+        <ion-icon padding-right name="ios-microphone"></ion-icon>
+        SPEAK IT
+      </button>
+    </ion-col>
+  </ion-row>
+  <upload *ngIf="recording" (uploaded)="recorded($event)" [method]="contentMethod"></upload>
+  <ion-row *ngIf="audioReady" id="AudioPanel" responsive-sm>
+    <ion-col text-center>
+      <button *ngIf="!playingAudio" (click)="playAudio()" id="PlayAudioButton" color="primary" ion-button icon-start round strong>
+        <ion-icon name="play"></ion-icon>
+        PLAY
+      </button>
+      <button *ngIf="playingAudio" (click)="stopPlayback()" id="StopPlaybackButton" color="danger" ion-button icon-start round
+        strong>
+        <ion-icon name="square"></ion-icon>
+        STOP
+      </button>
+    </ion-col>
+    <ion-col text-center>
+      <button (click)="redoRecording()" id="RedoRecordingButton" color="secondary" text-center ion-button icon-start round strong>
+        <ion-icon name="refresh"></ion-icon>
+        REDO
+      </button>
+    </ion-col>
+  </ion-row>
+  <form class="my-form" #createGoalForm="ngForm" novalidate padding>
+    <ion-item class="appForm">
+      <ion-input class="myItem" placeholder="Goal Title" [(ngModel)]="createGoalForm.title" name="title" type="text" #title="ngModel"
+        spellcheck="false" autocapitalize="off" autocorrect=“on” maxlength="25" required>
+      </ion-input>
+    </ion-item>
+    <p ion-text [hidden]="title.valid || submitted == false" color="danger" padding-left>
+      Goal Title is required
+    </p>
+    <br>
+    <ion-item class="appFormTextArea">
+      <ion-textarea [attr.rows]="4" autosize placeholder="Goal Description" [(ngModel)]="createGoalForm.description" name="description"
+        type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on” minlength="25" maxlength="160"
+        required>
+      </ion-textarea>
+    </ion-item>
+    <p ion-text [hidden]="description.valid || submitted == false" color="danger" padding-left>
+      Goal Description is required to be at least 25 characters long
+    </p>
+    <ion-row *ngIf="!private">
+      <ion-col text-center>
+        <button id="MakePrivateButton" (click)="makePrivate()" color="danger" ion-button clear strong>
+          MAKE PRIVATE
         </button>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="dateSelected" id="DueDateText">
-      <ion-col (click)="pickDate()" text-center>
-        <h4 *ngIf="dueToday" color="danger" ion-text>
-          <b>Due {{ displayDueDate }}</b>
-        </h4>
-        <h4 *ngIf="dueThisWeek" color="dark" ion-text>
-          <b>Due {{ displayDueDate }}</b>
-        </h4>
-        <h4 *ngIf="dueLater" color="primary" ion-text>
-          <b>Due {{ displayDueDate }}</b>
-        </h4>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="!recording" id="SpeakItButton">
-      <ion-col text-center padding-left padding-right>
-        <button (click)="recordAudio()" color="secondary" ion-button icon-start round block large strong>
-          <ion-icon padding-right name="ios-microphone"></ion-icon>
-          SPEAK IT
+    <ion-row *ngIf="private">
+      <ion-col text-center>
+        <button id="MakePublicButton" (click)="makePublic()" color="primary" ion-button clear strong>
+          MAKE PUBLIC
         </button>
       </ion-col>
     </ion-row>
-    <upload *ngIf="recording" (uploaded)="recorded($event)" [method]="contentMethod"></upload>
-    <ion-row *ngIf="audioReady" id="AudioPanel" responsive-sm>
-        <ion-col text-center>
-            <button *ngIf="!playingAudio" (click)="playAudio()" id="PlayAudioButton" color="primary" ion-button icon-start
-                round strong>
-                <ion-icon name="play"></ion-icon>
-                PLAY
-            </button>
-            <button *ngIf="playingAudio" (click)="stopPlayback()" id="StopPlaybackButton" color="danger" ion-button icon-start
-                round strong>
-                <ion-icon name="square"></ion-icon>
-                STOP
-            </button>
-        </ion-col>
-        <ion-col text-center>
-            <button (click)="redoRecording()" id="RedoRecordingButton" color="secondary" text-center ion-button icon-start round strong>
-                <ion-icon name="refresh"></ion-icon>
-                REDO
-            </button>
-        </ion-col>
+    <ion-row>
+      <ion-col text-center class="submit">
+        <button id="CreateGoalButton" (click)="submit(createGoalForm)" color="primary" ion-button round block large strong>
+          CREATE GOAL
+        </button>
+      </ion-col>
     </ion-row>
-    <form class="my-form" #createGoalForm="ngForm" novalidate padding>
-      <ion-item class="appForm">
-        <ion-input class="myItem" placeholder="Goal Title" [(ngModel)]="createGoalForm.title" name="title" type="text" #title="ngModel"
-          spellcheck="false" autocapitalize="off" autocorrect=“on” maxlength="25" required>
-        </ion-input>
-      </ion-item>
-      <p ion-text [hidden]="title.valid || submitted == false" color="danger" padding-left>
-        Goal Title is required
-      </p>
-      <br>
-      <ion-item class="appFormTextArea">
-        <ion-textarea [attr.rows]="4" autosize placeholder="Goal Description" [(ngModel)]="createGoalForm.description" name="description"
-          type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on” minlength="25" maxlength="160" required>
-        </ion-textarea>
-      </ion-item>
-      <p ion-text [hidden]="description.valid || submitted == false" color="danger"  padding-left>
-        Goal Description is required to be at least 25 characters long
-      </p>
-      <br>
-      <ion-row>
-        <ion-col text-center class="submit">
-          <button id="CreateGoalButton" (click)="submit(createGoalForm)" color="primary" ion-button round block large strong>
-            CREATE GOAL
-          </button>
-        </ion-col>
-      </ion-row>
-    </form>
-  </ion-content>
+  </form>
+</ion-content>

@@ -81,11 +81,11 @@ describe('StatementComponent', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof StatementComponent).toBe(true);
     });
 
-    fit('should display PostHeaderComponent', () => {
+    it('should display PostHeaderComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('post-header'));
@@ -93,7 +93,7 @@ describe('StatementComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display image if image', () => {
+    it('should display image if image', () => {
         component.statement = mockStatements[0];
         fixture.detectChanges();
         let de: DebugElement;
@@ -103,7 +103,7 @@ describe('StatementComponent', () => {
         expect(el).toBeDefined();
     });
 
-    fit('should display description', () => {
+    it('should display description', () => {
         component.statement = mockStatements[0];
         fixture.detectChanges();
         let de: DebugElement;
@@ -113,7 +113,7 @@ describe('StatementComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display PostFooterComponent', () => {
+    it('should display PostFooterComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('post-footer'));

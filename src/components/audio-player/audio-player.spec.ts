@@ -84,11 +84,11 @@ describe('AudioPlayerComponent', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof AudioPlayerComponent).toBe(true);
     });
 
-    fit('should display AudioPlayButton if not playing audio', () => {
+    it('should display AudioPlayButton if not playing audio', () => {
         component.playingAudio = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -98,7 +98,8 @@ describe('AudioPlayerComponent', () => {
         expect(el).toBeUndefined();
     });
     
-    fit('should display AudioStopButton if playing audio', () => {
+    it('should display AudioStopButton if playing audio', () => {
+        
         component.playingAudio = true;
         fixture.detectChanges();
         let de: DebugElement;

@@ -2,10 +2,8 @@ import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { IonicModule, Platform, NavController, NavParams, Events, ActionSheetController } from 'ionic-angular';
-import { Camera } from '@ionic-native/camera';
+import { IonicModule, Platform, NavController, NavParams } from 'ionic-angular';
 import { Media } from '@ionic-native/media';
-import { File } from '@ionic-native/file';
 import { FileTransfer } from '@ionic-native/file-transfer';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -14,8 +12,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
-import { ProfileUpdatePage } from '../profile-update/profile-update';
-
+import { ChatsPage } from '../chats/chats';
 import { ComponentsModule } from '../../components/components.module';
 
 import { } from 'jasmine';
@@ -24,27 +21,18 @@ import {
     PlatformMock,
     NavMock,
     NavParamsMock,
-    EventsMock,
     MediaMock,
-    ActionSheetControllerMock,
-    CameraMock,
-    FileMock,
     FileTransferMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
-import { Action } from 'rxjs/scheduler/Action';
 
-describe('ProfileUpdatePage', () => {
+describe('ChatsPage', () => {
     let fixture;
     let component;
     let platform: Platform;
     let nav: NavController;
     let navParams: NavParams;
-    let events: Events;
     let media: Media;
-    let actionSheet: ActionSheetController;
-    let camera: Camera;
-    let file: File;
     let fileTransfer: FileTransfer;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
@@ -58,9 +46,9 @@ describe('ProfileUpdatePage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ProfileUpdatePage],
+            declarations: [ChatsPage],
             imports: [
-                IonicModule.forRoot(ProfileUpdatePage),
+                IonicModule.forRoot(ChatsPage),
                 AngularFireModule.initializeApp(environment.firebase),
                 ComponentsModule
             ],
@@ -68,11 +56,7 @@ describe('ProfileUpdatePage', () => {
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
                 { provide: NavParams, useClass: NavParamsMock },
-                { provide: Events, useClass: EventsMock },
                 { provide: Media, useClass: MediaMock },
-                { provide: ActionSheetController, useClass: ActionSheetControllerMock },
-                { provide: Camera, useClass: CameraMock },
-                { provide: File, useClass: FileMock },
                 { provide: FileTransfer, useClass: FileTransferMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
@@ -85,16 +69,12 @@ describe('ProfileUpdatePage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ProfileUpdatePage);
+        fixture = TestBed.createComponent(ChatsPage);
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
         navParams = TestBed.get(NavParams);
-        events = TestBed.get(Events);
         media = TestBed.get(Media);
-        actionSheet = TestBed.get(ActionSheetController);
-        camera = TestBed.get(Camera);
-        file = TestBed.get(File);
         fileTransfer = TestBed.get(FileTransfer);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
@@ -107,11 +87,7 @@ describe('ProfileUpdatePage', () => {
         platform = null;
         nav = null;
         navParams = null;
-        events = null;
         media = null;
-        actionSheet = null;
-        camera = null;
-        file = null;
         fileTransfer = null;
         firebase = null;
         afa = null;
@@ -119,45 +95,7 @@ describe('ProfileUpdatePage', () => {
     });
 
     fit('should be created', () => {
-        expect(component instanceof ProfileUpdatePage).toBe(true);
-    });
-
-    fit('should be titled Profile', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#UpdateProfileTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Profile')
-    });
-
-    fit('should display profile photo if not updating profile photo', () => {
-        component.updatingProfilePhoto = false;
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#UpdateProfilePhoto'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    fit('should display upload component if updating profile photo', () => {
-        component.updatingProfilePhoto = true;
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('upload'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    fit('should display form if not updating profile photo', () => {
-        component.updatingProfilePhoto = false;
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('form'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('UPDATE PROFILE');
+        expect(component instanceof ChatsPage).toBe(true);
     });
 
 });

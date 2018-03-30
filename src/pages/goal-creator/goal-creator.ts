@@ -45,6 +45,7 @@ export class GoalCreatorPage {
   dueToday = false;
   dueThisWeek = false;
   dueLater = false;
+  private = false;
 
   constructor(
     private navCtrl: NavController,
@@ -98,7 +99,7 @@ export class GoalCreatorPage {
         description: form.description,
         commentCount: 0,
         likeCount: 0,
-        private: true,
+        private: this.private,
         complete: false,
         url: this.audioUrl,
         filename: this.audioName,
@@ -255,4 +256,11 @@ export class GoalCreatorPage {
     });
   }
 
+  makePrivate() {
+    this.private = true;
+  }
+
+  makePublic() {
+    this.private = false;
+  }
 }

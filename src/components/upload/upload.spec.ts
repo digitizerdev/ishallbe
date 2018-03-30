@@ -100,11 +100,11 @@ describe('UploadComponent', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof UploadComponent).toBe(true);
     });
 
-    fit('should display ImagePanel if getting image', () => {
+    it('should display ImagePanel if getting image', () => {
         component.gettingImage = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -114,7 +114,7 @@ describe('UploadComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display StopRecordingButton if recording', () => {
+    it('should display StopRecordingButton if recording', () => {
         component.recording = true;
         fixture.detectChanges();
         let de: DebugElement;

@@ -31,7 +31,8 @@ export class StatementCreatorPage {
   submitted = false;
   loadingImage = false;
   imageReady = false;
-
+  private = false;
+  
   constructor(
     private navCtrl: NavController,
     private alertCtrl: AlertController,
@@ -115,7 +116,7 @@ export class StatementCreatorPage {
         description: form.description,
         commentCount: 0,
         likeCount: 0,
-        private: false,
+        private: this.private,
         url: this.statementImageUrl,
         filename: this.statementName,
         collection: "statements",
@@ -162,5 +163,13 @@ export class StatementCreatorPage {
     this.statementImageUrl = null;
     this.imageReady = false;
     this.events.publish('redoUpload', this.imageRetrievalMethod, this.statementName);
+  }
+  
+  makePrivate() {
+    this.private = true;
+  }
+
+  makePublic() {
+    this.private = false;
   }
 }

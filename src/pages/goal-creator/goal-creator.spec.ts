@@ -113,19 +113,11 @@ describe('GoalCreatorPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof GoalCreatorPage).toBe(true);
     });
 
-    it('should be titled Goal', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#GoalCreatorTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Goal')
-    });
-
-    it('should display SelectDueDateButton if date not selected', () => {
+    fit('should display SelectDueDateButton if date not selected', () => {
         component.dateSelected = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -135,7 +127,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display DueDateText if date selected', () => {
+    fit('should display DueDateText if date selected', () => {
         component.dateSelected = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -145,7 +137,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display SpeakItButton if audio not ready', () => {
+    fit('should display SpeakItButton if audio not ready', () => {
         component.audioReady = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -155,7 +147,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display upload component if recording', () => {
+    fit('should display upload component if recording', () => {
         component.recording = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -165,7 +157,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display AudioPanel if audio ready', () => {
+    fit('should display AudioPanel if audio ready', () => {
         component.audioReady = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -175,7 +167,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display PlayAudioButton if not playing audio', () => {
+    fit('should display PlayAudioButton if not playing audio', () => {
         component.audioReady = true;
         component.playingAudio = false;
         fixture.detectChanges();
@@ -186,7 +178,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display StopPlaybackButton if playing audio', () => {
+    fit('should display StopPlaybackButton if playing audio', () => {
         component.audioReady = true;
         component.playingAudio = true;
         fixture.detectChanges();
@@ -197,7 +189,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display form', () => {
+    fit('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
@@ -205,4 +197,31 @@ describe('GoalCreatorPage', () => {
         expect(el).toContain('CREATE GOAL');
     });
 
+    fit('should display MakePrivateButton if public', () => {
+        component.private = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#MakePrivateButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('MAKE PRIVATE');
+    });
+
+    fit('should display MakePublicButton if private', () => {
+        component.private = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#MakePublicButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('MAKE PUBLIC');
+    });
+
+    fit('should display CreateGoalButton', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#CreateGoalButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('CREATE GOAL');
+    });
 });

@@ -72,11 +72,11 @@ describe('FooterComponent', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof FooterComponent).toBe(true);
     });
 
-    fit('should display footer', () => {
+    it('should display footer', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('img'));
