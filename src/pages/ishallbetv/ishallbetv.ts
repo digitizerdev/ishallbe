@@ -18,6 +18,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 })
 export class IshallbetvPage {
 
+  lastMonday: number;
   videos: any[];
 
   constructor(
@@ -28,16 +29,25 @@ export class IshallbetvPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad IshallbetvPage');
+    this.setLastMonday();
     this.loadVideos().subscribe((videos) => {
       this.setVideos(videos);
     });
+  }
+
+  setLastMonday() {
+    console.log("Setting Last Monday");
+    let today = moment().format('YYYYMMDD');
+    console.log("Today is " + today);
+    let dayNumber = moment().isoWeekday();
+    console.log("Day Number is " + dayNumber);
   }
 
   loadVideos() {
     console.log("Loading Videos");
     return Observable.create((observer) => {
       let allVideos = this.firebase.afs.collection('pins', ref =>
-        ref.orderBy('affirmationDate'));
+        ref.orderBy('affirmationDate', 'desc'));
       allVideos.valueChanges().subscribe((videos) => {
         observer.next(videos);
       });

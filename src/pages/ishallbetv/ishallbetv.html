@@ -15,12 +15,9 @@
     <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="dots" refreshingText="Refeshing">
     </ion-refresher-content>
   </ion-refresher>
-  <h2 color="primary" ion-text text-center>
-    <b>iShallBe TV</b>
-  </h2>
-  <div class="images" padding>
+  <div class="images">
     <div *ngFor="let video of videos" (click)="openAffirmation(video)" text-center padding>
-      <h4>{{ video.displayAffirmationDate }}</h4>
+      <h4 color="primary" ion-text><b>{{ video.displayAffirmationDate }}</b></h4>
       <img class="one-image" src="{{ video.url }}">
     </div>
   </div>

@@ -67,22 +67,22 @@ page-chat {
             bottom: -7.5px;
         }
         &.left {
-            background-color: #e6e5eb;
+            background-color: color($colors, gray);
             float: left;
             margin-left: 55px;
             &:before {
-                background-color: #e6e5eb;
+                background-color: color($colors, gray);
                 left: 10px;
                 -webkit-transform: rotate(70deg) skew(5deg);
             }
         }
         &.right {
-            background-color: color($colors, secondary);
+            background-color: color($colors, primary);
             color: #fff;
             float: right;
             margin-right: 55px;
             &:before {
-                background-color: color($colors, secondary);
+                background-color: color($colors, primary);
                 right: 10px;
                 -webkit-transform: rotate(118deg) skew(-5deg);
             }
