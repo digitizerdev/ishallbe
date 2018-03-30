@@ -69,8 +69,8 @@ export class ProfilePage {
   }
 
   loadStatements() {
-    let statements = this.firebase.afs.collection('statements', ref =>
-      ref.orderBy('timestamp'));
+    let statements = this.firebase.afs.collection('statements', ref => 
+      ref.where('uid', '==', this.uid).orderBy('timestamp', 'desc'));
     statements.valueChanges().subscribe((statements) => {
       if (!this.statementsLoaded) 
         this.setStatements(statements);
@@ -87,7 +87,8 @@ export class ProfilePage {
   }
 
   loadGoals() {
-    let goals = this.firebase.afs.collection('goals');
+    let goals = this.firebase.afs.collection('goals', ref => 
+      ref.where('uid', '==', this.uid).orderBy('timestamp', 'desc'));
     goals.valueChanges().subscribe((goals) => {
       if(!this.goalsLoaded)
         this.setGoals(goals);

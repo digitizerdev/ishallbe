@@ -121,14 +121,6 @@ describe('StatementCreatorPage', () => {
         expect(component instanceof StatementCreatorPage).toBe(true);
     });
 
-    fit('should be titled Statement', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#StatementCreatorTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Statement')
-    });
-
     fit('should display SeeItButton if image not loaded and not loading image', () => {
         component.imageLoaded = false;
         component.loadingImage = false;
@@ -164,6 +156,34 @@ describe('StatementCreatorPage', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('CREATE STATEMENT');
+    });
+
+    fit('should display MakePrivateButton if public', () => {
+        component.private = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#MakePrivateButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('MAKE PRIVATE');
+    });
+
+    fit('should display MakePublicButton if private', () => {
+        component.private = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#MakePublicButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('MAKE PUBLIC');
+    });
+
+    fit('should display CreateStatementButton', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#CreateStatementButton'));
         el = de.nativeElement.innerHTML
         expect(el).toContain('CREATE STATEMENT');
     });

@@ -5,7 +5,7 @@
     </button>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content padding-left padding-right>
   <ion-row *ngIf="!dateSelected" id="SelectDueDateButton">
     <ion-col text-center padding-left padding-right>
       <button (click)="pickDate()" color="steel" ion-button icon-start clear round block large strong>
@@ -96,4 +96,5 @@
       </ion-col>
     </ion-row>
   </form>
+  <br>
 </ion-content>

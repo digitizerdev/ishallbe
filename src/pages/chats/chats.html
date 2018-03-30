@@ -3,11 +3,18 @@
     <button ion-button menuToggle>
       <ion-icon name="menu" color="primary"></ion-icon>
     </button>
+    <toolbar-logo></toolbar-logo>
+    <ion-buttons id="setRootHomePageIcon" end>
+      <button ion-button icon-only (click)="setRootHomePage()">
+        <ion-icon color='primary' name="md-home"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content>
+  <br>
   <h5 class="feature">New Messages</h5>
-  <ion-list class="chats">
+  <ion-list class="chats" id="NewMessages">
     <ion-item-sliding >
       <ion-item *ngFor="let newChat of newChats"text-wrap (click)="viewChat(newChat.id)" class="chat">
         <ion-avatar item-left>
@@ -27,7 +34,7 @@
     </ion-item-sliding>
   </ion-list>
   <h5 class="feature">Earlier Messages</h5>
-  <ion-list class="chats">
+  <ion-list class="chats" id="EarlierMessages">
     <ion-item-sliding >
       <ion-item *ngFor="let earlierChat of earlierChats"text-wrap (click)="viewChat(earlierChat.id)" class="chat">
         <ion-avatar item-left>

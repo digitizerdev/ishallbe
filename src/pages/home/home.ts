@@ -83,7 +83,7 @@ export class HomePage {
 
   loadStatements() {
     let statements = this.firebase.afs.collection('statements', ref =>
-      ref.orderBy('timestamp', 'desc'));
+      ref.where('private', '==', false).orderBy('timestamp', 'desc'));
     statements.valueChanges().subscribe((statements) => {
       if (!this.statementsLoaded)
         this.setStatements(statements);
@@ -101,7 +101,7 @@ export class HomePage {
 
   loadGoals() {
     let goals = this.firebase.afs.collection('goals', ref =>
-      ref.orderBy('timestamp', 'desc'));
+      ref.where('private', '==', false).orderBy('timestamp', 'desc'));
     goals.valueChanges().subscribe((goals) => {
       if (!this.goalsLoaded)
         this.setGoals(goals);

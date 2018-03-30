@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
 import { ChatPage } from '../chat/chat';
+import { HomePage } from '../home/home';
 
 import { mockChats } from '../../../test-data/chats/mocks';
 
@@ -38,6 +39,10 @@ export class ChatsPage {
 
   viewChat(chat) {
     this.navCtrl.push(ChatPage, { id: chat.id });
+  }
+
+  setRootHomePage() {
+    this.navCtrl.setRoot(HomePage);
   }
 
 }

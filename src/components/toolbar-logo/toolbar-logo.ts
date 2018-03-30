@@ -1,15 +1,21 @@
 import { Component } from '@angular/core';
 
+import { NavController } from 'ionic-angular';
+
+import { HomePage } from '../../pages/home/home';
+
 @Component({
   selector: 'toolbar-logo',
   templateUrl: 'toolbar-logo.html'
 })
 export class ToolbarLogoComponent {
 
-  text: string;
+  constructor(
+    private navCtrl: NavController
+  ) {}
 
-  constructor() {
-    this.text = 'Hello World';
+  setRootHomePage() {
+    this.navCtrl.setRoot(HomePage);
   }
 
 }

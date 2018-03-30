@@ -3,8 +3,8 @@
     <button ion-button menuToggle>
       <ion-icon color="primary" name="menu"></ion-icon>
     </button>
-    <ion-buttons *ngIf="mine" end>
-      <button ion-button icon-only (click)="pushChatsPage()">
+    <ion-buttons end>
+      <button (click)="pushChatsPage()" id="pushChatsPageIcon" ion-button icon-only>
         <ion-icon color="primary" name="mail"></ion-icon>
       </button>
     </ion-buttons>
@@ -32,14 +32,14 @@
       </ion-col>
     </ion-row>
     <h5 class="bio" padding-left padding-right>{{ user?.bio}} </h5>
-    <ion-row>
+    <ion-row *ngIf="mine">
       <ion-col>
         <button ion-button id="pushProfileUpdatePageButton" (click)="pushProfileUpdatePage()" color="primary" round strong>EDIT PROFILE</button>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="editor && !mine">
       <ion-col>
-        <button ion-button id="BlockUserButton" (click)="blockUser()" color="danger" strong>BLOCK USER</button>
+        <button ion-button id="blockUserButton" (click)="blockUser()" color="danger" strong>BLOCK USER</button>
       </ion-col>
     </ion-row>
   </div>
@@ -53,12 +53,12 @@
       </ion-segment-button>
       <br>
     </ion-segment>
-    <div *ngIf="postSegment=='statements'">
+    <div *ngIf="postSegment=='statements'" id="MyStatements">
       <ion-card *ngFor="let statement of statements">
         <statement [post]="statement"></statement>
       </ion-card>
     </div>
-    <div *ngIf="postSegment=='goals'">
+    <div *ngIf="postSegment=='goals'" id="MyGoals">
       <ion-card *ngFor="let goal of goals">
         <goal [post]="goal"></goal>
       </ion-card>

@@ -98,5 +98,23 @@ describe('ChatPage', () => {
         expect(component instanceof ChatPage).toBe(true);
     });
 
+    fit('should display messages', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#Messages'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display message bar', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#MessageBar'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
 });
 

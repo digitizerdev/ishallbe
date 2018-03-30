@@ -2,7 +2,7 @@
   <ion-navbar>
   </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content id="Messages">
   <div *ngFor="let message of messages" class="message-wrapper rlt" (hold)="onMessageHold($event, $index, message)">
     <div *ngIf="message?.received">
       <img class="profile-picture left" src="{{ message?.face }}" />
@@ -30,7 +30,7 @@
     <div class="cf"></div>
   </div>
 </ion-content>
-<ion-footer class="chat-footer" no-border>
+<ion-footer class="chat-footer" id="MessageBar" no-border>
   <ion-toolbar no-border color="white">
     <ion-buttons start>
       <button ion-button>

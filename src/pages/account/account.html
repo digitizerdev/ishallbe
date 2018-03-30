@@ -3,6 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon color='primary' name="menu"></ion-icon>
     </button>
+    <toolbar-logo></toolbar-logo>
     <ion-buttons id="setRootHomePageIcon" end>
       <button ion-button icon-only (click)="setRootHomePage()">
         <ion-icon color='primary' name="md-home"></ion-icon>
@@ -11,7 +12,8 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <header padding></header>
+  <br>
+  <br>
   <div class="feature" id="AccountEmail" text-center>
     <h5>{{user?.email}}</h5>
   </div>

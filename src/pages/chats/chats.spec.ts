@@ -98,5 +98,41 @@ describe('ChatsPage', () => {
         expect(component instanceof ChatsPage).toBe(true);
     });
 
+    fit('should display toolbar logo', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('toolbar-logo'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display setRootHomePageIcon', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#setRootHomePageIcon'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display new messages', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#NewMessages'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display earlier messages', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#EarlierMessages'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
 });
 

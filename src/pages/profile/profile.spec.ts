@@ -97,44 +97,69 @@ describe('ProfilePage', () => {
         expect(component instanceof ProfilePage).toBe(true);
     });
 
-    fit('should display user profile', () => {
+    fit('should dipsplay pushChatsPageIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#UserProfile'));
+        de = fixture.debugElement.query(By.css
+            ('#pushChatsPageIcon'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
 
-    fit('should display pushUpdateProfilePageIcon if mine', () => {
+    fit('should display user profile if loaded', () => {
+        component.loaded = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#UserProfile'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display pushUpdateProfilePageButton if loaded and mine', () => {
+        component.loaded = true;
         component.mine = true;
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css("#pushUpdateProfilePageIcon"));
+        de = fixture.debugElement.query(By.css
+            ("#pushProfileUpdatePageButton"));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
 
-    fit('should display pushAccountPageButton', () => {
+    fit('should display blockUserButton if loaded, editor, and not mine', () => {
+        component.loaded = true;
+        component.editor = true;
+        component.mine = false;
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#pushAccountPageButton'));
+        de = fixture.debugElement.query(By.css
+            ('#blockUserButton'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('MANAGE ACCOUNT');
+        expect(el).toContain('BLOCK USER');
     });
-    
-    fit('should display GoalsComponent', () => {
+
+    fit('should display my statements', () => {
+        component.postSegment = 'statements';
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('goals'));
+        de = fixture.debugElement.query(By.css
+            ('#MyStatements'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
 
-    fit('should display StatementsComponent', () => {
+    fit('should display my goals', () => {
+        component.postSegment = 'goals';
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('statements'));
+        de = fixture.debugElement.query(By.css
+            ('#MyGoals'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
