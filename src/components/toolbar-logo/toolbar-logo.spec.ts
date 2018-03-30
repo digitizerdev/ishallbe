@@ -75,5 +75,13 @@ describe('ToolbarLogoComponent', () => {
     fit('should be created', () => {
         expect(component instanceof ToolbarLogoComponent).toBe(true);
     });
+
+    fit('should display logo in toolbar', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('img'));
+        el = de.nativeElement.src;
+        expect(el).toContain('assets/img/logo.png');
+    });
 });
 

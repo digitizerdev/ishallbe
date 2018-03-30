@@ -12,6 +12,8 @@ import { environment } from '../../environments/environment';
 
 import { PostHeaderComponent } from '../post-header/post-header';
 
+import { mockStatements } from '../../../test-data/statements/mocks';
+
 import { } from 'jasmine';
 
 import {
@@ -81,6 +83,46 @@ describe('PostHeaderComponent', () => {
 
     fit('should be created', () => {
         expect(component instanceof PostHeaderComponent).toBe(true);
+    });
+
+    fit('should display user avatar', () => {
+        component.post = mockStatements[0];
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#UserPhoto'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display post title', () => {
+        component.post = mockStatements[0];
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PostTitle'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display user name', () => {
+        component.post = mockStatements[0];
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#UserName'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display timestamp', () => {
+        component.post = mockStatements[0];
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#Timestamp'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 });
 

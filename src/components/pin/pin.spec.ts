@@ -12,6 +12,8 @@ import { environment } from '../../environments/environment';
 
 import { PinComponent } from '../pin/pin';
 
+import { mockPins } from '../../../test-data/pins/mocks';
+
 import { } from 'jasmine';
 
 import {
@@ -81,6 +83,52 @@ describe('PinComponent', () => {
 
     fit('should be created', () => {
         expect(component instanceof PinComponent).toBe(true);
+    });
+
+    fit('should display title', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PinTitle'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display PinImage if pin is Monday', () => {
+        component.pin = mockPins[0];
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PinImage'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display description', () => {
+        component.pin = mockPins[3];
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PinDescription'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display OpenTuneButton if pin is Tuesday', () => {
+        component.pin = mockPins[1];
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PinTitle'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display post-footer', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('post-footer'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 });
 

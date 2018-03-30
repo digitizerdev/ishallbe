@@ -104,6 +104,16 @@ describe('UploadComponent', () => {
         expect(component instanceof UploadComponent).toBe(true);
     });
 
+    fit('should display ImagePanel if getting image', () => {
+        component.gettingImage = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ImagePanel'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
     fit('should display StopRecordingButton if recording', () => {
         component.recording = true;
         fixture.detectChanges();
@@ -113,5 +123,4 @@ describe('UploadComponent', () => {
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
-
 });

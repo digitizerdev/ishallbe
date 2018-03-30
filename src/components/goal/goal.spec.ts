@@ -12,6 +12,8 @@ import { environment } from '../../environments/environment';
 
 import { GoalComponent } from '../goal/goal';
 
+import { mockGoals } from '../../../test-data/goals/mocks';
+
 import { } from 'jasmine';
 
 import {
@@ -83,5 +85,46 @@ describe('GoalComponent', () => {
         expect(component instanceof GoalComponent).toBe(true);
     });
 
+    fit('should display PostHeaderComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('post-header'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display due date', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#GoalDueDate'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display AudioPlayerComponent if goal url', () => {
+        component.goal = mockGoals[0];
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('audio-player'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display goal description', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#GoalDescription'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display PostFooterComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('post-footer'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
 });
 

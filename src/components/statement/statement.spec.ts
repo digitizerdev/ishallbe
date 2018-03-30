@@ -12,6 +12,8 @@ import { environment } from '../../environments/environment';
 
 import { StatementComponent } from '../statement/statement';
 
+import { mockStatements } from '../../../test-data/statements/mocks';
+
 import { } from 'jasmine';
 
 import {
@@ -81,6 +83,42 @@ describe('StatementComponent', () => {
 
     fit('should be created', () => {
         expect(component instanceof StatementComponent).toBe(true);
+    });
+
+    fit('should display PostHeaderComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('post-header'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display image if image', () => {
+        component.statement = mockStatements[0];
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#StatementImage'));
+        el = de.nativeElement.src;
+        expect(el).toBeDefined();
+    });
+
+    fit('should display description', () => {
+        component.statement = mockStatements[0];
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#StatementDescription'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display PostFooterComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('post-footer'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 });
 

@@ -88,5 +88,25 @@ describe('AudioPlayerComponent', () => {
         expect(component instanceof AudioPlayerComponent).toBe(true);
     });
 
+    fit('should display AudioPlayButton if not playing audio', () => {
+        component.playingAudio = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#AudioPlayButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+    
+    fit('should display AudioStopButton if playing audio', () => {
+        component.playingAudio = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#AudioStopButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
 });
 

@@ -83,6 +83,5 @@ describe('HeaderComponent', () => {
         el = de.nativeElement.src;
         expect(el).toContain('assets/img/logo.png');
     });
-
 });
 

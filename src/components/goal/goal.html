@@ -1,7 +1,7 @@
 <post-header [postDoc]="goal"></post-header>
 <ion-row (click)="viewGoal(goal.id)">
   <ion-col text-center>
-    <h2>
+    <h2 id="GoalDueDate">
       <ion-icon name="alarm" color="secondary"></ion-icon>
       <b>Due {{goal?.displayDueDate}}</b>
     </h2>
@@ -12,7 +12,7 @@
     <audio-player [postDoc]="goal" ></audio-player>
   </ion-col>
 </ion-row>
-<h2 class="post-description" (click)="viewGoal(goal.id)">
+<h2 class="post-description" (click)="viewGoal(goal.id)" id="GoalDescription">
   {{ goal.description }}
 </h2>
 <post-footer [postDoc]="goal"></post-footer>

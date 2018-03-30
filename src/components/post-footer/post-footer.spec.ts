@@ -5,12 +5,14 @@ import { By } from '@angular/platform-browser';
 import { IonicModule, Platform, Nav, NavController } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-import { AngularFireModule } from 'angularfire2';
+import { AngularFireModule, FirebaseAppConfigToken } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
 import { PostFooterComponent } from '../post-footer/post-footer';
+
+import { mockGoals } from '../../../test-data/goals/mocks';
 
 import { } from 'jasmine';
 
@@ -81,6 +83,30 @@ describe('PostFooterComponent', () => {
 
     fit('should be created', () => {
         expect(component instanceof PostFooterComponent).toBe(true);
+    });
+
+    fit('should display InteractionCounts', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#InteractionCounts'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display ToggleLikeIcon', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ToggleLikeIcon'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display CommentIcon', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#CommentIcon'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 });
 
