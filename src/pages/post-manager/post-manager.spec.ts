@@ -14,6 +14,9 @@ import { environment } from '../../environments/environment';
 import { PostManagerPage } from '../post-manager/post-manager';
 import { ComponentsModule } from '../../components/components.module';
 
+import { mockStatements } from '../../../test-data/statements/mocks';
+import { mockGoals } from '../../../test-data/goals/mocks';
+
 import { } from 'jasmine';
 
 import {
@@ -76,19 +79,12 @@ describe('PostManagerPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof PostManagerPage).toBe(true);
     });
 
-    it('should be titled Post Manager', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#PostManagerTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Post Manager')
-    });
 
-    it('should display PinsSegment if postType is pins', () => {
+    fit('should display PinsSegment if postType is pins', () => {
         component.postType = 'pins';
         fixture.detectChanges();
         let de: DebugElement;
@@ -98,7 +94,7 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display PinsCalendar if pins are loaded', () => {
+    fit('should display PinsCalendar if pins are loaded', () => {
         component.postType = 'pins';
         component.pinsLoaded = true;
         fixture.detectChanges();
@@ -109,7 +105,7 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display CreatePinButton if selectedDay does not already have a pin', () => {
+    fit('should display CreatePinButton if selectedDay does not already have a pin', () => {
         component.postType = 'pins';
         component.pinCreated = false;
         fixture.detectChanges();
@@ -120,7 +116,7 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display UpdatePinButton if selectedDay already has a pin', () => {
+    fit('should display UpdatePinButton if selectedDay already has a pin', () => {
         component.postType = 'pins';
         component.pinCreated = true;
         fixture.detectChanges();
@@ -131,7 +127,7 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display StatementsSegment if postType is statements', () => {
+    fit('should display StatementsSegment if postType is statements', () => {
         component.postType = 'statements';
         fixture.detectChanges();
         let de: DebugElement;
@@ -141,9 +137,8 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display NoReportedStatements if there are no reported statements', () => {
+    fit('should display no reported statements if there are no reported statements', () => {
         component.postType = 'statements';
-        component.reportedStatements = false;
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
@@ -152,13 +147,34 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display ReportedStatements if there are reported statements', () => {
+    fit('should display reported statements if there are reported statements', () => {
         component.postType = 'statements';
-        component.reportedStatements = true;
+        component.statementsReported = true;
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#ReportedStatements'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display no reported goals if there are no reported goals', () => {
+        component.postType = 'goals';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#NoReportedGoals'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display reported goals if there are reported goals', () => {
+        component.postType = 'goals';
+        component.goalsReported = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ReportedGoals'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });

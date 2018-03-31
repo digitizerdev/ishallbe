@@ -8,8 +8,11 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class UserManagerPage {
 
-  constructor(public navCtrl: NavController ) {
-  }
+  usersReported = false;
+
+  constructor(
+    private navCtrl: NavController
+  ) {}
 
   ionViewDidLoad() {
   }

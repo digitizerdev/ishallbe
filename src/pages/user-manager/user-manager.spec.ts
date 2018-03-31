@@ -13,6 +13,8 @@ import { environment } from '../../environments/environment';
 import { UserManagerPage } from '../user-manager/user-manager';
 import { ComponentsModule } from '../../components/components.module';
 
+import { mockUsers } from '../../../test-data/users/mocks';
+
 import { } from 'jasmine';
 
 import {
@@ -74,11 +76,11 @@ describe('UserManagerPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof UserManagerPage).toBe(true);
     });
 
-    it('should display search bar', () => {
+    fit('should display search bar', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#UserSearchbar'));
@@ -86,21 +88,22 @@ describe('UserManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display NoReportedUsersFeature if no reported users', () => {
+    fit('should display NoReportedUsers if no reported users', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#NoReportedUsersFeature'));
+        de = fixture.debugElement.query(By.css('#NoReportedUsers'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
 
-    it('should display ReportedUsers if reported users', () => {
+    fit('should display ReportedUsers if reported users', () => {
+        component.usersReported = true;
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#ReportedUsersFeature'));
+        de = fixture.debugElement.query(By.css('#ReportedUsers'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
-
 });
 

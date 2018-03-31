@@ -94,11 +94,11 @@ describe('ChatsPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof ChatsPage).toBe(true);
     });
 
-    fit('should display toolbar logo', () => {
+    it('should display toolbar logo', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css
@@ -107,7 +107,7 @@ describe('ChatsPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display setRootHomePageIcon', () => {
+    it('should display setRootHomePageIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css
@@ -116,7 +116,7 @@ describe('ChatsPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display new messages', () => {
+    it('should display new messages', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css
@@ -125,7 +125,8 @@ describe('ChatsPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display earlier messages', () => {
+    it('should display earlier messages', () => {
+        
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css

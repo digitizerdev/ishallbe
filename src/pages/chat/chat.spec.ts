@@ -94,11 +94,11 @@ describe('ChatPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof ChatPage).toBe(true);
     });
 
-    fit('should display messages', () => {
+    it('should display messages', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css
@@ -107,7 +107,7 @@ describe('ChatPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display message bar', () => {
+    it('should display message bar', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css

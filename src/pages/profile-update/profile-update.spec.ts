@@ -120,11 +120,11 @@ describe('ProfileUpdatePage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof ProfileUpdatePage).toBe(true);
     });
 
-    fit('should display profile photo if not updating profile photo', () => {
+    it('should display profile photo if not updating profile photo', () => {
         component.updatingProfilePhoto = false;
         component.user = mockUsers[0];
         component.loaded = true;
@@ -136,7 +136,7 @@ describe('ProfileUpdatePage', () => {
         expect(el).toBeDefined();
     });
 
-    fit('should display upload component if updating profile photo', () => {
+    it('should display upload component if updating profile photo', () => {
         component.updatingProfilePhoto = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -146,7 +146,7 @@ describe('ProfileUpdatePage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display form if not updating profile photo', () => {
+    it('should display form if not updating profile photo', () => {
         component.updatingProfilePhoto = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -156,7 +156,7 @@ describe('ProfileUpdatePage', () => {
         expect(el).toContain('UPDATE PROFILE');
     });
 
-    fit('should display UpdateProfileButton if not updating profile photo', () => {
+    it('should display UpdateProfileButton if not updating profile photo', () => {
         component.updatingProfilePhoto = false;
         fixture.detectChanges();
         let de: DebugElement;

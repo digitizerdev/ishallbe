@@ -113,11 +113,11 @@ describe('GoalCreatorPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof GoalCreatorPage).toBe(true);
     });
 
-    fit('should display SelectDueDateButton if date not selected', () => {
+    it('should display SelectDueDateButton if date not selected', () => {
         component.dateSelected = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -127,7 +127,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display DueDateText if date selected', () => {
+    it('should display DueDateText if date selected', () => {
         component.dateSelected = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -137,7 +137,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display SpeakItButton if audio not ready', () => {
+    it('should display SpeakItButton if audio not ready', () => {
         component.audioReady = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -147,7 +147,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display upload component if recording', () => {
+    it('should display upload component if recording', () => {
         component.recording = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -157,7 +157,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display AudioPanel if audio ready', () => {
+    it('should display AudioPanel if audio ready', () => {
         component.audioReady = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -167,7 +167,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display PlayAudioButton if not playing audio', () => {
+    it('should display PlayAudioButton if not playing audio', () => {
         component.audioReady = true;
         component.playingAudio = false;
         fixture.detectChanges();
@@ -178,7 +178,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display StopPlaybackButton if playing audio', () => {
+    it('should display StopPlaybackButton if playing audio', () => {
         component.audioReady = true;
         component.playingAudio = true;
         fixture.detectChanges();
@@ -189,7 +189,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display form', () => {
+    it('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
@@ -197,7 +197,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toContain('CREATE GOAL');
     });
 
-    fit('should display MakePrivateButton if public', () => {
+    it('should display MakePrivateButton if public', () => {
         component.private = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -207,7 +207,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toContain('MAKE PRIVATE');
     });
 
-    fit('should display MakePublicButton if private', () => {
+    it('should display MakePublicButton if private', () => {
         component.private = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -217,7 +217,7 @@ describe('GoalCreatorPage', () => {
         expect(el).toContain('MAKE PUBLIC');
     });
 
-    fit('should display CreateGoalButton', () => {
+    it('should display CreateGoalButton', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#CreateGoalButton'));

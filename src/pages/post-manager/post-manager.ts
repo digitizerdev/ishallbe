@@ -24,12 +24,15 @@ export class PostManagerPage {
   }
   pins: any;
   reportedStatements: any;
+  reportedGoals: any;
   postType: string;
   viewTitle: string;
   displaySelectedDay: string;
   pinCreated = false;
   pinsLoaded = false;
-
+  statementsReported = false;
+  goalsReported = false;
+  
   constructor(
     private navCtrl: NavController,
     private firebase: FirebaseProvider

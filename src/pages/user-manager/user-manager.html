@@ -11,9 +11,11 @@
 </ion-header>
 <ion-content>
   <br>
-  <br>
-  <div id="NoReportedUsersFeature" text-center>
+  <div id="NoReportedUsers" text-center>
     <h5 class="feature" >There are no reported users</h5>
   </div>
+  <div *ngIf="usersReported" id="ReportedUsers" text-center>
+      <h5 class="feature" >There are reported users</h5>
+    </div>
   <br>
 </ion-content>

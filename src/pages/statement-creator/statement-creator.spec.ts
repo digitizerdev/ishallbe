@@ -117,11 +117,11 @@ describe('StatementCreatorPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof StatementCreatorPage).toBe(true);
     });
 
-    fit('should display SeeItButton if image not loaded and not loading image', () => {
+    it('should display SeeItButton if image not loaded and not loading image', () => {
         component.imageLoaded = false;
         component.loadingImage = false;
         fixture.detectChanges();
@@ -132,7 +132,7 @@ describe('StatementCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display upload component if loading image', () => {
+    it('should display upload component if loading image', () => {
         component.loadingImage = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -142,7 +142,7 @@ describe('StatementCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display StatementImage if image ready', () => {
+    it('should display StatementImage if image ready', () => {
         component.imageReady = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -152,7 +152,7 @@ describe('StatementCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display form', () => {
+    it('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
@@ -160,7 +160,7 @@ describe('StatementCreatorPage', () => {
         expect(el).toContain('CREATE STATEMENT');
     });
 
-    fit('should display MakePrivateButton if public', () => {
+    it('should display MakePrivateButton if public', () => {
         component.private = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -170,7 +170,7 @@ describe('StatementCreatorPage', () => {
         expect(el).toContain('MAKE PRIVATE');
     });
 
-    fit('should display MakePublicButton if private', () => {
+    it('should display MakePublicButton if private', () => {
         component.private = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -180,7 +180,7 @@ describe('StatementCreatorPage', () => {
         expect(el).toContain('MAKE PUBLIC');
     });
 
-    fit('should display CreateStatementButton', () => {
+    it('should display CreateStatementButton', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#CreateStatementButton'));

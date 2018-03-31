@@ -36,12 +36,14 @@
     </ion-row>
     <br>
   </div>
-  <div *ngIf="postType=='statements'">
+  <div *ngIf="postType=='statements'" id="StatementsSegment">
     <br>
-    <h5 class="feature">There are no reported statements</h5>
+    <h5 class="feature" id="NoReportedStatements">There are no reported statements</h5>
+    <h5 *ngIf="statementsReported" class="feature" id="ReportedStatements">There are reported statements</h5>
   </div>
-  <div *ngIf="postType=='goals'">
+  <div *ngIf="postType=='goals'" id="GoalsSegment">
     <br>
-    <h5 class="feature">There are no reported goals</h5>
+    <h5 class="feature" id="NoReportedGoals">There are no reported goals</h5>
+    <h5 *ngIf="goalsReported" class="feature" id="ReportedGoals">There are reported goals</h5>
   </div>
 </ion-content>

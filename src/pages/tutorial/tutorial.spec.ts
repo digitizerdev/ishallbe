@@ -74,7 +74,7 @@ describe('TutorialPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof TutorialPage).toBe(true);
     });
 
