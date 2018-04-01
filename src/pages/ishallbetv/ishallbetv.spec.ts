@@ -94,11 +94,11 @@ describe('IshallbetvPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof IshallbetvPage).toBe(true);
     });
 
-    fit('should display pushAboutPageIcon', () => {
+    it('should display pushAboutPageIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#pushAboutPageIcon'));
@@ -106,7 +106,7 @@ describe('IshallbetvPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display motivional monday video archive', () => {
+    it('should display motivional monday video archive', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#Videos'));

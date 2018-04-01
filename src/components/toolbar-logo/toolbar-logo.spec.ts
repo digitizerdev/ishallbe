@@ -2,7 +2,7 @@ import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { IonicModule, Platform, Nav } from 'ionic-angular';
+import { IonicModule, Platform, Nav, NavController } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -25,6 +25,7 @@ describe('ToolbarLogoComponent', () => {
     let component;
     let platform: Platform;
     let nav: Nav;
+    let navCtrl: NavController;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -45,6 +46,7 @@ describe('ToolbarLogoComponent', () => {
             providers: [
                 { provide: Platform, useClass: PlatformMock },
                 { provide: Nav, useClass: NavMock },
+                { provide: NavController, useClass: NavMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -57,6 +59,7 @@ describe('ToolbarLogoComponent', () => {
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(Nav);
+        navCtrl = TestBed.get(NavController);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -67,6 +70,7 @@ describe('ToolbarLogoComponent', () => {
         component = null;
         platform = null;
         nav = null;
+        navCtrl = null;
         firebase = null;
         afa = null;
         afs = null;

@@ -94,11 +94,11 @@ describe('HomePage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof HomePage).toBe(true);
     });
 
-    fit('should display ToolbarLogoComponent', () => {
+    it('should display ToolbarLogoComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('toolbar-logo'));
@@ -106,7 +106,7 @@ describe('HomePage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display pushNotificationsPageIcon', () => {
+    it('should display pushNotificationsPageIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#pushNotificationsPageIcon'));
@@ -114,7 +114,7 @@ describe('HomePage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display pins slider', () => {
+    it('should display pins slider', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#PinsSlider'));
@@ -122,7 +122,7 @@ describe('HomePage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display statements scroller if selected', () => {
+    it('should display statements scroller if selected', () => {
         component.postSegment = 'statements';
         fixture.detectChanges();
         let de: DebugElement;
@@ -132,7 +132,7 @@ describe('HomePage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display goals scroller if selected', () => {
+    it('should display goals scroller if selected', () => {
         component.postSegment = 'goals';
         fixture.detectChanges();
         let de: DebugElement;
@@ -142,7 +142,7 @@ describe('HomePage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display FooterComponent', () => {
+    it('should display FooterComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('footer'));

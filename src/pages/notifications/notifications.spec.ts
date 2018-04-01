@@ -82,11 +82,11 @@ describe('NotificationsPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof NotificationsPage).toBe(true);
     });
 
-    fit('should display new notifications', () => {
+    it('should display new notifications', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#NewNotifications'));
@@ -94,7 +94,7 @@ describe('NotificationsPage', () => {
         expect(el).toContain('New Notifications');
     });
 
-    fit('should display earlier notifications', () => {
+    it('should display earlier notifications', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#EarlierNotifications'));

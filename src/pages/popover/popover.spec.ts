@@ -94,11 +94,11 @@ describe('PopoverPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof PopoverPage).toBe(true);
     });
 
-    fit('should display makePublicButton if mine and private', () => {
+    it('should display makePublicButton if mine and private', () => {
         component.mine = true;
         component.private = true;
         fixture.detectChanges();
@@ -109,7 +109,7 @@ describe('PopoverPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display makePrivateButton if mine and public', () => {
+    it('should display makePrivateButton if mine and public', () => {
         component.mine = true;
         component.private = false;
         fixture.detectChanges();
@@ -120,7 +120,7 @@ describe('PopoverPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display deletePostButton if my post', () => {
+    it('should display deletePostButton if my post', () => {
         component.mine = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -130,7 +130,7 @@ describe('PopoverPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display reportPostButton if not my post', () => {
+    it('should display reportPostButton if not my post', () => {
         component.mine = false;
         fixture.detectChanges();
         let de: DebugElement;

@@ -87,14 +87,6 @@ describe('AccountPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display HeaderComponent', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('header'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
     it('should display account email', () => {
         let de: DebugElement;
         let el: HTMLElement;
