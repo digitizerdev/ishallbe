@@ -1,9 +1,12 @@
 <ion-header no-border>
   <ion-navbar>
     <toolbar-logo></toolbar-logo>
-    <ion-buttons *ngIf="mine" end>
-      <button ion-button icon-only (click)="removePost()">
-        <ion-icon color="primary" name="ios-close"></ion-icon>
+    <ion-buttons end>
+      <button *ngIf="post && collection !== 'pins'" ion-button icon-only end (click)="presentPostMenu($event)">
+        <ion-icon name="more" color="primary"></ion-icon>
+      </button>
+      <button *ngIf="mine && collection == 'pins'" ion-button icon-only end (click)="removePost()">
+        <ion-icon name="ios-close" color="primary"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -35,4 +38,38 @@
   </div>
   <h5 *ngIf="collection !== 'pins'" padding-left padding-right>{{post?.description}}</h5>
   <post-footer *ngIf="post" [postDoc]="post"></post-footer>
+  <div *ngFor="let comment of comments" class="comment-wrapper rlt" (hold)="onCommentHold($event, $index, comment)">
+    <div>
+      <img class="profile-picture left" src="{{ comment?.face }}" />
+      <div class="comment-bubble left">
+        <div class="comment">
+          {{ comment.description }}
+          <img src="{{ comment?.image }}" class="block" *ngIf="comment.image" alt="" />
+        </div>
+        <div class="comment-detail">
+          <span class="comment-time">{{ comment.displayTimestamp }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="cf"></div>
+    <br>
+  </div>
 </ion-content>
+<ion-footer class="comment-footer" id="CommentBar" no-border>
+  <ion-toolbar no-border>
+    <ion-buttons start>
+      <button ion-button>
+        <ion-icon padding-right name="camera" color="primary"></ion-icon>
+      </button>
+      <button ion-button>
+        <ion-icon padding-right name="microphone" color="primary"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-input ion-text [(ngModel)]="newComment" placeholder="Write your comment"></ion-input>
+    <ion-buttons end>
+      <button ion-button (click)="sendComment()">
+        <ion-icon name="send" color="primary"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

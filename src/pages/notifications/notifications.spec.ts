@@ -82,9 +82,24 @@ describe('NotificationsPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof NotificationsPage).toBe(true);
     });
 
+    fit('should display new notifications', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#NewNotifications'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('New Notifications');
+    });
+
+    fit('should display earlier notifications', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#EarlierNotifications'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('Earlier Notifications');
+    });
 });
 

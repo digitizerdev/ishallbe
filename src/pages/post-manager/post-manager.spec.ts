@@ -79,12 +79,12 @@ describe('PostManagerPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof PostManagerPage).toBe(true);
     });
 
 
-    fit('should display PinsSegment if postType is pins', () => {
+    it('should display PinsSegment if postType is pins', () => {
         component.postType = 'pins';
         fixture.detectChanges();
         let de: DebugElement;
@@ -94,7 +94,7 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display PinsCalendar if pins are loaded', () => {
+    it('should display PinsCalendar if pins are loaded', () => {
         component.postType = 'pins';
         component.pinsLoaded = true;
         fixture.detectChanges();
@@ -105,7 +105,7 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display CreatePinButton if selectedDay does not already have a pin', () => {
+    it('should display CreatePinButton if selectedDay does not already have a pin', () => {
         component.postType = 'pins';
         component.pinCreated = false;
         fixture.detectChanges();
@@ -116,7 +116,7 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display UpdatePinButton if selectedDay already has a pin', () => {
+    it('should display UpdatePinButton if selectedDay already has a pin', () => {
         component.postType = 'pins';
         component.pinCreated = true;
         fixture.detectChanges();
@@ -127,7 +127,7 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display StatementsSegment if postType is statements', () => {
+    it('should display StatementsSegment if postType is statements', () => {
         component.postType = 'statements';
         fixture.detectChanges();
         let de: DebugElement;
@@ -137,7 +137,7 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display no reported statements if there are no reported statements', () => {
+    it('should display no reported statements if there are no reported statements', () => {
         component.postType = 'statements';
         fixture.detectChanges();
         let de: DebugElement;
@@ -147,7 +147,7 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display reported statements if there are reported statements', () => {
+    it('should display reported statements if there are reported statements', () => {
         component.postType = 'statements';
         component.statementsReported = true;
         fixture.detectChanges();
@@ -158,7 +158,7 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display no reported goals if there are no reported goals', () => {
+    it('should display no reported goals if there are no reported goals', () => {
         component.postType = 'goals';
         fixture.detectChanges();
         let de: DebugElement;
@@ -168,7 +168,7 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display reported goals if there are reported goals', () => {
+    it('should display reported goals if there are reported goals', () => {
         component.postType = 'goals';
         component.goalsReported = true;
         fixture.detectChanges();

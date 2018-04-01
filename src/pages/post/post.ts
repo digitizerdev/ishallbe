@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, PopoverController } from 'ionic-angular';
 
 import moment from 'moment';
 import { Observable } from 'rxjs';
 
+import { PopoverPage } from '../../pages/popover/popover';
+
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+
+import { mockComments } from '../../../test-data/comments/mocks';
 
 @IonicPage()
 @Component({
@@ -18,12 +22,14 @@ export class PostPage {
   postDoc: any;
   post: any;
   video: any;
+  comments: any;
   mine = false;
   deleted = false;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
+    private popoverCtrl: PopoverController,
     private alertCtrl: AlertController,
     private firebase: FirebaseProvider
   ) {
@@ -36,6 +42,7 @@ export class PostPage {
     this.collection = this.navParams.get("type");
     console.log("Post type is " + this.collection);
     this.loadPost();
+    this.loadComments();
   }
 
   loadPost() {
@@ -54,6 +61,18 @@ export class PostPage {
         this.post = post;
       }
     });
+  }
+
+  loadComments() {
+    console.log("Loading Comments");
+    console.log(mockComments);
+    this.comments = [];
+    mockComments.forEach((comment) => {
+      console.log("Pushing Comment");
+      console.log(comment);
+      this.comments.push(comment);
+    });
+    console.log(this.comments);
   }
 
   removePost() {
@@ -95,6 +114,14 @@ export class PostPage {
     this.deleted = true;
     this.firebase.afs.doc(this.postPath).delete().then(() => {
       this.navCtrl.pop();
+    });
+  }
+
+  presentPostMenu(myEvent) {
+    console.log("Presenting Popover Page");
+    let popover = this.popoverCtrl.create(PopoverPage, this.post);
+    popover.present({
+      ev: myEvent
     });
   }
 }

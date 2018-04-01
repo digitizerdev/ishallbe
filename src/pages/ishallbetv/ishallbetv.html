@@ -4,19 +4,15 @@
       <ion-icon color="primary" name="menu"></ion-icon>
     </button>
     <ion-buttons end>
-      <button (click)="pushAboutPage()" ion-button icon-only>
+      <button (click)="pushAboutPage()" id="pushAboutPageIcon" ion-button icon-only>
         <ion-icon color="primary" name="information-circle"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content no-border class="ishallbetv-content">
-  <ion-refresher (ionRefresh)="refreshPage($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="dots" refreshingText="Refeshing">
-    </ion-refresher-content>
-  </ion-refresher>
-  <div class="images">
-    <div *ngFor="let video of videos" (click)="openAffirmation(video)" text-center padding>
+  <div class="images" id="Videos">
+    <div *ngFor="let video of videos" (click)="openPin(video)" text-center padding>
       <h4 color="primary" ion-text><b>{{ video.displayAffirmationDate }}</b></h4>
       <img class="one-image" src="{{ video.url }}">
     </div>

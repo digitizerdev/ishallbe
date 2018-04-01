@@ -76,11 +76,11 @@ describe('UserManagerPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof UserManagerPage).toBe(true);
     });
 
-    fit('should display search bar', () => {
+    it('should display search bar', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#UserSearchbar'));
@@ -88,7 +88,7 @@ describe('UserManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display NoReportedUsers if no reported users', () => {
+    it('should display NoReportedUsers if no reported users', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#NoReportedUsers'));
@@ -96,7 +96,7 @@ describe('UserManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display ReportedUsers if reported users', () => {
+    it('should display ReportedUsers if reported users', () => {
         component.usersReported = true;
         fixture.detectChanges();
         let de: DebugElement;

@@ -12,7 +12,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
-import { HomePage } from '../home/home';
+import { IshallbetvPage } from '../ishallbetv/ishallbetv';
 import { ComponentsModule } from '../../components/components.module';
 
 import { } from 'jasmine';
@@ -26,7 +26,7 @@ import {
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
-describe('HomePage', () => {
+describe('IshallbetvPage', () => {
     let fixture;
     let component;
     let platform: Platform;
@@ -46,9 +46,9 @@ describe('HomePage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [HomePage],
+            declarations: [IshallbetvPage],
             imports: [
-                IonicModule.forRoot(HomePage),
+                IonicModule.forRoot(IshallbetvPage),
                 AngularFireModule.initializeApp(environment.firebase),
                 ComponentsModule
             ],
@@ -69,7 +69,7 @@ describe('HomePage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(HomePage);
+        fixture = TestBed.createComponent(IshallbetvPage);
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
@@ -95,57 +95,21 @@ describe('HomePage', () => {
     });
 
     fit('should be created', () => {
-        expect(component instanceof HomePage).toBe(true);
+        expect(component instanceof IshallbetvPage).toBe(true);
     });
 
-    fit('should display ToolbarLogoComponent', () => {
+    fit('should display pushAboutPageIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('toolbar-logo'));
+        de = fixture.debugElement.query(By.css('#pushAboutPageIcon'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
 
-    fit('should display pushNotificationsPageIcon', () => {
+    fit('should display motivional monday video archive', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#pushNotificationsPageIcon'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    fit('should display pins slider', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#PinsSlider'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    fit('should display statements scroller if selected', () => {
-        component.postSegment = 'statements';
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#StatementsScroller'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    fit('should display goals scroller if selected', () => {
-        component.postSegment = 'goals';
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#GoalsScroller'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    fit('should display FooterComponent', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('footer'));
+        de = fixture.debugElement.query(By.css('#Videos'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });

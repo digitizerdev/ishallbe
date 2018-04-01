@@ -5,7 +5,7 @@
     </button>
     <toolbar-logo></toolbar-logo>
     <ion-buttons end>
-      <button ion-button icon-only (click)="showNotifications()">
+      <button (click)="showNotifications()" id="pushNotificationsPageIcon" ion-button icon-only>
         <ion-icon color="primary" name="notifications"></ion-icon>
       </button>
     </ion-buttons>
@@ -16,7 +16,7 @@
     <ion-refresher-content refreshingSpinner="dots" refreshingText="Refeshing" no-border>
     </ion-refresher-content>
   </ion-refresher>
-  <ion-slides class="pins-slider" [speed]="2000">
+  <ion-slides class="pins-slider" id="PinsSlider" [speed]="2000">
     <ion-slide *ngFor="let pin of pins">
       <pin [post]="pin"></pin>
     </ion-slide>
@@ -31,12 +31,12 @@
       </ion-segment-button>
       <br>
     </ion-segment>
-    <div *ngIf="postSegment=='statements'">
+    <div *ngIf="postSegment=='statements'" id="StatementsScroller">
       <ion-card *ngFor="let statement of statements">
         <statement [post]="statement"></statement>
       </ion-card>
     </div>
-    <div *ngIf="postSegment=='goals'">
+    <div *ngIf="postSegment=='goals'" id="GoalsScroller">
       <ion-card *ngFor="let goal of goals">
         <goal [post]="goal"></goal>
       </ion-card>

@@ -1,6 +1,7 @@
 import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { IonicModule, Platform, NavController, NavParams } from 'ionic-angular';
 
@@ -11,7 +12,10 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
 import { PostPage } from '../post/post';
+
 import { ComponentsModule } from '../../components/components.module';
+
+import { YoutubePipe } from '../../pipes/youtube/youtube';
 
 import { } from 'jasmine';
 
@@ -31,16 +35,17 @@ describe('PostPage', () => {
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
+    let pipe: YoutubePipe;
+    let dom: DomSanitizer;
 
     const angularFireAuthStub = {
     };
 
     const angularFireDataStub = {
     }
-
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [PostPage],
+            declarations: [PostPage, YoutubePipe],
             imports: [
                 IonicModule.forRoot(PostPage),
                 AngularFireModule.initializeApp(environment.firebase),
@@ -54,6 +59,9 @@ describe('PostPage', () => {
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
             ],
+            schemas: [
+                CUSTOM_ELEMENTS_SCHEMA
+            ]
         }).compileComponents();
     }));
 
@@ -66,6 +74,7 @@ describe('PostPage', () => {
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
+        pipe = new YoutubePipe(dom);
     });
 
     afterEach(() => {
@@ -74,14 +83,17 @@ describe('PostPage', () => {
         platform = null;
         nav = null;
         navParams = null;
+        pipe = null;
         firebase = null;
         afa = null;
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof PostPage).toBe(true);
     });
+
+    fit('should dipslay remove')
 
 });
 
