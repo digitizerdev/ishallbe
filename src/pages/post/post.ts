@@ -25,6 +25,7 @@ export class PostPage {
   comments: any;
   mine = false;
   deleted = false;
+  audio = false;
 
   constructor(
     private navCtrl: NavController,
@@ -58,6 +59,7 @@ export class PostPage {
         post.displayTimestamp = moment(date).fromNow();
         if (post.uid == this.firebase.afa.auth.currentUser.uid) this.mine = true;
         if (post.day == 'Monday') this.video = post.link;
+        if (this.collection == 'goals' && post.url) this.audio = true;
         this.post = post;
       }
     });

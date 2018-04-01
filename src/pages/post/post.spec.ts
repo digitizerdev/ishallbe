@@ -3,7 +3,9 @@ import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
 
-import { IonicModule, Platform, NavController, NavParams } from 'ionic-angular';
+import { IonicModule, Platform, NavController, NavParams, ViewController } from 'ionic-angular';
+import { Media } from '@ionic-native/media';
+import { FileTransfer } from '@ionic-native/file-transfer';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -17,11 +19,17 @@ import { ComponentsModule } from '../../components/components.module';
 
 import { YoutubePipe } from '../../pipes/youtube/youtube';
 
+import { mockStatements } from '../../../test-data/statements/mocks';
+import { mockComments } from '../../../test-data/comments/mocks';
+
+
 import { } from 'jasmine';
 
 import {
     PlatformMock,
     NavMock,
+    MediaMock,
+    FileTransferMock,
     FirebaseProviderMock,
     NavParamsMock,
 } from '../../../test-config/mocks-ionic';
@@ -32,6 +40,9 @@ describe('PostPage', () => {
     let platform: Platform;
     let nav: NavController;
     let navParams: NavParams;
+    let viewCtrl: ViewController;
+    let media: Media;
+    let fileTransfer: FileTransfer;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -39,10 +50,11 @@ describe('PostPage', () => {
     let dom: DomSanitizer;
 
     const angularFireAuthStub = {
-    };
+    }
 
     const angularFireDataStub = {
     }
+
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [PostPage, YoutubePipe],
@@ -55,6 +67,8 @@ describe('PostPage', () => {
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
                 { provide: NavParams, useClass: NavParamsMock },
+                { provide: Media, useClass: MediaMock },
+                { provide: FileTransfer, useClass: FileTransfer },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -71,6 +85,8 @@ describe('PostPage', () => {
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
         navParams = TestBed.get(NavParams);
+        media = TestBed.get(Media);
+        fileTransfer = TestBed.get(FileTransfer);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -83,6 +99,8 @@ describe('PostPage', () => {
         platform = null;
         nav = null;
         navParams = null;
+        media = null;
+        fileTransfer = null;
         pipe = null;
         firebase = null;
         afa = null;
@@ -93,7 +111,115 @@ describe('PostPage', () => {
         expect(component instanceof PostPage).toBe(true);
     });
 
-    fit('should dipslay remove')
+    fit('should dipslay presentPostMenuButton if collection is not pins', () => {
+        component.collection = 'statements';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#presentPostMenuButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
 
+    fit('should display deletePostButton if mine and collection is pins', () => {
+        component.collection = 'pins';
+        component.mine = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#deletePostButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display PostHeaderComponent if collection is not pins', () => {
+        component.collection = 'goals';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('post-header'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display due date if collection is goals', () => {
+        component.collection = 'goals';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#DueDate'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display AudioPlayerComponent if collection is goals and audio', () => {
+        component.collection = 'goals';
+        component.audio = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('audio-player'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display PinHeader if collection is pins', () => {
+        component.collection = 'pins';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#PinHeader'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display iframe if collection if video', () => {
+        component.video = "https://google.com"
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('iframe'));
+        el = de.nativeElement.src;
+        expect(el).toBeDefined();
+    });
+
+    fit('should display description if collection is not pins', () => {
+        component.collection = 'goals';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#NonPinDescription'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+    
+    fit('should display comments if comments', () => {
+        component.comments = mockComments;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#Comments'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display comment bar', () => {
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#CommentBar'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
 });
 

@@ -2,19 +2,19 @@
   <ion-navbar>
     <toolbar-logo></toolbar-logo>
     <ion-buttons end>
-      <button *ngIf="post && collection !== 'pins'" ion-button icon-only end (click)="presentPostMenu($event)">
+      <button *ngIf="collection !== 'pins'" ion-button icon-only end (click)="presentPostMenu($event)" id="presentPostMenuButton">
         <ion-icon name="more" color="primary"></ion-icon>
       </button>
-      <button *ngIf="mine && collection == 'pins'" ion-button icon-only end (click)="removePost()">
+      <button *ngIf="mine && collection == 'pins'" id="deletePostButton" ion-button icon-only end (click)="removePost()">
         <ion-icon name="ios-close" color="primary"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <post-header *ngIf="post && collection !== 'pins'" [postDoc]="post"></post-header>
+  <post-header *ngIf="collection !== 'pins'" [postDoc]="post"></post-header>
   <img *ngIf="collection == 'statements' && post?.url" src="{{post?.url}}">
-  <ion-row *ngIf="collection == 'goals'" text-center>
+  <ion-row *ngIf="collection == 'goals'" id="DueDate" text-center>
     <ion-col text-center>
       <h5>
         <ion-icon name="alarm" color="secondary"></ion-icon>
@@ -22,49 +22,43 @@
       </h5>
     </ion-col>
   </ion-row>
-  <ion-row *ngIf="collection == 'goals' && post?.url">
+  <ion-row *ngIf="audio">
     <ion-col text-center>
       <audio-player [postDoc]="post"></audio-player>
     </ion-col>
   </ion-row>
-  <div *ngIf="collection == 'pins'" text-center>
+  <div *ngIf="collection == 'pins'" id="PinHeader" text-center>
     <h2 color="primary" ion-text>
       <b>{{post?.title}}</b>
     </h2>
     <h5 class="post-description" text-left>{{post?.description}}</h5>
   </div>
   <div text-center>
-    <iframe *ngIf="post?.day == 'Monday'" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
+    <iframe *ngIf="video" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
   </div>
-  <h5 *ngIf="collection !== 'pins'" padding-left padding-right>{{post?.description}}</h5>
+  <h5 *ngIf="collection !== 'pins'" id="NonPinDescription" padding-left padding-right>{{post?.description}}</h5>
   <post-footer *ngIf="post" [postDoc]="post"></post-footer>
-  <div *ngFor="let comment of comments" class="comment-wrapper rlt" (hold)="onCommentHold($event, $index, comment)">
-    <div>
-      <img class="profile-picture left" src="{{ comment?.face }}" />
-      <div class="comment-bubble left">
-        <div class="comment">
-          {{ comment.description }}
-          <img src="{{ comment?.image }}" class="block" *ngIf="comment.image" alt="" />
-        </div>
-        <div class="comment-detail">
-          <span class="comment-time">{{ comment.displayTimestamp }}</span>
+  <ion-row *ngIf="comments" class="post-comments" id="Comments" padding-top padding-bottom>
+    <div *ngFor="let comment of comments" class="comment-wrapper rlt" (hold)="onCommentHold($event, $index, comment)">
+      <div>
+        <img class="profile-picture left" src="{{ comment?.face }}" />
+        <div class="comment-bubble left">
+          <div class="comment">
+            {{ comment.description }}
+            <img src="{{ comment?.image }}" class="block" *ngIf="comment.image" alt="" />
+          </div>
+          <div class="comment-detail">
+            <span class="comment-time">{{ comment.displayTimestamp }}</span>
+          </div>
         </div>
       </div>
+      <div class="cf">
+      </div>
     </div>
-    <div class="cf"></div>
-    <br>
-  </div>
+  </ion-row>
 </ion-content>
 <ion-footer class="comment-footer" id="CommentBar" no-border>
   <ion-toolbar no-border>
-    <ion-buttons start>
-      <button ion-button>
-        <ion-icon padding-right name="camera" color="primary"></ion-icon>
-      </button>
-      <button ion-button>
-        <ion-icon padding-right name="microphone" color="primary"></ion-icon>
-      </button>
-    </ion-buttons>
     <ion-input ion-text [(ngModel)]="newComment" placeholder="Write your comment"></ion-input>
     <ion-buttons end>
       <button ion-button (click)="sendComment()">

@@ -288,4 +288,3 @@ export class FCMMock extends FCM {
     });
   }
 }
-

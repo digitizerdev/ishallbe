@@ -27,6 +27,9 @@ page-post {
         font-size: 32px;
         vertical-align: middle;
     }
+    .post-comments {
+        background-color: color($colors, primary);
+    }
     .comment {
         font-size: 14px;
     }
