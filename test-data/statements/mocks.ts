@@ -39,7 +39,7 @@ export const statement3 = {
   description: "We stand on the shoulders of giants. Let's not let them down!",
   commentCount: 30,
   likeCount: 13,
-  reported: false,
+  reported: true,
   private: false,
   url: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801091208?alt=media&token=67601464-10a2-4878-a951-b70c39a17a7e",
   filename: "20180301083200",

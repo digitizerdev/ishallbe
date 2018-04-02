@@ -23,6 +23,8 @@ export class PostManagerPage {
     currentDate: this.selectedDay
   }
   pins: any;
+  statements: any;
+  goals: any;
   reportedStatements: any;
   reportedGoals: any;
   postType: string;
@@ -32,6 +34,8 @@ export class PostManagerPage {
   pinsLoaded = false;
   statementsReported = false;
   goalsReported = false;
+  statementsLoaded = false;
+  goalsLoaded = false;
   
   constructor(
     private navCtrl: NavController,
@@ -56,6 +60,8 @@ export class PostManagerPage {
         this.pinsLoaded = true;
       });
     });
+    this.loadGoals();
+    this.loadStatements();
   }
 
   onViewTitleChanged(title) {
@@ -84,6 +90,56 @@ export class PostManagerPage {
         observer.next(pins);
       });
     });
+  }
+
+  loadStatements() {
+    let statements = this.firebase.afs.collection('statements', ref =>
+      ref.where('reported', '==', true)
+      .orderBy('timestamp', 'desc'));
+    statements.valueChanges().subscribe((statements) => {
+      console.log("Got Reported Statements");
+      console.log(statements);
+      if (statements.length > 0) this.statementsReported = true;
+      if (!this.statementsLoaded)
+        this.setStatements(statements);
+    });
+  }
+
+  setStatements(statements) {
+    this.statements = [];
+    statements.forEach((statement) => {
+      let date = moment.unix(statement.timestamp);
+      statement.displayTimestamp = moment(date).fromNow();
+      this.statements.push(statement);
+    });
+    this.statementsLoaded = true;
+  }
+
+  loadGoals() {
+    this.goals = [];
+    let goals = this.firebase.afs.collection('goals', ref =>
+      ref.where('reported', '==', true).
+        orderBy('timestamp', 'desc'));
+    goals.valueChanges().subscribe((goals) => {
+      console.log("Got Reported Goals");
+      console.log(goals);
+      if (goals.length > 0) this.goalsReported = true;
+      if (!this.goalsLoaded)
+        this.setGoals(goals);
+    });
+  }
+
+  setGoals(goals) {
+    goals.forEach((goal) => {
+      if (!goal.complete) {
+        let dueDate = moment.unix(goal.dueDate);
+        goal.displayDueDate = moment(dueDate).fromNow();
+        let timestamp = moment.unix(goal.timestamp);
+        goal.displayTimestamp = moment(timestamp).fromNow();
+        this.goals.push(goal);
+      }
+    });
+    this.goalsLoaded = true;
   }
 
   pushPinCreatorPage() {

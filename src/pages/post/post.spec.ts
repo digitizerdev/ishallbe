@@ -200,6 +200,14 @@ describe('PostPage', () => {
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
+
+    it('should display PostFooterComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('post-footer'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
     
     it('should display comments if comments', () => {
         component.comments = mockComments;

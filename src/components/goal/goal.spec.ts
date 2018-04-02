@@ -21,6 +21,7 @@ import {
     NavMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
+import { FileTransferObject } from '@ionic-native/file-transfer';
 
 describe('GoalComponent', () => {
     let fixture;
@@ -119,7 +120,9 @@ describe('GoalComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display PostFooterComponent', () => {
+    fit('should display PostFooterComponent', () => {
+        component.goal = mockGoals[0];
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('post-footer'));
@@ -127,4 +130,3 @@ describe('GoalComponent', () => {
         expect(el).toBeUndefined();
     });
 });
-

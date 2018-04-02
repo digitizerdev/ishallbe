@@ -10,7 +10,7 @@ import { PostPage } from '../../pages/post/post';
 })
 export class GoalComponent {
   @Input('post') goal;
-  
+
   constructor(
     private navCtrl: NavController
   ) {}

@@ -26,6 +26,8 @@ export class PostPage {
   mine = false;
   deleted = false;
   audio = false;
+  private = false;
+  reported = false;
 
   constructor(
     private navCtrl: NavController,
@@ -62,6 +64,8 @@ export class PostPage {
         if (post.uid == this.firebase.afa.auth.currentUser.uid) this.mine = true;
         if (post.day == 'Monday') this.video = post.link;
         if (this.collection == 'goals' && post.url) this.audio = true;
+        this.private = post.private;
+        this.reported = post.reported;
         this.post = post;
       }
     });

@@ -113,7 +113,10 @@ describe('StatementComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display PostFooterComponent', () => {
+    
+    fit('should display PostFooterComponent', () => {
+        component.statement = mockStatements[0];
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('post-footer'));

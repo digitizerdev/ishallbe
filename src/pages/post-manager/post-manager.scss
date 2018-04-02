@@ -32,4 +32,10 @@ page-post-manager {
         font-weight: bold;
         color: color($colors, primary) !important
     }
+    .posts-scroller {
+        background-color: color($colors, primary) !important;
+    }
+    .card {
+        border-radius: 15px;
+    }
 }

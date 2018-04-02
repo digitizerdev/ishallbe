@@ -45,7 +45,7 @@ export const goal3 = {
   description: "I shall enthusiatically engage every professional situation",
   commentCount: 0,
   likeCount: 0,
-  reported: false,
+  reported: true,
   private: false,
   complete: false,
   url: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801091208?alt=media&token=67601464-10a2-4878-a951-b70c39a17a7e",

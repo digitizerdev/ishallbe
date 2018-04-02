@@ -43,7 +43,13 @@
   </div>
   <div *ngIf="postType=='goals'" id="GoalsSegment">
     <br>
-    <h5 class="feature" id="NoReportedGoals">There are no reported goals</h5>
-    <h5 *ngIf="goalsReported" class="feature" id="ReportedGoals">There are reported goals</h5>
+    <h5 *ngIf="!goalsReported" class="feature" id="NoReportedGoals">There are no reported goals</h5>
+    <div *ngIf="goalsReported" class="posts-scroller" id="ReportedGoals">
+      <br>
+      <ion-card *ngFor="let goal of goals">
+        <goal [post]="goal"></goal>
+      </ion-card>
+      <br>
+    </div>
   </div>
 </ion-content>

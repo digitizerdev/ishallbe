@@ -45,8 +45,7 @@ export class PopoverPage {
     this.confirm(false).subscribe((confirmed) => {
       if (confirmed) {
         this.viewCtrl.dismiss();
-        let reportedPath = "reported/" + this.post.id;
-        this.firebase.afs.doc(reportedPath).update({ reported: true });
+        this.firebase.afs.doc(this.postPath).update({ reported: true });
       }
     });
   }
