@@ -90,7 +90,10 @@ export class FirebaseProvider {
 
   registerUser() {
     console.log("Registering User");
-    if (this.socialAuthentication) this.signupUser();
+    console.log("Social Authentication: " + this.socialAuthentication)
+    if (this.socialAuthentication) {
+      this.signupUser();
+    }
     else {
       this.createNonSocialUser().then(() => {
         console.log("Creating non social user");
