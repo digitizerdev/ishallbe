@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, NavController } from 'ionic-angular';
+import { IonicPage, NavParams, NavController, AlertController, Events } from 'ionic-angular';
+
+import { Observable } from 'rxjs';
 
 import { StartupPage } from '../startup/startup';
 
@@ -16,10 +18,13 @@ export class PopoverPage {
   postPath: any;
   private = false;
   mine = false;
+  deleting = false;
 
   constructor(
     private navCtrl: NavController,
+    private alertCtrl: AlertController,
     private navParams: NavParams,
+    private events: Events,
     private firebase: FirebaseProvider
   ) {
   }
@@ -34,30 +39,60 @@ export class PopoverPage {
     if (this.post.uid == this.firebase.user.uid) this.mine = true;
   }
 
+  reportPost() {
+    console.log("Reporting Post");
+    this.confirm(false).subscribe((confirmed) => {
+      if (confirmed) {
+        let reportedPath = "reported/" + this.post.id;
+        this.firebase.afs.doc(reportedPath).update({reported: true});
+      }
+    });
+  }
+
   togglePrivacy() {
     console.log("Toggling Privacy");
     console.log("Post private: " + this.private);
     if (!this.private) this.private = true;
     if (this.private) this.private = false;
-    this.firebase.afs.doc(this.postPath).update({ private: this.private}).then(() => {
-      this.navCtrl.pop();
+    this.firebase.afs.doc(this.postPath).update({ private: this.private }).then(() => {
+      this.navCtrl.setRoot(StartupPage)
     });
   }
 
   deletePost() {
     console.log("Deleting Post");
-    this.firebase.afs.doc(this.postPath).delete().then(() => {
-      this.navCtrl.pop();
+    this.deleting = true;
+    this.confirm(this.deleting).subscribe((confirmed) => {
+      if (confirmed)
+        this.events.publish('post deleted', this.post);
     });
   }
 
-  reportPost() {
-    console.log("Reporting Post");
-    let reportedPath = "reported/" + this.post.id;
-    this.firebase.afs.doc(reportedPath).set(this.post).then(() => {
-      this.firebase.afs.doc(this.postPath).delete().then(() => {
-        this.navCtrl.pop();
+  confirm(deleting) {
+    console.log("Confirming");
+    return Observable.create((observer: any) => {
+      let message = "Are you sure you want to delete this post?"
+      if (!deleting) message = "Are you sure you report this post?"
+      let alert = this.alertCtrl.create({
+        title: 'Hold It!',
+        message: message,
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+              observer.next(false);
+            }
+          },
+          {
+            text: 'Confirm',
+            handler: () => {
+              observer.next(true);
+            }
+          }
+        ]
       });
+      alert.present();
     });
   }
 }

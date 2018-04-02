@@ -32,6 +32,7 @@ export class FirebaseProvider {
       this.loaded = true;
       this.checkForSession();
     }
+    this.listenToPostEvents();
   }
 
   checkForSession() {
@@ -191,5 +192,16 @@ export class FirebaseProvider {
     console.log("Setting User");
     let path = '/users/' + this.afa.auth.currentUser.uid;
     return this.afs.doc(path).set(this.user);
+  }
+
+  listenToPostEvents() {
+    console.log("Listening to post events");
+    this.events.subscribe('post deleted', (post) => {
+      console.log("Post Deleted");
+      console.log(post);
+      let postPath = post.collection + "/" + post.id;
+      console.log("Post path is " + postPath);
+      this.afs.doc(postPath).delete();
+    });
   }
 }

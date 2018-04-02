@@ -116,6 +116,7 @@ export class StatementCreatorPage {
         description: form.description,
         commentCount: 0,
         likeCount: 0,
+        reported: false,
         private: this.private,
         url: this.statementImageUrl,
         filename: this.statementName,

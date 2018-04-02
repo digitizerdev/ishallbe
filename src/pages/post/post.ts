@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, PopoverController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, PopoverController, Events } from 'ionic-angular';
 
 import moment from 'moment';
 import { Observable } from 'rxjs';
@@ -32,6 +32,7 @@ export class PostPage {
     private navParams: NavParams,
     private popoverCtrl: PopoverController,
     private alertCtrl: AlertController,
+    private events: Events,
     private firebase: FirebaseProvider
   ) {
   }
@@ -44,6 +45,7 @@ export class PostPage {
     console.log("Post type is " + this.collection);
     this.loadPost();
     this.loadComments();
+    this.listenToPostDeletion();
   }
 
   loadPost() {
@@ -124,6 +126,13 @@ export class PostPage {
     let popover = this.popoverCtrl.create(PopoverPage, this.post);
     popover.present({
       ev: myEvent
+    });
+  }
+
+  listenToPostDeletion() {
+    console.log("Post Deleted");
+    this.events.subscribe('post deleted', (post) => {
+      this.navCtrl.pop();
     });
   }
 }

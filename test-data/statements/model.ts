@@ -4,6 +4,7 @@ export interface Statement {
   description: string,
   commentCount: number,
   likeCount: number,
+  reported: boolean,
   private: boolean,
   url: string,
   filename: string,

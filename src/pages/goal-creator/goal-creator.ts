@@ -99,6 +99,7 @@ export class GoalCreatorPage {
         description: form.description,
         commentCount: 0,
         likeCount: 0,
+        reported: false,
         private: this.private,
         complete: false,
         url: this.audioUrl,

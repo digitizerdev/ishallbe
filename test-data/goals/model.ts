@@ -4,6 +4,7 @@ export interface Goal {
   description: string,
   commentCount: number,
   likeCount: number,
+  reported: boolean,
   private: boolean,
   complete: boolean,
   url: string,
