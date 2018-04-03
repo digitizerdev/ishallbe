@@ -12,27 +12,15 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <div *ngIf="postManagerMenu" text-center>
-    <ion-row>
-      <ion-col text-center>
-        <button *ngIf="mine && private" (click)="togglePrivacy()" id="makePublicButton" color="primary" ion-button round
-          strong>MAKE PUBLIC</button>
-      </ion-col>
-      <ion-col text-center>
-          <button *ngIf="mine && !private" (click)="togglePrivacy()" id="makePrivateButton" color="danger" ion-button round
-          strong>MAKE PRIVATE</button>
-      </ion-col>
-      <ion-col text-center>
-        <button *ngIf="mine || editor" (click)="deletePost()" id="deletePostButton" color="danger" ion-button round strong>DELETE</button>
-      </ion-col>
-      <ion-col text-center>
-        <button *ngIf="!mine && !reported" (click)="toggleReported()" id="reportPostButton" color="secondary" ion-button round strong>REPORT</button>
-      </ion-col>
-      <ion-col text-center>
-        <button *ngIf="editor && reported" (click)="toggleReported()" id="unreportPostButton" color="secondary" ion-button round
-          strong>UNREPORT</button>
-      </ion-col>
-    </ion-row>
+  <div *ngIf="postManagerMenu" class="post-menu" padding-bottom>
+    <button *ngIf="mine && private" (click)="togglePrivacy()" id="makePublicButton" color="primary" ion-button round strong float-right>MAKE PUBLIC</button>
+    <button *ngIf="mine && !private" (click)="togglePrivacy()" id="makePrivateButton" color="charcoal" ion-button round strong
+      float-right>MAKE PRIVATE</button>
+    <button *ngIf="mine || editor" (click)="deletePost()" id="deletePostButton" color="danger" ion-button round strong float-left>DELETE</button>
+    <button *ngIf="!mine && !reported" (click)="toggleReported()" id="reportPostButton" color="secondary" ion-button round strong
+      float-right>REPORT</button>
+    <button *ngIf="editor && reported" (click)="toggleReported()" id="unreportPostButton" color="secondary" ion-button round
+      strong float-right>UNREPORT</button>
   </div>
   <post-header *ngIf="collection !== 'pins'" [postDoc]="post"></post-header>
   <img *ngIf="collection == 'statements' && post?.url" src="{{post?.url}}">
@@ -60,17 +48,26 @@
   </div>
   <h5 *ngIf="collection !== 'pins'" id="NonPinDescription" padding-left padding-right>{{post?.description}}</h5>
   <post-footer *ngIf="loaded" [postDoc]="post"></post-footer>
-  <ion-row *ngIf="comments" class="post-comments" id="Comments" padding-top padding-bottom>
+  <ion-row *ngIf="commentsLoaded" class="post-comments" id="Comments">
     <div *ngFor="let comment of comments" class="comment-wrapper rlt" (hold)="onCommentHold($event, $index, comment)">
       <div>
         <img class="profile-picture left" src="{{ comment?.face }}" />
+        <span *ngIf="comment?.mine" class="delete-comment">
+          <ion-icon (click)="deleteComment(comment)" name="ios-close" color="steel" right></ion-icon>
+        </span>
         <div class="comment-bubble left">
           <div class="comment">
             {{ comment.description }}
             <img src="{{ comment?.image }}" class="block" *ngIf="comment.image" alt="" />
           </div>
           <div class="comment-detail">
-            <span class="comment-time">{{ comment.displayTimestamp }}</span>
+            <span class="comment-time">{{ comment.displayTimestamp }} </span>
+            <span *ngIf="comment?.likeCount > 1 || comment?.likeCount == 0" class="comment-like">{{ comment.likeCount }} Likes</span>
+            <span *ngIf="comment?.likeCount == 1" class="comment-like">{{ comment.likeCount }} Like</span>
+          </div>
+          <div text-right>
+            <ion-icon *ngIf="comment?.liked" (click)="removeCommentLike(comment)" name="ios-heart" color="secondary" right></ion-icon>
+            <ion-icon *ngIf="!comment?.liked" (click)="addCommentLike(comment)" name="ios-heart" right></ion-icon>
           </div>
         </div>
       </div>
@@ -80,10 +77,10 @@
   </ion-row>
 </ion-content>
 <ion-footer class="comment-footer" id="CommentBar" no-border>
-  <ion-toolbar no-border>
+  <ion-toolbar no-border color="white">
     <ion-input ion-text [(ngModel)]="newComment" placeholder="Write your comment"></ion-input>
     <ion-buttons end>
-      <button ion-button (click)="sendComment()">
+      <button ion-button (click)="sendComment(newComment)">
         <ion-icon name="send" color="primary"></ion-icon>
       </button>
     </ion-buttons>

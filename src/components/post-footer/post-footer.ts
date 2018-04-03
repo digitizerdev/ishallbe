@@ -112,6 +112,7 @@ export class PostFooterComponent {
         pin: postLike.pin,
         statement: postLike.statement,
         goal: postLike.goal,
+        comment: false,
         displayTimestamp: displayTimestamp,
         timestamp: timestamp,
         uid: this.firebase.user.uid,
@@ -144,12 +145,5 @@ export class PostFooterComponent {
         observer.next();
       })
     });
-  }
-
-  viewPost(id) {
-    this.navCtrl.push(PostPage, { 
-      id: id,
-      type: this.post.collection
-     });
   }
 }

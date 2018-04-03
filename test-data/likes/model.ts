@@ -4,6 +4,7 @@ export interface Like {
     pin: boolean,
     statement: boolean,
     goal: boolean,
+    comment: boolean,
     displayTimestamp: string,
     timestamp: number,
     uid: string,

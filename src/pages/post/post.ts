@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, PopoverController, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import moment from 'moment';
 import { Observable } from 'rxjs';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
-import { mockComments } from '../../../test-data/comments/mocks';
+import { Comment } from '../../../test-data/comments/model';
+import { Like } from '../../../test-data/likes/model';
 
 @IonicPage()
 @Component({
@@ -18,24 +19,25 @@ export class PostPage {
   collection: string;
   postPath: string;
   postDoc: any;
+  commentsCol: any;
+  comments: any;
   post: any;
   video: any;
-  comments: any;
+  newComment: string;
   postManagerMenu = false;
   mine = false;
   audio = false;
   reported = false;
   private = false;
   loaded = false;
+  commentsLoaded = false;
   editor = false;
   deleting = false;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private popoverCtrl: PopoverController,
     private alertCtrl: AlertController,
-    private events: Events,
     private firebase: FirebaseProvider
   ) {
   }
@@ -73,14 +75,47 @@ export class PostPage {
 
   loadComments() {
     console.log("Loading Comments");
-    console.log(mockComments);
     this.comments = [];
-    mockComments.forEach((comment) => {
-      console.log("Pushing Comment");
-      console.log(comment);
-      this.comments.push(comment);
+    let commentsPath = this.postPath + '/comments';
+    console.log("Comments path is " + commentsPath);
+    this.commentsCol = this.firebase.afs.collection(commentsPath, ref => ref.
+      orderBy('timestamp', 'asc'));
+    this.commentsCol.valueChanges().subscribe((comments) => {
+      this.comments = [];
+      console.log("Got comments");
+      console.log(comments);
+      this.setComments(comments);
     });
-    console.log(this.comments);
+  }
+
+  setComments(comments) {
+    comments.forEach((comment) => {
+      this.checkUserCommentLike(comment).subscribe((liked) => {
+        this.comments = [];
+        console.log("Liked: " + liked);
+        if (liked) comment.liked = true;
+        let date = moment.unix(comment.timestamp);
+        comment.displayTimestamp = moment(date).fromNow();
+        if (comment.uid == this.firebase.user.uid) comment.mine = true;
+        console.log("Pushing Comment");
+        console.log(comment);
+        this.comments.push(comment);
+      })
+    });
+    this.commentsLoaded = true;
+  }
+
+  checkUserCommentLike(comment) {
+    console.log("Checking User Comment Like");
+    return Observable.create((observer) => {
+      let commentLikePath = this.post.collection + "/" + this.post.id + "/comments/" + comment.id + "/likes/" + this.firebase.user.uid;
+      console.log("Comment like path is " + commentLikePath);
+      let commentLike = this.firebase.afs.doc(commentLikePath).valueChanges();
+      commentLike.subscribe((like) => {
+        if (like) observer.next(true);
+        else observer.next(false);
+      });
+    });
   }
   
   togglePostManagerMenu() {
@@ -145,5 +180,140 @@ export class PostPage {
       });
       alert.present();
     });
+  }
+
+  sendComment(comment) {
+    console.log("Sending Comment");
+    console.log(comment);
+    this.buildComment(comment).subscribe((comment) => {
+      this.setComment(comment);
+    });
+  }
+
+  buildComment(newComment) {
+    console.log("Building Comment");
+    return Observable.create((observer) => {
+      let commentId = this.firebase.afs.createId();
+      let pin = false;
+      let goal = false;
+      let statement = false;
+      if (this.collection == 'pins') pin = true;
+      if (this.collection == 'goals') goal = true;
+      if (this.collection == 'statements') statement = true;
+      let displayTimestamp = moment().format('MMM D YYYY');
+      let timestamp = moment().unix();
+      const comment: Comment = {
+        id: commentId,
+        pin: pin,
+        goal: goal,
+        statement: statement,
+        collectionId: this.post.id,
+        description: newComment,
+        liked: false,
+        likeCount: 0,
+        displayTimestamp: displayTimestamp,
+        timestamp: timestamp,
+        uid: this.firebase.user.uid,
+        name: this.firebase.user.name,
+        face: this.firebase.user.photo
+      }
+      console.log("Comment Built");
+      console.log(comment);
+      observer.next(comment);
+    });
+  }
+  
+  setComment(comment) {
+    console.log("Setting Comment");
+    let newCommentPath = this.post.collection + '/' + this.post.id + '/comments/' + comment.id;
+    console.log("New Comment Path is " + newCommentPath);
+    this.firebase.afs.doc(newCommentPath).set(comment);
+    this.addToCommentCount();
+    this.newComment = "";
+  }
+
+  addToCommentCount() {
+    console.log("Adding to comment count");
+    console.log("Post path is " + this.postPath);
+    let commentCount = ++this.post.commentCount;
+    console.log("New comment count is " + commentCount);
+    this.firebase.afs.doc(this.postPath).update({ commentCount: commentCount });
+  }
+
+  deleteComment(comment) {
+    console.log("Deleting Comment");
+    console.log(comment);
+    let commentPath = this.post.collection + "/" + this.post.id + "/comments/" + comment.id;
+    console.log("Comment path is " + commentPath);
+    this.firebase.afs.doc(commentPath).delete();
+    this.subtractFromCommentCount();
+  }
+
+  subtractFromCommentCount() {
+    console.log("Subtracting to comment count");
+    console.log("Post path is " + this.postPath);
+    let commentCount = --this.post.commentCount;
+    console.log("New comment count is " + commentCount);
+    this.firebase.afs.doc(this.postPath).update({ commentCount: commentCount });
+  }
+
+  addCommentLike(comment) {
+    console.log("Adding Comment Like");
+    comment.liked = true;
+    let commentLikePath = this.post.collection + "/" + this.post.id + "/comments/" + comment.id + "/likes/" + this.firebase.user.uid;
+    console.log("Comment like path is " + commentLikePath);
+    this.buildCommentLike().subscribe((like) => {
+      this.firebase.afs.doc(commentLikePath).set(like);
+      this.addToCommentLikeCount(comment);
+    });
+  }
+
+  buildCommentLike() {
+    return Observable.create((observer) => {
+      let displayTimestamp = moment().format('MMM D YYYY h:mmA');
+      let timestamp = moment().unix();
+      let id = this.firebase.afs.createId();
+      let like: Like = {
+        id: id,
+        postId: this.post.id,
+        pin: false,
+        statement: false,
+        goal: false,
+        comment: true,
+        displayTimestamp: displayTimestamp,
+        timestamp: timestamp,
+        uid: this.firebase.user.uid,
+        name: this.firebase.user.name,
+        face: this.firebase.user.photo
+      }
+      console.log("Like Built");
+      console.log(like);
+      observer.next(like);
+    });
+  }
+
+  removeCommentLike(comment) {
+    console.log("Removing Comment Like");
+    comment.liked = false;
+    let commentLikePath = this.post.collection + "/" + this.post.id + "/comments/" + comment.id + "/likes/" + this.firebase.user.uid;
+    console.log("Comment like path is " + commentLikePath);
+    this.firebase.afs.doc(commentLikePath).delete();
+    this.subtractFromCommentLikeCount(comment);
+  }
+
+  addToCommentLikeCount(comment) {
+    console.log("Adding to comment like count");
+    let commentLikeCountPath = this.post.collection + "/" + this.post.id + "/comments/" + comment.id;
+    console.log("Comment like count path is " + commentLikeCountPath);
+    let commentLikeCount = ++comment.likeCount;
+    this.firebase.afs.doc(commentLikeCountPath).update({ likeCount: commentLikeCount });
+  }
+
+  subtractFromCommentLikeCount(comment) {
+    console.log("Subtracting from comment like count");
+    let commentLikeCountPath = this.post.collection + "/" + this.post.id + "/comments/" + comment.id;
+    console.log("Comment like count path is " + commentLikeCountPath);
+    let commentLikeCount = --comment.likeCount;
+    this.firebase.afs.doc(commentLikeCountPath).update({ likeCount: commentLikeCount });
   }
 }

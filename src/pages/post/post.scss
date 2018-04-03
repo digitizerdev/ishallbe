@@ -1,4 +1,7 @@
 page-post {
+    .post-menu {
+        padding: 20px;
+    }
     img.profile-picture {
         display: round;
         border-radius: 50%;
@@ -27,8 +30,8 @@ page-post {
         font-size: 32px;
         vertical-align: middle;
     }
-    .post-comments {
-        background-color: color($colors, primary);
+    .comment-footer {
+        border-top: thick solid color($colors, primary);
     }
     .comment {
         font-size: 14px;
@@ -45,7 +48,6 @@ page-post {
         }
     }
     .comment-wrapper {
-        background-color: color($colors, primary);
         position: relative;
         &:last-child {
             margin-bottom: 10px;
@@ -58,8 +60,13 @@ page-post {
         position: relative;
         margin: 10px;
         max-width: 80%;
+        color: white;
         .comment-time {
             font-size: 0.7em;
+            display: block;
+        }
+        .comment-like {
+            font-size: 0.85em;
             display: block;
         }
         &:before {
@@ -71,11 +78,11 @@ page-post {
             bottom: -7.5px;
         }
         &.left {
-            background-color: color($colors, background);
+            background-color: color($colors, primary);
             float: left;
             margin-left: 55px;
             &:before {
-                background-color: color($colors, background);
+                background-color: color($colors, primary);
                 left: 10px;
                 -webkit-transform: rotate(70deg) skew(5deg);
             }
@@ -100,5 +107,8 @@ page-post {
                 font-size: 1.5em;
             }
         }
+    }
+    .delete-comment {
+        font-size: 1.5em;
     }
 }
