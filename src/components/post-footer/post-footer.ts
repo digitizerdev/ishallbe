@@ -1,11 +1,7 @@
 import { Component, Input } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
-
 import moment from 'moment';
 import { Observable } from 'rxjs';
-
-import { PostPage } from '../../pages/post/post';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -22,7 +18,6 @@ export class PostFooterComponent {
   loaded = false;
 
   constructor(
-    private navCtrl: NavController,
     private firebase: FirebaseProvider
   ) { }
 

@@ -28,6 +28,10 @@ export class ProfilePage {
   loaded = false;
   statementsLoaded = false;
   goalsLoaded = false;
+  editor = false;
+  userEditor = false;
+  blocked = false;
+  userPath: string;
   postSegment = 'statements';
 
   constructor(
@@ -44,6 +48,7 @@ export class ProfilePage {
       this.mine = true;
       this.uid = this.firebase.afa.auth.currentUser.uid;
     }
+    this.editor = this.firebase.user.editor;
     this.loadUser();
     if (this.mine) this.loadAllMyPosts();
     else this.loadMyPublicPosts();
@@ -54,7 +59,10 @@ export class ProfilePage {
     this.user = this.firebase.afs.doc(path);
     this.user.valueChanges().subscribe((user) => {
       this.user = user;
+      this.userEditor = user.editor;
+      this.blocked = user.blocked;
       this.photo = user.photo;
+      this.userPath = "users/" + this.uid;
       this.loaded = true;
     });
   }
@@ -136,6 +144,26 @@ export class ProfilePage {
       }
     });
     this.goalsLoaded = true;
+  }
+
+  blockUser() {
+    console.log("Blocking User");
+    this.firebase.afs.doc(this.userPath).update({ blocked: true});
+  }
+
+  unblockUser() {
+    console.log("Unblocking User");
+    this.firebase.afs.doc(this.userPath).update({ blocked: false});
+  }
+
+  makeEditor() {
+    console.log("Making Editor");
+    this.firebase.afs.doc(this.userPath).update({ editor: true});
+  }
+
+  makeContributor() {
+    console.log("Making Contributor");
+    this.firebase.afs.doc(this.userPath).update({editor: false});
   }
 
   refreshPage(refresh) {

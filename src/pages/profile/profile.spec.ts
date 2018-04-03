@@ -93,11 +93,11 @@ describe('ProfilePage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof ProfilePage).toBe(true);
     });
 
-    it('should dipsplay pushChatsPageIcon', () => {
+    fit('should dipsplay pushChatsPageIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css
@@ -106,7 +106,7 @@ describe('ProfilePage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display user profile if loaded', () => {
+    fit('should display user profile if loaded', () => {
         component.loaded = true;
         fixture.detectChanges();
         let de: DebugElement;
@@ -117,7 +117,7 @@ describe('ProfilePage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display pushUpdateProfilePageButton if loaded and mine', () => {
+    fit('should display pushUpdateProfilePageButton if loaded and mine', () => {
         component.loaded = true;
         component.mine = true;
         fixture.detectChanges();
@@ -129,9 +129,10 @@ describe('ProfilePage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display blockUserButton if loaded, editor, and not mine', () => {
+    fit('should display blockUserButton if loaded, editor, not blocked, and not mine', () => {
         component.loaded = true;
         component.editor = true;
+        component.blocked = false;
         component.mine = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -142,7 +143,51 @@ describe('ProfilePage', () => {
         expect(el).toContain('BLOCK USER');
     });
 
-    it('should display my statements', () => {
+    fit('should display unblockUserButton if loaded, editor, blocked, and not mine', () => {
+        component.loaded = true;
+        component.editor = true;
+        component.blocked = true;
+        component.mine = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#unblockUserButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('UNBLOCK USER');
+    });
+
+    fit('should display makeEditorButton if loaded, editor, not mine, not blocked, and not userEditor', () => {
+        component.loaded = true;
+        component.editor = true;
+        component.mine = false;
+        component.blocked = false;
+        component.userEditor = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#makeEditorButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('MAKE EDITOR');
+    });
+
+    fit('should display makeContributorButton if loaded, editor, not mine, not blocked, and userEditor', () => {
+        component.loaded = true;
+        component.editor = true;
+        component.mine = false;
+        component.blocked = false;
+        component.userEditor = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#makeContributorButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('MAKE CONTRIBUTOR');
+    });
+
+    fit('should display my statements', () => {
         component.postSegment = 'statements';
         fixture.detectChanges();
         let de: DebugElement;
@@ -153,7 +198,7 @@ describe('ProfilePage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display my goals', () => {
+    fit('should display my goals', () => {
         component.postSegment = 'goals';
         fixture.detectChanges();
         let de: DebugElement;

@@ -37,9 +37,24 @@
         <button ion-button id="pushProfileUpdatePageButton" (click)="pushProfileUpdatePage()" color="primary" round strong>EDIT PROFILE</button>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="editor && !mine">
+    <ion-row *ngIf="editor && !mine && !blocked">
       <ion-col>
-        <button ion-button id="blockUserButton" (click)="blockUser()" color="danger" strong>BLOCK USER</button>
+        <button ion-button id="blockUserButton" (click)="blockUser()" color="danger" round strong>BLOCK USER</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="editor && !mine && blocked">
+      <ion-col>
+        <button ion-button id="unblockUserButton" (click)="unblockUser()" color="primary" round strong>UNBLOCK USER</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="editor && !mine && !blocked && !userEditor">
+      <ion-col>
+        <button ion-button id="makeEditorButton" (click)="makeEditor()" color="secondary" round strong>MAKE EDITOR</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="editor && !mine && !blocked && userEditor">
+      <ion-col>
+        <button ion-button id="makeContributorButton" (click)="makeContributor()" color="secondary" round strong>MAKE CONTRIBUTOR</button>
       </ion-col>
     </ion-row>
   </div>
