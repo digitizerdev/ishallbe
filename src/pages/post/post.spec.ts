@@ -107,11 +107,11 @@ describe('PostPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof PostPage).toBe(true);
     });
 
-    fit('should dipslay togglePostManagerMenuButton if collection is not pins', () => {
+    it('should dipslay togglePostManagerMenuButton if collection is not pins', () => {
         component.collection = 'statements';
         fixture.detectChanges();
         let de: DebugElement;
@@ -122,7 +122,7 @@ describe('PostPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display deletePostButton if mine and collection is pins', () => {
+    it('should display deletePostButton if mine and collection is pins', () => {
         component.collection = 'pins';
         component.mine = true;
         fixture.detectChanges();
@@ -134,7 +134,7 @@ describe('PostPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display PostHeaderComponent if collection is not pins', () => {
+    it('should display PostHeaderComponent if collection is not pins', () => {
         component.collection = 'goals';
         fixture.detectChanges();
         let de: DebugElement;
@@ -145,7 +145,7 @@ describe('PostPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display due date if collection is goals', () => {
+    it('should display due date if collection is goals', () => {
         component.collection = 'goals';
         fixture.detectChanges();
         let de: DebugElement;
@@ -156,7 +156,7 @@ describe('PostPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display AudioPlayerComponent if collection is goals and audio', () => {
+    it('should display AudioPlayerComponent if collection is goals and audio', () => {
         component.collection = 'goals';
         component.audio = true;
         fixture.detectChanges();
@@ -168,7 +168,7 @@ describe('PostPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display PinHeader if collection is pins', () => {
+    it('should display PinHeader if collection is pins', () => {
         component.collection = 'pins';
         fixture.detectChanges();
         let de: DebugElement;
@@ -179,7 +179,7 @@ describe('PostPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display iframe if collection if video', () => {
+    it('should display iframe if collection if video', () => {
         component.video = "https://google.com"
         fixture.detectChanges();
         let de: DebugElement;
@@ -190,7 +190,7 @@ describe('PostPage', () => {
         expect(el).toBeDefined();
     });
 
-    fit('should display description if collection is not pins', () => {
+    it('should display description if collection is not pins', () => {
         component.collection = 'goals';
         fixture.detectChanges();
         let de: DebugElement;
@@ -201,14 +201,14 @@ describe('PostPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display PostFooterComponent', () => {
+    it('should display PostFooterComponent', () => {
         component.post = mockStatements[0];
         component.loaded = true;
         // Can't query for post-footer because no firestore mock
         expect(component.loaded).toBeTruthy();
     });
     
-    fit('should display comments if comments are loaded', () => {
+    it('should display comments if comments are loaded', () => {
         component.comments = mockComments;
         component.commentsLoaded = true;
         fixture.detectChanges();
@@ -220,7 +220,7 @@ describe('PostPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display comment bar', () => {
+    it('should display comment bar', () => {
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;

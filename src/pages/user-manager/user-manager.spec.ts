@@ -2,7 +2,7 @@ import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { IonicModule, Platform, NavController } from 'ionic-angular';
+import { IonicModule, Platform, NavController, NavParams } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -20,6 +20,7 @@ import { } from 'jasmine';
 import {
     PlatformMock,
     NavMock,
+    NavParamsMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
@@ -28,6 +29,7 @@ describe('UserManagerPage', () => {
     let component;
     let platform: Platform;
     let nav: NavController;
+    let navParams: NavParams;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -49,6 +51,7 @@ describe('UserManagerPage', () => {
             providers: [
                 { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
+                { provide: NavParams, useClass: NavParamsMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
@@ -61,6 +64,7 @@ describe('UserManagerPage', () => {
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
+        navParams = TestBed.get(NavParams);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -71,37 +75,32 @@ describe('UserManagerPage', () => {
         component = null;
         platform = null;
         nav = null;
+        navParams = null;
         firebase = null;
         afa = null;
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof UserManagerPage).toBe(true);
     });
 
-    it('should display search bar', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#UserSearchbar'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    it('should display NoReportedUsers if no reported users', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#NoReportedUsers'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    it('should display ReportedUsers if reported users', () => {
-        component.usersReported = true;
+    fit('should display NoBlockedUsers if no blocked users', () => {
+        component.usersBlocked = false;
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#ReportedUsers'));
+        de = fixture.debugElement.query(By.css('#NoBlockedUsers'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display BlockedUsers if blocked users', () => {
+        component.usersBlocked = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#BlockedUsers'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });

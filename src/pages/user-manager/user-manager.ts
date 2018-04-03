@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+
+import { ProfilePage } from '../../pages/profile/profile';
+
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()
 @Component({
@@ -8,13 +13,37 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class UserManagerPage {
 
-  usersReported = false;
-
+  usersBlocked = false;
+  usersCol: any;
+  users: any;
+  
   constructor(
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private firebase: FirebaseProvider
   ) {}
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
+    this.loadBlockedUsers();
   }
 
+  loadBlockedUsers() {
+    console.log("Loading Blocked Users");
+    this.usersCol = this.firebase.afs.collection('users', ref => ref.
+    where('blocked', '==', true));
+    this.usersCol.valueChanges().subscribe((users) => {
+      console.log("Got users");
+      console.log(users);
+      if (users.length > 0) {
+        this.usersBlocked = true;
+        this.users = users;
+      }
+    });
+  }
+
+  viewUser(user) {
+    console.log("Viewing User");
+    console.log(user);
+    this.navCtrl.push(ProfilePage, { uid: user.uid});
+  }
 }
