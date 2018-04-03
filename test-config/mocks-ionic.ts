@@ -1,4 +1,4 @@
-import { NavController, NavParams, ActionSheetController, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, AlertController, LoadingController, ViewController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
@@ -287,4 +287,109 @@ export class FCMMock extends FCM {
       resolve();
     });
   }
+}
+
+export class ViewControllerMock extends ViewController{
+
+  public readReady: any = {
+    emit(): void {
+
+    },
+    subscribe(): any {
+
+    }
+  };
+
+  public writeReady: any = {
+    emit(): void {
+
+    },
+    subscribe(): any {
+
+    }
+  };
+
+  public contentRef(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+
+
+  public onDidDismiss(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+
+  public onWillDismiss(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+
+  public dismiss(): any {
+    return true;
+  }
+
+  public enableBack(): any {
+    return true;
+  }
+
+  public getContent(): any {
+    return true;
+  }
+
+  public hasNavbar(): any {
+    return true;
+  }
+
+  public isFirst(): any {
+    return true;
+  }
+
+  public isLast(): any {
+    return true;
+  }
+
+  public pageRef(): any {
+    return true;
+  }
+
+  public setBackButtonText(): any {
+    return true;
+  }
+
+  public showBackButton(): any {
+    return true;
+  }
+
+  public _setHeader(): any {
+    return true;
+  }
+
+  public _setIONContent(): any {
+    return true;
+  }
+
+  public _setIONContentRef(): any {
+    return true;
+  }
+
+  public _setNavbar(): any {
+    return true;
+  }
+
+  public _setContent(): any {
+    return true;
+  }
+
+  public _setContentRef(): any {
+    return true;
+  }
+
+  public _setFooter(): any {
+    return true;
+  }
+
 }

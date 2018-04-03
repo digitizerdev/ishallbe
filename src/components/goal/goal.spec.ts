@@ -120,7 +120,7 @@ describe('GoalComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display PostFooterComponent', () => {
+    it('should display PostFooterComponent', () => {
         component.goal = mockGoals[0];
         fixture.detectChanges();
         let de: DebugElement;

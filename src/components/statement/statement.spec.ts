@@ -114,9 +114,8 @@ describe('StatementComponent', () => {
     });
 
     
-    fit('should display PostFooterComponent', () => {
+    it('should display PostFooterComponent', () => {
         component.statement = mockStatements[0];
-        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('post-footer'));

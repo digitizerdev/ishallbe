@@ -45,7 +45,8 @@ export class ProfilePage {
       this.uid = this.firebase.afa.auth.currentUser.uid;
     }
     this.loadUser();
-    this.loadPosts();
+    if (this.mine) this.loadAllMyPosts();
+    else this.loadMyPublicPosts();
   }
 
   loadUser() {
@@ -63,16 +64,33 @@ export class ProfilePage {
     this.inAppBrowser.create(hyperlink, '_system');
   }
 
-  loadPosts() {
-    this.loadStatements();
-    this.loadGoals();
+  loadAllMyPosts() {
+    this.loadAllStatements();
+    this.loadAllGoals();
   }
 
-  loadStatements() {
-    let statements = this.firebase.afs.collection('statements', ref => 
-      ref.where('uid', '==', this.uid).orderBy('timestamp', 'desc'));
+  loadMyPublicPosts() {
+    this.loadPublicStatements();
+    this.loadPublicGoals();
+  }
+
+  loadAllStatements() {
+    let statements = this.firebase.afs.collection('statements', ref =>
+      ref.where('uid', '==', this.uid).
+        orderBy('timestamp', 'desc'));
     statements.valueChanges().subscribe((statements) => {
-      if (!this.statementsLoaded) 
+      if (!this.statementsLoaded)
+        this.setStatements(statements);
+    });
+  }
+
+  loadPublicStatements() {
+    let statements = this.firebase.afs.collection('statements', ref =>
+      ref.where('uid', '==', this.uid).
+        where('private', '==', false).
+        orderBy('timestamp', 'desc'));
+    statements.valueChanges().subscribe((statements) => {
+      if (!this.statementsLoaded)
         this.setStatements(statements);
     });
   }
@@ -86,11 +104,23 @@ export class ProfilePage {
     this.statementsLoaded = true;
   }
 
-  loadGoals() {
-    let goals = this.firebase.afs.collection('goals', ref => 
-      ref.where('uid', '==', this.uid).orderBy('timestamp', 'desc'));
+  loadAllGoals() {
+    let goals = this.firebase.afs.collection('goals', ref =>
+      ref.where('uid', '==', this.uid).
+      orderBy('timestamp', 'desc'));
     goals.valueChanges().subscribe((goals) => {
-      if(!this.goalsLoaded)
+      if (!this.goalsLoaded)
+        this.setGoals(goals);
+    });
+  }
+
+  loadPublicGoals() {
+    let goals = this.firebase.afs.collection('goals', ref =>
+      ref.where('uid', '==', this.uid).
+      where('private', '==', false).
+      orderBy('timestamp', 'desc'));
+    goals.valueChanges().subscribe((goals) => {
+      if (!this.goalsLoaded)
         this.setGoals(goals);
     });
   }

@@ -38,13 +38,27 @@
   </div>
   <div *ngIf="postType=='statements'" id="StatementsSegment">
     <br>
-    <h5 class="feature" id="NoReportedStatements">There are no reported statements</h5>
-    <h5 *ngIf="statementsReported" class="feature" id="ReportedStatements">There are reported statements</h5>
+    <h5 *ngIf="!statementsReported" class="feature" id="NoReportedStatements">There are no reported statements</h5>
+    <div *ngIf="statementsReported" class="posts-scroller" id="ReportedStatements">
+      <br>
+      <h3 ion-text color="background" text-center>
+        <b>Reported Statements</b>
+      </h3>
+      <br>
+      <ion-card *ngFor="let statement of statements">
+        <statement [post]="statement"></statement>
+      </ion-card>
+      <br>
+    </div>
   </div>
   <div *ngIf="postType=='goals'" id="GoalsSegment">
     <br>
     <h5 *ngIf="!goalsReported" class="feature" id="NoReportedGoals">There are no reported goals</h5>
     <div *ngIf="goalsReported" class="posts-scroller" id="ReportedGoals">
+      <br>
+      <h3 ion-text color="background" text-center>
+        <b>Reported Goals</b>
+      </h3>
       <br>
       <ion-card *ngFor="let goal of goals">
         <goal [post]="goal"></goal>

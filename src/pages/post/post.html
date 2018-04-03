@@ -2,16 +2,38 @@
   <ion-navbar>
     <toolbar-logo></toolbar-logo>
     <ion-buttons end>
-      <button *ngIf="collection !== 'pins'" ion-button icon-only end (click)="presentPostMenu($event)" id="presentPostMenuButton">
-        <ion-icon name="more" color="primary"></ion-icon>
+      <button *ngIf="collection !== 'pins'" ion-button icon-only end (click)="togglePostManagerMenu($event)" id="togglePostManagerMenuButton">
+        <ion-icon name="ios-more" color="primary"></ion-icon>
       </button>
-      <button *ngIf="mine && collection == 'pins'" id="deletePostButton" ion-button icon-only end (click)="removePost()">
+      <button *ngIf="mine && collection == 'pins'" id="deletePostButton" ion-button icon-only end (click)="deletePost()">
         <ion-icon name="ios-close" color="primary"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content>
+  <div *ngIf="postManagerMenu" text-center>
+    <ion-row>
+      <ion-col text-center>
+        <button *ngIf="mine && private" (click)="togglePrivacy()" id="makePublicButton" color="primary" ion-button round
+          strong>MAKE PUBLIC</button>
+      </ion-col>
+      <ion-col text-center>
+          <button *ngIf="mine && !private" (click)="togglePrivacy()" id="makePrivateButton" color="danger" ion-button round
+          strong>MAKE PRIVATE</button>
+      </ion-col>
+      <ion-col text-center>
+        <button *ngIf="mine || editor" (click)="deletePost()" id="deletePostButton" color="danger" ion-button round strong>DELETE</button>
+      </ion-col>
+      <ion-col text-center>
+        <button *ngIf="!mine && !reported" (click)="toggleReported()" id="reportPostButton" color="secondary" ion-button round strong>REPORT</button>
+      </ion-col>
+      <ion-col text-center>
+        <button *ngIf="editor && reported" (click)="toggleReported()" id="unreportPostButton" color="secondary" ion-button round
+          strong>UNREPORT</button>
+      </ion-col>
+    </ion-row>
+  </div>
   <post-header *ngIf="collection !== 'pins'" [postDoc]="post"></post-header>
   <img *ngIf="collection == 'statements' && post?.url" src="{{post?.url}}">
   <ion-row *ngIf="collection == 'goals'" id="DueDate" text-center>
@@ -37,7 +59,7 @@
     <iframe *ngIf="video" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
   </div>
   <h5 *ngIf="collection !== 'pins'" id="NonPinDescription" padding-left padding-right>{{post?.description}}</h5>
-  <post-footer [postDoc]="post"></post-footer>
+  <post-footer *ngIf="loaded" [postDoc]="post"></post-footer>
   <ion-row *ngIf="comments" class="post-comments" id="Comments" padding-top padding-bottom>
     <div *ngFor="let comment of comments" class="comment-wrapper rlt" (hold)="onCommentHold($event, $index, comment)">
       <div>

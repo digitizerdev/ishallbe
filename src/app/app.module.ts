@@ -44,7 +44,6 @@ import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { UserManagerPage } from '../pages/user-manager/user-manager';
 import { ApiManagerPage } from '../pages/api-manager/api-manager';
 import { PostPage } from '../pages/post/post';
-import { PopoverPage } from '../pages/popover/popover';
 import { IshallbetvPage } from '../pages/ishallbetv/ishallbetv';
 import { NotificationsPage } from '../pages/notifications/notifications';
 import { HomePage } from '../pages/home/home';
@@ -80,7 +79,6 @@ Pro.init('69d144ed', {
     ChatPage,
     ProfilePage,
     PostPage,
-    PopoverPage,
     IshallbetvPage,
     NotificationsPage,
     HomePage,
@@ -121,7 +119,6 @@ Pro.init('69d144ed', {
     ChatPage,
     ProfilePage,
     PostPage,
-    PopoverPage,
     IshallbetvPage,
     NotificationsPage,
     HomePage,

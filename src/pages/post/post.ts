@@ -4,8 +4,6 @@ import { IonicPage, NavController, NavParams, AlertController, PopoverController
 import moment from 'moment';
 import { Observable } from 'rxjs';
 
-import { PopoverPage } from '../../pages/popover/popover';
-
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import { mockComments } from '../../../test-data/comments/mocks';
@@ -23,11 +21,14 @@ export class PostPage {
   post: any;
   video: any;
   comments: any;
+  postManagerMenu = false;
   mine = false;
-  deleted = false;
   audio = false;
-  private = false;
   reported = false;
+  private = false;
+  loaded = false;
+  editor = false;
+  deleting = false;
 
   constructor(
     private navCtrl: NavController,
@@ -47,7 +48,6 @@ export class PostPage {
     console.log("Post type is " + this.collection);
     this.loadPost();
     this.loadComments();
-    this.listenToPostDeletion();
   }
 
   loadPost() {
@@ -58,16 +58,16 @@ export class PostPage {
     this.postDoc.valueChanges().subscribe((post) => {
       console.log("Got Post on Post Page");
       console.log(post);
-      if (!this.deleted) {
-        let date = moment.unix(post.timestamp);
-        post.displayTimestamp = moment(date).fromNow();
-        if (post.uid == this.firebase.afa.auth.currentUser.uid) this.mine = true;
-        if (post.day == 'Monday') this.video = post.link;
-        if (this.collection == 'goals' && post.url) this.audio = true;
-        this.private = post.private;
-        this.reported = post.reported;
-        this.post = post;
-      }
+      let date = moment.unix(post.timestamp);
+      post.displayTimestamp = moment(date).fromNow();
+      if (post.uid == this.firebase.afa.auth.currentUser.uid) this.mine = true;
+      if (post.day == 'Monday') this.video = post.link;
+      if (this.collection == 'goals' && post.url) this.audio = true;
+      this.editor = this.firebase.user.editor;
+      this.private = post.private;
+      this.reported = post.reported;
+      this.post = post;
+      this.loaded = true;
     });
   }
 
@@ -82,30 +82,61 @@ export class PostPage {
     });
     console.log(this.comments);
   }
+  
+  togglePostManagerMenu() {
+    this.postManagerMenu = !this.postManagerMenu;
+  }
 
-  removePost() {
-    console.log("Removing Post");
-    this.confirmPostRemoval().subscribe((confirmed) => {
-      if (confirmed) this.deletePost();
+  toggleReported() {
+    console.log("Reporting Post");
+    let action = 'report';
+    if (this.reported) action = 'unreport';
+    this.confirm(action).subscribe((confirmed) => {
+      if (confirmed) {
+        this.reported = !this.reported;
+        this.firebase.afs.doc(this.postPath).update({ reported: this.reported });
+      }
     });
   }
 
-  confirmPostRemoval() {
-    console.log("Confirming Post Removal")
-    return Observable.create((observer) => {
+  togglePrivacy() {
+    console.log("Toggling Privacy");
+    console.log("Post private: " + this.private);
+    this.private = !this.private;
+    this.firebase.afs.doc(this.postPath).update({ private: this.private }).then(() => {
+      this.navCtrl.pop();
+    });
+  }
+
+  deletePost() {
+    console.log("Deleting Post");
+    this.deleting = true;
+    this.confirm('delete').subscribe((confirmed) => {
+      if (confirmed) {
+        this.firebase.afs.doc(this.postPath).delete().then(() => {
+          this.navCtrl.pop();
+        });
+      }
+    });
+  }
+
+  confirm(action) {
+    console.log("Confirming");
+    return Observable.create((observer: any) => {
+      let message = "Are you sure you want to " + action + " this post?";
       let alert = this.alertCtrl.create({
         title: 'Hold It!',
-        message: 'Are you sure you want to delete this post?',
+        message: message,
         buttons: [
           {
-            text: 'NO',
+            text: 'Cancel',
             role: 'cancel',
             handler: () => {
               observer.next(false);
             }
           },
           {
-            text: 'YES',
+            text: 'Confirm',
             handler: () => {
               observer.next(true);
             }
@@ -113,30 +144,6 @@ export class PostPage {
         ]
       });
       alert.present();
-    });
-  }
-
-  deletePost() {
-    console.log("Deleting Post");
-    console.log("Post path is " + this.postPath);
-    this.deleted = true;
-    this.firebase.afs.doc(this.postPath).delete().then(() => {
-      this.navCtrl.pop();
-    });
-  }
-
-  presentPostMenu(myEvent) {
-    console.log("Presenting Popover Page");
-    let popover = this.popoverCtrl.create(PopoverPage, this.post);
-    popover.present({
-      ev: myEvent
-    });
-  }
-
-  listenToPostDeletion() {
-    console.log("Post Deleted");
-    this.events.subscribe('post deleted', (post) => {
-      this.navCtrl.pop();
     });
   }
 }

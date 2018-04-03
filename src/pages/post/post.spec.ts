@@ -202,6 +202,8 @@ describe('PostPage', () => {
     });
 
     it('should display PostFooterComponent', () => {
+        component.loaded = true;
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('post-footer'));

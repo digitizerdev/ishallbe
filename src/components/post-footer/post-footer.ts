@@ -27,9 +27,13 @@ export class PostFooterComponent {
   ) { }
 
   ngAfterViewInit() {
+    console.log(this.postDoc);
     let postPath = this.postDoc.collection + "/" + this.postDoc.id;
+    console.log("Post path is " + postPath);
     let postFooter = this.firebase.afs.doc(postPath);
     postFooter.valueChanges().subscribe((post) => {
+      console.log("Got Post");
+      console.log(post);
       this.post = post;
     });
     this.checkUserPostLike().subscribe((liked) => {
@@ -41,6 +45,7 @@ export class PostFooterComponent {
   checkUserPostLike() {
     return Observable.create((observer) => {
       let postLikePath = this.postDoc.collection + "/" + this.postDoc.id + "/likes/" + this.firebase.user.uid;
+      console.log("Post like path is " + postLikePath);
       let postLike = this.firebase.afs.doc(postLikePath).valueChanges();
       postLike.subscribe((like) => {
         if (like) observer.next(true);

@@ -10,7 +10,6 @@ import { PostPage } from '../../pages/post/post';
 })
 export class StatementComponent {
   @Input('post') statement;
-  reported = false;
 
   constructor(
     private navCtrl: NavController
@@ -18,12 +17,9 @@ export class StatementComponent {
     console.log('Hello StatementComponent Component');
   }
 
-  ngOnInit() {
-    this.reported = this.statement.reported;
-    console.log("Reported: " + this.reported);
-  }
-
   viewStatement() {
+    console.log("Viewing Statement");
+    console.log('ID is ' + this.statement.id);
     this.navCtrl.push(PostPage, { 
       id: this.statement.id,
       type: "statements"
