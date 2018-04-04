@@ -8,6 +8,7 @@ export interface Notification {
   collection: string,
   docId: string,
   receiverUid: string,
+  token: string,
   message: boolean,
   pinLike: boolean,
   pinComment: boolean,

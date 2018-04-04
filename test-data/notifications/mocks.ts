@@ -9,6 +9,7 @@ export const message = {
   collection: "users",
   docId: "2",
   receiverUid: "2",
+  token: "23",
   message: true,
   pinLike: false,
   pinComment: false,
