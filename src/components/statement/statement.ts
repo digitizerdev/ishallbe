@@ -14,12 +14,9 @@ export class StatementComponent {
   constructor(
     private navCtrl: NavController
   ) {
-    console.log('Hello StatementComponent Component');
   }
 
   viewStatement() {
-    console.log("Viewing Statement");
-    console.log('ID is ' + this.statement.id);
     this.navCtrl.push(PostPage, { 
       id: this.statement.id,
       type: "statements"

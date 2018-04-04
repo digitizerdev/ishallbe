@@ -148,22 +148,18 @@ export class ProfilePage {
   }
 
   blockUser() {
-    console.log("Blocking User");
     this.firebase.afs.doc(this.userPath).update({ blocked: true});
   }
 
   unblockUser() {
-    console.log("Unblocking User");
     this.firebase.afs.doc(this.userPath).update({ blocked: false});
   }
 
   makeEditor() {
-    console.log("Making Editor");
     this.firebase.afs.doc(this.userPath).update({ editor: true});
   }
 
   makeContributor() {
-    console.log("Making Contributor");
     this.firebase.afs.doc(this.userPath).update({editor: false});
   }
 
@@ -180,8 +176,7 @@ export class ProfilePage {
   }
 
   pushChatPage() {
-    console.log("Pushing chat page");
-    this.navCtrl.push(ChatPage, { uid: this.uid});
+    this.navCtrl.push(ChatPage, {uid: this.uid});
   }
 
   setRootHomePage() {

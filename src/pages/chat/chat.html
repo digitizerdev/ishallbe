@@ -1,20 +1,16 @@
 <ion-header no-border>
   <ion-navbar>
-    <ion-title>{{this.name}}</ion-title>
+    <ion-title><b>{{user?.name}}</b></ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content id="Messages">
-  <div *ngIf="newChat">
-    This is a new chat
-  </div>
-  <div *ngIf="!newChat">
+  <div>
     <div *ngFor="let message of messages" class="message-wrapper rlt" (hold)="onMessageHold($event, $index, message)">
       <div *ngIf="message?.received">
         <img class="profile-picture left" src="{{ message?.face }}" />
         <div class="chat-bubble left">
           <div class="message">
             {{ message.description }}
-            <img src="{{ message?.image }}" class="block" *ngIf="message.image" alt="" />
           </div>
           <div class="message-detail">
             <span class="message-time">{{ message.displayTimestamp }}</span>
@@ -28,7 +24,7 @@
             {{ message.description }}
           </div>
           <div class="message-detail">
-            <span class="message-time">{{ message.time }}</span>
+            <span class="message-time">{{ message.displayTimestamp }}</span>
           </div>
         </div>
       </div>
@@ -38,17 +34,9 @@
 </ion-content>
 <ion-footer class="chat-footer" id="MessageBar" no-border>
   <ion-toolbar no-border color="white">
-    <ion-buttons start>
-      <button ion-button>
-        <ion-icon padding-right name="camera" color="primary"></ion-icon>
-      </button>
-      <button ion-button>
-        <ion-icon padding-right name="microphone" color="primary"></ion-icon>
-      </button>
-    </ion-buttons>
     <ion-input ion-text [(ngModel)]="newMessage" placeholder="Write your message"></ion-input>
     <ion-buttons end>
-      <button ion-button (click)="sendMessage()">
+      <button ion-button (click)="sendMessage(newMessage)">
         <ion-icon name="send" color="primary"></ion-icon>
       </button>
     </ion-buttons>

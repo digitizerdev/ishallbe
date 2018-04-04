@@ -89,9 +89,9 @@ export class PostPage {
   }
 
   setComments(comments) {
+    this.comments = [];
     comments.forEach((comment) => {
       this.checkUserCommentLike(comment).subscribe((liked) => {
-        this.comments = [];
         console.log("Liked: " + liked);
         if (liked) comment.liked = true;
         let date = moment.unix(comment.timestamp);
