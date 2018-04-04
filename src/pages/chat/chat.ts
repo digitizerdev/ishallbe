@@ -133,13 +133,46 @@ export class ChatPage {
   sendNotification(message) {
     console.log("Sending Notification");
     console.log(message);
-    let notification
+    this.buildNotification(message).subscribe((notification) => {
+      let notificationPath = "notifications/" + notification.id;
+      console.log("Notification path is " + notification);
+      this.firebase.afs.doc(notificationPath).set(notification);
+    });
   }
 
   buildNotification(message) {
     console.log("Building Notification");
     return Observable.create((observer) => {
-      t
+      let id = this.firebase.afs.createId();
+      let displayTimestamp = moment().format('MMM DD YYYY');
+      let timestamp = moment().unix();
+      let notification: Notification = {
+        id: id,
+        uid: this.firebase.user.uid,
+        name: this.firebase.user.name,
+        face: this.firebase.user.photo,
+        description: "sent a message",
+        read: false,
+        collection: "users",
+        docId: message.id,
+        receiverUid: this.uid,
+        message: true,
+        pinLike: false,
+        pinComment: false,
+        pinCommentLike: false,
+        statementLike: false,
+        statementComment: false,
+        statementCommentLike: false,
+        goalLike: false,
+        goalComment: false,
+        goalCommentLike: false,
+        reminder: false,
+        displayTimestamp: displayTimestamp,
+        timestamp: timestamp
+      }
+      console.log("Notification Built");
+      console.log(notification);
+      observer.next(notification);
     });
   }
 

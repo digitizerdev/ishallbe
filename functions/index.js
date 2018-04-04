@@ -19,10 +19,10 @@ exports.createPin = functions.firestore.document('pins/{pinId}').onCreate(event 
 
 function pushEditorNotification(payload) {
     admin.messaging().sendToTopic("editor", payload)
-        .then(function (response) {
+        .then((response) => {
             return response;
         })
-        .catch(function (error) {
+        .catch((error) => {
             return error;
         });
 }
@@ -37,3 +37,41 @@ exports.hourly_job =
         });
         return;
     });
+
+exports.createMessage = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
+    console.log("Create Message Triggered");
+    let message = event.data.data();
+    console.log(message);
+    let user = getReceiverDeviceToken(message.receiverUid);
+    let payload = {
+        token: user.fcmToken,
+        notification: {
+            title: message.name + " " + message,
+        },
+        message: message
+    }
+    console.log(payload);
+    pushEditorNotification(payload);
+    return true;
+});
+
+function getReceiverDeviceToken(uid) {
+    console.log("Getting Receiver Device Token");
+    let userPath = "users/" + uid;
+    let user = functions.firestore.afs.doc(userPath);
+    user.valueChanges().subscribe((user) => {
+        console.log("Got user");
+        console.log(user);
+        return user;
+    });
+}
+
+function pushNotification(payload) {
+    admin.messaging().sendToDevice(payload.token)
+        .then((response) => {
+            return response;
+        })
+        .catch((error) => {
+            return error;
+        });
+}
