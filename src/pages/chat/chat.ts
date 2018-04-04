@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { ProfilePage } from '../profile/profile';
 
-import { mockMessages } from '../../../test-data/messages/mocks';
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()
 @Component({
@@ -12,28 +12,36 @@ import { mockMessages } from '../../../test-data/messages/mocks';
 })
 export class ChatPage {
 
-  chatId: string;
+  uid: string;
+  messagesCol: any;
   messages: any[] = [];
+  newChat = true;
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private firebase: FirebaseProvider
   ) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ChatPage');
-    this.chatId = this.navParams.get("id");
-    this.setMessages();
+    this.uid = this.navParams.get("uid");
+    console.log("User id is " + this.uid);
+    this.loadMessages();
   }
 
-  setMessages() {
-    mockMessages.forEach((message) => {
-      this.messages.push(message);
+  loadMessages() {
+    console.log("Loading Messages");
+    let messagesPath = "chats/" + this.firebase.user.uid + "/" + this.uid;
+    console.log("Messages path is " + messagesPath);
+    this.messagesCol = this.firebase.afs.collection(messagesPath)
+    this.messagesCol.valueChanges().subscribe((messages) => {
+      console.log("Got messages");
+      console.log(messages);
+      if (messages.length > 0) this.newChat = false;
     });
-    console.log(this.messages);
   }
-
   viewUser(user) {
     this.navCtrl.push(ProfilePage, { uid: user.uid});
   }

@@ -73,19 +73,35 @@ export class FirebaseProvider {
     this.userDoc.valueChanges().subscribe((user) => {
       console.log("Existing User: ");
       console.log(user)
+      if (user.blocked) this.blockUser();
       if (user) this.startSession(user);
       else this.registerUser();
     });
   }
 
+  blockUser() {
+    console.log("Blocking User");
+    this.endSession();
+    let alert = this.alertCtrl.create({
+      title: 'User Blocked',
+      message: 'Please contact us at info@ishallbe.co',
+      buttons: [
+        {
+          text: 'Okay'
+        }
+      ]
+    });
+    alert.present();
+  }
+
   startSession(user) {
-    console.log("Starting Session");
     this.user = user;
-    if (user.editor) this.events.publish("editor permission granted");
+    if (this.user.editor) this.events.publish("editor permission granted");
     else this.events.publish("editor permission not granted")
     this.session = true;
     this.socialAuthentication = false;
     this.events.publish('contributor permission granted');
+    console.log("Starting Session");
   }
 
   registerUser() {

@@ -4,9 +4,12 @@
       <ion-icon color="primary" name="menu"></ion-icon>
     </button>
     <ion-buttons end>
-      <button (click)="pushChatsPage()" id="pushChatsPageIcon" ion-button icon-only>
+      <button *ngIf="mine" (click)="pushChatsPage()" id="pushChatsPageIcon" ion-button icon-only>
         <ion-icon color="primary" name="mail"></ion-icon>
       </button>
+      <button *ngIf="!mine" (click)="pushChatPage()" id="pushChatPageIcon" ion-button icon-only>
+          <ion-icon color="primary" name="mail"></ion-icon>
+        </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>

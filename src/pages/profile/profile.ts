@@ -9,6 +9,7 @@ import moment from 'moment';
 import { HomePage } from '../home/home';
 import { ProfileUpdatePage } from '../profile-update/profile-update';
 import { ChatsPage } from '../chats/chats';
+import { ChatPage } from '../chat/chat';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -176,6 +177,11 @@ export class ProfilePage {
 
   pushChatsPage() {
     this.navCtrl.push(ChatsPage);
+  }
+
+  pushChatPage() {
+    console.log("Pushing chat page");
+    this.navCtrl.push(ChatPage, { uid: this.uid});
   }
 
   setRootHomePage() {

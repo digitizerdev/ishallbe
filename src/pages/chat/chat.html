@@ -1,33 +1,39 @@
 <ion-header no-border>
   <ion-navbar>
+    <ion-title>{{this.name}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content id="Messages">
-  <div *ngFor="let message of messages" class="message-wrapper rlt" (hold)="onMessageHold($event, $index, message)">
-    <div *ngIf="message?.received">
-      <img class="profile-picture left" src="{{ message?.face }}" />
-      <div class="chat-bubble left">
-        <div class="message">
-          {{ message.description }}
-          <img src="{{ message?.image }}" class="block" *ngIf="message.image" alt="" />
-        </div>
-        <div class="message-detail">
-          <span class="message-time">{{ message.displayTimestamp }}</span>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="message?.sent">
-      <img class="profile-picture right" src="{{ message?.face }}" />
-      <div class="chat-bubble right">
-        <div class="message" ng-bind-html="message.description">
-          {{ message.description }}
-        </div>
-        <div class="message-detail">
-          <span class="message-time">{{ message.time }}</span>
+  <div *ngIf="newChat">
+    This is a new chat
+  </div>
+  <div *ngIf="!newChat">
+    <div *ngFor="let message of messages" class="message-wrapper rlt" (hold)="onMessageHold($event, $index, message)">
+      <div *ngIf="message?.received">
+        <img class="profile-picture left" src="{{ message?.face }}" />
+        <div class="chat-bubble left">
+          <div class="message">
+            {{ message.description }}
+            <img src="{{ message?.image }}" class="block" *ngIf="message.image" alt="" />
+          </div>
+          <div class="message-detail">
+            <span class="message-time">{{ message.displayTimestamp }}</span>
+          </div>
         </div>
       </div>
+      <div *ngIf="message?.sent">
+        <img class="profile-picture right" src="{{ message?.face }}" />
+        <div class="chat-bubble right">
+          <div class="message" ng-bind-html="message.description">
+            {{ message.description }}
+          </div>
+          <div class="message-detail">
+            <span class="message-time">{{ message.time }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="cf"></div>
     </div>
-    <div class="cf"></div>
   </div>
 </ion-content>
 <ion-footer class="chat-footer" id="MessageBar" no-border>

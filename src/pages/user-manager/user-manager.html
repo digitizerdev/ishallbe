@@ -11,18 +11,22 @@
     <h5 class="feature">There are no blocked users</h5>
   </div>
   <div *ngIf="usersBlocked" id="BlockedUsers" class="users-scroller" text-center>
-      <br>
-      <h3 ion-text color="background" text-center>
-        <b>Blocked Users</b>
-      </h3>
-      <br>
-    <ion-card *ngFor="let user of users" (click)="viewUser(user)">
-      <br>
-      <h2 color="primary" ion-text text-center>
-        <b>{{ user?.name }}</b>
-      </h2>
-      <img class="avatar" src="{{ user?.photo }}"> </ion-card>
-      <br>
+    <br>
+    <h3 ion-text color="background" text-center>
+      <b>Blocked Users</b>
+    </h3>
+    <br>
+    <ion-card>
+      <ion-item *ngFor="let user of users" (click)="viewUser(user)">
+        <ion-avatar item-left>
+          <img src="{{user?.photo}}">
+        </ion-avatar>
+        <h2 color="primary" ion-text text-center>
+          <b>{{ user?.name }}</b>
+        </h2>
+      </ion-item>
+    </ion-card>
+    <br>
   </div>
   <br>
 </ion-content>
