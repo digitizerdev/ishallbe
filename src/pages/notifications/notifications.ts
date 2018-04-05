@@ -66,11 +66,11 @@ export class NotificationsPage {
     let notificationPath = "notifications/" + notification.id;
     console.log("Notification path is " + notificationPath);
     this.firebase.afs.doc(notificationPath).update({ read: true }).then(() => {
-      if (notification.pinLike || notification.pinComment || notification.pinCommentLike)
+      if (notification.collection == "pins")
         this.openPin(notification);
-      if (notification.statementLike || notification.statementComment || notification.statementCommentLike)
+      if (notification.collection == "statements")
         this.openStatement(notification);
-      if (notification.goalLike || notification.goalComment || notification.goalCommentLike)
+      if (notification.collection == "goals")
         this.openGoal(notification)
       if (notification.message)
         this.openChat(notification);

@@ -8,6 +8,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import { Comment } from '../../../test-data/comments/model';
 import { Like } from '../../../test-data/likes/model';
+import { Notification } from '../../../test-data/notifications/model';
 
 @IonicPage()
 @Component({
@@ -23,6 +24,7 @@ export class PostPage {
   comments: any;
   post: any;
   video: any;
+  notificationRef: any;
   newComment: string;
   postManagerMenu = false;
   mine = false;
@@ -33,6 +35,8 @@ export class PostPage {
   commentsLoaded = false;
   editor = false;
   deleting = false;
+  commented = false;
+  likedComment = false;
 
   constructor(
     private navCtrl: NavController,
@@ -117,7 +121,7 @@ export class PostPage {
       });
     });
   }
-  
+
   togglePostManagerMenu() {
     this.postManagerMenu = !this.postManagerMenu;
   }
@@ -185,8 +189,10 @@ export class PostPage {
   sendComment(comment) {
     console.log("Sending Comment");
     console.log(comment);
+    this.commented = true;
     this.buildComment(comment).subscribe((comment) => {
       this.setComment(comment);
+      this.sendNotification();
     });
   }
 
@@ -222,7 +228,7 @@ export class PostPage {
       observer.next(comment);
     });
   }
-  
+
   setComment(comment) {
     console.log("Setting Comment");
     let newCommentPath = this.post.collection + '/' + this.post.id + '/comments/' + comment.id;
@@ -243,6 +249,7 @@ export class PostPage {
   deleteComment(comment) {
     console.log("Deleting Comment");
     console.log(comment);
+    this.commented = true;
     let commentPath = this.post.collection + "/" + this.post.id + "/comments/" + comment.id;
     console.log("Comment path is " + commentPath);
     this.firebase.afs.doc(commentPath).delete();
@@ -260,11 +267,13 @@ export class PostPage {
   addCommentLike(comment) {
     console.log("Adding Comment Like");
     comment.liked = true;
+    this.likedComment = true;
     let commentLikePath = this.post.collection + "/" + this.post.id + "/comments/" + comment.id + "/likes/" + this.firebase.user.uid;
     console.log("Comment like path is " + commentLikePath);
     this.buildCommentLike().subscribe((like) => {
       this.firebase.afs.doc(commentLikePath).set(like);
       this.addToCommentLikeCount(comment);
+      this.sendNotification();
     });
   }
 
@@ -295,6 +304,7 @@ export class PostPage {
   removeCommentLike(comment) {
     console.log("Removing Comment Like");
     comment.liked = false;
+    this.likedComment = true;
     let commentLikePath = this.post.collection + "/" + this.post.id + "/comments/" + comment.id + "/likes/" + this.firebase.user.uid;
     console.log("Comment like path is " + commentLikePath);
     this.firebase.afs.doc(commentLikePath).delete();
@@ -315,5 +325,78 @@ export class PostPage {
     console.log("Comment like count path is " + commentLikeCountPath);
     let commentLikeCount = --comment.likeCount;
     this.firebase.afs.doc(commentLikeCountPath).update({ likeCount: commentLikeCount });
+  }
+
+  sendNotification() {
+    if (this.post.uid == this.firebase.user.uid) 
+      console.log("Not sending notification to myself")
+    else { 
+      console.log("Sending Notification");
+      let description = "";
+      if (this.commented) description = "commented on this post";
+      if (this.likedComment) description = "liked your comment";
+      this.buildNotification(description).subscribe((notification) => {
+        let notificationPath = "notifications/" + notification.id;
+        console.log("Notification path is " + notificationPath);
+        this.firebase.afs.doc(notificationPath).set(notification);
+        this.commented = false;
+        this.likedComment = false;
+      });
+    }
+  }
+
+  buildNotification(description) {
+    console.log("Building Notification");
+    return Observable.create((observer) => {
+      let id = this.firebase.afs.createId();
+      let displayTimestamp = moment().format('MMM DD YYYY');
+      let timestamp = moment().unix();
+      let notification: Notification = {
+        id: id,
+        uid: this.firebase.user.uid,
+        name: this.firebase.user.name,
+        face: this.firebase.user.photo,
+        description: description,
+        read: false,
+        collection: this.post.collection,
+        docId: this.post.id,
+        receiverUid: this.post.uid,
+        message: false,
+        pinLike: false,
+        statementLike: false,
+        goalLike: false,
+        commentLike: this.likedComment,
+        comment: this.commented,
+        reminder: false,
+        displayTimestamp: displayTimestamp,
+        timestamp: timestamp
+      }
+      console.log("Notification Built");
+      console.log(notification);
+      observer.next(notification);
+    });
+  }
+
+  removeNotification() {
+    console.log("Removing Notification");
+    let type = {
+      comment: this.commented,
+      likedComment: this.likedComment
+    }
+    this.notificationRef = this.firebase.afs.collection("notifications", ref => ref.
+      where("docId", "==", this.post.id).
+      where("comment", "==", type.comment).
+      where("likedComment", "==", type.likedComment));
+    this.notificationRef.valueChanges().subscribe((notifications) => {
+      console.log("Got notifications");
+      console.log(notifications);
+      if (notifications.length > 0) {
+        let notificationPath = "notifications/" + notifications[0].id;
+        console.log("Notification path is " + notificationPath);
+        this.firebase.afs.doc(notificationPath).delete();
+        this.commented = false;
+        this.likedComment = false;
+      }
+    });
   }
 }
