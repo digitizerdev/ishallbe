@@ -261,7 +261,6 @@ export class ChatPage {
         collection: "users",
         docId: message.id,
         receiverUid: this.uid,
-        token: this.user.fcmToken,
         message: true,
         pinLike: false,
         pinComment: false,

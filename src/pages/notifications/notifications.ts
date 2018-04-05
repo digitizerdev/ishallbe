@@ -34,7 +34,9 @@ export class NotificationsPage {
   loadNotifications() {
     console.log("Loading Notifications");
     this.notificationsCol = this.firebase.afs.collection('notifications', ref => ref.
-      where("receiverUid", "==", this.firebase.user.uid));
+      where("receiverUid", "==", this.firebase.user.uid).
+      where("message", "==", false).
+      orderBy('timestamp', 'desc'));
     this.notificationsCol.valueChanges().subscribe((notifications) => {
       console.log("Got notifications");
       console.log(notifications);
@@ -61,49 +63,53 @@ export class NotificationsPage {
   openNotification(notification) {
     console.log("Opening Notification");
     console.log(notification);
-    if (notification.pinLike || notification.pinComment || notification.pinCommentLike)
-      this.openPin(notification);
-    if (notification.statementLike || notification.statementComment || notification.statementCommentLike)
-      this.openStatement(notification);
-    if (notification.goalLike || notification.goalComment || notification.goalCommentLike)
-      this.openGoal(notification)
-    if (notification.message) 
-      this.openChat(notification);
+    let notificationPath = "notifications/" + notification.id;
+    console.log("Notification path is " + notificationPath);
+    this.firebase.afs.doc(notificationPath).update({ read: true }).then(() => {
+      if (notification.pinLike || notification.pinComment || notification.pinCommentLike)
+        this.openPin(notification);
+      if (notification.statementLike || notification.statementComment || notification.statementCommentLike)
+        this.openStatement(notification);
+      if (notification.goalLike || notification.goalComment || notification.goalCommentLike)
+        this.openGoal(notification)
+      if (notification.message)
+        this.openChat(notification);
+    });
   }
 
   openPin(notification) {
     console.log("Opening pin");
     console.log(notification);
-    this.navCtrl.push(PostPage, { 
+    this.navCtrl.push(PostPage, {
       id: notification.docId,
       type: "pins"
-     });
+    });
   }
 
   openStatement(notification) {
     console.log("Opening Statement");
     console.log(notification);
-    this.navCtrl.push(PostPage, { 
+    this.navCtrl.push(PostPage, {
       id: notification.docId,
       type: "statements"
-     });
+    });
   }
 
   openGoal(notification) {
     console.log("Opening Goal");
     console.log(notification);
-    this.navCtrl.push(PostPage, { 
+    this.navCtrl.push(PostPage, {
       id: notification.docId,
       type: "goals"
-     });
+    });
   }
 
   openChat(notification) {
     console.log("Opening Chat");
     console.log(notification);
-    this.navCtrl.push(ChatPage, { 
+    this.navCtrl.push(ChatPage, {
       uid: notification.uid,
-     });
+    });
   }
 
 }

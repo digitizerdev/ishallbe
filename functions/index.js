@@ -17,23 +17,31 @@ exports.createMessage = functions.firestore.document('notifications/{notificatio
     console.log("Create Message Triggered");
     let message = event.data.data();
     console.log(message);
+    let title = message.name + " " + message.description;
+    console.log("Notification title is " + title);
     let payload = {
         notification: {
-            title: message.name + " " + message,
+            title: title
         },
         message: message
     }
     console.log(payload);
-    pushNotification(message.token);
+    pushNotification(message.receiverUid);
     return true;
 });
 
-function pushNotification(token) {
-    admin.messaging().sendToDevice(token)
-        .then((response) => {
-            return response;
-        })
-        .catch((error) => {
-            return error;
-        });
+function pushNotification(uid) {
+    let userPath = "users/" + uid;
+    let user = admin.firestore.doc(userPath);
+    user.valueChanges().subscribe((user) => {
+        console.log("Got user");
+        console.log(user);
+        admin.messaging().sendToDevice(user.fcmToken)
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                return error;
+            });
+    });
 }

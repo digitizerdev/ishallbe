@@ -12,10 +12,9 @@
       <ion-avatar item-left>
         <img src="{{ unreadNotification.face }}">
       </ion-avatar>
-      <ion-icon item-end *ngIf="unreadNotification.like || unreadNotification.commentLike" name="heart" color="primary"></ion-icon>
-      <ion-icon item-end *ngIf="unreadNotification.comment" name="ios-chatboxes" color="primary"></ion-icon>
+      <ion-icon item-end *ngIf="unreadNotification.pinlike || unreadNotification.pinCommentLike || unreadNotification.statementLike || unreadNotification.statementCommentLike || unreadNotification.goalLike || unreadNotification.goalLike" name="heart" color="primary"></ion-icon>
+      <ion-icon item-end *ngIf="unreadNotification.pinComment || unreadNotification.statementComment || unreadNotification.goalComment " name="ios-chatboxes" color="primary"></ion-icon>
       <ion-icon item-end *ngIf="unreadNotification.reminder" name="ios-checkbox" color="primary"></ion-icon>
-      <ion-icon item-end *ngIf="unreadNotification.message" name="ios-mail" color="primary"></ion-icon>
       <span ion-text color="primary">
         <b>{{ unreadNotification.name }}</b>
       </span>
@@ -30,8 +29,8 @@
       <ion-avatar item-left>
         <img src="{{ readNotification.face }}">
       </ion-avatar>
-      <ion-icon item-end *ngIf="readNotification.like || readNotification.commentLike" name="heart" color="grayer"></ion-icon>
-      <ion-icon item-end *ngIf="readNotification.comment" name="ios-chatboxes" color="grayer"></ion-icon>
+      <ion-icon item-end *ngIf="readNotification.pinlike || readNotification.pinCommentLike || readNotification.statementLike || readNotification.statementCommentLike || readNotification.goalLike || readNotification.goalLike" name="heart" color="grayer"></ion-icon>
+      <ion-icon item-end *ngIf="readNotification.pinComment || readNotification.statementComment || readNotification.goalComment " name="ios-chatboxes" color="grayer"></ion-icon>
       <ion-icon item-end *ngIf="readNotification.reminder" name="ios-checkbox" color="grayer"></ion-icon>
       <span ion-text color="primary">
         <b>{{ readNotification.name }}</b>
