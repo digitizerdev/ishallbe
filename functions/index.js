@@ -2,31 +2,6 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-exports.createPin = functions.firestore.document('pins/{pinId}').onCreate(event => {
-    console.log("Create Pin Triggered");
-    let pin = event.data.data();
-    let payload = {
-        notification: {
-            title: "New Pin Added: " + pin.displayAffirmationDate + pin.title,
-            id: pin.id,
-            uid: message.uid
-        }
-    }
-    console.log(payload);
-    pushEditorNotification(payload);
-    return true;
-});
-
-function pushEditorNotification(payload) {
-    admin.messaging().sendToTopic("editor", payload)
-        .then((response) => {
-            return response;
-        })
-        .catch((error) => {
-            return error;
-        });
-}
-
 exports.hourly_job =
     functions.pubsub.topic('hourly-tick').onPublish((event) => {
         console.log("This job is ran every hour!");
@@ -49,7 +24,7 @@ exports.createMessage = functions.firestore.document('notifications/{notificatio
         message: message
     }
     console.log(payload);
-    pushEditorNotification(message.token);
+    pushNotification(message.token);
     return true;
 });
 

@@ -16,7 +16,7 @@
   <h5 class="feature">New Messages</h5>
   <ion-list class="chats" id="NewMessages">
     <ion-item-sliding >
-      <ion-item *ngFor="let newChat of newChats"text-wrap (click)="viewChat(newChat.id)" class="chat">
+      <ion-item *ngFor="let newChat of newChats"text-wrap (click)="viewChat(newChat)" class="chat">
         <ion-avatar item-left>
           <img class="profile-picture" src="{{ newChat.face }}" alt="" />
         </ion-avatar>
@@ -36,7 +36,7 @@
   <h5 class="feature">Earlier Messages</h5>
   <ion-list class="chats" id="EarlierMessages">
     <ion-item-sliding >
-      <ion-item *ngFor="let earlierChat of earlierChats"text-wrap (click)="viewChat(earlierChat.id)" class="chat">
+      <ion-item *ngFor="let earlierChat of earlierChats"text-wrap (click)="viewChat(earlierChat)" class="chat">
         <ion-avatar item-left>
           <img class="profile-picture" src="{{ earlierChat.face }}" alt="" />
         </ion-avatar>

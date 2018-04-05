@@ -40,8 +40,10 @@ export class ChatsPage {
     });
   }
 
-  setChats(chats) {
+  setChats(chats) { 
     console.log("Setting Chats");
+    this.newChats = [];
+    this.earlierChats = [];
     chats.forEach((chat) => {
       if (chat.newMessages)
         this.newChats.push(chat);
@@ -53,6 +55,7 @@ export class ChatsPage {
   }
 
   viewChat(chat) {
+    console.log("Viewing Chat");
     this.navCtrl.push(ChatPage, { id: chat.id });
   }
 
