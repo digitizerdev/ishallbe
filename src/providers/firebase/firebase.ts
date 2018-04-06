@@ -36,17 +36,13 @@ export class FirebaseProvider {
   }
 
   checkForSession() {
-    console.log("Checking for Firebase Session");
     this.sessionExists().subscribe((session) => {
-      console.log("Session Exists: ");
-      console.log(session);
       if (session) this.userExists();
       else this.endSession();
     });
   }
 
   endSession() {
-    console.log("Ending Session");
     this.session = false;
     this.userDoc = null;
     this.user = null;
@@ -71,8 +67,6 @@ export class FirebaseProvider {
     let userPath = "users/" + this.afa.auth.currentUser.uid;
     this.userDoc = this.afs.doc(userPath);
     this.userDoc.valueChanges().subscribe((user) => {
-      console.log("Existing User: ");
-      console.log(user)
       if (!user)
         this.registerUser();
       else if (user.blocked) {
@@ -84,7 +78,6 @@ export class FirebaseProvider {
   }
 
   blockUser() {
-    console.log("Blocking User");
     this.endSession();
     let alert = this.alertCtrl.create({
       title: 'User Blocked',
@@ -105,19 +98,14 @@ export class FirebaseProvider {
     this.session = true;
     this.socialAuthentication = false;
     this.events.publish('contributor permission granted');
-    console.log("Starting Session");
   }
 
   registerUser() {
-    console.log("Registering User");
-    console.log("Social Authentication: " + this.socialAuthentication)
     if (this.socialAuthentication) {
       this.signupUser();
     }
     else {
       this.createNonSocialUser().then(() => {
-        console.log("Creating non social user");
-        console.log(this.afa.auth.currentUser);
         this.signupUser();
       });
     }
@@ -131,7 +119,6 @@ export class FirebaseProvider {
   }
 
   signupUser() {
-    console.log("Signing Up User");
     this.presentEULA().subscribe((accepted) => {
       if (!accepted) this.deleteUser();
       else {
@@ -146,7 +133,6 @@ export class FirebaseProvider {
   }
 
   presentEULA() {
-    console.log("Presenting EULA");
     return Observable.create((observer: any) => {
       if (!this.signingUp) {
         this.signingUp = true;
@@ -177,14 +163,12 @@ export class FirebaseProvider {
   }
 
   deleteUser() {
-    console.log("Deleting User");
     this.afa.auth.currentUser.delete().then(() => {
       this.endSession();
     })
   }
 
   buildUser() {
-    console.log("Building User");
     return Observable.create((observer) => {
       if (!this.fcmToken) this.fcmToken = "0";
       let timestamp = moment().unix();
@@ -205,25 +189,18 @@ export class FirebaseProvider {
         contributor: true,
         editor: false
       }
-      console.log("User Built");
-      console.log(user);
       observer.next(user);
     });
   }
 
   setUser() {
-    console.log("Setting User");
     let path = '/users/' + this.afa.auth.currentUser.uid;
     return this.afs.doc(path).set(this.user);
   }
 
   listenToPostEvents() {
-    console.log("Listening to post events");
     this.events.subscribe('post deleted', (post) => {
-      console.log("Post Deleted");
-      console.log(post);
       let postPath = post.collection + "/" + post.id;
-      console.log("Post path is " + postPath);
       this.afs.doc(postPath).delete();
     });
   }

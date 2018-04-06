@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController} from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
 import { HomePage } from '../../pages/home/home';
 import { LoginPage } from '../../pages/login/login';
@@ -20,8 +20,7 @@ export class StartupPage {
   ) { }
 
   ionViewDidLoad() {
-    console.log("Loaded Startup Page");
-      if (this.firebase.session) this.navCtrl.setRoot(HomePage);
-      else this.navCtrl.setRoot(LoginPage);
+    if (this.firebase.session) this.navCtrl.setRoot(HomePage);
+    else this.navCtrl.setRoot(LoginPage);
   }
 }

@@ -27,12 +27,9 @@ export class UserManagerPage {
   }
 
   loadBlockedUsers() {
-    console.log("Loading Blocked Users");
     this.usersCol = this.firebase.afs.collection('users', ref => ref.
     where('blocked', '==', true));
     this.usersCol.valueChanges().subscribe((users) => {
-      console.log("Got users");
-      console.log(users);
       if (users.length > 0) {
         this.usersBlocked = true;
         this.users = users;
@@ -41,8 +38,6 @@ export class UserManagerPage {
   }
 
   viewUser(user) {
-    console.log("Viewing User");
-    console.log(user);
     this.navCtrl.push(ProfilePage, { uid: user.uid});
   }
 }

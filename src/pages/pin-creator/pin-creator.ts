@@ -181,7 +181,6 @@ export class PinCreatorPage {
       if (!this.monday && !this.tuesday) form.link = "";
       let youtubeID = form.link.slice(17);
       let link = "https://youtube.com/embed/" + youtubeID;
-      console.log("YouTube link is " + link);
       const pin: Pin = {
         id: this.pinId,
         title: form.title,

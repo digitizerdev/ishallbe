@@ -97,11 +97,24 @@ describe('ProfilePage', () => {
         expect(component instanceof ProfilePage).toBe(true);
     });
 
-    it('should dipsplay pushChatsPageIcon', () => {
+    it('should dipsplay pushChatsPageIcon if mine', () => {
+        component.mine = true;
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css
             ('#pushChatsPageIcon'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should dipsplay pushChatPageIcon if not mine', () => {
+        component.mine = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#pushChatPageIcon'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });

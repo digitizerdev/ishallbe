@@ -24,24 +24,18 @@ export class ChatsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ChatsPage');
     this.loadChats();
   }
 
   loadChats() {
-    console.log("Loading Chats");
     let chatsPath = "users/" + this.firebase.user.uid + "/chats";
-    console.log("Chats path is " + chatsPath);
     this.chatsCol = this.firebase.afs.collection(chatsPath);
     this.chatsCol.valueChanges().subscribe((chats) => {
-      console.log("Got chats");
-      console.log(chats);
       this.setChats(chats);
     });
   }
 
   setChats(chats) { 
-    console.log("Setting Chats");
     this.newChats = [];
     this.earlierChats = [];
     chats.forEach((chat) => {
@@ -49,13 +43,10 @@ export class ChatsPage {
         this.newChats.push(chat);
       else 
         this.earlierChats.push(chat);
-        console.log("Pushing Chat");
-        console.log(chat);
     });
   }
 
   viewChat(chat) {
-    console.log("Viewing Chat");
     this.navCtrl.push(ChatPage, { id: chat.id });
   }
 

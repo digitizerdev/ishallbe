@@ -97,8 +97,6 @@ export class PostManagerPage {
       ref.where('reported', '==', true)
       .orderBy('timestamp', 'desc'));
     statements.valueChanges().subscribe((statements) => {
-      console.log("Got Reported Statements");
-      console.log(statements);
       if (statements.length > 0) this.statementsReported = true;
       if (!this.statementsLoaded)
         this.setStatements(statements);
@@ -121,8 +119,6 @@ export class PostManagerPage {
       ref.where('reported', '==', true).
         orderBy('timestamp', 'desc'));
     goals.valueChanges().subscribe((goals) => {
-      console.log("Got Reported Goals");
-      console.log(goals);
       if (goals.length > 0) this.goalsReported = true;
       if (!this.goalsLoaded)
         this.setGoals(goals);

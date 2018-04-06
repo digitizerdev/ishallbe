@@ -127,8 +127,6 @@ export class StatementCreatorPage {
         name: this.firebase.user.name,
         face: this.firebase.user.photo
       }
-      console.log("Statement Built");
-      console.log(statement);
       observer.next(statement);
     });
   }

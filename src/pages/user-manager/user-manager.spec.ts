@@ -81,11 +81,11 @@ describe('UserManagerPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof UserManagerPage).toBe(true);
     });
 
-    fit('should display NoBlockedUsers if no blocked users', () => {
+    it('should display NoBlockedUsers if no blocked users', () => {
         component.usersBlocked = false;
         fixture.detectChanges();
         let de: DebugElement;
@@ -95,7 +95,7 @@ describe('UserManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display BlockedUsers if blocked users', () => {
+    it('should display BlockedUsers if blocked users', () => {
         component.usersBlocked = true;
         fixture.detectChanges();
         let de: DebugElement;

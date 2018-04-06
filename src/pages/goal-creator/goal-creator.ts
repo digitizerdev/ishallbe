@@ -68,7 +68,6 @@ export class GoalCreatorPage {
   }
 
   submit(form) {
-    console.log("Submitting Form");
     this.submitted = true;
     if (!this.dateSelected) this.displayNotReadyAlert();
     else {
@@ -90,7 +89,6 @@ export class GoalCreatorPage {
   }
 
   buildGoal(form) {
-    console.log("Building Goal");
     return Observable.create((observer) => {
       this.goalId = this.firebase.afs.createId();
       const goal: Goal = {
@@ -113,20 +111,16 @@ export class GoalCreatorPage {
         name: this.firebase.user.name,
         face: this.firebase.user.photo
       }
-      console.log("Goal Built");
-      console.log(goal);
       observer.next(goal);
     });
   }
 
   createGoal(goal) {
-    console.log("Creating Goal");
     let goalPath = "/goals/" + this.goalId;
     return this.firebase.afs.doc(goalPath).set(goal);
   }
 
   pickDate() {
-    console.log("Picking Date");
     this.dueToday = false;
     this.dueThisWeek = false;
     this.dueLater = false;
@@ -145,7 +139,6 @@ export class GoalCreatorPage {
   }
 
   formateDueDate() {
-    console.log("Formatting Due Date");
     if (this.dueDate == this.rawDate) this.dueToday = true;
     else if (this.dueDate < this.rawNextWeekDate) this.dueThisWeek = true;
     else this.dueLater = true;
@@ -153,7 +146,6 @@ export class GoalCreatorPage {
   }
 
   listenToAudioEvents() {
-    console.log("Listening Audio Events");
     this.audio.onStatusUpdate.subscribe(status => {
       if (status == 4 && this.playingAudio) {
         this.stopPlayback();
@@ -162,34 +154,26 @@ export class GoalCreatorPage {
   }
 
   recordAudio() {
-    console.log("Recording Audio");
     this.contentMethod = "audio";
     this.recording = true;
   }
 
   recorded(audio) {
-    console.log("Audio Recorded");
     this.audioUrl = audio.url;
     this.audioName = audio.name;
     this.audioReady = true;
   }
 
   playAudio() {
-    console.log("Playing Audio");
     this.playingAudio = true;
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
     if (this.platform.is('ios')) var filepath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + this.audioName;
     if (this.platform.is('android')) filepath = cordova.file.externalDataDirectory + this.audioName;
-    console.log("File path is " + filepath);
     fileTransfer.download(this.audioUrl, filepath, ).then((entry) => {
       let rawAudioURI = entry.toURL();
       if (this.platform.is('ios')) rawAudioURI = rawAudioURI.replace(/^file:\/\//, '/private');
-      console.log("Raw Audio URI is " + rawAudioURI);
       let audio: MediaObject = this.media.create(rawAudioURI);
-      console.log(audio);
       this.audio = audio;
-      console.log("This.audio ");
-      console.log(this.audio);
       this.audio.play();
       this.listenToAudioEvents();
     }, (error) => {
@@ -197,13 +181,11 @@ export class GoalCreatorPage {
   }
 
   stopPlayback() {
-    console.log("Stopping Playback");
     this.playingAudio = false;
     this.audio.stop();
   }
 
   redoRecording() {
-    console.log("Redoing Recording");
     this.audioReady = false;
     this.contentMethod = "audio";
     this.recording = true;
@@ -214,7 +196,6 @@ export class GoalCreatorPage {
   }
 
   displayNotReadyAlert() {
-    console.log("Display Not Ready Alert");
     let alertMessage = "Please Set a Due Date";
     let alert = this.alertCtrl.create({
       title: 'Almost There!',
@@ -225,7 +206,6 @@ export class GoalCreatorPage {
   }
 
   listenForCanceledUpload() {
-    console.log("Listening for Canceled Upload");
     this.events.subscribe('getAudioCanceled', () => {
       this.goalId = null;
       this.audioUrl = null;
@@ -241,9 +221,7 @@ export class GoalCreatorPage {
   }
 
   listenForUploadTimeout() {
-    console.log("Listening for Upload Timeout ")
     this.events.subscribe('timeout', () => {
-      console.log("Upload Component Timed Out");
       this.goalId = null;
       this.audioUrl = null;
       this.audioName = null;
