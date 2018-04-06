@@ -68,6 +68,7 @@ export class iShallBe {
   }
 
   startup() {
+    this.fcm.subscribeToTopic('affirmations');
     this.nav.setRoot(StartupPage);
     this.splashScreen.hide();
   }
@@ -106,8 +107,8 @@ export class iShallBe {
 
   listenToUserPermissionsEvents() {
     this.listenToAccessControlEvents();
-    this.listenToContributorPermissionEvents();
     this.listenToEditorPermissionEvents();
+    this.listenToContributorPermissionEvents();
   }
 
   listenToAccessControlEvents() {
@@ -121,20 +122,6 @@ export class iShallBe {
     });
   }
 
-  listenToContributorPermissionEvents() {
-    console.log("Listening to Contributor Permission Events");
-    this.events.subscribe('contributor permission granted', () => {
-      console.log("Session Granted");
-      this.fcm.subscribeToTopic('affirmations');
-      if (this.ready) this.nav.setRoot(HomePage);
-    });
-    this.events.subscribe('contributor permission not granted', () => {
-      console.log("Session not granted");
-      if (this.ready) this.nav.setRoot(LoginPage);
-      this.editor = false;
-    });
-  }
-
   listenToEditorPermissionEvents() {
     this.events.subscribe('editor permission granted', () => {
       this.fcm.subscribeToTopic('editor');
@@ -142,6 +129,20 @@ export class iShallBe {
     });
     this.events.subscribe('editor permission not granted', () => {
       this.fcm.unsubscribeFromTopic('editor');
+      this.editor = false;
+    });
+  }
+
+  listenToContributorPermissionEvents() {
+    console.log("Listening to Contributor Permission Events");
+    this.events.subscribe('contributor permission granted', () => {
+      console.log("Session Granted");
+      this.fcm.subscribeToTopic('affirmations');
+      if (this.ready) this.nav.setRoot(StartupPage);
+    });
+    this.events.subscribe('contributor permission not granted', () => {
+      console.log("Session not granted");
+      this.nav.setRoot(LoginPage);
       this.editor = false;
     });
   }
