@@ -1,22 +1,32 @@
 <ion-header no-border>
-  <ion-navbar color='primary' no-border-bottom>
+  <ion-navbar no-border-bottom>
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon color='primary' name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>User Manager</ion-title>
   </ion-navbar>
-  <ion-toolbar color='primary' id="UserSearchbar" no-border-top>
-    <ion-searchbar color="light-yellow" [(ngModel)]="queryText" (ionInput)="updateSchedule()" placeholder="Search by User Email">
-    </ion-searchbar>
-  </ion-toolbar>
 </ion-header>
 <ion-content>
   <br>
-  <br>
-  <div class="feature" id="NoReportedUsersFeature" text-center>
-    <h5>There are no reported users</h5>
+  <div *ngIf="!usersBlocked" id="NoBlockedUsers" text-center>
+    <h5 class="feature">There are no blocked users</h5>
   </div>
-  <div class="feature" id="ReportedUsersFeature" text-center>
+  <div *ngIf="usersBlocked" id="BlockedUsers" class="users-scroller" text-center>
+    <br>
+    <h3 ion-text color="background" text-center>
+      <b>Blocked Users</b>
+    </h3>
+    <br>
+    <ion-card>
+      <ion-item *ngFor="let user of users" (click)="viewUser(user)">
+        <ion-avatar item-left>
+          <img src="{{user?.photo}}">
+        </ion-avatar>
+        <h2 color="primary" ion-text text-center>
+          <b>{{ user?.name }}</b>
+        </h2>
+      </ion-item>
+    </ion-card>
+    <br>
   </div>
   <br>
 </ion-content>

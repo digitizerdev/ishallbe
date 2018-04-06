@@ -1,18 +1,21 @@
 export interface Notification {
   id: string,
+  uid: string,
+  name: string,
+  face: string,
+  description: string,
   read: boolean,
-  like: boolean,
+  collection: string,
+  docId: string,
+  receiverUid: string,
+  message: boolean,
+  pinLike: boolean,
+  statementLike: boolean,
+  goalLike: boolean,
   comment: boolean,
   commentLike: boolean,
   reminder: boolean,
-  message: string,
   displayTimestamp: string,
   timestamp: number,
-  postId: string,
-  postType: string,
-  owner: string
-  uid: string,
-  name: string,
-  face: string
 }
 

@@ -1,15 +1,16 @@
-import { NavController, NavParams, ActionSheetController, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, AlertController, LoadingController, ViewController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
-import { Push } from '@ionic-native/push';
 import { File } from '@ionic-native/file';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { DatePicker } from '@ionic-native/date-picker';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Media } from '@ionic-native/media';
+import { FCM } from '@ionic-native/fcm';
+
 import { Observable } from 'rxjs/Observable';
 
 import { HomePage } from '../src/pages/home/home';
@@ -106,12 +107,6 @@ export class FacebookMock extends Facebook {
 }
 
 export class FileMock extends File {
-  hide() {
-    return;
-  }
-}
-
-export class PushMock extends Push {
   hide() {
     return;
   }
@@ -284,3 +279,117 @@ export class FileTransferMock extends FileTransfer {
   }
 }
 
+export class FCMMock extends FCM {
+  _getPortal(): any { return {} };
+
+  public getToken(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+}
+
+export class ViewControllerMock extends ViewController{
+
+  public readReady: any = {
+    emit(): void {
+
+    },
+    subscribe(): any {
+
+    }
+  };
+
+  public writeReady: any = {
+    emit(): void {
+
+    },
+    subscribe(): any {
+
+    }
+  };
+
+  public contentRef(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+
+
+  public onDidDismiss(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+
+  public onWillDismiss(): any {
+    return new Promise(function (resolve: Function): void {
+      resolve();
+    });
+  }
+
+  public dismiss(): any {
+    return true;
+  }
+
+  public enableBack(): any {
+    return true;
+  }
+
+  public getContent(): any {
+    return true;
+  }
+
+  public hasNavbar(): any {
+    return true;
+  }
+
+  public isFirst(): any {
+    return true;
+  }
+
+  public isLast(): any {
+    return true;
+  }
+
+  public pageRef(): any {
+    return true;
+  }
+
+  public setBackButtonText(): any {
+    return true;
+  }
+
+  public showBackButton(): any {
+    return true;
+  }
+
+  public _setHeader(): any {
+    return true;
+  }
+
+  public _setIONContent(): any {
+    return true;
+  }
+
+  public _setIONContentRef(): any {
+    return true;
+  }
+
+  public _setNavbar(): any {
+    return true;
+  }
+
+  public _setContent(): any {
+    return true;
+  }
+
+  public _setContentRef(): any {
+    return true;
+  }
+
+  public _setFooter(): any {
+    return true;
+  }
+
+}

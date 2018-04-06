@@ -86,14 +86,6 @@ describe('AboutPage', () => {
         expect(component instanceof AboutPage).toBe(true);
     });
 
-    it('should be titled About', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#AboutPageTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('About');
-    });
-
     it('should display HeaderComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;

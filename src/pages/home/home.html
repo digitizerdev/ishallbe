@@ -1,24 +1,47 @@
 <ion-header no-border>
-  <ion-navbar color='primary'>
+  <ion-navbar>
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon color="primary" name="menu"></ion-icon>
     </button>
-    <div text-center>
-      <img src="assets/img/logo.png" style="display:inline-block" height="40px" />
-    </div>
+    <toolbar-logo></toolbar-logo>
     <ion-buttons end>
-      <button ion-button icon-only (click)="showNotifications()">
-        <ion-icon name="notifications-outline"></ion-icon>
+      <button (click)="showNotifications()" id="pushNotificationsPageIcon" ion-button icon-only>
+        <ion-icon color="primary" name="notifications"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content class="home-content" text-center>
-  <ion-refresher (ionRefresh)="refreshPage($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="dots" refreshingText="Refeshing">
+<ion-content class="home-content" no-border>
+  <ion-refresher (ionRefresh)="refreshPage($event)" color="primary" no-border>
+    <ion-refresher-content refreshingSpinner="dots" refreshingText="Refeshing" no-border>
     </ion-refresher-content>
   </ion-refresher>
-  <pins [pinsStartDate]="rawDate"></pins>
-  <goals></goals>
-  <statements></statements>
+  <ion-slides class="pins-slider" id="PinsSlider" [speed]="2000">
+    <ion-slide *ngFor="let pin of pins">
+      <pin [post]="pin"></pin>
+    </ion-slide>
+  </ion-slides>
+  <div class="posts-scroller">
+    <ion-segment mode="ios" class="post-segment" [(ngModel)]="postSegment" color="background" padding-top padding-left padding-right>
+      <ion-segment-button value="statements">
+        <b>STATEMENTS</b>
+      </ion-segment-button>
+      <ion-segment-button value="goals">
+        <b>GOALS</b>
+      </ion-segment-button>
+      <br>
+    </ion-segment>
+    <div *ngIf="postSegment=='statements'" id="StatementsScroller">
+      <ion-card *ngFor="let statement of statements">
+        <statement [post]="statement"></statement>
+      </ion-card>
+    </div>
+    <div *ngIf="postSegment=='goals'" id="GoalsScroller">
+      <ion-card *ngFor="let goal of goals">
+        <goal [post]="goal"></goal>
+      </ion-card>
+    </div>
+    <br>
+  </div>
+  <footer></footer>
 </ion-content>

@@ -87,13 +87,6 @@ describe('SupportPage', () => {
         expect(component instanceof SupportPage).toBe(true);
     });
 
-    it('should be titled Support', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#SupportPageTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Support');
-    });
 
     it('should display HeaderComponent', () => {
         let de: DebugElement;

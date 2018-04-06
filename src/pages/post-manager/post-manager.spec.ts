@@ -14,6 +14,9 @@ import { environment } from '../../environments/environment';
 import { PostManagerPage } from '../post-manager/post-manager';
 import { ComponentsModule } from '../../components/components.module';
 
+import { mockStatements } from '../../../test-data/statements/mocks';
+import { mockGoals } from '../../../test-data/goals/mocks';
+
 import { } from 'jasmine';
 
 import {
@@ -80,13 +83,6 @@ describe('PostManagerPage', () => {
         expect(component instanceof PostManagerPage).toBe(true);
     });
 
-    it('should be titled Post Manager', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#PostManagerTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Post Manager')
-    });
 
     it('should display PinsSegment if postType is pins', () => {
         component.postType = 'pins';
@@ -141,9 +137,8 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display NoReportedStatements if there are no reported statements', () => {
+    it('should display no reported statements if there are no reported statements', () => {
         component.postType = 'statements';
-        component.reportedStatements = false;
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
@@ -152,13 +147,34 @@ describe('PostManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display ReportedStatements if there are reported statements', () => {
+    it('should display reported statements if there are reported statements', () => {
         component.postType = 'statements';
-        component.reportedStatements = true;
+        component.statementsReported = true;
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#ReportedStatements'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display no reported goals if there are no reported goals', () => {
+        component.postType = 'goals';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#NoReportedGoals'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display reported goals if there are reported goals', () => {
+        component.postType = 'goals';
+        component.goalsReported = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ReportedGoals'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });

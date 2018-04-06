@@ -27,7 +27,7 @@ export const pinComment = {
     timestamp: 20180216121212,
     uid: "1",
     name: "Test Contributor",
-    face: "assets/img/default-face.png"
+    face: "assets/img/default-profile.png"
 }
 export const goalComment = {
     id: "3",
@@ -42,6 +42,6 @@ export const goalComment = {
     timestamp: 20180216121212,
     uid: "1",
     name: "Test Contributor",
-    face: "assets/img/default-face.png"
+    face: "assets/img/default-profile.png"
 }
 export const mockComments: Comment[] = [statementComment, pinComment, goalComment]; 

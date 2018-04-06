@@ -42,14 +42,13 @@ export class ProfileUpdatePage {
   ionViewDidLoad() {
     this.photo = this.navParams.get('photo');
     this.user = this.firebase.user;
-    if (this.photo) this.user.photo = this.photo;
+    if (!this.photo) this.photo = this.user.photo;
     this.loadProfileForm().subscribe(() => {
       this.populateEmptySocialFields().subscribe(() => {
         this.loaded = true;
       });
     })
   }
-
 
   loadProfileForm() {
     return Observable.create((observer: any) => {
@@ -143,7 +142,7 @@ export class ProfileUpdatePage {
         spinner: 'bubbles',
         content: 'Loading...' });
       loading.present();   
-      this.user.photo = content;
+      this.user.photo = content.url;
       this.updateUser().then(() => {
         loading.dismiss();
         this.updatingProfilePhoto = false;

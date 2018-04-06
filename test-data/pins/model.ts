@@ -10,6 +10,7 @@ export interface Pin {
   day: string,
   displayAffirmationDate: string,
   affirmationDate: number,
+  collection: string,
   displayTimestamp: string,
   timestamp: number,
   startTime: string,

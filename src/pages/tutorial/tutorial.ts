@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+
+import { IonicPage, Slides } from 'ionic-angular';
+
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()
 @Component({
@@ -7,11 +10,24 @@ import { IonicPage, NavController } from 'ionic-angular';
   templateUrl: 'tutorial.html',
 })
 export class TutorialPage {
+  showSkip = true;
 
-  constructor(public navCtrl: NavController ) {
+	@ViewChild('slides') slides: Slides;
+
+  constructor(
+    private firebase: FirebaseProvider
+  ) {
   }
 
-  ionViewDidLoad() {
+  startIshallbe() {
+    this.firebase.signupUser();
   }
 
+  onSlideChangeStart(slider: Slides) {
+    this.showSkip = !slider.isEnd();
+  }
+
+	ionViewWillEnter() {
+		this.slides.update();
+	}
 }

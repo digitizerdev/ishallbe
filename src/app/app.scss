@@ -1,19 +1,105 @@
+.rlt {
+    position: relative;
+}
+
+.cf {
+    clear: both;
+}
+
+.loading-ios .loading-md {
+    background-color: color($colors, primary);
+    opacity: 1 !important;
+    position: fixed;
+    top: 44px;
+    bottom: 49.5px;
+}
+
 .list-full-border {
     border-top: thick solid color($colors, primary);
     border-bottom: thick solid color($colors, primary);
     .item {
-        border-top: thin solid $borderColor;
         .item-inner {
             border: none;
         }
     }
 }
+
 .menu-pages {
-    background: color($colors, light-yellow);
+    background: white;
 }
-.editor {
-    color: color($colors, primary);
-}
+
 .ios .menu-icon {
-  padding-left: 25%;
+    padding-left: 25%;
+}
+
+.toolbar-title.toolbar-title-md,
+.toolbar-title.toolbar-title-ios,
+.toolbar-title.toolbar-title-wp {
+    color: map-get($colors, primary);
+}
+
+.toolbar-background {
+    background-color: map-get($colors, background);
+}
+
+ion-header ion-icon.back-button-icon.icon {
+    color: map-get($colors, primary);
+}
+
+.feature {
+    padding: 10px 10px 10px 20px;
+    border-top: thick solid color($colors, primary);
+    border-bottom: thick solid color($colors, primary);
+    background: #FFF;
+}
+
+.tdct-form {
+    background-color: white !important;
+    border-radius: 30px;
+    height: 60px !important;
+    padding: 0 20px;
+    font-size: 1.25em !important;
+    border: 1px solid transparent;
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+}
+
+.tdct-textarea {
+    background-color: white !important;
+    border-radius: 30px;
+    padding: 0 20px;
+    font-size: 1.25em !important;
+    border: 1px solid transparent;
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+    height: 20vh;
+}
+
+.item-input {
+    background-color: white;
+    border-radius: 30px;
+    border: 1px solid transparent;
+}
+
+.item-input {
+    background-color: white;
+    border-radius: 30px;
+    border: 1px solid transparent;
+}
+
+.item-inner,
+ion-item {
+    border-bottom-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.subdued {
+    color: color($colors, steel);
+}
+
+.post-description {
+    text-align: left;
+    padding: 10px 20px 5px 20px;
 }

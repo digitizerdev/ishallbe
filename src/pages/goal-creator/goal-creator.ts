@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, Events, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, Events, AlertController, LoadingController, Platform } from 'ionic-angular';
 import { DatePicker } from '@ionic-native/date-picker';
 import { Media, MediaObject } from '@ionic-native/media';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
@@ -26,6 +26,8 @@ export class GoalCreatorPage {
     title?: string;
     description?: string,
   } = {};
+  audioUrl = "";
+  audioName = "";
   goalId: string;
   contentMethod: string;
   timestamp: number;
@@ -34,8 +36,6 @@ export class GoalCreatorPage {
   rawNextWeekDate: number;
   dueDate: number;
   displayDueDate: string;
-  audioUrl: string;
-  audioName: string;
   audio: any;
   submitted = false;
   dateSelected = false;
@@ -45,12 +45,14 @@ export class GoalCreatorPage {
   dueToday = false;
   dueThisWeek = false;
   dueLater = false;
+  private = false;
 
   constructor(
     private navCtrl: NavController,
     private events: Events,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
+    private platform: Platform,
     private datePicker: DatePicker,
     private fileTransfer: FileTransfer,
     private media: Media,
@@ -61,14 +63,13 @@ export class GoalCreatorPage {
     let rawDateString = moment().format('YYYYMMDD');
     this.rawDate = parseInt(rawDateString);
     this.rawNextWeekDate = this.rawDate + 7;
-  }
-
-  ionViewDidLoad() {
+    this.listenForUploadTimeout();
+    this.listenForCanceledUpload();
   }
 
   submit(form) {
     this.submitted = true;
-    if (!this.audioReady || !this.dateSelected) this.displayNotReadyAlert();
+    if (!this.dateSelected) this.displayNotReadyAlert();
     else {
       if (form.valid) {
         let loading = this.loadingCtrl.create({
@@ -96,12 +97,14 @@ export class GoalCreatorPage {
         description: form.description,
         commentCount: 0,
         likeCount: 0,
-        private: true,
+        reported: false,
+        private: this.private,
         complete: false,
         url: this.audioUrl,
         filename: this.audioName,
         displayDueDate: this.displayDueDate,
         dueDate: this.dueDate,
+        collection: "goals",
         displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
         uid: this.firebase.user.uid,
@@ -125,7 +128,7 @@ export class GoalCreatorPage {
     this.dueDate = 0;
     this.datePicker.show({
       date: new Date(),
-      mode: 'datetime',
+      mode: 'date',
       allowOldDates: false,
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
     }).then((date) => {
@@ -164,16 +167,17 @@ export class GoalCreatorPage {
   playAudio() {
     this.playingAudio = true;
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
-    var destPath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + this.audioName;
-    fileTransfer.download(this.audioUrl, destPath, ).then((entry) => {
+    if (this.platform.is('ios')) var filepath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + this.audioName;
+    if (this.platform.is('android')) filepath = cordova.file.externalDataDirectory + this.audioName;
+    fileTransfer.download(this.audioUrl, filepath, ).then((entry) => {
       let rawAudioURI = entry.toURL();
-      rawAudioURI = rawAudioURI.replace(/^file:\/\//, '/private');
+      if (this.platform.is('ios')) rawAudioURI = rawAudioURI.replace(/^file:\/\//, '/private');
       let audio: MediaObject = this.media.create(rawAudioURI);
       this.audio = audio;
       this.audio.play();
       this.listenToAudioEvents();
     }, (error) => {
-    });
+    }); 
   }
 
   stopPlayback() {
@@ -192,8 +196,7 @@ export class GoalCreatorPage {
   }
 
   displayNotReadyAlert() {
-    let alertMessage = "Please Speak Your Goal";
-    if (!this.dateSelected) alertMessage = "Please Set a Goal Due Date";
+    let alertMessage = "Please Set a Due Date";
     let alert = this.alertCtrl.create({
       title: 'Almost There!',
       subTitle: alertMessage,
@@ -232,4 +235,11 @@ export class GoalCreatorPage {
     });
   }
 
+  makePrivate() {
+    this.private = true;
+  }
+
+  makePublic() {
+    this.private = false;
+  }
 }

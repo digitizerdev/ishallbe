@@ -83,14 +83,6 @@ describe('PinCreatorPage', () => {
         expect(component instanceof PinCreatorPage).toBe(true);
     });
 
-    it('should be titled Pin', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#PinCreatorTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Pin')
-    });
-
     it('should display selectedDateText', () => {
         let de: DebugElement;
         let el: HTMLElement;

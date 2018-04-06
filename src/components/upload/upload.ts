@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 
-import { Events, LoadingController } from 'ionic-angular';
+import { Platform, Events, LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Media, MediaObject } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
@@ -28,12 +28,15 @@ export class UploadComponent {
   audio: any;
   contentBlob: any;
   contentName: string;
+  filepath: string;
   loader: any;
   gettingImage = false;
   imageCropped = false;
   recording = false;
+  complete = false;
 
   constructor(
+    private platform: Platform,
     private events: Events,
     private loadingCtrl: LoadingController,
     private camera: Camera,
@@ -55,12 +58,13 @@ export class UploadComponent {
         this.sourceType = this.camera.PictureSourceType.CAMERA;
         this.getImage();
       }
-      break;
+        break;
       case 'audio': {
         this.contentName = this.contentName + ".m4a";
-        this.getAudio();
+        if (this.platform.is('ios')) this.getIOSAudio();
+        if (this.platform.is('android')) this.getAndroidAudio(); 
       }
-      break;
+        break;
       default: {
         this.sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
         this.getImage();
@@ -74,10 +78,9 @@ export class UploadComponent {
       this.imageElement.nativeElement.src = image;
       if (this.contentType == "pin") this.cropPin();
       else this.cropImage();
-    }).catch((error) => { 
+    }).catch((error) => {
       this.events.publish("getImageCanceled");
     });;
-    this.catchUploadTimeout();
   }
 
   getCameraOptions() {
@@ -116,7 +119,7 @@ export class UploadComponent {
       guides: true,
       highlight: false,
       background: false,
-      autoCrop: true,
+      autoCrop: false,
       autoCropArea: 0.9,
       responsive: true,
       zoomable: true,
@@ -134,12 +137,14 @@ export class UploadComponent {
         url: snapshot.downloadURL,
         name: this.contentName
       }
+      this.complete = true;
       this.uploaded.emit(image);
       this.loader.dismiss();
     });
   }
 
   storeImage(path, obj) {
+    this.waitForStorageTimeout();
     return Observable.create((observer) => {
       let storagePath = firebase.storage().ref(path);
       return storagePath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
@@ -151,10 +156,22 @@ export class UploadComponent {
     });
   }
 
-  getAudio() {
+  getAndroidAudio() {
     this.recording = true;
+    this.filepath = this.file.externalDataDirectory + this.contentName;
+    const audio: MediaObject = this.media.create(this.filepath);
+    this.audio = audio;
+    this.audio.startRecord();
+    window.setTimeout(() => {
+      if (this.recording) this.uploadAudio();
+    }, 10000);
+  }
+
+  getIOSAudio() {
+    this.recording = true;
+    this.filepath = this.file.tempDirectory.replace(/^file:\/\//, '') + this.contentName;
     this.file.createFile(this.file.tempDirectory, this.contentName, true).then(() => {
-      const audio: MediaObject = this.media.create(this.file.tempDirectory.replace(/^file:\/\//, '') + this.contentName);
+      const audio: MediaObject = this.media.create(this.filepath);
       this.audio = audio;
       this.audio.startRecord();
       window.setTimeout(() => {
@@ -162,9 +179,7 @@ export class UploadComponent {
       }, 10000);
     }, (error) => {
       this.events.publish("getAudioCanceled");
-      this.loader.dismiss();
     });
-    this.catchUploadTimeout();
   }
 
   uploadAudio() {
@@ -181,9 +196,11 @@ export class UploadComponent {
       this.audio = null;
       this.contentName = null;
       this.recording = false;
+      this.complete = true;
       this.uploaded.emit(audio);
       this.loader.dismiss();
     }, (error) => {
+      this.complete = true;
       this.events.publish("getAudioCanceled");
       this.loader.dismiss();
     });
@@ -191,7 +208,10 @@ export class UploadComponent {
 
   storeAudio() {
     return Observable.create((observer) => {
-      const filePath = `${this.file.tempDirectory}` + this.contentName;
+      this.waitForStorageTimeout();
+      let filePath = "";
+      if (this.platform.is('ios')) filePath = `${this.file.tempDirectory}` + this.contentName;
+      else filePath = this.filepath;
       const readFile: any = window['resolveLocalFileSystemURL'];
       return readFile(filePath, (fileEntry) => {
         return fileEntry.file((file) => {
@@ -243,12 +263,14 @@ export class UploadComponent {
     this.recording = false;
   }
 
-  catchUploadTimeout() {
+  waitForStorageTimeout() {
     setTimeout(() => {
-      this.loader.dismiss();
-      this.resetUpload();
-      this.events.publish("timeout");
+      if (!this.complete) {
+        this.loader.dismiss();
+        this.resetUpload();
+        this.events.publish("timeout");
+      }
     },
-    5000);
+      7000);
   }
 }

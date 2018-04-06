@@ -81,14 +81,6 @@ describe('PasswordUpdatePage', () => {
         expect(component instanceof PasswordUpdatePage).toBe(true);
     });
 
-    it('should be titled Password', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#PasswordUpdatePageTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Password');
-    });
-
     it('should display HeaderComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
@@ -104,6 +96,5 @@ describe('PasswordUpdatePage', () => {
         el = de.nativeElement.innerHTML
         expect(el).toContain('UPDATE PASSWORD');
     });
-
 });
 

@@ -1,28 +1,26 @@
 <ion-header no-border>
-  <ion-navbar color='primary'>
+  <ion-navbar>
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon color='primary' name="menu"></ion-icon>
     </button>
-    <ion-title id="APIManagerTitle" color='primary'>API Manager</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
   <header></header>
-  <div id="ChannelFeature" class="feature" text-center>
-    <h5>Connected to {{deployChannel}} Channel</h5>
-    <ion-item  class="feature" no-lines>
-      <ion-label>Opt in to Beta Features</ion-label>
-      <ion-toggle color="primary" [(ngModel)]="isBeta" (ionChange)="toggleBeta()"></ion-toggle>
-    </ion-item>
+  <div class="section">
+    <ion-list class="list-full-border" id="ChannelFeature" text-center>
+      <h5>Connected to {{deployChannel}} Channel</h5>
+      <ion-item class="section" no-lines>
+        <ion-label>Opt in to Beta Features</ion-label>
+        <ion-toggle color="primary" [(ngModel)]="isBeta" (ionChange)="toggleBeta()"></ion-toggle>
+      </ion-item>
+    </ion-list>
   </div>
   <br>
-  <div id="AppBaseFeature" class="feature" text-center>
-    <h5>App Base: TDCT 2</h5>
-    <h6>Account Manager: Troy DC Thompson</h6>
+  <div class="section">
+    <ion-list class="list-full-border" (click)="openLink()" id="AppBaseFeature" text-center>
+      <h5>App Base: TDCT 2</h5>
+      <h6>Account Manager: Troy DC Thompson</h6>
+    </ion-list>
   </div>
-  <ion-row>
-      <ion-col text-center>
-        <img (click)="openLink()" class="tdct" src="assets/img/tdct.png">
-      </ion-col>
-    </ion-row>
 </ion-content>

@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
+
 import moment from 'moment';
 
-import { mockNotifications } from '../../../test-data/notifications/mocks';
+import { PostPage } from '../post/post';
+import { ChatPage } from '../chat/chat';
+
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()
 @Component({
@@ -12,34 +16,81 @@ import { mockNotifications } from '../../../test-data/notifications/mocks';
 export class NotificationsPage {
 
   rawDate: number;
+  notificationsCol: any;
   readNotifications: any[];
   unreadNotifications: any[];
 
   constructor(
-    public navCtrl: NavController, 
-    public navParams: NavParams
+    private navCtrl: NavController,
+    private firebase: FirebaseProvider
   ) {
   }
 
   ionViewDidLoad() {
-    this.readNotifications = [];
-    this.unreadNotifications = [];
-    this.timeStampPage();
     this.loadNotifications();
   }
 
-  timeStampPage() {
-    let rawDateString = moment().format('YYYYMMDDhhmmss');
-    this.rawDate = parseInt(rawDateString);
+  loadNotifications() {
+    this.notificationsCol = this.firebase.afs.collection('notifications', ref => ref.
+      where("receiverUid", "==", this.firebase.user.uid).
+      where("message", "==", false).
+      orderBy('timestamp', 'desc'));
+    this.notificationsCol.valueChanges().subscribe((notifications) => {
+      this.setNotifications(notifications);
+    });
   }
 
-  loadNotifications() {
-    mockNotifications.forEach((notification) => {
-      if (notification.timestamp < this.rawDate) 
-        notification.displayTimestamp = moment(notification.timestamp, "YYYYMMDD").fromNow();
-        else notification.displayTimestamp = moment(notification.timestamp, "YYYYMMDDhhmmss").fromNow();
-      if (notification.read) this.readNotifications.push(notification);
-      else this.unreadNotifications.push(notification);
+  setNotifications(notifications) {
+    this.unreadNotifications = [];
+    this.readNotifications = [];
+    notifications.forEach((notification) => {
+      let date = moment.unix(notification.timestamp);
+      notification.displayTimestamp = moment(date).fromNow();
+      if (notification.read)
+        this.readNotifications.push(notification);
+      else
+        this.unreadNotifications.push(notification);
+    });
+  }
+
+  openNotification(notification) {
+    let notificationPath = "notifications/" + notification.id;
+    this.firebase.afs.doc(notificationPath).update({ read: true }).then(() => {
+      if (notification.collection == "pins")
+        this.openPin(notification);
+      if (notification.collection == "statements")
+        this.openStatement(notification);
+      if (notification.collection == "goals")
+        this.openGoal(notification)
+      if (notification.message)
+        this.openChat(notification);
+    });
+  }
+
+  openPin(notification) {
+    this.navCtrl.push(PostPage, {
+      id: notification.docId,
+      type: "pins"
+    });
+  }
+
+  openStatement(notification) {
+    this.navCtrl.push(PostPage, {
+      id: notification.docId,
+      type: "statements"
+    });
+  }
+
+  openGoal(notification) {
+    this.navCtrl.push(PostPage, {
+      id: notification.docId,
+      type: "goals"
+    });
+  }
+
+  openChat(notification) {
+    this.navCtrl.push(ChatPage, {
+      uid: notification.uid,
     });
   }
 

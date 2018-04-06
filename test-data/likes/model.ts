@@ -1,9 +1,10 @@
-export interface Likes {
+export interface Like {
     id: string,
-    collectionId: string,
+    postId: string,
     pin: boolean,
     statement: boolean,
     goal: boolean,
+    comment: boolean,
     displayTimestamp: string,
     timestamp: number,
     uid: string,

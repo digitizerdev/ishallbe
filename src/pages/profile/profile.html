@@ -1,46 +1,87 @@
 <ion-header no-border>
-  <ion-navbar color='primary'>
+  <ion-navbar>
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon color="primary" name="menu"></ion-icon>
     </button>
-    <ion-title id="ProfilePageTitle" color='primary'>{{ user?.name }}</ion-title>
-    <ion-buttons id="pushUpdateProfilePageIcon" *ngIf="mine" end>
-      <button ion-button icon-only (click)="pushProfileUpdatePage()">
-        <ion-icon name="md-options"></ion-icon>
+    <ion-buttons end>
+      <button *ngIf="mine" (click)="pushChatsPage()" id="pushChatsPageIcon" ion-button icon-only>
+        <ion-icon color="primary" name="mail"></ion-icon>
       </button>
+      <button *ngIf="!mine" (click)="pushChatPage()" id="pushChatPageIcon" ion-button icon-only>
+          <ion-icon color="primary" name="mail"></ion-icon>
+        </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content class="profile-content">
+<ion-content>
   <ion-refresher (ionRefresh)="refreshPage($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="dots" refreshingText="Refeshing">
     </ion-refresher-content>
   </ion-refresher>
-  <div class="user-profile" id="UserProfile" text-center padding>
-    <img class="avatar" src="{{ user?.photo }}">
+  <div *ngIf="loaded" id="UserProfile" text-center padding>
+    <h2 color="primary" ion-text text-center>
+      <b>{{ user?.name }}</b>
+    </h2>
+    <img class="avatar" src="{{ photo }}">
     <ion-row *ngIf="this.user?.instagram || this.user?.twitter || this.user?.linkedin" class="social" text-center>
       <ion-col *ngIf="this.user?.instagram" (click)="openLink(this.user.instagram)" text-center>
         <ion-icon name="logo-instagram"></ion-icon>
       </ion-col>
-      <ion-col *ngIf="this.user?.twitter" (click)="openLink(this.user.twitter)"text-center>
+      <ion-col *ngIf="this.user?.twitter" (click)="openLink(this.user.twitter)" text-center>
         <ion-icon name="logo-twitter"></ion-icon>
       </ion-col>
       <ion-col *ngIf="this.user?.linkedin" (click)="openLink(this.user.linkedin)" text-center>
         <ion-icon name="logo-linkedin"></ion-icon>
       </ion-col>
     </ion-row>
-    <h5 class="bio">{{ user?.bio}} </h5>
-    <ion-row>
+    <h5 class="bio" padding-left padding-right>{{ user?.bio}} </h5>
+    <ion-row *ngIf="mine">
       <ion-col>
-        <button ion-button id="pushAccountPageButton" (click)="pushAccountPage()" color="primary" small round strong>MANAGE ACCOUNT</button>
+        <button ion-button id="pushProfileUpdatePageButton" (click)="pushProfileUpdatePage()" color="primary" round strong>EDIT PROFILE</button>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="editor && !mine">
+    <ion-row *ngIf="editor && !mine && !blocked">
       <ion-col>
-        <button ion-button id="BlockUserButton" (click)="blockUser()" color="danger" strong>BLOCK USER</button>
+        <button ion-button id="blockUserButton" (click)="blockUser()" color="danger" round strong>BLOCK USER</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="editor && !mine && blocked">
+      <ion-col>
+        <button ion-button id="unblockUserButton" (click)="unblockUser()" color="primary" round strong>UNBLOCK USER</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="editor && !mine && !blocked && !userEditor">
+      <ion-col>
+        <button ion-button id="makeEditorButton" (click)="makeEditor()" color="secondary" round strong>MAKE EDITOR</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="editor && !mine && !blocked && userEditor">
+      <ion-col>
+        <button ion-button id="makeContributorButton" (click)="makeContributor()" color="secondary" round strong>MAKE CONTRIBUTOR</button>
       </ion-col>
     </ion-row>
   </div>
-  <goals></goals>
-  <statements></statements>
+  <div class="posts-scroller">
+    <ion-segment mode="ios" class="post-segment" [(ngModel)]="postSegment" color="background" padding-top padding-left padding-right>
+      <ion-segment-button value="statements">
+        <b>STATEMENTS</b>
+      </ion-segment-button>
+      <ion-segment-button value="goals">
+        <b>GOALS</b>
+      </ion-segment-button>
+      <br>
+    </ion-segment>
+    <div *ngIf="postSegment=='statements'" id="MyStatements">
+      <ion-card *ngFor="let statement of statements">
+        <statement [post]="statement"></statement>
+      </ion-card>
+    </div>
+    <div *ngIf="postSegment=='goals'" id="MyGoals">
+      <ion-card *ngFor="let goal of goals">
+        <goal [post]="goal"></goal>
+      </ion-card>
+    </div>
+    <br>
+  </div>
+  <footer></footer>
 </ion-content>

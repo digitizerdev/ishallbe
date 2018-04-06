@@ -1,6 +1,7 @@
 import { User } from "./model";
 export const contributor = {
   uid: "1",
+  fcmToken: "1",
   name: "Test Contributor",
   bio: "I contribute statement and goal affirmations",
   email: "contributor@ishallbe.co",
@@ -16,6 +17,7 @@ export const contributor = {
 }
 export const editor = {
   uid: "2",
+  fcmToken: "2",
   name: "Test Editor",
   bio: "I contribute and edit pin, statements and goal affirmations",
   email: "editor@ishallbe.co",

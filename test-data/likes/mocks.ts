@@ -1,7 +1,7 @@
-import { Likes } from './model';
+import { Like } from './model';
 export const statementLike = {
     id: "1",
-    collectionId: "1",
+    postId: "1",
     pin: false,
     statement: true,
     goal: false,
@@ -13,7 +13,7 @@ export const statementLike = {
 }
 export const pinLike = {
     id: "2",
-    collectionId: "2",
+    postId: "2",
     pin: true,
     statement: false,
     goal: false,
@@ -25,7 +25,7 @@ export const pinLike = {
 }
 export const goalLike = {
     id: "3",
-    collectionId: "3",
+    postId: "3",
     pin: false,
     statement: false,
     goal: true,
@@ -35,4 +35,4 @@ export const goalLike = {
     name: "Test Contributor",
     face: "assets/img/default-face.png"
 }
-export const mockLikes: Likes[] = [statementLike, pinLike]; 
+export const mockLikes: Like[] = [statementLike, pinLike]; 

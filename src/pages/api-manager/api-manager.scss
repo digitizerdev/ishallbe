@@ -1,10 +1,5 @@
 page-api-manager {
-    .feature {
-        background: color($colors, light-yellow);
-        border-top: thick solid color($colors, primary);                  
-        border-bottom: thick solid color($colors, primary);                  
-    }
-    .tdct {
-        max-width: 33%;
+    .section {
+        background-color: white;
     }
 }

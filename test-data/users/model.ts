@@ -1,5 +1,6 @@
 export interface User {
     uid: string,
+    fcmToken: string;
     name: string,
     bio: string,
     email: string,

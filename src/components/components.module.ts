@@ -5,10 +5,14 @@ import { HeaderComponent } from './header/header';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service';
 import { LoginFacebookComponent } from './login-facebook/login-facebook';
 import { FooterComponent } from './footer/footer';
-import { PinsComponent } from './pins/pins';
-import { StatementsComponent } from './statements/statements';
-import { GoalsComponent } from './goals/goals';
 import { UploadComponent } from './upload/upload';
+import { ToolbarLogoComponent } from './toolbar-logo/toolbar-logo';
+import { PostHeaderComponent } from './post-header/post-header';
+import { PostFooterComponent } from './post-footer/post-footer';
+import { AudioPlayerComponent } from './audio-player/audio-player';
+import { PinComponent } from './pin/pin';
+import { StatementComponent } from './statement/statement';
+import { GoalComponent } from './goal/goal';
 
 @NgModule({
     declarations: [
@@ -16,10 +20,14 @@ import { UploadComponent } from './upload/upload';
         TermsOfServiceComponent,
         LoginFacebookComponent,
         FooterComponent,
-        PinsComponent,
-        GoalsComponent,
-        StatementsComponent,
         UploadComponent,
+        ToolbarLogoComponent,
+        PostHeaderComponent,
+        PostFooterComponent,
+        AudioPlayerComponent,
+        PinComponent,
+        StatementComponent,
+    GoalComponent,
     ],
     imports: [
         IonicModule,
@@ -29,10 +37,14 @@ import { UploadComponent } from './upload/upload';
         TermsOfServiceComponent,
         LoginFacebookComponent,
         FooterComponent,
-        PinsComponent,
-        GoalsComponent,
-        StatementsComponent,
-        UploadComponent
+        UploadComponent,
+        ToolbarLogoComponent,
+        PostHeaderComponent,
+        PostFooterComponent,
+        AudioPlayerComponent,
+        PinComponent,
+        StatementComponent,
+    GoalComponent
     ],
     providers: [
         InAppBrowser

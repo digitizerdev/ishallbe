@@ -17,20 +17,22 @@ import { Statement } from '../../../test-data/statements/model';
   templateUrl: 'statement-creator.html',
 })
 export class StatementCreatorPage {
+  
   createStatementForm: {
     title?: string;
     description?: string,
   } = {};
+  statementImageUrl = "";
+  statementName = "";
   statementId: string;
-  statementImageUrl: string;
-  statementName: string;
   imageRetrievalMethod: string;
   timestamp: number;
   displayTimestamp: string;
   submitted = false;
   loadingImage = false;
   imageReady = false;
-
+  private = false;
+  
   constructor(
     private navCtrl: NavController,
     private alertCtrl: AlertController,
@@ -90,36 +92,35 @@ export class StatementCreatorPage {
 
   submit(form) {
     this.submitted = true;
-    if (!this.imageReady) this.displayNotReadyAlert();
-    else {
-      if (form.valid) {
-        let loading = this.loadingCtrl.create({
-          spinner: 'bubbles',
-          content: 'Loading...'
+    if (form.valid) {
+      let loading = this.loadingCtrl.create({
+        spinner: 'bubbles',
+        content: 'Loading...'
+      });
+      loading.present();
+      this.buildStatement(form).subscribe((statement) => {
+        this.createStatement(statement).then(() => {
+          this.navCtrl.setRoot(HomePage);
+          loading.dismiss();
         });
-        loading.present();
-        this.buildStatement(form).subscribe((statement) => {
-          this.createStatement(statement).then(() => {
-            this.navCtrl.setRoot(HomePage);
-            loading.dismiss();
-          });
-        });
-      }
+      });
     }
   }
 
   buildStatement(form) {
     return Observable.create((observer) => {
       this.statementId = this.firebase.afs.createId();
-      const statement: Statement = {
+      let statement: Statement = {
         id: this.statementId,
         title: form.title,
         description: form.description,
         commentCount: 0,
         likeCount: 0,
-        private: false,
+        reported: false,
+        private: this.private,
         url: this.statementImageUrl,
         filename: this.statementName,
+        collection: "statements",
         displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
         uid: this.firebase.user.uid,
@@ -133,16 +134,6 @@ export class StatementCreatorPage {
   createStatement(statement) {
     let statementPath = "/statements/" + this.statementId;
     return this.firebase.afs.doc(statementPath).set(statement);
-  }
-
-  displayNotReadyAlert() {
-    let alertMessage = "Please Add Image to Statement";
-    let alert = this.alertCtrl.create({
-      title: 'Almost There!',
-      subTitle: alertMessage,
-      buttons: ['OK']
-    });
-    alert.present();
   }
 
   listenForCanceledUpload() {
@@ -171,5 +162,13 @@ export class StatementCreatorPage {
     this.statementImageUrl = null;
     this.imageReady = false;
     this.events.publish('redoUpload', this.imageRetrievalMethod, this.statementName);
+  }
+  
+  makePrivate() {
+    this.private = true;
+  }
+
+  makePublic() {
+    this.private = false;
   }
 }

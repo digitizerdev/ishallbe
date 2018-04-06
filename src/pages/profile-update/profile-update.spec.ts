@@ -16,6 +16,8 @@ import { environment } from '../../environments/environment';
 
 import { ProfileUpdatePage } from '../profile-update/profile-update';
 
+import { mockUsers } from '../../../test-data/users/mocks';
+
 import { ComponentsModule } from '../../components/components.module';
 
 import { } from 'jasmine';
@@ -122,22 +124,16 @@ describe('ProfileUpdatePage', () => {
         expect(component instanceof ProfileUpdatePage).toBe(true);
     });
 
-    it('should be titled Profile', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#UpdateProfileTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Profile')
-    });
-
     it('should display profile photo if not updating profile photo', () => {
         component.updatingProfilePhoto = false;
+        component.user = mockUsers[0];
+        component.loaded = true;
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#UpdateProfilePhoto'));
+        de = fixture.debugElement.query(By.css('img'));
         el = de.nativeElement.src;
-        expect(el).toBeUndefined();
+        expect(el).toBeDefined();
     });
 
     it('should display upload component if updating profile photo', () => {
@@ -160,5 +156,14 @@ describe('ProfileUpdatePage', () => {
         expect(el).toContain('UPDATE PROFILE');
     });
 
+    it('should display UpdateProfileButton if not updating profile photo', () => {
+        component.updatingProfilePhoto = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#UpdateProfileButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('UPDATE PROFILE');
+    });
 });
 

@@ -86,14 +86,6 @@ describe('ApiManagerPage', () => {
         expect(component instanceof ApiManagerPage).toBe(true);
     });
 
-    it('should be titled API Manager', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#APIManagerTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('API Manager')
-    });
-
     it('should display header', () => {
         let de: DebugElement;
         let el: HTMLElement;

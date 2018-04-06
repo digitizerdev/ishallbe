@@ -97,10 +97,10 @@ describe('PasswordResetPage', () => {
         expect(el).toContain('RESET PASSWORD');
     });
 
-    it('should display setRootToLoginPageButton', () => {
+    it('should display setRootLoginPageButton', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#setRootToLoginPageButton'));
+        de = fixture.debugElement.query(By.css('#setRootLoginPageButton'));
         el = de.nativeElement.innerHTML;
         expect(el).toContain('LOGIN');
     });

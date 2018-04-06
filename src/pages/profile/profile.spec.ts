@@ -97,44 +97,127 @@ describe('ProfilePage', () => {
         expect(component instanceof ProfilePage).toBe(true);
     });
 
-    it('should display user profile', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#UserProfile'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    it('should display pushUpdateProfilePageIcon if mine', () => {
+    it('should dipsplay pushChatsPageIcon if mine', () => {
         component.mine = true;
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css("#pushUpdateProfilePageIcon"));
+        de = fixture.debugElement.query(By.css
+            ('#pushChatsPageIcon'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
 
-    it('should display pushAccountPageButton', () => {
+    it('should dipsplay pushChatPageIcon if not mine', () => {
+        component.mine = false;
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#pushAccountPageButton'));
+        de = fixture.debugElement.query(By.css
+            ('#pushChatPageIcon'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display user profile if loaded', () => {
+        component.loaded = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#UserProfile'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display pushUpdateProfilePageButton if loaded and mine', () => {
+        component.loaded = true;
+        component.mine = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ("#pushProfileUpdatePageButton"));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display blockUserButton if loaded, editor, not blocked, and not mine', () => {
+        component.loaded = true;
+        component.editor = true;
+        component.blocked = false;
+        component.mine = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#blockUserButton'));
         el = de.nativeElement.innerHTML;
-        expect(el).toContain('MANAGE ACCOUNT');
+        expect(el).toContain('BLOCK USER');
     });
-    
-    it('should display GoalsComponent', () => {
+
+    it('should display unblockUserButton if loaded, editor, blocked, and not mine', () => {
+        component.loaded = true;
+        component.editor = true;
+        component.blocked = true;
+        component.mine = false;
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('goals'));
+        de = fixture.debugElement.query(By.css
+            ('#unblockUserButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('UNBLOCK USER');
+    });
+
+    it('should display makeEditorButton if loaded, editor, not mine, not blocked, and not userEditor', () => {
+        component.loaded = true;
+        component.editor = true;
+        component.mine = false;
+        component.blocked = false;
+        component.userEditor = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#makeEditorButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('MAKE EDITOR');
+    });
+
+    it('should display makeContributorButton if loaded, editor, not mine, not blocked, and userEditor', () => {
+        component.loaded = true;
+        component.editor = true;
+        component.mine = false;
+        component.blocked = false;
+        component.userEditor = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#makeContributorButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('MAKE CONTRIBUTOR');
+    });
+
+    it('should display my statements', () => {
+        component.postSegment = 'statements';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#MyStatements'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
 
-    it('should display StatementsComponent', () => {
+    it('should display my goals', () => {
+        component.postSegment = 'goals';
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('statements'));
+        de = fixture.debugElement.query(By.css
+            ('#MyGoals'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });

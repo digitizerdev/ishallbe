@@ -1,53 +1,48 @@
 <ion-header no-border>
-  <ion-navbar color='primary'>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title id="UpdateProfileTitle">Profile</ion-title>
+  <ion-navbar>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <br>
   <div (click)="updateProfilePhoto()">
     <div class="update-photo">
       <ion-icon *ngIf="!updatingProfilePhoto" name="md-create" color="primary"></ion-icon>
     </div>
-    <div *ngIf="!updatingProfilePhoto" id="UpdateProfilePhoto" text-center>
-      <img class="avatar" src="{{ user?.photo }}">
+    <div *ngIf="!updatingProfilePhoto && loaded" id="UpdateProfilePhoto" id="UpdateProfilePhoto" text-center>
+      <img class="avatar" src="{{ user.photo }}">
     </div>
   </div>
   <upload *ngIf="updatingProfilePhoto" (uploaded)="setProfilePhoto($event)" [method]="imageRetrievalMethod" padding></upload>
   <form *ngIf="!updatingProfilePhoto" novalidate padding text-center>
     <ion-list no-lines>
-      <ion-item class="appForm">
-        <ion-label color="primary" text-left><b>Name :</b></ion-label>
+      <ion-item class="profile-update-form">
+        <ion-label stacked color="primary" text-left><b>Name :</b></ion-label>
         <ion-input [(ngModel)]="profileForm.name" name="name" type="text" #name="ngModel" spellcheck="false" autocapitalize="off"
           maxlength="16">
         </ion-input>
       </ion-item>
       <br>
-      <ion-item class="appForm">
+      <ion-item class="profile-update-form">
         <ion-label stacked text-left> <ion-icon name="logo-linkedin" color="primary"></ion-icon></ion-label>
         <ion-input [(ngModel)]="profileForm.linkedin" placeholder="linkedin.com/username" name="linkedin" type="text" #linkedin="ngModel" spellcheck="false" autocapitalize="off">
           <ion-icon name="logo-linkedin"></ion-icon>
         </ion-input>
       </ion-item>
       <br>
-      <ion-item class="appForm">
+      <ion-item class="profile-update-form">
           <ion-label stacked text-left> <ion-icon name="logo-twitter" color="primary"></ion-icon></ion-label>
           <ion-input [(ngModel)]="profileForm.twitter" placeholder="twitter.com/username" name="twitter" type="text" #twitter="ngModel" spellcheck="false" autocapitalize="off">
         </ion-input>
       </ion-item>
       <br>
-      <ion-item class="appForm">
+      <ion-item class="profile-update-form">
           <ion-label stacked text-left> <ion-icon name="logo-instagram" color="primary"></ion-icon></ion-label>
         <ion-input [(ngModel)]="profileForm.instagram" placeholder="instagram.com/username" name="instagram" type="text" #instagram="ngModel" spellcheck="false" autocapitalize="off">
         </ion-input>
       </ion-item>
       <br>
-      <ion-item class="appFormTextArea">
-        <ion-label color="primary" text-left no-padding-right><b>Bio :</b></ion-label>
-        <ion-textarea [attr.rows]="4" autosize [(ngModel)]="profileForm.bio" name="bio" type="text" #bio="ngModel" spellcheck="false"
+      <ion-item class="profile-update-textarea">
+        <ion-label stacked color="primary" text-left no-padding-right><b>Bio :</b></ion-label>
+        <ion-textarea [attr.rows]="5" autosize [(ngModel)]="profileForm.bio" name="bio" type="text" #bio="ngModel" spellcheck="false"
           autocapitalize="off" maxlength="250">
         </ion-textarea>
       </ion-item>

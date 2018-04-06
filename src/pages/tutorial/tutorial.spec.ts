@@ -78,5 +78,12 @@ describe('TutorialPage', () => {
         expect(component instanceof TutorialPage).toBe(true);
     });
 
+    it('should display slides', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#TutorialSlides'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('iShallBe');
+    });
 });
 

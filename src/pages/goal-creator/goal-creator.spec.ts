@@ -117,14 +117,6 @@ describe('GoalCreatorPage', () => {
         expect(component instanceof GoalCreatorPage).toBe(true);
     });
 
-    it('should be titled Goal', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#GoalCreatorTitle'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Goal')
-    });
-
     it('should display SelectDueDateButton if date not selected', () => {
         component.dateSelected = false;
         fixture.detectChanges();
@@ -205,4 +197,31 @@ describe('GoalCreatorPage', () => {
         expect(el).toContain('CREATE GOAL');
     });
 
+    it('should display MakePrivateButton if public', () => {
+        component.private = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#MakePrivateButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('MAKE PRIVATE');
+    });
+
+    it('should display MakePublicButton if private', () => {
+        component.private = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#MakePublicButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('MAKE PUBLIC');
+    });
+
+    it('should display CreateGoalButton', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#CreateGoalButton'));
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('CREATE GOAL');
+    });
 });

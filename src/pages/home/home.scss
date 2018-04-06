@@ -1,8 +1,14 @@
 page-home {
-    .home-content {
-        background: color($colors, primary);
+    .refresher-icon-color {
+        color: color($colors, primary);
     }
-    .refreshing {
-        background-color: color($colors, light-yellow);
+    .pins-slider {
+        max-height: 65%;
+    }
+    .posts-scroller {
+        background-color: color($colors, primary) !important;
+    }
+    .card {
+        border-radius: 15px;
     }
 }

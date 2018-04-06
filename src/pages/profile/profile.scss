@@ -1,14 +1,4 @@
 page-profile {
-    .profile-content {
-        background: color($colors, primary);
-    }
-    .refreshing {
-        background-color: color($colors, light-yellow);
-    }
-    .user-profile {
-        border-bottom: thick solid color($colors, primary);
-        background: color($colors, light-yellow);
-    }
     .avatar {
         display: round;
         width: 100%;
@@ -27,16 +17,10 @@ page-profile {
         margin-right: auto;
         text-align: center;
     }
-    .bio {
-        padding-left: 7px;
-        padding-right: 7px;
+    .posts-scroller {
+        background-color: color($colors, primary) !important;
     }
-    .edit-photo {
-        color: color($colors, primary);
-        font-size: 1.5em;
-        text-align: right;
-    }
-    .refreshing {
-        background-color: color($colors, light-yellow);
+    .card {
+        border-radius: 15px;
     }
 }
