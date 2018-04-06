@@ -7,9 +7,6 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 
-import { LoginPage } from '../../pages/login/login';
-import { HomePage } from '../../pages/home/home';
-
 import { User } from '../../../test-data/users/model';
 
 @Injectable()

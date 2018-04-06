@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
 import moment from 'moment';
 
@@ -22,7 +22,6 @@ export class NotificationsPage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
     private firebase: FirebaseProvider
   ) {
   }
