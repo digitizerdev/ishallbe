@@ -192,7 +192,8 @@ export class PostPage {
     this.commented = true;
     this.buildComment(comment).subscribe((comment) => {
       this.setComment(comment);
-      this.sendNotification();
+      if (this.post.uid !== this.firebase.user.uid)
+        this.sendNotification();
     });
   }
 
@@ -273,7 +274,8 @@ export class PostPage {
     this.buildCommentLike().subscribe((like) => {
       this.firebase.afs.doc(commentLikePath).set(like);
       this.addToCommentLikeCount(comment);
-      this.sendNotification();
+      if (comment.uid !== this.firebase.user.uid)
+        this.sendNotification();
     });
   }
 
@@ -328,21 +330,17 @@ export class PostPage {
   }
 
   sendNotification() {
-    if (this.post.uid == this.firebase.user.uid) 
-      console.log("Not sending notification to myself")
-    else { 
-      console.log("Sending Notification");
-      let description = "";
-      if (this.commented) description = "commented on this post";
-      if (this.likedComment) description = "liked your comment";
-      this.buildNotification(description).subscribe((notification) => {
-        let notificationPath = "notifications/" + notification.id;
-        console.log("Notification path is " + notificationPath);
-        this.firebase.afs.doc(notificationPath).set(notification);
-        this.commented = false;
-        this.likedComment = false;
-      });
-    }
+    console.log("Sending Notification");
+    let description = "";
+    if (this.commented) description = "commented on your post";
+    if (this.likedComment) description = "liked your comment";
+    this.buildNotification(description).subscribe((notification) => {
+      let notificationPath = "notifications/" + notification.id;
+      console.log("Notification path is " + notificationPath);
+      this.firebase.afs.doc(notificationPath).set(notification);
+      this.commented = false;
+      this.likedComment = false;
+    });
   }
 
   buildNotification(description) {
