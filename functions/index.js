@@ -13,6 +13,13 @@ exports.hourly_job =
         return;
     });
 
+exports.updateProfilePosts = functions.firestore.document('users/{userId}').onCreate(user => {
+    console.log("Update Profile Posts Triggered");
+    let profile = user.data.data();
+    console.log(profile);
+    return true;
+});
+
 exports.createMessage = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
     console.log("Create Message Triggered");
     let message = event.data.data();
