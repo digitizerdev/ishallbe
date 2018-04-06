@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, Platform } from 'ionic-angular';
+import { IonicPage, NavController} from 'ionic-angular';
 
 import { HomePage } from '../../pages/home/home';
 import { LoginPage } from '../../pages/login/login';
@@ -16,18 +16,12 @@ export class StartupPage {
 
   constructor(
     private navCtrl: NavController,
-    private platform: Platform,
     private firebase: FirebaseProvider
   ) { }
 
   ionViewDidLoad() {
     console.log("Loaded Startup Page");
-    if (!this.platform.is('cordova')) {
-      console.log("On Browser");
       if (this.firebase.session) this.navCtrl.setRoot(HomePage);
       else this.navCtrl.setRoot(LoginPage);
-    } else {
-      console.log("Cordova Platform");
-    }
   }
 }
