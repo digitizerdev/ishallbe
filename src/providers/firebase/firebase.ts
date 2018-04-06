@@ -73,9 +73,13 @@ export class FirebaseProvider {
     this.userDoc.valueChanges().subscribe((user) => {
       console.log("Existing User: ");
       console.log(user)
-      if (user.blocked) this.blockUser();
-      if (user) this.startSession(user);
-      else this.registerUser();
+      if (!user)
+        this.registerUser();
+      else if (user.blocked) {
+        this.blockUser();
+      } else {
+        this.startSession(user);
+      }
     });
   }
 
