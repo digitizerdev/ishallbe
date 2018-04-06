@@ -23,7 +23,6 @@ export class AudioPlayerComponent {
   ) { }
 
   loadAudio() {
-    console.log("Loading Audio");
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
     if (this.platform.is('ios')) var filepath = (cordova.file.externalDataDirectory || cordova.file.dataDirectory) + this.post.filename;
     if (this.platform.is('android')) filepath = cordova.file.externalDataDirectory + this.post.filename;
@@ -37,21 +36,18 @@ export class AudioPlayerComponent {
   }
 
   playAudio() {
-    console.log("Playing Audio");
     this.audio.play();
     this.playingAudio = true;
     this.listenToAudioEvents();
   }
 
   stopPlayback() {
-    console.log("Stopping Playback");
     this.audio.stop();
     this.audio.release();
     this.playingAudio = false;
   }
 
   listenToAudioEvents() {
-    console.log("Listening To Audio Events");
     this.audio.onStatusUpdate.subscribe(status => {
       if (status == 4 && this.playingAudio) {
         this.stopPlayback();

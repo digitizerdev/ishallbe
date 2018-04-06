@@ -145,7 +145,6 @@ export class PostFooterComponent {
   }
 
   sendNotification() {
-    console.log("Sending Notification");
     let description = ""
     if (this.postLike.pin)
       description = "liked your pin"
@@ -153,16 +152,13 @@ export class PostFooterComponent {
       description = "liked your statement"
     if (this.postLike.goal)
       description = "liked your goal"
-    console.log(description);
     this.buildNotification(description).subscribe((notification) => {
       let notificationPath = "notifications/" + notification.id;
-      console.log("Notification path is " + notificationPath);
       this.firebase.afs.doc(notificationPath).set(notification);
     });
   }
 
   buildNotification(description) {
-    console.log("Building Notification");
     return Observable.create((observer) => {
       let id = this.firebase.afs.createId();
       let displayTimestamp = moment().format('MMM DD YYYY');
@@ -193,28 +189,20 @@ export class PostFooterComponent {
         displayTimestamp: displayTimestamp,
         timestamp: timestamp
       }
-      console.log("Notification Built");
-      console.log(notification);
       observer.next(notification);
     });
   }
 
   removeNotification() {
-    console.log("Removing Notification");
     let type = this.setPostType();
-    console.log("Type is ");
-    console.log(type);
     this.notificationRef = this.firebase.afs.collection("notifications", ref => ref.
       where("docId", "==", this.post.id).
       where("pinLike", "==", type.pin).
       where("statementLike", "==", type.statement).
       where("goalLike", "==", type.goal));
     this.notificationRef.valueChanges().subscribe((notifications) => {
-      console.log("Got notifications");
-      console.log(notifications);
       if (notifications.length > 0) {
         let notificationPath = "notifications/" + notifications[0].id;
-        console.log("Notification path is " + notificationPath);
         this.firebase.afs.doc(notificationPath).delete();
       }
     });

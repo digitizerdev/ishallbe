@@ -47,15 +47,12 @@ export class UploadComponent {
   }
 
   ngOnInit() {
-    console.log("Upload initialized");
     this.contentName = moment().unix().toString();
     this.loadMedia();
     this.listenToRedoEvents();
   }
 
   loadMedia() {
-    console.log("Loading meedia");
-    console.log("Content Type is " + this.contentType);
     switch (this.contentType) {
       case 'camera': {
         this.sourceType = this.camera.PictureSourceType.CAMERA;
@@ -64,7 +61,6 @@ export class UploadComponent {
         break;
       case 'audio': {
         this.contentName = this.contentName + ".m4a";
-        console.log(this.platform.platforms());
         if (this.platform.is('ios')) this.getIOSAudio();
         if (this.platform.is('android')) this.getAndroidAudio(); 
       }
@@ -77,7 +73,6 @@ export class UploadComponent {
   }
 
   getImage() {
-    console.log("Getting Image");
     this.gettingImage = true;
     this.camera.getPicture(this.getCameraOptions()).then((image) => {
       this.imageElement.nativeElement.src = image;
@@ -89,7 +84,6 @@ export class UploadComponent {
   }
 
   getCameraOptions() {
-    console.log("Getting Camera Options");
     let cameraOpts: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
@@ -99,12 +93,10 @@ export class UploadComponent {
       allowEdit: false,
       correctOrientation: true
     }
-    console.log(cameraOpts);
     return cameraOpts;
   }
 
   cropImage() {
-    console.log("Cropping Image");
     this.cropperInstance = new Cropper(this.imageElement.nativeElement, {
       aspectRatio: 3 / 3,
       dragMode: 'move',
@@ -121,7 +113,6 @@ export class UploadComponent {
   }
 
   cropPin() {
-    console.log("Cropping Pin");
     this.cropperInstance = new Cropper(this.imageElement.nativeElement, {
       dragMode: 'move',
       modal: true,
@@ -137,19 +128,15 @@ export class UploadComponent {
   }
 
   uploadImage() {
-    console.log("Uploading Image");
     this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
     this.loader.present();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
     let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
-    console.log("Upload Path is " + uploadPath);
     this.storeImage(uploadPath, this.image).subscribe((snapshot) => {
       let image = {
         url: snapshot.downloadURL,
         name: this.contentName
       }
-      console.log("Stored Image");
-      console.log(image);
       this.complete = true;
       this.uploaded.emit(image);
       this.loader.dismiss();
@@ -157,7 +144,6 @@ export class UploadComponent {
   }
 
   storeImage(path, obj) {
-    console.log("Storing Image"); 
     this.waitForStorageTimeout();
     return Observable.create((observer) => {
       let storagePath = firebase.storage().ref(path);
@@ -171,16 +157,10 @@ export class UploadComponent {
   }
 
   getAndroidAudio() {
-    console.log("Getting Audio");
     this.recording = true;
     this.filepath = this.file.externalDataDirectory + this.contentName;
-    console.log("Android File Path is " + this.filepath);
     const audio: MediaObject = this.media.create(this.filepath);
-    console.log("Original Audio");
-    console.log(audio);
     this.audio = audio;
-    console.log("Assigned Audio");
-    console.log(this.audio);
     this.audio.startRecord();
     window.setTimeout(() => {
       if (this.recording) this.uploadAudio();
@@ -190,7 +170,6 @@ export class UploadComponent {
   getIOSAudio() {
     this.recording = true;
     this.filepath = this.file.tempDirectory.replace(/^file:\/\//, '') + this.contentName;
-    console.log("iOS File Path is " + this.filepath);
     this.file.createFile(this.file.tempDirectory, this.contentName, true).then(() => {
       const audio: MediaObject = this.media.create(this.filepath);
       this.audio = audio;
@@ -199,14 +178,11 @@ export class UploadComponent {
         if (this.recording) this.uploadAudio();
       }, 10000);
     }, (error) => {
-      console.error("ERROR");
-      console.error(error);
       this.events.publish("getAudioCanceled");
     });
   }
 
   uploadAudio() {
-    console.log("Uploading Audio");
     this.recording = false;
     this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
     this.loader.present();
@@ -216,8 +192,6 @@ export class UploadComponent {
         url: downloadURL,
         name: this.contentName
       }
-      console.log("Stored Audio");
-      console.log(audio);
       this.audio.release();
       this.audio = null;
       this.contentName = null;
@@ -226,7 +200,6 @@ export class UploadComponent {
       this.uploaded.emit(audio);
       this.loader.dismiss();
     }, (error) => {
-      console.error(error);
       this.complete = true;
       this.events.publish("getAudioCanceled");
       this.loader.dismiss();
@@ -239,7 +212,6 @@ export class UploadComponent {
       let filePath = "";
       if (this.platform.is('ios')) filePath = `${this.file.tempDirectory}` + this.contentName;
       else filePath = this.filepath;
-      console.log("Filepath is " + filePath);
       const readFile: any = window['resolveLocalFileSystemURL'];
       return readFile(filePath, (fileEntry) => {
         return fileEntry.file((file) => {
@@ -272,11 +244,7 @@ export class UploadComponent {
   }
 
   listenToRedoEvents() {
-    console.log("Listening to Redo Events");
     this.events.subscribe('redoUpload', (contentType, contentName) => {
-      console.log("Redo Upload triggered");
-      console.log("Content Type is " + contentType);
-      console.log("Content Name is " + contentName);
       this.contentType = contentType;
       this.resetUpload();
       this.loadMedia();
@@ -284,7 +252,6 @@ export class UploadComponent {
   }
 
   resetUpload() {
-    console.log("Reseting Upload");
     this.sourceType = null;
     this.cameraOptions = null;
     this.cropperInstance = null;
@@ -297,10 +264,8 @@ export class UploadComponent {
   }
 
   waitForStorageTimeout() {
-    console.log("Listening for Storage Timeout");
     setTimeout(() => {
       if (!this.complete) {
-        console.log("Storage Timeout");
         this.loader.dismiss();
         this.resetUpload();
         this.events.publish("timeout");

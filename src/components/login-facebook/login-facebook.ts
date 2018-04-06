@@ -27,8 +27,6 @@ export class LoginFacebookComponent {
   ) { }
 
   authenticate() {
-    console.log("Authenticating");
-    console.log("Logging In With Facebook");
     this.firebase.socialAuthentication = true;
     this.loader = this.loadingCtrl.create({
       spinner: 'bubbles',
@@ -39,7 +37,6 @@ export class LoginFacebookComponent {
   }
 
   determineAuthType(cordova) {
-    console.log("Determining Auth Type");
     if (cordova)
       this.cordovaAuth();
     else
@@ -47,7 +44,6 @@ export class LoginFacebookComponent {
   }
 
   cordovaAuth() {
-    console.log("Authenticating with Cordova");
     this.facebook.login(['email', 'public_profile']).then((token) => {
       this.facebook.getAccessToken().then((accessToken) => {
         let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(accessToken);
@@ -59,14 +55,12 @@ export class LoginFacebookComponent {
   }
 
   browserAuth() {
-    console.log("Browser Authentication");
     firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((token) => {
       this.loader.dismiss();
     });
   }
 
   errorHandler(error) {
-    console.log("Handling Error");
     Pro.monitoring.exception(error);
     let alert = this.alertCtrl.create({
       title: 'Fail',
