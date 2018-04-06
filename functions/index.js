@@ -32,16 +32,12 @@ exports.createMessage = functions.firestore.document('notifications/{notificatio
 
 function pushNotification(uid) {
     let userPath = "users/" + uid;
-    let user = admin.firestore.doc(userPath);
-    user.valueChanges().subscribe((user) => {
+    console.log("User path is " + userPath);
+    return admin.firestore.doc(userPath).then((user) => {
         console.log("Got user");
         console.log(user);
-        admin.messaging().sendToDevice(user.fcmToken)
-            .then((response) => {
-                return response;
-            })
-            .catch((error) => {
-                return error;
-            });
+        return admin.messaging().sendToDevice(user.fcmToken);
+    }).catch((error) => {
+        return error
     });
 }

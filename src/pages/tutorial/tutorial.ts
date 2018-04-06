@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { IonicPage, MenuController, NavController, Slides } from 'ionic-angular';
+import { IonicPage, Slides } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
