@@ -1,10 +1,31 @@
 <ion-header no-border>
-  <ion-navbar color='primary'>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Tutorial</ion-title>
+  <ion-navbar color="background">
+    <ion-buttons end *ngIf="showSkip">
+      <button (click)="startIshallbe()" color="primary" ion-button padding>
+        <b>SKIP</b>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content no-bounce>
+  <ion-slides id="TutorialSlides" #slides (ionSlideWillChange)="onSlideChangeStart($event)" pager>
+    <ion-slide>
+      <header></header>
+      <h5 class="feature" id="AboutPageTagline">If You Speak It, It Shall Be!</h5>
+      <p id="AboutPageDescription" padding-left padding-right text-left>
+        iShallBe is your daily boost to get you started and through each day.
+      </p>
+    </ion-slide>
+    <ion-slide>
+      <header></header>
+      <p id="AboutPageDescription" padding-left padding-right text-left>
+        Through daily quotes, inspirational videos, motivational messages, and testimonials it is our goal to give users that daily
+        motivation to clear your mind, achieve a dream, or fulfill a goal.
+      </p>
+      <button ion-button icon-right large clear (click)="startIshallbe()">
+        Continue
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </ion-slide>
+  </ion-slides>
 </ion-content>

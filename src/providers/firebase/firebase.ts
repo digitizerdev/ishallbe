@@ -102,13 +102,18 @@ export class FirebaseProvider {
 
   registerUser() {
     if (this.socialAuthentication) {
-      this.signupUser();
+      this.showTutorial();
     }
     else {
       this.createNonSocialUser().then(() => {
-        this.signupUser();
+        this.showTutorial();
       });
     }
+  }
+
+  showTutorial() {
+    console.log("Showing tutorial");
+    this.events.publish('show tutorial')
   }
 
   createNonSocialUser() {
@@ -179,7 +184,7 @@ export class FirebaseProvider {
         name: this.afa.auth.currentUser.displayName,
         bio: "",
         email: this.afa.auth.currentUser.email,
-        photo: this.afa.auth.currentUser.photoURL,
+        photo: "assets/img/default-profile.png",
         blocked: false,
         displayTimestamp: displayTimestamp,
         timestamp: timestamp,

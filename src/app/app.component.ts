@@ -19,6 +19,7 @@ import { AccountPage } from '../pages/account/account';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { UserManagerPage } from '../pages/user-manager/user-manager';
 import { ApiManagerPage } from '../pages/api-manager/api-manager';
+import { TutorialPage } from '../pages/tutorial/tutorial';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
@@ -86,8 +87,6 @@ export class iShallBe {
   deployUpdate() {
     return Observable.create((observer) => {
       return Pro.deploy.checkAndApply(true).then((resp) => {
-        console.log("Got Update Status");
-        console.log(resp);
         if (resp.update) observer.next(true);
         else observer.next(false);
       });
@@ -106,9 +105,18 @@ export class iShallBe {
   }
 
   listenToUserPermissionsEvents() {
+    this.listenToTutorialLaunchEvents();
     this.listenToAccessControlEvents();
     this.listenToEditorPermissionEvents();
     this.listenToContributorPermissionEvents();
+  }
+
+  listenToTutorialLaunchEvents() {
+    console.log("Listening to tutorial launch events");
+    this.events.subscribe('show tutorial', () => {
+      console.log("Launching Tutorial");
+      this.nav.setRoot(TutorialPage);
+    });
   }
 
   listenToAccessControlEvents() {
@@ -134,14 +142,11 @@ export class iShallBe {
   }
 
   listenToContributorPermissionEvents() {
-    console.log("Listening to Contributor Permission Events");
     this.events.subscribe('contributor permission granted', () => {
-      console.log("Session Granted");
       this.fcm.subscribeToTopic('affirmations');
       if (this.ready) this.nav.setRoot(StartupPage);
     });
     this.events.subscribe('contributor permission not granted', () => {
-      console.log("Session not granted");
       this.nav.setRoot(LoginPage);
       this.editor = false;
     });
