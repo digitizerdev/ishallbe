@@ -97,6 +97,7 @@ page-chat {
     }
     .chat-footer {
         border-top: thick solid color($colors, primary);
+        max-height: 10%;
     }
     .bar-footer {
         height: auto;
@@ -114,8 +115,11 @@ page-chat {
         .footer-btn-wrap {
             align-self: flex-end;
             .button-icon:before {
-                font-size: 1.5em;
+                font-size: 2em;
             }
+        }
+        .ion-icon {
+            font-size: 2em;
         }
     }
 }
