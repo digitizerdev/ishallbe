@@ -4,7 +4,7 @@ admin.initializeApp(functions.config().firebase);
 
 exports.hourly_job =
     functions.pubsub.topic('hourly-tick').onPublish((event) => {
-        console.log("This job is ran every hour!");
+        console.log("Cron Hourly Tick");
         let allNotifications = firestore.collection('notifications', ref => ref.orderBy('timestamp'));
         allNotifications.valueChanges().subscribe((notificaitons) => {
             console.log("Got Notifications");
@@ -14,37 +14,25 @@ exports.hourly_job =
     });
 
 exports.updateProfilePosts = functions.firestore.document('users/{userId}').onCreate(user => {
-    console.log("Update Profile Posts Triggered");
+    console.log("Updating Profile Posts");
     let profile = user.data.data();
     console.log(profile);
     return true;
 });
 
-exports.createMessage = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
-    console.log("Create Message Triggered");
+exports.createNotification = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
     let message = event.data.data();
-    console.log(message);
-    let title = message.name + " " + message.description;
-    console.log("Notification title is " + title);
-    let payload = {
-        notification: {
-            title: title
-        },
-        message: message
+    let pushMessage = message.name + " " + message.description;
+    let payload = { notification: {
+            body: pushMessage,
+            uid: message.receiverUid }
     }
-    console.log(payload);
-    pushNotification(message.receiverUid);
-    return true;
-});
-
-function pushNotification(uid) {
-    let userPath = "users/" + uid;
-    console.log("User path is " + userPath);
-    return admin.firestore.doc(userPath).then((user) => {
-        console.log("Got user");
-        console.log(user);
-        return admin.messaging().sendToDevice(user.fcmToken);
-    }).catch((error) => {
-        return error
+    let fireData = admin.firestore();
+    let userPath = "users/" + message.receiverUid;
+    let user = fireData.doc(userPath);
+    return user.get().then((user) => {
+        contributor = user.data();
+        admin.messaging().sendToDevice(contributor.fcmToken, payload);
+        return true;
     });
-}
+});
