@@ -58,7 +58,6 @@
         <div class="comment-bubble left">
           <div class="comment">
             {{ comment.description }}
-            <img src="{{ comment?.image }}" class="block" *ngIf="comment.image" alt="" />
           </div>
           <div class="comment-detail">
             <span class="comment-time">{{ comment.displayTimestamp }} </span>
@@ -76,13 +75,16 @@
     </div>
   </ion-row>
 </ion-content>
-<ion-footer class="comment-footer" id="CommentBar" no-border>
-  <ion-toolbar no-border color="white">
-    <ion-input ion-text [(ngModel)]="newComment" placeholder="Write your comment"></ion-input>
-    <ion-buttons end>
-      <button ion-button (click)="sendComment(newComment)">
-        <ion-icon name="send" color="primary"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
+<ion-footer class="comment-footer" id="MessageBar" no-border>
+    <ion-toolbar no-border color="white">
+      <form #commentForm="ngForm" novalidate>
+        <ion-input ion-text [(ngModel)]="commentForm.description" name="description" #description="ngModel" type="text" placeholder="Write your comment"
+          spellcheck="true" autocapitalize="true" required></ion-input>
+      <ion-buttons end>
+        <button ion-button (click)="submit(commentForm)" type="submit" large>
+          <ion-icon name="send" color="white"></ion-icon>
+        </button>
+      </ion-buttons>
+    </form>
+    </ion-toolbar>
 </ion-footer>
