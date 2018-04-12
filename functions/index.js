@@ -25,7 +25,8 @@ exports.createNotification = functions.firestore.document('notifications/{notifi
     let pushMessage = message.name + " " + message.description;
     let payload = { notification: {
             body: pushMessage,
-            uid: message.receiverUid }
+            uid: message.receiverUid,
+            data: message }
     }
     let fireData = admin.firestore();
     let userPath = "users/" + message.receiverUid;

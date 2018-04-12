@@ -94,6 +94,7 @@ export class iShallBe {
   }
 
   listenToFCMPushNotifications() {
+    console.log("Listening to Push Notifications");
     this.fcm.getToken().then(token =>
       this.firebase.fcmToken = token);
     this.fcm.onNotification().subscribe(notification => {
@@ -153,9 +154,11 @@ export class iShallBe {
   }
 
   displayNotificationAlert(notification) {
+    console.log("Displaying Notification Alert");
+    console.log(notification);
     let alert = this.alertCtrl.create({
       title: 'Notification',
-      subTitle: notification.aps.alert.title,
+      subTitle: notification.aps.alert.body,
       buttons: ['OPEN']
     });
     alert.present();
