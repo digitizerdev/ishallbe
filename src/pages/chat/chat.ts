@@ -45,7 +45,14 @@ export class ChatPage {
 
   flagReadChat() {
     let chatPath = "users/" + this.firebase.user.uid + "/chats/" + this.uid;
-    this.firebase.afs.doc(chatPath).update({newMessages: false});
+    let chat = this.firebase.afs.doc(chatPath);
+    chat.valueChanges().subscribe((messages) => {
+      console.log("Got messages");
+      console.log(messages);
+      if (messages) {
+        chat.update({newMessages: false});
+      }
+    });
   }
 
   loadUser() {
