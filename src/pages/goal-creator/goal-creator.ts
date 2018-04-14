@@ -128,7 +128,7 @@ export class GoalCreatorPage {
     this.dueDate = 0;
     this.datePicker.show({
       date: new Date(),
-      mode: 'date',
+      mode: 'datetime',
       allowOldDates: false,
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
     }).then((date) => {

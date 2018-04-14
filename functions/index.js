@@ -1,20 +1,62 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const moment = require('moment');
 admin.initializeApp(functions.config().firebase);
 
-exports.hourly_job =
-    functions.pubsub.topic('hourly-tick').onPublish((event) => {
-        console.log("Cron Hourly Tick");
-        let fireData = admin.firestore();
-        let goals = fireData.collection('goals');
-        return goals.get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                console.log("Got goal");
-                console.log(doc.data());
-            });
-            return;
+exports.hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => {
+    console.log("Cron Hourly Tick");
+    let currentTime = moment.unix();
+    console.log("Current time in unix is " + currentTime);
+    let overNextHourTime = currentTime + 3600;
+    console.log("Over Next Hour Time in unix is " + overNextHourTime);
+    let fireData = admin.firestore();
+    let goals = fireData.collection('goals').where("dueDate", ">=", currentTime).
+    where("dueDate", "<=", overNextHourTime);
+    return goals.get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            let goal = doc.data()
+            console.log("Got goal");
+            console.log(goal);
+            console.log("Goal due date in unix is " + goal.dueDate);
+            createGoalReminder(goal);
         });
+        return;
     });
+});
+
+function createGoalReminder(goal) {
+    console.log("Creating Goal Reminder");
+    console.log(goal);
+    let fireData = admin.firestore();
+    let id = this.fireData.createId();
+    let displayTimestamp = moment().format('MMM DD YYYY');
+    let timestamp = moment().unix();
+    let notification = {
+      id: id,
+      uid: goal.uid,
+      name: goal.name,
+      face: goal.face,
+      description: goal.description,
+      read: false,
+      collection: "reminder",
+      docId: goal.id,
+      receiverUid: goal.uid,
+      message: false,
+      pinLike: false,
+      statementLike: false,
+      goalLike: false,
+      commentLike: false,
+      comment: false,
+      reminder: true,
+      displayTimestamp: displayTimestamp,
+      timestamp: timestamp
+    }
+    console.log("Notification Built");
+    console.log(notification);
+    let goalReminderPath = "notifications/" + id;
+    console.log("Goal reminder path is " + goalReminderPath);
+    return fireData.doc(goalReminderPath).create(notification);
+}
 
 exports.updateProfilePosts = functions.firestore.document('users/{userId}').onUpdate(event => {
     console.log("Updating Profile Posts");
@@ -69,6 +111,7 @@ function updateGoals(user) {
 exports.createNotification = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
     let message = event.data.data();
     let pushMessage = message.name + " " + message.description;
+    if (message.reminder) pushMessage = message.title + " goal is due";
     let payload = {
         notification: {
             body: pushMessage,
