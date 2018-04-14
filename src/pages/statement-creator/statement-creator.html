@@ -36,11 +36,11 @@
     <ion-item class="tdct-textarea">
       <ion-textarea [attr.rows]="4" autosize placeholder=" Statement Description" [(ngModel)]="createStatementForm.description"
         name="description" type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on”
-        minlength="25" maxlength="200" required>
+        maxlength="200" required>
       </ion-textarea>
     </ion-item>
     <p ion-text [hidden]="description.valid || submitted == false" color="danger" padding-left>
-      Statement Description is required to be at least 25 characters long
+      Statement Description is required
     </p>
     <ion-row *ngIf="!private">
       <ion-col text-center>

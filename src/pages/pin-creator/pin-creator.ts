@@ -175,7 +175,6 @@ export class PinCreatorPage {
       if (this.pin) this.pinId = this.pin.id;
       else this.pinId = this.firebase.afs.createId();
       let time = this.selectedDay.toISOString();
-      if (this.monday) form.description = ""
       if (!this.monday) this.pinName = "";
       if (!this.monday) this.pinImageUrl = "";
       if (!this.monday && !this.tuesday) form.link = "";

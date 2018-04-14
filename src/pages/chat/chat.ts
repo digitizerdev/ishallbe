@@ -24,8 +24,10 @@ export class ChatPage {
   messages: any[] = [];
   userDoc: any;
   user: any;
-  newMessage: string;
   newChat = true;
+  chatForm: {
+    description?: string
+  } = {};
 
   constructor(
     private navCtrl: NavController,
@@ -45,7 +47,14 @@ export class ChatPage {
 
   flagReadChat() {
     let chatPath = "users/" + this.firebase.user.uid + "/chats/" + this.uid;
-    this.firebase.afs.doc(chatPath).update({newMessages: false});
+    let chat = this.firebase.afs.doc(chatPath);
+    chat.valueChanges().subscribe((messages) => {
+      console.log("Got messages");
+      console.log(messages);
+      if (messages) {
+        chat.update({newMessages: false});
+      }
+    });
   }
 
   loadUser() {
@@ -74,15 +83,18 @@ export class ChatPage {
     });
   }
 
-  sendMessage(newMessage) {
-    if (newMessage) {
+  submit(chatForm) {
+    console.log("Submitted");
+    console.log(chatForm);
+    if (chatForm.description) {
       if (!this.newChat) {
-        this.addSenderMessage(newMessage);
-        this.addReceiverMessage(newMessage);
+        this.addSenderMessage(chatForm.description);
+        this.addReceiverMessage(chatForm.description);
         this.flagNewMessage();
+        chatForm.description = ""
       } else {
-        this.createSenderChat(newMessage);
-        this.createReceiverChat(newMessage);
+        this.createSenderChat(chatForm.description);
+        this.createReceiverChat(chatForm.description);
       }
     }
   }
@@ -117,7 +129,9 @@ export class ChatPage {
       this.sendNotification(message);
       let messagePath = "users/" + this.firebase.user.uid + "/chats/" + this.uid + "/messages/" + message.id;
       this.firebase.afs.doc(messagePath).set(message);
-      this.newMessage = "";
+      this.chatForm.description = null;
+      console.log("Reset chat form");
+      console.log(this.chatForm)
     });
   }
 

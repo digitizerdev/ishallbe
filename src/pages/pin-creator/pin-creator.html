@@ -42,6 +42,12 @@
         </ion-input>
       </ion-item>
       <br>
+      <ion-item class="appFormTextArea">
+        <ion-textarea [attr.rows]="4" autosize placeholder=" Pin Description" [(ngModel)]="mondayForm.description" name="description"
+          type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" required>
+        </ion-textarea>
+      </ion-item>
+      <br>
       <ion-row>
         <ion-col text-center class="submit">
           <button *ngIf="!pin" id="CreatePinButton" ion-button (click)="submit(mondayForm)" color="primary" round block large strong>

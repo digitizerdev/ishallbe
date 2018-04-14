@@ -25,7 +25,6 @@ export class PostPage {
   post: any;
   video: any;
   notificationRef: any;
-  newComment: string;
   postManagerMenu = false;
   mine = false;
   audio = false;
@@ -37,6 +36,9 @@ export class PostPage {
   deleting = false;
   commented = false;
   likedComment = false;
+  commentForm: {
+    description?: string
+  } = {};
 
   constructor(
     private navCtrl: NavController,
@@ -47,16 +49,22 @@ export class PostPage {
   }
 
   ionViewDidLoad() {
+    console.log("Opening Post");
     this.id = this.navParams.get("id");
+    console.log("Post ID is " + this.id);
     this.collection = this.navParams.get("type");
     this.loadPost();
     this.loadComments();
   }
 
   loadPost() {
+    console.log("Loading Post");
     this.postPath = this.collection + '/' + this.id;
+    console.log("postPath is " + this.postPath);
     this.postDoc = this.firebase.afs.doc(this.postPath);
     this.postDoc.valueChanges().subscribe((post) => {
+      console.log("Got post");
+      console.log(post);
       let date = moment.unix(post.timestamp);
       post.displayTimestamp = moment(date).fromNow();
       if (post.uid == this.firebase.afa.auth.currentUser.uid) this.mine = true;
@@ -165,16 +173,17 @@ export class PostPage {
     });
   }
 
-  sendComment(comment) {
+  submit(commentForm) {
     this.commented = true;
-    this.buildComment(comment).subscribe((comment) => {
+    this.buildComment(commentForm).subscribe((comment) => {
+      commentForm.description = "";
       this.setComment(comment);
       if (this.post.uid !== this.firebase.user.uid)
         this.sendNotification();
     });
   }
 
-  buildComment(newComment) {
+  buildComment(commentForm) {
     return Observable.create((observer) => {
       let commentId = this.firebase.afs.createId();
       let pin = false;
@@ -191,7 +200,7 @@ export class PostPage {
         goal: goal,
         statement: statement,
         collectionId: this.post.id,
-        description: newComment,
+        description: commentForm.description,
         liked: false,
         likeCount: 0,
         displayTimestamp: displayTimestamp,
@@ -208,7 +217,6 @@ export class PostPage {
     let newCommentPath = this.post.collection + '/' + this.post.id + '/comments/' + comment.id;
     this.firebase.afs.doc(newCommentPath).set(comment);
     this.addToCommentCount();
-    this.newComment = "";
   }
 
   addToCommentCount() {

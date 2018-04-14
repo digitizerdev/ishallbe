@@ -15,6 +15,8 @@ import { IshallbetvPage } from '../pages/ishallbetv/ishallbetv';
 import { ProfilePage } from '../pages/profile/profile';
 import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
 import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
+import { PostPage } from '../pages/post/post';
+import { ChatPage } from '../pages/chat/chat';
 import { AccountPage } from '../pages/account/account';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { UserManagerPage } from '../pages/user-manager/user-manager';
@@ -36,6 +38,8 @@ export class iShallBe {
   editorMenu: Array<{ title: string, icon: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
   pages: Array<{ title: string, component: any }>;
+  notification: any;
+  tappedNotification = false;
   editor = false;
   ready = false;
 
@@ -94,14 +98,102 @@ export class iShallBe {
   }
 
   listenToFCMPushNotifications() {
+    console.log("Listening to Push Notifications");
     this.fcm.getToken().then(token =>
       this.firebase.fcmToken = token);
     this.fcm.onNotification().subscribe(notification => {
-      if (!notification.wasTapped)
+      if (notification.wasTapped) {
+        console.log("Notification was tapped");
+        this.tappedNotification = true;
+        this.notification = notification;
+        this.openNotification(notification);
+      }
+      else {
+        console.log("Notification was not tapped");
         this.displayNotificationAlert(notification);
+      }
     });
     this.fcm.onTokenRefresh().subscribe(token =>
       this.firebase.fcmToken = token);
+  }
+
+  displayNotificationAlert(notification) {
+    console.log("Displaying Notification Alert");
+    console.log("Aler subtitle is " + notification.aps.alert);
+    let alert = this.alertCtrl.create({
+      title: 'Notification',
+      subTitle: notification.aps.alert,
+      buttons: [
+        {
+          text: 'Dismiss',
+          handler: () => {
+            console.log("Dismissed");
+          }
+        },
+        {
+          text: 'Open',
+          handler: () => {
+            this.openNotification(notification)
+          }
+        }]
+    });
+    alert.present();
+  }
+
+  openNotification(notification) {
+    console.log("Opening Notification");
+    console.log(notification);
+    let notificationId = notification.id
+    console.log("Notification ID is " + notificationId);
+    let notificationPath = "notifications/" + notification.id;
+    console.log("Notification Path is " + notificationPath);
+    this.firebase.afs.doc(notificationPath).update({ read: true }).then(() => {
+      let notificationCollection = notification.collection;
+      console.log("Notification collection is " + notificationCollection);
+      if (notificationCollection == "pins")
+        this.openPin(notification.docId);
+      if (notificationCollection == "statements")
+        this.openStatement(notification.docId);
+      if (notificationCollection == "goals")
+        this.openGoal(notification.docId);
+      if (notification.message == "message")
+        this.openChat(notification.docId);
+    });
+  }
+
+  openPin(docId) {
+    console.log("Opening Pin");
+    console.log("Doc Id is " + docId);
+    this.nav.push(PostPage, {
+      id: docId,
+      type: "pins"
+    });
+  }
+
+  openStatement(docId) {
+    console.log("Opening Statement");
+    console.log("Doc Id is " + docId);
+    this.nav.push(PostPage, {
+      id: docId,
+      type: "statements"
+    });
+  }
+
+  openGoal(docId) {
+    console.log("Opening Goal");
+    console.log("Doc Id is " + docId);
+    this.nav.push(PostPage, {
+      id: docId,
+      type: "goals"
+    });
+  }
+
+  openChat(docId) {
+    console.log("Opening Chat");
+    console.log("Doc Id is " + docId);
+    this.nav.push(ChatPage, {
+      uid: docId,
+    });
   }
 
   listenToUserPermissionsEvents() {
@@ -144,21 +236,23 @@ export class iShallBe {
   listenToContributorPermissionEvents() {
     this.events.subscribe('contributor permission granted', () => {
       this.fcm.subscribeToTopic('affirmations');
-      if (this.ready) this.nav.setRoot(StartupPage);
+      if (this.tappedNotification) {
+        if (this.notification.collection == "pins")
+          this.openPin(this.notification.docId);
+        if (this.notification.collection == "statements")
+          this.openStatement(this.notification.docId);
+        if (this.notification.collection == "goals")
+          this.openGoal(this.notification.docId);
+        if (this.notification.message == "message")
+          this.openChat(this.notification.docId);
+      } else {
+        if (this.ready) this.nav.setRoot(StartupPage);
+      }
     });
     this.events.subscribe('contributor permission not granted', () => {
       this.nav.setRoot(LoginPage);
       this.editor = false;
     });
-  }
-
-  displayNotificationAlert(notification) {
-    let alert = this.alertCtrl.create({
-      title: 'Notification',
-      subTitle: notification.aps.alert.title,
-      buttons: ['OPEN']
-    });
-    alert.present();
   }
 
   setMenus() {
