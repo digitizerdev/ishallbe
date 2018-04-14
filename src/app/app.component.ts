@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { Nav, NavController, Platform, Events, AlertController } from 'ionic-angular';
+import { Nav, Platform, Events, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
@@ -42,7 +42,6 @@ export class iShallBe {
   ready = false;
 
   constructor(
-    private navCtrl: NavController,
     private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
@@ -154,7 +153,7 @@ export class iShallBe {
   openPin(docId) {
     console.log("Opening Pin");
     console.log("Doc Id is " + docId);
-    this.navCtrl.push(PostPage, {
+    this.nav.push(PostPage, {
       id: docId,
       type: "pins"
     });
@@ -163,7 +162,7 @@ export class iShallBe {
   openStatement(docId) {
     console.log("Opening Statement");
     console.log("Doc Id is " + docId);
-    this.navCtrl.push(PostPage, {
+    this.nav.push(PostPage, {
       id: docId,
       type: "statements"
     });
@@ -172,7 +171,7 @@ export class iShallBe {
   openGoal(docId) {
     console.log("Opening Goal");
     console.log("Doc Id is " + docId);
-    this.navCtrl.push(PostPage, {
+    this.nav.push(PostPage, {
       id: docId,
       type: "goals"
     });
@@ -181,7 +180,7 @@ export class iShallBe {
   openChat(docId) {
     console.log("Opening Chat");
     console.log("Doc Id is " + docId);
-    this.navCtrl.push(ChatPage, {
+    this.nav.push(ChatPage, {
       uid: docId,
     });
   }
