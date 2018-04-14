@@ -140,13 +140,13 @@ export class iShallBe {
       let notificationCollection = notification.collection;
       console.log("Notification collection is " + notificationCollection);
       if (notificationCollection == "pins")
-        this.openPin(notificationId);
+        this.openPin(notification.docId);
       if (notificationCollection == "statements")
-        this.openStatement(notificationId);
+        this.openStatement(notification.docId);
       if (notificationCollection == "goals")
-        this.openGoal(notificationId);
+        this.openGoal(notification.docId);
       if (notification.message == "message")
-        this.openChat(notificationId);
+        this.openChat(notification.docId);
     });
   }
 
