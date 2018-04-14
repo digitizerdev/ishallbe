@@ -5,20 +5,66 @@ admin.initializeApp(functions.config().firebase);
 exports.hourly_job =
     functions.pubsub.topic('hourly-tick').onPublish((event) => {
         console.log("Cron Hourly Tick");
-        let allNotifications = firestore.collection('notifications', ref => ref.orderBy('timestamp'));
-        allNotifications.valueChanges().subscribe((notificaitons) => {
-            console.log("Got Notifications");
-            console.log(notifications);
+        let fireData = admin.firestore();
+        let goals = fireData.collection('goals');
+        return goals.get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                console.log("Got goal");
+                console.log(doc.data());
+            });
+            return;
         });
-        return;
     });
 
-exports.updateProfilePosts = functions.firestore.document('users/{userId}').onCreate(user => {
+exports.updateProfilePosts = functions.firestore.document('users/{userId}').onUpdate(event => {
     console.log("Updating Profile Posts");
-    let profile = user.data.data();
-    console.log(profile);
-    return true;
+    console.log(event);
+    let user = event.data.data();
+    console.log(user);
+    return updateStatements(user).then(() => {
+        return updateGoals(user);
+    });
 });
+
+function updateStatements(user) {
+    console.log("Updating Statements");
+    console.log(user);
+    console.log("User uid is " + user.uid);
+    let fireData = admin.firestore();
+    let userStatements = fireData.collection('statements').where("uid", "==", user.uid);
+    return userStatements.get().then((querySnapshot) => {
+        return querySnapshot.forEach((doc) => {
+            let statement = doc.data();
+            let statementPath = "statements/" + statement.id;
+            console.log("Statement path is " + statementPath);
+            let myStatement = fireData.doc(statementPath);
+            return myStatement.update({
+                face: user.photo,
+                name: user.name
+            });
+        });
+    });
+}
+
+function updateGoals(user) {
+    console.log("Updating Goals");
+    console.log(user);
+    console.log("User uid is " + user.uid);
+    let fireData = admin.firestore();
+    let userGoals = fireData.collection('goals').where("uid", "==", user.uid);
+    return userGoals.get().then((querySnapshot) => {
+        return querySnapshot.forEach((doc) => {
+            let goal = doc.data();
+            let goalPath = "goals/" + goal.id;
+            console.log("Goal path is " + goalPath);
+            let myGoal = fireData.doc(goalPath);
+            return myGoal.update({
+                face: user.photo,
+                name: user.name
+            });
+        });
+    });
+}
 
 exports.createNotification = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
     let message = event.data.data();
