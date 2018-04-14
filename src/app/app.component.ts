@@ -105,6 +105,17 @@ export class iShallBe {
       this.firebase.fcmToken = token);
   }
 
+  displayNotificationAlert(notification) {
+    console.log("Displaying Notification Alert");
+    console.log(notification);
+    let alert = this.alertCtrl.create({
+      title: 'Notification',
+      subTitle: notification.aps.alert.body,
+      buttons: ['OPEN']
+    });
+    alert.present();
+  }
+
   listenToUserPermissionsEvents() {
     this.listenToTutorialLaunchEvents();
     this.listenToAccessControlEvents();
@@ -151,17 +162,6 @@ export class iShallBe {
       this.nav.setRoot(LoginPage);
       this.editor = false;
     });
-  }
-
-  displayNotificationAlert(notification) {
-    console.log("Displaying Notification Alert");
-    console.log(notification);
-    let alert = this.alertCtrl.create({
-      title: 'Notification',
-      subTitle: notification.aps.alert.body,
-      buttons: ['OPEN']
-    });
-    alert.present();
   }
 
   setMenus() {
