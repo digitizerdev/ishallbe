@@ -26,26 +26,26 @@ exports.createNotification = functions.firestore.document('notifications/{notifi
     let payload = {
         notification: {
             body: pushMessage,
-            data: {
-                id: message.id,
-                uid: message.uid,
-                name: message.name,
-                face: message.face,
-                description: message.description,
-                read: message.read.toString(),
-                collection: message.collection,
-                docId: message.docId,
-                receiverUid: message.receiverUid,
-                message: message.message.toString(),
-                pinLike: message.pinLike.toString(),
-                statementLike: message.statementLike.toString(),
-                goalLike: message.goalLike.toString(),
-                comment: message.comment.toString(),
-                commentLike: message.commentLike.toString(),
-                reminder: message.reminder.toString(),
-                displayTimestamp: message.displayTimestamp,
-                timestamp: message.timestamp.toString(),
-            }
+        },
+        data: {
+            id: message.id,
+            uid: message.uid,
+            name: message.name,
+            face: message.face,
+            description: message.description,
+            read: message.read.toString(),
+            collection: message.collection,
+            docId: message.docId,
+            receiverUid: message.receiverUid,
+            message: message.message.toString(),
+            pinLike: message.pinLike.toString(),
+            statementLike: message.statementLike.toString(),
+            goalLike: message.goalLike.toString(),
+            comment: message.comment.toString(),
+            commentLike: message.commentLike.toString(),
+            reminder: message.reminder.toString(),
+            displayTimestamp: message.displayTimestamp,
+            timestamp: message.timestamp.toString(),
         }
     }
     console.log("Built Payload");
