@@ -57,9 +57,9 @@
         </span>
         <div class="comment-bubble left">
           <div class="comment">
-            {{ comment.description }}
+            {{comment.name}}: {{ comment.description }}
           </div>
-          <div class="comment-detail">
+          <div color="charcoal" class="comment-detail">
             <span class="comment-time">{{ comment.displayTimestamp }} </span>
             <span *ngIf="comment?.likeCount > 1 || comment?.likeCount == 0" class="comment-like">{{ comment.likeCount }} Likes</span>
             <span *ngIf="comment?.likeCount == 1" class="comment-like">{{ comment.likeCount }} Like</span>
@@ -75,7 +75,7 @@
     </div>
   </ion-row>
 </ion-content>
-<ion-footer class="comment-footer" id="MessageBar" no-border>
+<ion-footer class="comment-footer" id="CommentBar" no-border>
     <ion-toolbar no-border color="white">
       <form #commentForm="ngForm" novalidate>
         <ion-input ion-text [(ngModel)]="commentForm.description" name="description" #description="ngModel" type="text" placeholder="Write your comment"
