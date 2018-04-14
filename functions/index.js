@@ -23,26 +23,29 @@ exports.updateProfilePosts = functions.firestore.document('users/{userId}').onCr
 exports.createNotification = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
     let message = event.data.data();
     let pushMessage = message.name + " " + message.description;
-    let payload = { notification: {
-        body: pushMessage,
-        id: message.id,
-        uid: message.uid,
-        name: message.name,
-        face: message.face,
-        description: message.description,
-        read: message.read.toString(),
-        collection: message.collection,
-        docId: message.docId,
-        receiverUid: message.receiverUid,
-        message: message.message.toString(),
-        pinLike: message.pinLike.toString(),
-        statementLike: message.statementLike.toString(),
-        goalLike: message.goalLike.toString(),
-        comment: message.comment.toString(),
-        commentLike: message.commentLike.toString(),
-        reminder: message.reminder.toString(),
-        displayTimestamp: message.displayTimestamp,
-        timestamp: message.timestamp.toString(),
+    let payload = {
+        notification: {
+            body: pushMessage,
+            data: {
+                id: message.id,
+                uid: message.uid,
+                name: message.name,
+                face: message.face,
+                description: message.description,
+                read: message.read.toString(),
+                collection: message.collection,
+                docId: message.docId,
+                receiverUid: message.receiverUid,
+                message: message.message.toString(),
+                pinLike: message.pinLike.toString(),
+                statementLike: message.statementLike.toString(),
+                goalLike: message.goalLike.toString(),
+                comment: message.comment.toString(),
+                commentLike: message.commentLike.toString(),
+                reminder: message.reminder.toString(),
+                displayTimestamp: message.displayTimestamp,
+                timestamp: message.timestamp.toString(),
+            }
         }
     }
     console.log("Built Payload");

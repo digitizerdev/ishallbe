@@ -131,13 +131,13 @@ export class iShallBe {
 
   openNotification(notification) {
     console.log("Opening Notification");
-    console.log(notification.gcm);
-    let notificationId = notification.gcm.notification.id
+    console.log(notification.data);
+    let notificationId = notification.data.id
     console.log("Notification ID is " + notificationId);
-    let notificationPath = "notifications/" + notification.gcm.notification.id;
+    let notificationPath = "notifications/" + notification.data.id;
     console.log("Notification Path is " + notificationPath);
     this.firebase.afs.doc(notificationPath).update({ read: true }).then(() => {
-      let notificationCollection = notification.gcm.notification.collection;
+      let notificationCollection = notification.data.collection;
       console.log("Notification collection is " + notificationCollection);
       if (notificationCollection == "pins")
         this.openPin(notificationId);
