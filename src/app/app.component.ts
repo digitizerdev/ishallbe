@@ -38,6 +38,8 @@ export class iShallBe {
   editorMenu: Array<{ title: string, icon: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
   pages: Array<{ title: string, component: any }>;
+  notification: any;
+  tappedNotification = false;
   editor = false;
   ready = false;
 
@@ -102,6 +104,8 @@ export class iShallBe {
     this.fcm.onNotification().subscribe(notification => {
       if (notification.wasTapped) {
         console.log("Notification was tapped");
+        this.tappedNotification = true;
+        this.notification = notification;
         this.openNotification(notification);
       }
       else {
@@ -124,9 +128,9 @@ export class iShallBe {
           text: 'Dismiss',
           handler: () => {
             console.log("Dismissed");
-            }
-          },
-      {
+          }
+        },
+        {
           text: 'Open',
           handler: () => {
             this.openNotification(notification)
@@ -232,7 +236,18 @@ export class iShallBe {
   listenToContributorPermissionEvents() {
     this.events.subscribe('contributor permission granted', () => {
       this.fcm.subscribeToTopic('affirmations');
-      if (this.ready) this.nav.setRoot(StartupPage);
+      if (this.tappedNotification) {
+        if (this.notification.collection == "pins")
+          this.openPin(this.notification.docId);
+        if (this.notification.collection == "statements")
+          this.openStatement(this.notification.docId);
+        if (this.notification.collection == "goals")
+          this.openGoal(this.notification.docId);
+        if (this.notification.message == "message")
+          this.openChat(this.notification.docId);
+      } else {
+        if (this.ready) this.nav.setRoot(StartupPage);
+      }
     });
     this.events.subscribe('contributor permission not granted', () => {
       this.nav.setRoot(LoginPage);
