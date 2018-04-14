@@ -15,6 +15,8 @@ import { IshallbetvPage } from '../pages/ishallbetv/ishallbetv';
 import { ProfilePage } from '../pages/profile/profile';
 import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
 import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
+import { PostPage } from '../pages/post/post';
+import { ChatPage } from '../pages/chat/chat';
 import { AccountPage } from '../pages/account/account';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { UserManagerPage } from '../pages/user-manager/user-manager';
@@ -107,13 +109,72 @@ export class iShallBe {
 
   displayNotificationAlert(notification) {
     console.log("Displaying Notification Alert");
-    console.log(notification);
     let alert = this.alertCtrl.create({
       title: 'Notification',
       subTitle: notification.aps.alert.body,
-      buttons: ['OPEN']
+      buttons: [
+        {
+          text: 'Dismiss',
+          handler: () => {
+            console.log("Dismissed");
+            }
+          },
+      {
+          text: 'Open',
+          handler: () => {
+            this.openNotification(notification)
+          }
+        }]
     });
     alert.present();
+  }
+
+  openNotification(notification) {
+    console.log("Opening Notification");
+    console.log(notification);
+    notification.id = notification.gcm.notification.id;
+    console.log("Notification ID is " + notification.id);
+    let notificationPath = "notifications/" + notification.id;
+    console.log("Notification Path is " + notificationPath);
+    this.firebase.afs.doc(notificationPath).update({ read: true }).then(() => {
+      notification.collection = notification.gcm.notification.collection;
+      console.log("Notification collection is " + notification.collection);
+      if (notification.collection == "pins")
+        this.openPin(notification);
+      if (notification.collection == "statements")
+        this.openStatement(notification);
+      if (notification.collection == "goals")
+        this.openGoal(notification)
+      if (notification.message)
+        this.openChat(notification);
+    });
+  }
+
+  openPin(notification) {
+    this.nav.push(PostPage, {
+      id: notification.docId,
+      type: "pins"
+    });
+  }
+
+  openStatement(notification) {
+    this.nav.push(PostPage, {
+      id: notification.docId,
+      type: "statements"
+    });
+  }
+
+  openGoal(notification) {
+    this.nav.push(PostPage, {
+      id: notification.docId,
+      type: "goals"
+    });
+  }
+
+  openChat(notification) {
+    this.nav.push(ChatPage, {
+      uid: notification.uid,
+    });
   }
 
   listenToUserPermissionsEvents() {
