@@ -100,8 +100,14 @@ export class iShallBe {
     this.fcm.getToken().then(token =>
       this.firebase.fcmToken = token);
     this.fcm.onNotification().subscribe(notification => {
-      if (!notification.wasTapped)
+      if (notification.wasTapped) {
+        console.log("Notification was tapped");
+        this.openNotification(notification);
+      }
+      else {
+        console.log("Notification was not tapped");
         this.displayNotificationAlert(notification);
+      }
     });
     this.fcm.onTokenRefresh().subscribe(token =>
       this.firebase.fcmToken = token);
@@ -109,9 +115,10 @@ export class iShallBe {
 
   displayNotificationAlert(notification) {
     console.log("Displaying Notification Alert");
+    console.log("Aler subtitle is " + notification.aps.alert);
     let alert = this.alertCtrl.create({
       title: 'Notification',
-      subTitle: notification.aps.alert.body,
+      subTitle: notification.aps.alert,
       buttons: [
         {
           text: 'Dismiss',
