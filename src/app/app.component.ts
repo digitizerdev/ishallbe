@@ -132,48 +132,56 @@ export class iShallBe {
   openNotification(notification) {
     console.log("Opening Notification");
     console.log(notification);
-    notification.id = notification.gcm.notification.id;
-    console.log("Notification ID is " + notification.id);
-    let notificationPath = "notifications/" + notification.id;
+    let notificationId = notification.gcm.notification.id;
+    console.log("Notification ID is " + notificationId);
+    let notificationPath = "notifications/" + notificationId;
     console.log("Notification Path is " + notificationPath);
     this.firebase.afs.doc(notificationPath).update({ read: true }).then(() => {
-      notification.collection = notification.gcm.notification.collection;
-      console.log("Notification collection is " + notification.collection);
-      if (notification.collection == "pins")
-        this.openPin(notification);
-      if (notification.collection == "statements")
-        this.openStatement(notification);
-      if (notification.collection == "goals")
-        this.openGoal(notification)
+      let notificationCollection = notification.gcm.notification.collection;
+      console.log("Notification collection is " + notificationCollection);
+      if (notificationCollection == "pins")
+        this.openPin(notificationId);
+      if (notificationCollection == "statements")
+        this.openStatement(notificationId);
+      if (notificationCollection == "goals")
+        this.openGoal(notificationId)
       if (notification.message)
-        this.openChat(notification);
+        this.openChat(notificationId);
     });
   }
 
-  openPin(notification) {
+  openPin(docId) {
+    console.log("Opening Pin");
+    console.log("Doc Id is " + docId);
     this.nav.push(PostPage, {
-      id: notification.docId,
+      id: docId,
       type: "pins"
     });
   }
 
-  openStatement(notification) {
+  openStatement(docId) {
+    console.log("Opening Statement");
+    console.log("Doc Id is " + docId);
     this.nav.push(PostPage, {
-      id: notification.docId,
+      id: docId,
       type: "statements"
     });
   }
 
-  openGoal(notification) {
+  openGoal(docId) {
+    console.log("Opening Goal");
+    console.log("Doc Id is " + docId);
     this.nav.push(PostPage, {
-      id: notification.docId,
+      id: docId,
       type: "goals"
     });
   }
 
-  openChat(notification) {
+  openChat(docId) {
+    console.log("Opening Chat");
+    console.log("Doc Id is " + docId);
     this.nav.push(ChatPage, {
-      uid: notification.uid,
+      uid: docId,
     });
   }
 
