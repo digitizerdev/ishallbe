@@ -144,8 +144,8 @@ export class iShallBe {
       if (notificationCollection == "statements")
         this.openStatement(notificationId);
       if (notificationCollection == "goals")
-        this.openGoal(notificationId)
-      if (notification.message)
+        this.openGoal(notificationId);
+      if (notification.message == "message")
         this.openChat(notificationId);
     });
   }
