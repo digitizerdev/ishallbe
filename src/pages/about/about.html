@@ -1,35 +1,21 @@
-<ion-header>
-  <ion-navbar color='primary'>
+<ion-header no-border>
+  <ion-navbar>
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon color="primary" name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>{{title}}</ion-title>
   </ion-navbar>
 </ion-header>
-
-<ion-content padding>
-  <div text-center>
-    <img src="assets/img/headshot.png">
+<ion-content text-center>
+  <header></header>
+  <h4 class="feature" id="AboutPageTagline">If You Speak It, It Shall Be!</h4>
+  <h5 id="AboutPageDescription" padding text-left>
+    iShallBe is your daily boost to get you started and through each day. 
+    <br><br>Through daily quotes, inspirational videos, motivational
+    messages, and testimonials it is our goal to give users that daily motivation to clear your mind, achieve a dream, or
+    fulfill a goal.
+  </h5>
+  <button (click)="openLink()" color="primary"  ion-button id="launchWebsiteLearnMoreButton" large round padding>LEARN MORE</button>
+  <div padding>
+    <br>
   </div>
-  <br>
-  <div>
-    <h2 padding class="tagline" text-center>If You Speak It, It Shall Be!</h2>
-    <h5>
-      iShallBe is your daily boost to get you started and through each day. Through daily quotes, inspirational videos, motivational
-      messages, and testimonials it is our goal to give users that daily motivation to clear your mind, achieve a dream,
-      or fulfill a goal. + iShallBe is your daily boost to get you started and through each day. Through daily quotes, inspirational
-      videos, motivational messages, and testimonials it is our goal to give users that daily motivation to clear your mind,
-      achieve a dream, or fulfill a goal.
-      <br>
-      <br>I created iShallBe with the strong desire to encourage others to fight through all trials and tribulations, and remind
-      you there will be victory in the end of all troubles. iShallBe will provide nourishment to both mind and soul. However,
-      it is up to you to remain faithful and speak nothing but positivity, love, and joy in your life. For if you speak it,
-      it shall be! - Shelby
-    </h5>
-  </div>
-  <ion-row padding>
-    <ion-col text-center>
-        <button ion-button id="LearnMoreButton" (click)="openWebsite()" color="secondary" large round>Learn More</button>        
-    </ion-col>
-  </ion-row>
 </ion-content>

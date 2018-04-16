@@ -1,118 +1,147 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { HttpModule } from '@angular/http';
-import { iShallBe } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { StatusBar } from '@ionic-native/status-bar';
+
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { Pro } from '@ionic/pro';
+import { NgCalendarModule } from 'ionic2-calendar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { Push } from '@ionic-native/push';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { File } from '@ionic-native/file';
-import { IonicStorageModule, Storage } from '@ionic/storage';
-import { AngularFireModule, FirebaseApp } from 'angularfire2';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { Media } from '@ionic-native/media';
+import { DatePicker } from '@ionic-native/date-picker';
+import { FCM } from '@ionic-native/fcm';
+
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
-import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
-import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import { NgCalendarModule } from 'ionic2-calendar';
+
+import { iShallBe } from './app.component';
 
 import { StartupPage } from '../pages/startup/startup';
-import { LoginPage } from '../pages/login/login';
-import { RegisterPage } from '../pages/register/register';
+import { SignupPage } from '../pages/signup/signup';
 import { PasswordResetPage } from '../pages/password-reset/password-reset';
-import { AccountEmailPage } from '../pages/account-email/account-email';
-import { AccountPasswordPage } from '../pages/account-password/account-password';
-import { SupportPage } from '../pages/support/support';
-import { AccountPage } from '../pages/account/account';
+import { LoginPage } from '../pages/login/login';
 import { AboutPage } from '../pages/about/about';
-import { EditProfilePage } from '../pages/edit-profile/edit-profile';
-import { PhotoPage } from '../pages/photo/photo';
+import { SupportPage } from '../pages/support/support';
+import { EmailUpdatePage } from '../pages/email-update/email-update';
+import { PasswordUpdatePage } from '../pages/password-update/password-update';
+import { AccountPage } from '../pages/account/account';
+import { ProfileUpdatePage } from '../pages/profile-update/profile-update';
+import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
+import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
+import { ChatsPage } from '../pages/chats/chats';
+import { ChatPage } from '../pages/chat/chat';
 import { ProfilePage } from '../pages/profile/profile';
-import { CreateStatementPage } from '../pages/create-statement/create-statement';
+import { PinCreatorPage } from '../pages/pin-creator/pin-creator';
+import { PostManagerPage } from '../pages/post-manager/post-manager';
+import { UserManagerPage } from '../pages/user-manager/user-manager';
+import { ApiManagerPage } from '../pages/api-manager/api-manager';
 import { PostPage } from '../pages/post/post';
-import { PinPage } from '../pages/pin/pin';
+import { IshallbetvPage } from '../pages/ishallbetv/ishallbetv';
+import { NotificationsPage } from '../pages/notifications/notifications';
 import { HomePage } from '../pages/home/home';
-import { CreatePinPage } from '../pages/create-pin/create-pin';
-import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
-import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
-import { UsersManagerPage } from '../pages/users-manager/users-manager';
 
-import { ComponentsModule } from '../components/components.module';
+import { TutorialPage } from '../pages/tutorial/tutorial';
+
 import { YoutubePipe } from '../pipes/youtube/youtube';
+
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
-import * as firebase from 'firebase/app';
+import { ComponentsModule } from '../components/components.module';
+
+Pro.init('69d144ed', {
+  appVersion: '1.3.0'
+});
 
 @NgModule({
   declarations: [
     iShallBe,
     StartupPage,
+    SignupPage,
+    PasswordResetPage,
     LoginPage,
-    RegisterPage,    
-    PasswordResetPage,  
-    AccountEmailPage,
-    AccountPasswordPage,
-    SupportPage,
-    AccountPage,
     AboutPage,
-    EditProfilePage,
-    PhotoPage,
+    SupportPage,
+    EmailUpdatePage,
+    PasswordUpdatePage,
+    AccountPage,
+    ProfileUpdatePage,
+    GoalCreatorPage,
+    StatementCreatorPage,
+    ChatsPage,
+    ChatPage,
     ProfilePage,
-    CreateStatementPage,
     PostPage,
-    PinPage,
+    IshallbetvPage,
+    NotificationsPage,
     HomePage,
-    CreatePinPage,
-    PinsManagerPage,
-    PostsManagerPage,
-    UsersManagerPage,
+    PinCreatorPage,
+    PostManagerPage,
+    UserManagerPage,
+    ApiManagerPage,
+    NotificationsPage,
+    TutorialPage,
     YoutubePipe
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(iShallBe, {}, { links: [] }),
-    IonicStorageModule.forRoot(),
     HttpModule,
+    IonicModule.forRoot(iShallBe, {}, { links: [] }),
     ComponentsModule,
+    NgCalendarModule,
     AngularFireModule.initializeApp(environment.firebase), 
+    AngularFirestoreModule,
     AngularFireAuthModule,
-    AngularFireDatabaseModule,
-    NgCalendarModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     iShallBe,
     StartupPage,
+    SignupPage,
+    PasswordResetPage,
     LoginPage,
-    RegisterPage,    
-    PasswordResetPage,  
-    AccountEmailPage,
-    AccountPasswordPage,
-    SupportPage,
-    AccountPage,
     AboutPage,
-    EditProfilePage,
-    PhotoPage,
+    SupportPage,
+    EmailUpdatePage,
+    PasswordUpdatePage,
+    AccountPage,
+    ProfileUpdatePage,
+    GoalCreatorPage,
+    StatementCreatorPage,
+    ChatsPage,
+    ChatPage,
     ProfilePage,
-    CreateStatementPage,
     PostPage,
-    PinPage,
+    IshallbetvPage,
+    NotificationsPage,
     HomePage,
-    CreatePinPage,
-    PinsManagerPage,
-    PostsManagerPage,
-    UsersManagerPage,
+    PinCreatorPage,
+    PostManagerPage,
+    UserManagerPage,
+    ApiManagerPage,
+    NotificationsPage,
+    TutorialPage
   ],
   providers: [
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     StatusBar,
     SplashScreen,
-    EmailComposer,
-    Push,
-    File,
     Facebook,
     Camera,
-    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    EmailComposer,
+    InAppBrowser,
+    File,
+    FileTransfer,
+    Media,
+    DatePicker,
+    FCM,
     FirebaseProvider
    ]
 })

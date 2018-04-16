@@ -1,0 +1,38 @@
+page-pin-creator {
+    .appForm {
+        background-color: white !important;
+        border-radius: 30px;
+        padding: 0 20px;
+        font-size: 1.25em !important;
+        border: 1px solid transparent;
+        max-width: 500px;
+        margin: auto;
+        text-align: center;
+    }
+    .appFormTextArea {
+        background-color: white !important;
+        border-radius: 30px;
+        padding: 0 20px;
+        font-size: 1.25em !important;
+        border: 1px solid transparent;
+        max-width: 500px;
+        margin: auto;
+        text-align: center;
+        min-height: 20vh;
+    }
+    .item-inner,
+    ion-item {
+        border-bottom-color: transparent !important;
+        box-shadow: none !important;
+    }
+    ion-icon {
+        font-size: 2em;
+    }
+    .loading-hold {
+        background-color: white;
+        color: color($colors, primary);
+        button{
+            color: color($colors, primary);
+        }
+    }
+}

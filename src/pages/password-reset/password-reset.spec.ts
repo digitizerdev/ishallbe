@@ -1,75 +1,55 @@
 import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { IonicModule, Events, NavController, NavParams } from 'ionic-angular';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { IonicStorageModule, Storage } from '@ionic/storage';
-import { AngularFireModule } from 'angularfire2';
-import { environment } from '../../environments/environment';
-import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
-import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
 
-import { HeaderComponent } from '../../components/header/header';
-import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
-import { TermsOfServiceComponent } from '../../components/terms-of-service/terms-of-service';
-
-import { PasswordResetPage } from './password-reset';
+import { IonicModule, Platform, NavController } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { environment } from '../../environments/environment';
+
+import { PasswordResetPage } from '../password-reset/password-reset';
+import { ComponentsModule } from '../../components/components.module';
 
 import { } from 'jasmine';
 
 import {
-    FirebaseProviderMock,
+    PlatformMock,
     NavMock,
-    StorageMock,
-    AngularFireDatabaseMock,
-    AngularFireAuthMock
+    FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
-let fixture;
-let component;
-let nav: NavController;
-let firebase: FirebaseProvider;
-let storage: Storage;
-let afAuth: AngularFireAuth;
-let isAuth$: Subscription;
-let isAuthRef: boolean;
-  
-  const fakeAuthState = new BehaviorSubject(null);
-  
-  const fakeSendPasswordEmailInHandler = (email): Promise<any> => {
-    fakeAuthState.next(true);
-    return Promise.resolve(true);
-  };
-  
-  const angularFireAuthStub = {
-    authState: fakeAuthState,
-    auth: {
-      sendPasswordResetEmail: jasmine
-        .createSpy('sendPasswordResetEmail')
-        .and
-        .callFake(fakeSendPasswordEmailInHandler)
-    },
-  };
 describe('PasswordResetPage', () => {
+    let fixture;
+    let component;
+    let platform: Platform;
+    let nav: NavController;
+    let firebase: FirebaseProvider;
+    let afa: AngularFireAuth;
+    let afs: AngularFirestore;
+
+    const angularFireAuthStub = {
+    };
+
+    const angularFireDataStub = {
+    }
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [PasswordResetPage],
             imports: [
                 IonicModule.forRoot(PasswordResetPage),
-                AngularFireModule.initializeApp(environment.firebase)
+                AngularFireModule.initializeApp(environment.firebase),
+                ComponentsModule
             ],
             providers: [
-                { provide: FirebaseProvider, useClass: FirebaseProviderMock },
-                { provide: Storage, useClass: StorageMock },
+                { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
-                { provide: NavParams, useClass: NavMock },
-                { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
+                { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
+                { provide: AngularFirestore, useValue: angularFireDataStub },
             ],
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
@@ -80,33 +60,28 @@ describe('PasswordResetPage', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(PasswordResetPage);
         component = fixture.componentInstance;
-        nav = fixture.componentRef.injector.get(NavController);
-        storage = fixture.componentRef.injector.get(Storage);
-        firebase = fixture.componentRef.injector.get(FirebaseProvider);
-        afAuth = TestBed.get(AngularFireAuth);   
+        platform = TestBed.get(Platform);
+        nav = TestBed.get(NavController);
+        firebase = TestBed.get(FirebaseProvider);
+        afa = TestBed.get(AngularFireAuth);
+        afs = TestBed.get(AngularFirestore);
     });
 
     afterEach(() => {
         fixture.destroy();
         component = null;
+        platform = null;
         nav = null;
-        storage = null;
-        firebase = null;        
-        afAuth = null;
-        fakeAuthState.next(null);
+        firebase = null;
+        afa = null;
+        afs = null;
     });
 
     it('should be created', () => {
         expect(component instanceof PasswordResetPage).toBe(true);
     });
 
-    it('should be initialized', () => {
-        expect(component.passwordResetForm).toBeDefined();
-        expect(component.submitted).toBeDefined();
-        expect(component.loader).toBeUndefined();
-    }); 
-
-    it('should display header component', () => {
+    it('should display HeaderComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('header'));
@@ -114,42 +89,20 @@ describe('PasswordResetPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display password reset form', () => {
+    it('should display form', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('form'));
-        el = de.nativeElement.innerHTML;
-        expect(el).toContain('Reset Password');
-        expect(el).toContain('email');
+        el = de.nativeElement.innerHTML
+        expect(el).toContain('RESET PASSWORD');
     });
 
-    it('should submit form', () => {
-        let passwordResetForm = {
-            email: 'testEmail',
-        }
-        component.submit(passwordResetForm);
-        expect(component.submitted).toBeTruthy();
-    });;
-
-    it('should request Firebase to send password reset email', () => {
-        component.firebase.sendPasswordResetEmail('testEmail');
-        expect(afAuth.auth.sendPasswordResetEmail)
-          .toHaveBeenCalledWith('testEmail');
-    });
-
-    it('should display login button', () => {
+    it('should display setRootLoginPageButton', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#PasswordResetLoginButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Login');
+        de = fixture.debugElement.query(By.css('#setRootLoginPageButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('LOGIN');
     });
-
-    it('should be able to pop back to LoginPage', () => {
-        spyOn(nav, 'pop');
-        component.popToLoginPage();
-        fixture.detectChanges();
-        expect(nav.pop).toHaveBeenCalled();
-    });
-
 });
+

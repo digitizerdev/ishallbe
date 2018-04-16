@@ -1,0 +1,21 @@
+export interface Notification {
+  id: string,
+  uid: string,
+  name: string,
+  face: string,
+  description: string,
+  read: boolean,
+  collection: string,
+  docId: string,
+  receiverUid: string,
+  message: boolean,
+  pinLike: boolean,
+  statementLike: boolean,
+  goalLike: boolean,
+  comment: boolean,
+  commentLike: boolean,
+  reminder: boolean,
+  displayTimestamp: string,
+  timestamp: number,
+}
+

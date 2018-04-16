@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, Platform } from 'ionic-angular';
+import { AlertController, LoadingController, Platform } from 'ionic-angular';
+import { Pro } from '@ionic/pro';
 import { Facebook } from '@ionic-native/facebook';
-import { Storage } from '@ionic/storage';
-import { Observable } from 'rxjs/Observable';
+
 import firebase from 'firebase';
-
-import { HomePage } from '../../pages/home/home';
-
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @Component({
@@ -16,177 +13,55 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 export class LoginFacebookComponent {
 
   uid: any;
+  authToken: any;
+  user: any;
   loader: any;
-  data: any;
+  loaded = false;
 
   constructor(
-    public firebase: FirebaseProvider,
-    public navCtrl: NavController,
-    public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController,
-    public platform: Platform,
-    public facebook: Facebook,
-    public storage: Storage,
-  ) {
-  }
+    private firebase: FirebaseProvider,
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
+    private platform: Platform,
+    private facebook: Facebook,
+  ) { }
 
   authenticate() {
-    this.viaCordova(this.platform.is('cordova'))
-    this.startLoader();
-  }
-
-  startLoader() {
+    this.firebase.socialAuthentication = true;
     this.loader = this.loadingCtrl.create({
-      content: 'Please Wait..'
+      spinner: 'bubbles',
+      content: 'Loading...'
     });
     this.loader.present();
+    this.determineAuthType(this.platform.is('cordova'));
   }
 
-  viaCordova(cordova) {
-    if (cordova) {
-      this.cordova();
-    } else {
-      this.browser();
-    }
+  determineAuthType(cordova) {
+    if (cordova)
+      this.cordovaAuth();
+    else
+      this.browserAuth();
   }
 
-  cordova() {
+  cordovaAuth() {
     this.facebook.login(['email', 'public_profile']).then((token) => {
       this.facebook.getAccessToken().then((accessToken) => {
         let facebookProviderCredential = firebase.auth.FacebookAuthProvider.credential(accessToken);
         firebase.auth().signInWithCredential(facebookProviderCredential).then((token) => {
-          this.prepCordova(token);
-        }).catch((error) => { this.errorHandler(error)});;
-      }).catch((error) => { this.errorHandler(error)});
-    }).catch((error) => { this.errorHandler(error)});
+          this.loader.dismiss();
+        }).catch((error) => { this.errorHandler(error) });;
+      }).catch((error) => { this.errorHandler(error) });
+    }).catch((error) => { this.errorHandler(error) });
   }
 
-  prepCordova(token) {
-    this.uid = token.uid;
-    this.data = token.providerData[0];
-    let photoURL = "https://graph.facebook.com/" + token.providerData[0].uid + "/picture?type=large";      
-    let data = {
-      "name": token.providerData[0].displayName,
-      "email": token.providerData[0].email,
-      "photo": photoURL,   
-    }
-    this.data = data;    
-    this.checkForExistingProfile();
-  }
-
-  browser() {
-    firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((token)=> {
-      this.prepBrowser(token);
+  browserAuth() {
+    firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((token) => {
+      this.loader.dismiss();
     });
-  }
-
-  prepBrowser(token) {
-    let photoURL = "https://graph.facebook.com/" + token.user.providerData[0].uid + "/picture?type=large";      
-    let data = {
-      "name": token.user.displayName,
-      "email": token.user.email,
-      "photo": photoURL,   
-    }
-    this.data = data; 
-    this.uid = token.user.uid;
-    this.checkForExistingProfile();
-  }
-
-  checkForExistingProfile() {
-    this.requestProfile(this.uid).subscribe((profile) => {
-      if (profile) {
-        this.confirmDelivery();
-      } else {
-       this.registerUser(); 
-      }
-    })
-  }
-
-  registerUser() {
-    this.presentEULA().subscribe((accepted) => {
-      if (accepted) {
-        this.createProfile();
-      }
-    });
-  }
-
-  requestProfile(uid) {
-    let path = '/users/' + uid;
-    return this.firebase.object(path)
-  }
-
-  presentEULA() {
-    return Observable.create((observer: any) => {
-      let alert = this.alertCtrl.create({
-        title: 'Accept Terms of Service',
-        message: 'Please confirm to continue',
-        buttons: [
-          {
-            text: 'Cancel',
-            role: 'cancel',
-            handler: () => {
-              observer.next(false);
-            }
-          },
-          {
-            text: 'Confirm',
-            handler: () => {
-              observer.next(true);
-            }
-          }
-        ]
-      });
-      alert.present();
-    });
-  }
-
-  createProfile() {
-    let path = '/users/' + this.uid;
-    let profile = {
-      "uid": this.uid,
-      "name": this.data.name,
-      "email": this.data.email,
-      "photo": this.data.photo,
-      "role": "contributor",
-      "blocked": false
-    }
-    this.firebase.object(path).set(profile).then(() => {
-      this.confirmDelivery();
-    })
-  }
-
-  confirmDelivery() {
-    this.endLoader();
-    this.presentConfirmationAlert();
-    this.startSession();     
-    this.setRootHomePage();
-  }
-
-  endLoader() {
-    this.loader.dismiss();
-  }
-
-  presentConfirmationAlert() {
-    let alert = this.alertCtrl.create({
-      title: '',
-      subTitle: 'Authenticated',
-      buttons: ['OK']
-    });
-  }
-
-  startSession() {
-    let uid = this.uid;
-    this.storage.set('uid', uid);
-    this.storage.set('session', true);
-    this.setRootHomePage();
-  }
-
-  setRootHomePage() {
-    this.navCtrl.setRoot(HomePage);
   }
 
   errorHandler(error) {
-    this.endLoader();
+    Pro.monitoring.exception(error);
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,

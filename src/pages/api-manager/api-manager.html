@@ -1,0 +1,26 @@
+<ion-header no-border>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon color='primary' name="menu"></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <header></header>
+  <div class="section">
+    <ion-list class="list-full-border" id="ChannelFeature" text-center>
+      <h5>Connected to {{deployChannel}} Channel</h5>
+      <ion-item class="section" no-lines>
+        <ion-label>Opt in to Beta Features</ion-label>
+        <ion-toggle color="primary" [(ngModel)]="isBeta" (ionChange)="toggleBeta()"></ion-toggle>
+      </ion-item>
+    </ion-list>
+  </div>
+  <br>
+  <div class="section">
+    <ion-list class="list-full-border" (click)="openLink()" id="AppBaseFeature" text-center>
+      <h5>App Base: TDCT 2</h5>
+      <h6>Account Manager: Troy DC Thompson</h6>
+    </ion-list>
+  </div>
+</ion-content>

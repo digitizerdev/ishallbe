@@ -1,94 +1,65 @@
 import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { IonicModule, Events, NavController, NavParams } from 'ionic-angular';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { IonicStorageModule, Storage } from '@ionic/storage';
-import { AngularFireModule } from 'angularfire2';
-import { environment } from '../../environments/environment';
-import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
-import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
 
-import { HeaderComponent } from '../../components/header/header';
-import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
-import { TermsOfServiceComponent } from '../../components/terms-of-service/terms-of-service';
-
-import { ProfilePage } from './profile';
+import { IonicModule, Platform, NavController, NavParams } from 'ionic-angular';
+import { Media } from '@ionic-native/media';
+import { FileTransfer } from '@ionic-native/file-transfer';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { environment } from '../../environments/environment';
 
-import { mockPin } from '../../../test-data/pin/mocks';
-import { mockPost } from '../../../test-data/post/mocks';
+import { ProfilePage } from '../profile/profile';
+import { ComponentsModule } from '../../components/components.module';
 
 import { } from 'jasmine';
 
 import {
-    FirebaseProviderMock,
+    PlatformMock,
     NavMock,
-    NavParamsMock,
-    StorageMock,
-    AngularFireDatabaseMock,
-    AngularFireAuthMock
+    MediaMock,
+    FileTransferMock,
+    FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
-let fixture;
-let component;
-let nav: NavController;
-let navParams: NavParamsMock;
-let firebase: FirebaseProvider;
-let storage: Storage;
-let afAuth: AngularFireAuth;
-let afData: AngularFireDatabase;
-
-const angularFireAuthStub = {
-}
-
-let pushSpy = jasmine.createSpy("push");
-
-let takeSpy = jasmine.createSpy("take");
-
-let querySpy = jasmine.createSpy("query").and.returnValue({
-    take: takeSpy
-});
-
-let listSpy = jasmine.createSpy("list").and.returnValue({
-    push: pushSpy,
-    take: takeSpy,
-    query: querySpy
-});
-
-let updateSpy = jasmine.createSpy("update");
-
-let removeSpy = jasmine.createSpy("remove");
-
-let objectSpy = jasmine.createSpy("object").and.returnValue({
-    update: updateSpy,
-    remove: removeSpy
-});
-
-const angularFireDataStub = {
-    object: objectSpy,
-    list: listSpy,
-}
-
 describe('ProfilePage', () => {
+    let fixture;
+    let component;
+    let platform: Platform;
+    let nav: NavController;
+    let navParams: NavParams;
+    let media: Media;
+    let fileTransfer: FileTransfer;
+    let firebase: FirebaseProvider;
+    let afa: AngularFireAuth;
+    let afs: AngularFirestore;
+
+    const angularFireAuthStub = {
+    };
+
+    const angularFireDataStub = {
+    }
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [ProfilePage],
             imports: [
                 IonicModule.forRoot(ProfilePage),
-                AngularFireModule.initializeApp(environment.firebase)
+                AngularFireModule.initializeApp(environment.firebase),
+                ComponentsModule,
             ],
             providers: [
-                { provide: FirebaseProvider, useClass: FirebaseProviderMock },
-                { provide: Storage, useClass: StorageMock },
+                { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
-                { provide: NavParams, useClass: NavParamsMock },
-                { provide: AngularFireDatabase, useValue: angularFireDataStub },
+                { provide: NavParams, useClass: NavMock },
+                { provide: Media, useClass: MediaMock },
+                { provide: FileTransfer, useClass: FileTransfer },
+                { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
+                { provide: AngularFirestore, useValue: angularFireDataStub },
             ],
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
@@ -99,105 +70,155 @@ describe('ProfilePage', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(ProfilePage);
         component = fixture.componentInstance;
-        nav = fixture.componentRef.injector.get(NavController);
-        navParams = fixture.componentRef.injector.get(NavParams);
-        storage = fixture.componentRef.injector.get(Storage);
-        firebase = fixture.componentRef.injector.get(FirebaseProvider);
-        afAuth = TestBed.get(AngularFireAuth);
-        afData = TestBed.get(AngularFireDatabase);
+        platform = TestBed.get(Platform);
+        nav = TestBed.get(NavController);
+        navParams = TestBed.get(NavParams);
+        media = TestBed.get(Media);
+        fileTransfer = TestBed.get(FileTransfer);
+        firebase = TestBed.get(FirebaseProvider);
+        afa = TestBed.get(AngularFireAuth);
+        afs = TestBed.get(AngularFirestore);
     });
 
     afterEach(() => {
         fixture.destroy();
         component = null;
+        platform = null;
         nav = null;
         navParams = null;
-        storage = null;
+        media = null;
+        fileTransfer = null;
         firebase = null;
-        afAuth = null;
-        afData = null;
+        afa = null;
+        afs = null;
     });
 
     it('should be created', () => {
         expect(component instanceof ProfilePage).toBe(true);
     });
 
-    it('should load uid and profile', fakeAsync(() => {
-        spyOn(navParams, 'get')
-        spyOn(component, 'loadProfile').and.returnValue({ subscribe: () => { } });        
-        component.ionViewDidLoad();
-        tick();
+    it('should dipsplay pushChatsPageIcon if mine', () => {
+        component.mine = true;
         fixture.detectChanges();
-        expect(navParams.get).toHaveBeenCalled();
-        expect(component.loadProfile).toHaveBeenCalled();        
-    }));
-
-    it('should request user posts from Firebase', () => {
-        spyOn(firebase, 'queriedLimitedList').and.returnValue({ subscribe: () => {}});
-        this.uid = 'testUID';
-        component.loadUserPosts();
-        expect(firebase.queriedLimitedList).toHaveBeenCalled();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#pushChatsPageIcon'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 
-    it('should request Firebase to check if user already liked post', () => {
-        spyOn(firebase, 'queriedList').and.returnValue({ subscribe: () => { } });
-        component.uid = 'testUID'
-        component.requestPostUserLikerObject(mockPost.mature);
-        expect(firebase.queriedList).toHaveBeenCalled();
-    });
-
-    it('should unlike post on toggle post like if user already liked post', () => {
-        spyOn(component, 'requestPostUserLikerObject').and.returnValue({ subscribe: () => {}});
-        component.togglePostLike(mockPost.mature);
-        expect(component.requestPostUserLikerObject).toHaveBeenCalled();
-    });
-
-    it('should request Firebase to update unliked post', fakeAsync(() => {
-        component.firebase.object('testPath').update('post')
-        tick();
+    it('should dipsplay pushChatPageIcon if not mine', () => {
+        component.mine = false;
         fixture.detectChanges();
-        expect(objectSpy).toHaveBeenCalled();
-        expect(updateSpy).toHaveBeenCalled();
-    }));
-
-    it('should request Firebase to remove liker object from liked post', () => {
-        component.post = mockPost.mature;
-        component.removePostLikerObject(mockPost.mature.likers.testPostLikerID1, mockPost.mature);
-        expect(afData.object).toHaveBeenCalled();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#pushChatPageIcon'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 
-    it('should like post on toggle post like if user has not already liked post', () => {
-        spyOn(component, 'likePost').and.returnValue({ subscribe: () => {}});        
-        component.togglePostLike(mockPost.new);
-        expect(component.likePost).toHaveBeenCalled();
+    it('should display user profile if loaded', () => {
+        component.loaded = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#UserProfile'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 
-    it('should request Firebase to update liked post', fakeAsync(() => {
-        component.firebase.object('testPath').update('post')
-        tick();
+    it('should display pushUpdateProfilePageButton if loaded and mine', () => {
+        component.loaded = true;
+        component.mine = true;
         fixture.detectChanges();
-        expect(objectSpy).toHaveBeenCalled();
-        expect(updateSpy).toHaveBeenCalled();
-    }));
-
-    it('should request Firebase to push liker object', fakeAsync(() => {
-        component.firebase.list('testPath').push('post')
-        tick();
-        fixture.detectChanges();
-        expect(listSpy).toHaveBeenCalled();
-        expect(pushSpy).toHaveBeenCalled();
-    }));
-
-    it('should request Firebase to update post liker object with id', fakeAsync(() => {
-        component.firebase.object('testPath').update('post')
-        tick();
-        fixture.detectChanges();
-        expect(objectSpy).toHaveBeenCalled();
-        expect(updateSpy).toHaveBeenCalled();
-    }));
-
-    it('should be able to view post', () => {
-        expect(component.viewPost('testPostID')).toBeUndefined();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ("#pushProfileUpdatePageButton"));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 
+    it('should display blockUserButton if loaded, editor, not blocked, and not mine', () => {
+        component.loaded = true;
+        component.editor = true;
+        component.blocked = false;
+        component.mine = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#blockUserButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('BLOCK USER');
+    });
+
+    it('should display unblockUserButton if loaded, editor, blocked, and not mine', () => {
+        component.loaded = true;
+        component.editor = true;
+        component.blocked = true;
+        component.mine = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#unblockUserButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('UNBLOCK USER');
+    });
+
+    it('should display makeEditorButton if loaded, editor, not mine, not blocked, and not userEditor', () => {
+        component.loaded = true;
+        component.editor = true;
+        component.mine = false;
+        component.blocked = false;
+        component.userEditor = false;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#makeEditorButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('MAKE EDITOR');
+    });
+
+    it('should display makeContributorButton if loaded, editor, not mine, not blocked, and userEditor', () => {
+        component.loaded = true;
+        component.editor = true;
+        component.mine = false;
+        component.blocked = false;
+        component.userEditor = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#makeContributorButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('MAKE CONTRIBUTOR');
+    });
+
+    it('should display my statements', () => {
+        component.postSegment = 'statements';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#MyStatements'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display my goals', () => {
+        component.postSegment = 'goals';
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#MyGoals'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
 });

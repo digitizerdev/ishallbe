@@ -1,44 +1,45 @@
 <ion-content center padding>
   <header></header>
-  <br>
-  <br>
-  <login-facebook></login-facebook>
-  <br>
-  <br>
-  <form #loginForm="ngForm" novalidate>
+  <ion-row padding-left padding-right>
+    <ion-col text-center>
+      <login-facebook></login-facebook>
+    </ion-col>
+  </ion-row>
+  <form #loginForm="ngForm" novalidate padding>
     <ion-list no-lines>
-      <ion-item>
-        <ion-label stacked color="primary">Email</ion-label>
-        <ion-input [(ngModel)]="loginForm.email" name="email" type="email" #email="ngModel" spellcheck="false" autocapitalize="off"
-          required>
-        </ion-input>
-      </ion-item>
-      <p ion-text [hidden]="email.valid || submitted == false" color="danger" padding-left>
-        Email is required
-      </p>
-      <ion-item>
-        <ion-label stacked color="primary">Password</ion-label>
-        <ion-input [(ngModel)]="loginForm.password" name="password" type="password" #password="ngModel" required>
-        </ion-input>
-      </ion-item>
-      <p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>
-        Password is required
-      </p>
+      <div>
+        <ion-item class="tdct-form">
+          <ion-input [(ngModel)]="loginForm.email" name="email" placeholder="E-mail" type="email" #email="ngModel" spellcheck="false"
+            autocapitalize="off" required>
+          </ion-input>
+        </ion-item>
+        <p ion-text [hidden]="email.valid || submitted == false" color="danger" padding-left>
+          Email is required
+        </p>
+        <br>
+        <ion-item class="tdct-form">
+          <ion-input [(ngModel)]="loginForm.password" name="password" placeholder="Password" type="password" #password="ngModel" required>
+          </ion-input>
+        </ion-item>
+        <p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>
+          Password is required
+        </p>
+      </div>
       <br>
       <ion-row>
         <ion-col text-center>
-          <button id="LoginWithEmailButton" ion-button (click)="submit(loginForm)" type="submit" round large>Login with Email</button>
+          <button ion-button (click)="submit(loginForm)" type="submit" round block large strong> LOGIN</button>
         </ion-col>
       </ion-row>
     </ion-list>
+    <ion-row responsive-sm>
+      <ion-col text-center>
+        <button ion-button (click)="setRootSignupPage()" color="secondary" id="setRootSignupPageButton" round strong>SIGNUP</button>
+      </ion-col>
+      <ion-col (click)="setRootPasswordResetPage()" text-center>
+        <br>
+        <div id="setRootPasswordResetLink">Forgot Password?</div>
+      </ion-col>
+    </ion-row>
   </form>
-  <ion-row responsive-sm>
-    <ion-col text-center>
-      <button ion-button id="LoginRegisterButton" (click)="pushRegisterPage()" color="secondary" round outline small>Register</button>
-    </ion-col>
-    <ion-col text-center>
-      <button ion-button id="LoginForgotPasswordButton" (click)="pushPasswordResetPage()" color="secondary" round outline small>Forgot Password?</button>
-    </ion-col>
-  </ion-row>
-  <terms-of-service></terms-of-service>
 </ion-content>

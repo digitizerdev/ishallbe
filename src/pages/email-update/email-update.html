@@ -1,0 +1,30 @@
+<ion-header no-border>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon color="primary" name="menu"></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+<ion-content text-center padding>
+  <header></header>
+  <form #updateEmailForm="ngForm" novalidate padding>
+    <ion-list no-lines>
+      <ion-item class="tdct-form">
+        <ion-input placeholder="E-mail" [(ngModel)]="updateEmailForm.email" name="email" type="text" #email="ngModel" spellcheck="false"
+          autocapitalize="off" required>
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="email.valid || submitted == false" color="danger" padding-left>
+        Email is required
+      </p>
+      <br>
+      <ion-row>
+        <ion-col text-center class="submit">
+          <button ion-button (click)="submit(updateEmailForm)" type="submit" color="primary" round block large strong>
+            UPDATE EMAIL
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+  </form>
+</ion-content>

@@ -1,17 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
-import { Observable } from 'rxjs/Observable';
+import { IonicPage, Events, NavController } from 'ionic-angular';
 
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
-import { AccountEmailPage } from '../account-email/account-email';
-import { AccountPasswordPage } from '../account-password/account-password';;
+import { EmailUpdatePage } from '../email-update/email-update';
+import { PasswordUpdatePage } from '../password-update/password-update';;
 import { ProfilePage } from '../profile/profile';
 import { SupportPage } from '../support/support';
-import { PinsManagerPage } from '../pins-manager/pins-manager';
-import { PostsManagerPage } from '../posts-manager/posts-manager';
-import { UsersManagerPage } from '../users-manager/users-manager';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -22,51 +17,26 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 })
 export class AccountPage {
 
-  title = 'Account';
-  uid: any;
-  role: any;
-  name: any;
-  email: any;
-  editor: any;
+  user: any;
+  editor = false;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public actionSheetCtrl: ActionSheetController,
-    public firebase: FirebaseProvider,
-    public storage: Storage
+    private navCtrl: NavController,
+    private events: Events,
+    private firebase: FirebaseProvider,
   ) {
-    this.loadAccount();
   }
 
-  loadAccount() {
-    this.requestUID().then((uid) => {
-      this.uid = uid;
-      this.requestProfile().subscribe((profile) => {
-        this.name = profile.name;
-        this.email = profile.email;
-        if (profile.editor) this.editor = true;
-      });
-    });
+  ionViewDidLoad() {
+    this.user = this.firebase.user;
   }
 
-  requestUID() {
-    return this.storage.ready().then(() => {
-      return this.storage.get(('uid'));      
-    });
+  pushEmailUpdatePage() {
+    this.navCtrl.push(EmailUpdatePage);
   }
 
-  requestProfile() {
-    let path = '/users/' + this.uid;
-    return this.firebase.object(path)
-  }
-
-  pushAccountEmailPage() {
-    this.navCtrl.push(AccountEmailPage);
-  }
-
-  pushAccountPasswordPage() {
-    this.navCtrl.push(AccountPasswordPage);
+  pushPasswordUpdatePage() {
+    this.navCtrl.push(PasswordUpdatePage);
   }
 
   setRootProfilePage() {
@@ -74,9 +44,10 @@ export class AccountPage {
   }
 
   logout() {
-    this.firebase.logOut();
-    this.storage.clear();
-    this.setRootLoginPage();
+    this.events.publish('contributor permission not granted');
+    this.firebase.afa.auth.signOut();
+    this.firebase.hasSeenTutorial = true;
+    this.navCtrl.setRoot(LoginPage);
   }
 
   setRootLoginPage() {
@@ -90,39 +61,4 @@ export class AccountPage {
   pushSupportPage() {
     this.navCtrl.push(SupportPage);
   }
-
-  pushManagerPage() {
-    let actionSheet = this.actionSheetCtrl.create({
-      buttons: [
-        {
-          text: 'Manage Pins',
-          handler: () => {
-            this.navCtrl.push(PinsManagerPage);
-          }
-        },
-        {
-          text: 'Manage Posts',
-          handler: () => {
-            this.navCtrl.push(PostsManagerPage);
-          }
-        },
-        {
-          text: 'Manage Users',
-          handler: () => {
-            this.navCtrl.push(UsersManagerPage);
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }
-      ]
-    });
- 
-    actionSheet.present();
-  }
-
 }

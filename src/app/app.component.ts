@@ -1,39 +1,29 @@
-import { NgModule, Component, ViewChild } from '@angular/core';
-import { Nav, Platform, AlertController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+
+import { Nav, Platform, Events, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Storage } from '@ionic/storage';
+import { FCM } from '@ionic-native/fcm';
+import { Pro } from '@ionic/pro';
+
 import { Observable } from 'rxjs/Rx';
 
 import { StartupPage } from '../pages/startup/startup';
 import { LoginPage } from '../pages/login/login';
-import { RegisterPage } from '../pages/register/register';
-import { PasswordResetPage } from '../pages/password-reset/password-reset';
-import { AccountEmailPage } from '../pages/account-email/account-email';
-import { AccountPasswordPage } from '../pages/account-password/account-password';
-import { SupportPage } from '../pages/support/support';
-import { AccountPage } from '../pages/account/account';
-import { AboutPage } from '../pages/about/about';
-import { EditProfilePage } from '../pages/edit-profile/edit-profile';
-import { PhotoPage } from '../pages/photo/photo';
-import { ProfilePage } from '../pages/profile/profile';
-import { CreateStatementPage } from '../pages/create-statement/create-statement';
-import { PostPage } from '../pages/post/post';
-import { PinPage } from '../pages/pin/pin';
 import { HomePage } from '../pages/home/home';
-import { CreatePinPage } from '../pages/create-pin/create-pin';
-import { PinsManagerPage } from '../pages/pins-manager/pins-manager';
-import { PostsManagerPage } from '../pages/posts-manager/posts-manager';
-import { UsersManagerPage } from '../pages/users-manager/users-manager';
-import { ComponentsModule } from '../components/components.module';
-import { HeaderComponent } from '../components/header/header';
-import { TermsOfServiceComponent } from '../components/terms-of-service/terms-of-service';
-import { LoginFacebookComponent } from '../components/login-facebook/login-facebook';
+import { IshallbetvPage } from '../pages/ishallbetv/ishallbetv';
+import { ProfilePage } from '../pages/profile/profile';
+import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
+import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
+import { PostPage } from '../pages/post/post';
+import { ChatPage } from '../pages/chat/chat';
+import { AccountPage } from '../pages/account/account';
+import { PostManagerPage } from '../pages/post-manager/post-manager';
+import { UserManagerPage } from '../pages/user-manager/user-manager';
+import { ApiManagerPage } from '../pages/api-manager/api-manager';
+import { TutorialPage } from '../pages/tutorial/tutorial';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
-
-export interface PageInterface {
-}
 
 @Component({
   templateUrl: 'app.component.html',
@@ -43,94 +33,279 @@ export class iShallBe {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any;
-  pages: Array<{ title: string, component: any }>;
+  affirmationsMenu: Array<{ title: string, icon: string, component: any }>;
+  accountMenu: Array<{ title: string, icon: string, component: any }>;
+  editorMenu: Array<{ title: string, icon: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
-  components: Array<{ title: string, component: any }>;
-  menuPages: Array<{ title: string, icon: string, component: any }>;
-  managerPages: Array<{ title: string, icon: string, component: any }>;
+  pages: Array<{ title: string, component: any }>;
+  notification: any;
+  tappedNotification = false;
+  editor = false;
+  ready = false;
 
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
+    private events: Events,
     private alertCtrl: AlertController,
+    private fcm: FCM,
     private firebase: FirebaseProvider,
-    private storage: Storage,
   ) {
+    this.listenToUserPermissionsEvents();
     this.rootPage = StartupPage;
-    platform.ready();
+    this.platformReady();
+    this.setMenus();
+  }
 
-    this.pages = [
-      { title: 'Startup Page', component: StartupPage },
-      { title: 'Login Page', component: LoginPage },
-      { title: 'Register Page', component: RegisterPage },
-      { title: 'Password Reset Page', component: PasswordResetPage },
-      { title: 'Support Page', component: SupportPage },
-      { title: 'Account Email Page', component: AccountEmailPage },
-      { title: 'Account Password Page', component: AccountPasswordPage },
-      { title: 'Account Page', component: AccountPage },
-      { title: 'About Page', component: AboutPage },
-      { title: 'Edit Profile Page', component: EditProfilePage },
-      { title: 'Photo Page', component: PhotoPage },
-      { title: 'Profile Page', component: ProfilePage },
-      { title: 'Create Statement Page', component: CreateStatementPage },
-      { title: 'Post Page', component: PostPage },
-      { title: 'Pin Page', component: PinPage },
-      { title: 'Home Page', component: HomePage },
-      { title: 'Create Pin Page', component: CreatePinPage },
-      { title: 'Users Manager Page', component: UsersManagerPage },
-      { title: 'Posts Manager Page', component: PostsManagerPage },
-      { title: 'Pins Manager Page', component: PinsManagerPage }
-    ];
-
-    this.providers = [
-      { title: 'Firebase Provider', component: FirebaseProvider }
-    ]
-
-    this.menuPages = [
-      {
-        title: 'Home',
-        icon: 'ios-home',
-        component: HomePage
-      },
-      {
-        title: 'About',
-        icon: 'ios-information-circle',
-        component: AboutPage
-      },
-      {
-        title: 'Create Statement',
-        icon: 'ios-camera',
-        component: CreateStatementPage
-      },
-      {
-        title: 'Profile',
-        icon: 'ios-person',
-        component: ProfilePage
-      },
-      {
-        title: 'Account',
-        icon: 'ios-contact',
-        component: AccountPage
-      }
-    ]
-
-    this.components = [
-      { title: 'Header Component', component: HeaderComponent },
-      { title: 'Terms of Service Component', component: TermsOfServiceComponent },
-      { title: 'Login Facebook Component', component: LoginFacebookComponent },
-    ]
+  openPage(page) {
+    this.nav.setRoot(page.component);
   }
 
   platformReady() {
     this.platform.ready().then(() => {
-      this.splashScreen.hide();
+      this.ready = true;
+      if (!this.platform.is('cordova'))
+        this.startup();
+      else
+        this.initDevicePlatform();
     });
   }
-  
-  openPage(page) {
-    this.nav.setRoot(page.component);
-  }
-  
-}
 
+  startup() {
+    this.fcm.subscribeToTopic('affirmations');
+    this.nav.setRoot(StartupPage);
+    this.splashScreen.hide();
+  }
+
+  initDevicePlatform() {
+    this.splashScreen.show();
+    this.statusBar.styleDefault();
+    this.listenToFCMPushNotifications();
+    this.deployUpdate().subscribe((updateAvailable) => {
+      if (!updateAvailable)
+        this.startup();
+    });
+  }
+
+  deployUpdate() {
+    return Observable.create((observer) => {
+      return Pro.deploy.checkAndApply(true).then((resp) => {
+        if (resp.update) observer.next(true);
+        else observer.next(false);
+      });
+    });
+  }
+
+  listenToFCMPushNotifications() {
+    console.log("Listening to Push Notifications");
+    this.fcm.getToken().then(token =>
+      this.firebase.fcmToken = token);
+    this.fcm.onNotification().subscribe(notification => {
+      if (notification.wasTapped) {
+        console.log("Notification was tapped");
+        this.tappedNotification = true;
+        this.notification = notification;
+        this.openNotification(notification);
+      }
+      else {
+        console.log("Notification was not tapped");
+        this.displayNotificationAlert(notification);
+      }
+    });
+    this.fcm.onTokenRefresh().subscribe(token =>
+      this.firebase.fcmToken = token);
+  }
+
+  displayNotificationAlert(notification) {
+    console.log("Displaying Notification Alert");
+    console.log("Aler subtitle is " + notification.aps.alert);
+    let alert = this.alertCtrl.create({
+      title: 'Notification',
+      subTitle: notification.aps.alert,
+      buttons: [
+        {
+          text: 'Dismiss',
+          handler: () => {
+            console.log("Dismissed");
+          }
+        },
+        {
+          text: 'Open',
+          handler: () => {
+            this.openNotification(notification)
+          }
+        }]
+    });
+    alert.present();
+  }
+
+  openNotification(notification) {
+    console.log("Opening Notification");
+    console.log(notification);
+    let notificationId = notification.id
+    console.log("Notification ID is " + notificationId);
+    let notificationPath = "notifications/" + notification.id;
+    console.log("Notification Path is " + notificationPath);
+    this.firebase.afs.doc(notificationPath).update({ read: true }).then(() => {
+      let notificationCollection = notification.collection;
+      console.log("Notification collection is " + notificationCollection);
+      if (notificationCollection == "pins")
+        this.openPin(notification.docId);
+      if (notificationCollection == "statements")
+        this.openStatement(notification.docId);
+      if (notificationCollection == "goals")
+        this.openGoal(notification.docId);
+      if (notification.message == "message")
+        this.openChat(notification.docId);
+    });
+  }
+
+  openPin(docId) {
+    console.log("Opening Pin");
+    console.log("Doc Id is " + docId);
+    this.nav.push(PostPage, {
+      id: docId,
+      type: "pins"
+    });
+  }
+
+  openStatement(docId) {
+    console.log("Opening Statement");
+    console.log("Doc Id is " + docId);
+    this.nav.push(PostPage, {
+      id: docId,
+      type: "statements"
+    });
+  }
+
+  openGoal(docId) {
+    console.log("Opening Goal");
+    console.log("Doc Id is " + docId);
+    this.nav.push(PostPage, {
+      id: docId,
+      type: "goals"
+    });
+  }
+
+  openChat(docId) {
+    console.log("Opening Chat");
+    console.log("Doc Id is " + docId);
+    this.nav.push(ChatPage, {
+      uid: docId,
+    });
+  }
+
+  listenToUserPermissionsEvents() {
+    this.listenToTutorialLaunchEvents();
+    this.listenToAccessControlEvents();
+    this.listenToEditorPermissionEvents();
+    this.listenToContributorPermissionEvents();
+  }
+
+  listenToTutorialLaunchEvents() {
+    console.log("Listening to tutorial launch events");
+    this.events.subscribe('show tutorial', () => {
+      console.log("Launching Tutorial");
+      this.nav.setRoot(TutorialPage);
+    });
+  }
+
+  listenToAccessControlEvents() {
+    this.events.subscribe('user blocked', () => {
+      this.nav.setRoot(LoginPage);
+      this.fcm.unsubscribeFromTopic('affirmations');
+      if (this.editor) {
+        this.editor = false;
+        this.fcm.unsubscribeFromTopic('editor');
+      }
+    });
+  }
+
+  listenToEditorPermissionEvents() {
+    this.events.subscribe('editor permission granted', () => {
+      this.fcm.subscribeToTopic('editor');
+      this.editor = true;
+    });
+    this.events.subscribe('editor permission not granted', () => {
+      this.fcm.unsubscribeFromTopic('editor');
+      this.editor = false;
+    });
+  }
+
+  listenToContributorPermissionEvents() {
+    this.events.subscribe('contributor permission granted', () => {
+      this.fcm.subscribeToTopic('affirmations');
+      if (this.tappedNotification) {
+        if (this.notification.collection == "pins")
+          this.openPin(this.notification.docId);
+        if (this.notification.collection == "statements")
+          this.openStatement(this.notification.docId);
+        if (this.notification.collection == "goals")
+          this.openGoal(this.notification.docId);
+        if (this.notification.message == "message")
+          this.openChat(this.notification.docId);
+      } else {
+        if (this.ready) this.nav.setRoot(StartupPage);
+      }
+    });
+    this.events.subscribe('contributor permission not granted', () => {
+      this.nav.setRoot(LoginPage);
+      this.editor = false;
+    });
+  }
+
+  setMenus() {
+    this.affirmationsMenu = [
+      {
+        title: 'Home',
+        icon: 'md-home',
+        component: HomePage
+      },
+      {
+        title: 'iShallBe TV',
+        icon: 'ios-desktop',
+        component: IshallbetvPage
+      },
+      {
+        title: 'Manage Profile',
+        icon: 'ios-person',
+        component: ProfilePage
+      }
+    ];
+    this.accountMenu = [
+      {
+        title: 'Create Goal',
+        icon: 'ios-microphone',
+        component: GoalCreatorPage
+      },
+      {
+        title: 'Create Statement',
+        icon: 'ios-camera',
+        component: StatementCreatorPage
+      },
+      {
+        title: 'Manage Account',
+        icon: 'ios-settings',
+        component: AccountPage
+      }
+    ];
+    this.editorMenu = [
+      {
+        title: 'Post Manager',
+        icon: 'ios-albums',
+        component: PostManagerPage
+      },
+      {
+        title: 'User Manager',
+        icon: 'ios-people',
+        component: UserManagerPage
+      },
+      {
+        title: 'API Manager',
+        icon: 'ios-pulse',
+        component: ApiManagerPage
+      }
+    ];
+  }
+}

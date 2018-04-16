@@ -1,74 +1,32 @@
-// Ionic Variables and Theming. For more info, please see:
-// http://ionicframework.com/docs/v2/theming/
 @import "ionic.globals";
-
-
-// Shared Variables
-// --------------------------------------------------
-// To customize the look and feel of this app, you can override
-// the Sass variables found in Ionic's source scss files.
-// To view all the possible Ionic variables, see:
-// http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
-
-$text-color:        #000;
-$background-color:  #fafafa;
-$borderColor:       #DDD;
-$textColor:         #666;
-
-// Named Color Variables
-// --------------------------------------------------
-// Named colors makes it easy to reuse colors on various components.
-// It's highly recommended to change the default colors
-// to match your app's branding. Ionic uses a Sass map of
-// colors so you can add, rename and remove colors as needed.
-// The "primary" color is the only required color in the map.
-
-$colors: (
-  facebook:   #3b5998,  
-  primary:    #0EA57E,
-  secondary:  #CEAA51,
-  danger:     #f53d3d,
-  love:       #DC143C,
-  light:      #f4f4f4,
-  light-gray: #fafafa,
-  dark:       #444,
-  favorite:   #69BB7B,
-  gray:     #8A8A8A,
-  grayer:     #7C7C7C,
-  green:    #33cd5f,
-  yellow:   #ffc900,
-  light-green: #e6f6f1,
-  light-yellow: #faf6ed
-);
-
-
-// App Theme
-// --------------------------------------------------
-// Ionic apps can have different themes applied, which can
-// then be future customized. This import comes last
-// so that the above variables are used and Ionic's
-// default are overridden.
-
+$text-color : #444;
+$background-color : #faf6ed;
+$borderColor : #DDD;
+$textColor : #444;
+$refresher-icon-color: #0EA57E;
+$refresher-text-color: #0EA57E;
+$refresher-border-color: #faf6ed;
+$popover-ios-text-color: #0EA57E;
+$popover-md-text-color: #0EA57E;
+$colors: ( 
+  white: #FFF,
+  gray:  #e6e5eb,
+  background: #faf6ed, 
+  primary : #0EA57E, 
+  secondary : #CEAA51, 
+  danger : #f53d3d, 
+  charcoal : #444, 
+  steel : #7C7C7C, 
+  facebook : #3b5998
+  );
 @import "ionic.theme.default";
-
-
 @font-face {
-  font-family: "Lato";
-  src: url('../assets/fonts/lato.woff') format('woff');
-  }
- 
-  $font-family-md-base: "Lato";
-  $font-family-ios-base: "Lato";
-  $font-family-wp-base: "Lato";
+    font-family: "Orkney";
+    src: url('../assets/fonts/orkney.woff') format('woff');
+}
 
-
-// Ionicons
-// --------------------------------------------------
-// The premium icon font for Ionic. For more info, please see:
-// http://ionicframework.com/docs/v2/ionicons/
-
+$font-family-md-base: "Orkney";
+$font-family-ios-base: "Orkney";
+$font-family-wp-base: "Orkney";
 $ionicons-font-path: "../assets/fonts";
 @import "ionic.ionicons";
-
-
- 

@@ -1,84 +1,90 @@
-<ion-header>
-  <ion-navbar color="primary">
-    <ion-title>iShallBe</ion-title>
-    <ion-buttons *ngIf="mine" end>
-      <button ion-button icon-only (click)="removePost()">
-        <ion-icon name="ios-close"></ion-icon>
+<ion-header no-border>
+  <ion-navbar>
+    <toolbar-logo></toolbar-logo>
+    <ion-buttons end>
+      <button *ngIf="collection !== 'pins'" ion-button icon-only end (click)="togglePostManagerMenu($event)" id="togglePostManagerMenuButton">
+        <ion-icon name="ios-more" color="primary"></ion-icon>
+      </button>
+      <button *ngIf="mine && collection == 'pins'" id="deletePostButton" ion-button icon-only end (click)="deletePost()">
+        <ion-icon name="ios-close" color="primary"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-
-<ion-content class="container">
-  <ion-refresher (ionRefresh)="loadPost($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
-    </ion-refresher-content>
-  </ion-refresher>
-  <div *ngIf="loaded">
-    <ion-item class="post-header">
-      <ion-avatar (click)="viewProfile(post.uid)" item-left>
-        <img src="{{ post?.face }}">
-      </ion-avatar>
-      <h2 ion-text color="primary" class="post-author">{{ post?.name }}</h2>
-      <h2>
-        <b>{{ post?.title}}</b>
-      </h2>
-      <span class="post-time">
-        {{ post?.time }}
-      </span>
-    </ion-item>
-    <div text-center>
-      <img class="full-image" src="{{ post?.url }}">
-      <div class="info">
-        <h4 class="post-content" text-center padding>{{ post?.content}}</h4>
-        <a (click)="togglePostLike(post)" class="subdued">
-          <ion-icon name="thumbs-up" color="secondary" *ngIf="likedPost"></ion-icon>
-          <ion-icon name="thumbs-up" color="gray" *ngIf="!likedPost"></ion-icon>
-          {{ post?.likeCount}}
-        </a>
-        <a class="subdued">
-          <ion-icon name="chatboxes" color="primary"></ion-icon>
-          {{ post?.commentCount}}
-        </a>
-      </div>
-      <ion-item no-lines class="post-comment" *ngFor="let comment of comments">
-        <ion-avatar item-left (click)="viewProfile(comment?.user_id)">
-          <img src="{{ comment?.face }}">
-        </ion-avatar>
-        <div text-right>
-          <ion-icon (click)="deleteComment(comment)" name="close" color="gray" class="delete" *ngIf="comment?.mine"></ion-icon>
-        </div>
-        <h3 ion-text color="primary" class="post-author">
-          {{ comment?.name }}
-        </h3>
-        <p class="comment-content" text-wrap>{{ comment?.content}}</p>
-        <a (click)="toggleCommentLike(comment)" class="subdued like-count">
-          <ion-icon name="heart" color="love" *ngIf="comment?.userLiked"></ion-icon>
-          <ion-icon name="heart-outline" color="gray" *ngIf="!comment?.userLiked"></ion-icon>
-          {{ comment?.likeCount}}
-        </a>
-        <span class="comment-time">
-          <ion-icon></ion-icon>
-          {{ comment?.time }}
+<ion-content>
+  <div *ngIf="postManagerMenu" class="post-menu" padding-bottom>
+    <button *ngIf="mine && private" (click)="togglePrivacy()" id="makePublicButton" color="primary" ion-button round strong float-right>MAKE PUBLIC</button>
+    <button *ngIf="mine && !private" (click)="togglePrivacy()" id="makePrivateButton" color="charcoal" ion-button round strong
+      float-right>MAKE PRIVATE</button>
+    <button *ngIf="mine || editor" (click)="deletePost()" id="deletePostButton" color="danger" ion-button round strong float-left>DELETE</button>
+    <button *ngIf="!mine && !reported" (click)="toggleReported()" id="reportPostButton" color="secondary" ion-button round strong
+      float-right>REPORT</button>
+    <button *ngIf="editor && reported" (click)="toggleReported()" id="unreportPostButton" color="secondary" ion-button round
+      strong float-right>UNREPORT</button>
+  </div>
+  <post-header *ngIf="collection !== 'pins'" [postDoc]="post"></post-header>
+  <img *ngIf="collection == 'statements' && post?.url" src="{{post?.url}}">
+  <ion-row *ngIf="collection == 'goals'" id="DueDate" text-center>
+    <ion-col text-center>
+      <h5>
+        <ion-icon name="alarm" color="secondary"></ion-icon>
+        <b>Due {{post?.displayDueDate}}</b>
+      </h5>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="audio">
+    <ion-col text-center>
+      <audio-player [postDoc]="post"></audio-player>
+    </ion-col>
+  </ion-row>
+  <div *ngIf="collection == 'pins'" id="PinHeader" text-center>
+    <h2 color="primary" ion-text>
+      <b>{{post?.title}}</b>
+    </h2>
+    <h5 class="post-description" text-left>{{post?.description}}</h5>
+  </div>
+  <div text-center>
+    <iframe *ngIf="video" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <h5 *ngIf="collection !== 'pins'" id="NonPinDescription" padding-left padding-right>{{post?.description}}</h5>
+  <post-footer *ngIf="loaded" [postDoc]="post"></post-footer>
+  <ion-row *ngIf="commentsLoaded" class="post-comments" id="Comments">
+    <div *ngFor="let comment of comments" class="comment-wrapper rlt" (hold)="onCommentHold($event, $index, comment)">
+      <div>
+        <img class="profile-picture left" src="{{ comment?.face }}" />
+        <span *ngIf="comment?.mine" class="delete-comment">
+          <ion-icon (click)="deleteComment(comment)" name="ios-close" color="steel" right></ion-icon>
         </span>
-      </ion-item>
+        <div class="comment-bubble left">
+          <div class="comment">
+            {{comment.name}}: {{ comment.description }}
+          </div>
+          <div color="charcoal" class="comment-detail">
+            <span class="comment-time">{{ comment.displayTimestamp }} </span>
+            <span *ngIf="comment?.likeCount > 1 || comment?.likeCount == 0" class="comment-like">{{ comment.likeCount }} Likes</span>
+            <span *ngIf="comment?.likeCount == 1" class="comment-like">{{ comment.likeCount }} Like</span>
+          </div>
+          <div text-right>
+            <ion-icon *ngIf="comment?.liked" (click)="removeCommentLike(comment)" name="ios-heart" color="secondary" right></ion-icon>
+            <ion-icon *ngIf="!comment?.liked" (click)="addCommentLike(comment)" name="ios-heart" right></ion-icon>
+          </div>
+        </div>
+      </div>
+      <div class="cf">
+      </div>
     </div>
-    <form #commentForm="ngForm" novalidate>
-      <ion-list>
-        <ion-item class="add-comment" no-lines>
-          <ion-label floating color="primary">Add Encouragement: </ion-label>
-          <ion-input [(ngModel)]="commentForm.comment" name="comment" type="text" #comment="ngModel" spellcheck="false" autocapitalize="off"
-            required>
-          </ion-input>
-        </ion-item>
-        <p ion-text [hidden]="comment.valid || submitted == false" color="danger" padding-left>
-          Comment is required
-        </p>
-        <button class="submit-button" ion-button (click)="submit(commentForm)" color="primary" type="submit" block>Post</button>
-      </ion-list>
-    </form>
-  </div>
-  <div text-center *ngIf="loaded">
-    <h6 class="report-post" (click)="reportPost()">Report Post</h6>
-  </div>
+  </ion-row>
 </ion-content>
+<ion-footer class="comment-footer" id="CommentBar" no-border>
+    <ion-toolbar no-border color="white">
+      <form #commentForm="ngForm" novalidate>
+        <ion-input ion-text [(ngModel)]="commentForm.description" name="description" #description="ngModel" type="text" placeholder="Write your comment"
+          spellcheck="true" autocapitalize="true" required></ion-input>
+      <ion-buttons end>
+        <button ion-button (click)="submit(commentForm)" type="submit" large>
+          <ion-icon name="send" color="white"></ion-icon>
+        </button>
+      </ion-buttons>
+    </form>
+    </ion-toolbar>
+</ion-footer>

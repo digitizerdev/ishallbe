@@ -1,16 +1,10 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, Platform } from 'ionic-angular';
-import { Push, PushObject, PushOptions } from '@ionic-native/push';
-import { Storage } from '@ionic/storage';
-import { Moment, lang } from 'moment';
-import { Observable } from 'rxjs/Observable';
-import moment from 'moment';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, Slides } from 'ionic-angular';
 
-import { ProfilePage } from '../profile/profile';
-import { PostPage } from '../post/post';
-import { LoginPage } from '../login/login';
-import { CreateStatementPage } from '../create-statement/create-statement';
-import { PinPage } from '../pin/pin';
+import { NotificationsPage } from '../../pages/notifications/notifications';
+
+import { Observable } from 'rxjs';
+import moment from 'moment';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -20,487 +14,121 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
   templateUrl: 'home.html',
 })
 export class HomePage {
+  @ViewChild(Slides) slider: Slides;
 
   pins: any[] = [];
-  posts: any[] = [];
-  uid: any;
-  refreshing: any;
-  feedTimestamp: any;
-  sunday: any;
-  pinsQuery: any;
-  postsQuery: any;
-  loader: any;
-  pinsLoaded: any;
-  postLimit: any;
-  postsLoaded: any;
+  statements: any[] = [];
+  goals: any[] = [];
+  pinStartDate: number;
+  pinEndDate: number;
+  dayNumber: number;
+  timestamp: number;
+  pinsLoaded = false;
+  statementsLoaded = false;
+  goalsLoaded = false;
+  postSegment = 'statements';
 
   constructor(
-    private platform: Platform,
     private navCtrl: NavController,
-    private navParams: NavParams,
-    private firebase: FirebaseProvider,
-    private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
-    private storage: Storage,
-    private push: Push
+    private firebase: FirebaseProvider
   ) {
   }
 
-  ionViewDidLoad() {
-    console.log("Loaded home page");
-    this.pinsLoaded = false;
-    this.postLimit = 1;
-    this.postsLoaded = false;
-    this.requestUID().then((uid) => {
-      this.uid = uid;
-      if (!this.uid) {
-        this.logout();
-      }
-      this.checkIfProfileBlocked().subscribe(() => {
-        this.loadHome();
-      })
-    });
-    this.initPushNotification();
+  ionViewDidEnter() {
+    this.timestampPage();
+    this.loadPosts();
   }
 
-  logout() {
-    this.firebase.logOut();
-    this.storage.clear();
-    this.navCtrl.setRoot(LoginPage);
-  }
-
-  requestUID() {
-    return this.storage.ready().then(() => {
-      return this.storage.get('uid');
-    });
-  }
-
-  refreshPage(refresh) {
-    this.posts = [];
-    this.pins = [];
-    this.navCtrl.setRoot(this.navCtrl.getActive().component);
-  }
-
-  loadHome() {
-    this.startLoader();
-    this.timestampFeed().subscribe(() => {
-      if (this.feedTimestamp.day == 'Sunday') { this.sunday = true } 
-      else { this.loadPins(); }
-      this.posts = [];
-      if (this.postsLoaded || this.postLimit > 1) {
-        this.postLimit = 25;
-        this.postsLoaded = true;
-      }
-      this.loadPosts();
-    });
-  }
-
-  startLoader() {
-    this.loader = this.loadingCtrl.create({
-      content: 'Loading...'
-    });
-  }
-
-  timestampFeed() {
-    return Observable.create((observer) => {
-      let time = moment().format('MMMM D h:mma')
-      let dateString = moment().format('YYYYMMDD');
-      let date = parseInt(dateString);
-      let day = moment().format('dddd');
-      console.log("Today is " + day);
-      let dayNumberString = moment().format('d');
-      let dayNumber = parseInt(dayNumberString);
-      this.feedTimestamp = { time: time, date: date, day: day, dayNumber: dayNumber }
-      observer.next()
-    });
-  }
-
-  loadPins() {
-    if (!this.pinsLoaded) {
-      this.pins = [];
-      this.preparePinsRequest().subscribe((queryParameters) => {
-        this.pinsQuery = queryParameters;
-        this.requestPins().subscribe((pins) => {
-          console.log("Got pins");
-          console.log(pins);
-          this.pinsLoaded = true;
-          this.presentPins(pins);
-        });
-      });
-    }
-  }
-
-  preparePinsRequest() {
-    let startAt = this.feedTimestamp.date - (this.feedTimestamp.dayNumber - 1)
-    return Observable.create((observer) => {
-      let queryParameters = {
-        path: '/pins/',
-        orderByChild: 'rawTime',
-        startAt: startAt,
-        endAt: this.feedTimestamp.date,
-      }
-      observer.next(queryParameters)
-    });
-  }
-
-  requestPins() {
-    return this.firebase.queriedRangeList(this.pinsQuery);
-  }
-
-  presentPins(pins) {
-    pins.reverse();
-    this.pins = pins;
-    this.pins.forEach((pin) => {
-      this.requestPinUserLikerObject(pin).subscribe((liker) => {
-        if (liker[0]) {
-          pin.userLiked = true;
-        } else {
-          pin.userLiked = false;
-        }
-      });
-    });
-  }
-
-  requestPinUserLikerObject(pin) {
-    let path = 'pins/' + pin.id + '/likers/';
-    return this.firebase.queriedList(path, 'uid', this.uid);
-  }
-
-  togglePinLike(pin) {
-    if (pin.userLiked) {
-      this.requestPinUserLikerObject(pin).subscribe((liker) => {
-        this.removePinLikerObject(liker[0], pin).then(() => {
-          if (pin.likeCount == 1) {
-            this.unflagPinLike(pin);
-          }
-          this.unlikePin(pin);
-        });
-      });
-    } else {
-      this.likePin(pin).subscribe(() => {
-        this.pushPinLikerObject(pin).then((pinLikeProps) => {
-          let pinLikerID = pinLikeProps.key;
-          this.addIDToPinLikerObject(pinLikerID, pin);
-        });
-      });
-    }
-  }
-
-  removePinLikerObject(liker, pin) {
-    let path = 'pins/' + pin.id + '/likers/' + liker.id;
-    return this.firebase.object(path).remove();
-  }
-
-  unlikePin(myPin) {
-    myPin.userLiked = false;
-    let likeCount = --myPin.likeCount;
-    let pin = {
-      "likeCount": likeCount
-    }
-    let path = 'pins/' + myPin.id;
-    return this.firebase.object(path).update(pin);
-  }
-
-  unflagPinLike(myPin) {
-    let pin = {
-      "liked": false,
-    }
-    let path = 'pins/' + myPin.id;
-    return this.firebase.object(path).update(pin);
-  }
-
-  pushPinLikerObject(myPin) {
-    let path = 'pins/' + myPin.id + '/likers/';
-    let likerObject = {
-      "pin": myPin.id,
-      "uid": this.uid
-    }
-    return this.firebase.list(path).push(likerObject);
-  }
-
-  addIDToPinLikerObject(pinLikerID, myPin) {
-    let path = '/pins/' + myPin.id + '/likers/' + pinLikerID;
-    let liker = {
-      id: pinLikerID
-    }
-    return this.firebase.object(path).update(liker);
-  }
-
-  likePin(myPin) {
-    return Observable.create((observer) => {
-      myPin.liked = true;
-      myPin.userLiked = true;
-      let likeCount = ++myPin.likeCount;
-      let liked = true;
-      let pin = {
-        "likeCount": likeCount,
-        "liked": liked
-      }
-      let path = 'pins/' + myPin.id;
-      return this.firebase.object(path).update(pin).then((obj) => {
-        observer.next(obj)
-      });
-    });
-  }
-
-  checkIfProfileBlocked() {
-    return Observable.create((observer) => {
-      return this.requestProfile().subscribe((profile) => {
-        if (profile.blocked) {
-          this.handleBlocked();
-        } else {
-          observer.next()
-        }
-      });
-    });
+  timestampPage() {
+    this.timestamp = moment().unix();
+    this.dayNumber = moment().isoWeekday();
+    this.pinEndDate = parseInt(moment().format('YYYYMMDD'));
+    this.pinStartDate = this.pinEndDate - this.dayNumber;
   }
 
   loadPosts() {
-    this.preparePostsRequest().subscribe((queryParameters) => {
-      this.postsQuery = queryParameters
-      this.requestPosts().subscribe((posts) => {
-        if (this.postLimit == 25) {
-          posts.reverse();
-        }
-        this.presentPosts(posts);
-      });
-    });
+    this.loadPins();
+    this.loadStatements();
+    this.loadGoals();
   }
 
-  requestPosts() {
-    return this.firebase.limitedList(this.postsQuery)
-  }
-
-  preparePostsRequest() {
-    return Observable.create((observer) => {
-      let queryParameters = {
-        path: '/posts/',
-        orderByValue: 'rawTime',
-        limitToLast: this.postLimit,
-      }
-      observer.next(queryParameters)
-    });
-  }
-
-  startRefresh(refresh) {
-    if (refresh) {
-      this.refreshing = true;
-    }
-  }
-
-  endRefresh(refresh) {
-    if (refresh) {
-      refresh.complete();
-    }
-  }
-
-  requestProfile() {
-    let path = '/users/' + this.uid;
-    return this.firebase.object(path);
-  }
-
-  handleBlocked() {
-    this.navCtrl.setRoot(LoginPage);
-    this.firebase.logOut();
-    this.storage.clear();
-    this.presentBlocked();
-  }
-
-  presentBlocked() {
-    let alert = this.alertCtrl.create({
-      title: 'Fail',
-      message: 'This account has been blocked',
-      buttons: [
-        {
-          text: 'Ok',
-        }
-      ]
-    });
-    alert.present();
-  }
-
-  presentPosts(posts) {
-    this.posts = [];
-    posts.forEach((post) => {
-      if (post.content)
-      this.requestPostUserLikerObject(post).subscribe((liker) => {
-        if (liker[0]) {
-          post.userLiked = true;
-        } else {
-          post.userLiked = false;
-        }
-        this.posts.push(post);
-      });
-    });
-    this.endLoader();
-  }
-
-
-  requestPostUserLikerObject(post) {
-    let path = 'posts/' + post.id + '/likers/';
-    return this.firebase.queriedList(path, 'uid', this.uid);
-  }
-
-  endLoader() {
-    this.loader.dismiss();
-  }
-
-  togglePostLike(post) {
-    if (post.userLiked) {
-      this.requestPostUserLikerObject(post).subscribe((liker) => {
-        this.removePostLikerObject(liker[0], post).then(() => {
-          if (post.likeCount == 1) {
-            this.unflagPostLike(post);
-            post.liked = false;
-          }
-          this.unlikePost(post);
+  loadPins() {
+    let pins = this.firebase.afs.collection('pins', ref =>
+      ref.orderBy('affirmationDate').startAt(this.pinStartDate).endAt(this.pinEndDate));
+    pins.valueChanges().subscribe((pins) => {
+      if (!this.pinsLoaded) {
+        this.setPins(pins).subscribe(() => {
+          this.pinsLoaded = true;
+          this.setSlider();
         });
-      });
-    } else {
-      this.likePost(post).subscribe(() => {
-        this.pushPostLikerObject(post).then((postLikeProps) => {
-          let postLikerID = postLikeProps.key;
-          this.addIDToPostLikerObject(postLikerID, post);
-        });
-      });
-    }
+      }
+    });
   }
 
-  removePostLikerObject(liker, post) {
-    let path = 'posts/' + post.id + '/likers/' + liker.id;
-    return this.firebase.object(path).remove();
-  }
-
-  unlikePost(myPost) {
-    myPost.userLiked = false;
-    let likeCount = --myPost.likeCount;
-    let post = {
-      "likeCount": likeCount
-    }
-    let path = 'posts/' + myPost.id;
-    return this.firebase.object(path).update(post);
-  }
-
-  unflagPostLike(myPost) {
-    let post = {
-      "liked": false,
-    }
-    let path = 'posts/' + myPost.id;
-    return this.firebase.object(path).update(post);
-  }
-
-  pushPostLikerObject(myPost) {
-    let path = 'posts/' + myPost.id + '/likers/';
-    let likerObject = {
-      "post": myPost.id,
-      "uid": this.uid
-    }
-    return this.firebase.list(path).push(likerObject);
-  }
-
-  addIDToPostLikerObject(postLikerID, myPost) {
-    let path = '/posts/' + myPost.id + '/likers/' + postLikerID;
-    let liker = {
-      id: postLikerID
-    }
-    return this.firebase.object(path).update(liker);
-  }
-
-  likePost(myPost) {
+  setPins(pins) {
     return Observable.create((observer) => {
-      myPost.liked = true;
-      myPost.userLiked = true;
-      let likeCount = ++myPost.likeCount;
-      let liked = true;
-      let post = {
-        "likeCount": likeCount,
-        "liked": liked
-      }
-      let path = 'posts/' + myPost.id;
-      return this.firebase.object(path).update(post).then((obj) => {
-        observer.next(obj)
+      pins.forEach((pin) => {
+        this.pins.push(pin);
       });
+      observer.next();
     });
   }
 
-  viewPost(postID) {
-    this.navCtrl.push(PostPage, { id: postID })
+  setSlider() {
+    setTimeout(() => {
+      this.slider.slideTo(this.dayNumber);
+    }, 500);
   }
 
-  viewPin(pinID) {
-    this.navCtrl.push(PinPage, { id: pinID });
-  }
-
-  viewProfile(uid) {
-    this.navCtrl.push(ProfilePage, { uid: uid })
-  }
-
-  openLink(url) {
-    open(url)
-  }
-
-  goToCreateStatementPage() {
-    this.navCtrl.setRoot(CreateStatementPage);
-  }
-
-  doInfinite(infiniteScroll) {
-    this.postLimit++;
-    this.preparePostsRequest().subscribe((queryParameters) => {
-      this.postsQuery = queryParameters;
-      this.requestPosts().subscribe((posts) => {
-        if (posts.length < this.postLimit) {
-          this.postsLoaded = true;
-        } else {
-          this.presentNextPost(posts[0]);
-          infiniteScroll.complete();
-        }
-      });
+  loadStatements() {
+    let statements = this.firebase.afs.collection('statements', ref =>
+      ref.where('private', '==', false).
+      where('reported', '==', false)
+      .orderBy('timestamp', 'desc'));
+    statements.valueChanges().subscribe((statements) => {
+      if (!this.statementsLoaded)
+        this.setStatements(statements);
     });
   }
 
-  presentNextPost(post) {
-    this.requestPostUserLikerObject(post).subscribe((liker) => {
-      if (liker[0]) {
-        post.userLiked = true;
-      } else {
-        post.userLiked = false;
+  setStatements(statements) {
+    statements.forEach((statement) => {
+      let date = moment.unix(statement.timestamp);
+      statement.displayTimestamp = moment(date).fromNow();
+      this.statements.push(statement);
+    });
+    this.statementsLoaded = true;
+  }
+
+  loadGoals() {
+    let goals = this.firebase.afs.collection('goals', ref =>
+      ref.where('private', '==', false).
+        where('reported', '==', false).
+        orderBy('timestamp', 'desc'));
+    goals.valueChanges().subscribe((goals) => {
+      if (!this.goalsLoaded)
+        this.setGoals(goals);
+    });
+  }
+
+  setGoals(goals) {
+    goals.forEach((goal) => {
+      if (!goal.complete) {
+        let dueDate = moment.unix(goal.dueDate);
+        goal.displayDueDate = moment(dueDate).fromNow();
+        let timestamp = moment.unix(goal.timestamp);
+        goal.displayTimestamp = moment(timestamp).fromNow();
+        this.goals.push(goal);
       }
-      this.posts.push(post);
     });
+    this.goalsLoaded = true;
   }
 
-  initPushNotification() {
-    if (!this.platform.is('cordova')) {
-      console.warn("Push notifications not initialized. Cordova is not available - Run in physical device");
-      return;
-    }
+  showNotifications() {
+    this.navCtrl.push(NotificationsPage);
+  }
 
-    this.push.hasPermission()
-      .then((res: any) => {
-        if (res.isEnabled) { console.log('We have permission to send push notifications');
-        } else { console.log('We do not have permission to send push notifications'); }
-      });
-
-    const options: PushOptions = {
-      android: {},
-      ios: {
-        alert: 'true',
-        badge: true,
-        sound: 'false',
-
-      },
-      windows: {},
-      browser: {
-        pushServiceURL: 'http://push.api.phonegap.com/v1/push'
-      }
-    };
-
-    const pushObject: PushObject = this.push.init(options);
-
-    pushObject.on('registration').subscribe((data: any) => {
-      console.log('device token -> ' + data.registrationId);
-    }, err => {
-      console.log('error in device registration:', err);
-    });
+  refreshPage(refresh) {
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
   }
 }

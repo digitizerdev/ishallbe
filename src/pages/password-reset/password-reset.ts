@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, LoadingController, AlertController } from 'ionic-angular';
-
 import { Observable } from 'rxjs/Observable';
+
+import { LoginPage } from '../login/login';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -16,55 +17,36 @@ export class PasswordResetPage {
     email?: string
   } = {};
   submitted = false;
-  loader: any;
 
   constructor(
-    private navCtrl: NavController,
+    private navCtrl: NavController, 
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private firebase: FirebaseProvider
   ) {
   }
 
-  popToLoginPage() {
-    this.navCtrl.pop();
-  }
-
   submit(passwordResetForm) {
     this.submitted = true;
     if (passwordResetForm.valid) {
-      this.startLoader();
-      return this.resetPassowrd(passwordResetForm).subscribe(() => {
-        this.confirmDelivery();   
-      });
-    }    
+      let loading = this.loadingCtrl.create({ content: 'Please Wait..' });
+      loading.present();
+      return this.resetPassword(passwordResetForm).subscribe(() => {
+        this.navCtrl.pop();
+        loading.dismiss();
+        this.presentConfirmationAlert(); 
+      }, error => { this.errorHandler(error); loading.dismiss(); 
+      })};      
   }
 
-  startLoader() {
-    this.loader = this.loadingCtrl.create({
-      content: 'Please Wait..'
-    });
-    this.loader.present();
-  }
-
-  resetPassowrd(passwordResetForm) {
+  resetPassword(passwordResetForm) {
     return Observable.create((observer) => {
-      return this.firebase.sendPasswordResetEmail(passwordResetForm.email).then(()=> {
+      return this.firebase.afa.auth.sendPasswordResetEmail(passwordResetForm.email).then(()=> {
         observer.next();
       }, (error) => {
-        this.errorHandler(error);
+        observer.error(error);
       });
     });
-  }
-
-  confirmDelivery() {
-    this.endLoader();
-    this.presentConfirmationAlert();
-    this.popToLoginPage();     
-  }
-
-  endLoader() {
-    this.loader.dismiss();
   }
 
   presentConfirmationAlert() {
@@ -77,13 +59,16 @@ export class PasswordResetPage {
   }
 
   errorHandler(error) {
-    this.endLoader();
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,
       buttons: ['OK']
     });
     alert.present();
+  }
+
+  setRootLoginPage() {
+    this.navCtrl.setRoot(LoginPage);
   }
 
 }

@@ -1,0 +1,42 @@
+<ion-content center padding>
+  <header></header>
+  <ion-row padding-left padding-right>
+    <ion-col text-center>
+      <login-facebook></login-facebook>
+    </ion-col>
+  </ion-row>
+  <form #signupForm="ngForm" novalidate padding>
+    <ion-list no-lines>
+      <ion-item class="tdct-form">
+        <ion-input [(ngModel)]="signupForm.email" name="email" placeholder="E-mail" type="text" #email="ngModel" required>
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="email.valid || submitted == false" color="danger" padding-left>
+        Email is required
+      </p>
+      <br>
+      <ion-item class="tdct-form">
+        <ion-input [(ngModel)]="signupForm.password" name="password" placeholder="Password" type="password" #password="ngModel"
+        minlength="8">
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>
+        Password is required to be at least 8 characters long
+      </p>
+      <br>
+      <ion-row>
+        <ion-col text-center>
+          <button ion-button (click)="submit(signupForm)" type="submit" round block large strong>SIGNUP</button>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+    <ion-row responsive-sm>
+      <ion-col text-center>
+        <button ion-button (click)="setRootLoginPage()" color="secondary" id="setRootLoginPageButton" round strong>LOGIN</button>
+      </ion-col>
+      <ion-col text-center>
+        <terms-of-service></terms-of-service>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

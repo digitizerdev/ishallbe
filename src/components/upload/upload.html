@@ -1,0 +1,42 @@
+<div>
+    <div *ngIf="gettingImage" id="ImagePanel" padding-left padding-right>
+        <div text-center>
+            <img #imageSrc/>
+        </div>
+        <div text-center>
+            <img *ngIf="postImage" [src]="postImage">
+        </div>
+        <ion-row>
+            <ion-col text-center padding>
+                <button (click)="uploadImage()" color="primary" id="UploadButton" ion-button round full>SET IMAGE</button>
+            </ion-col>
+        </ion-row>
+    </div>
+    <div *ngIf="recording" text-center padding-left padding-right>
+        <button (click)="uploadAudio()" id="StopRecordingButton" color="danger" text-center ion-button icon-start round block large
+            strong>
+            <ion-icon name="mic"></ion-icon>
+            STOP RECORDING
+        </button>
+    </div>
+    <ion-row *ngIf="audioReady" id="AudioPanel" responsive-sm>
+        <ion-col text-center>
+            <button *ngIf="!playingAudio" (click)="playAudio()" id="PlayAudioButton" color="primary" text-center ion-button icon-start
+                round strong>
+                <ion-icon name="play"></ion-icon>
+                PLAY
+            </button>
+            <button *ngIf="playingAudio" (click)="stopPlayback()" id="StopPlaybackButton" color="danger" text-center ion-button icon-start
+                round strong>
+                <ion-icon name="square"></ion-icon>
+                STOP
+            </button>
+        </ion-col>
+        <ion-col text-center>
+            <button (click)="redoRecording()" id="RedoRecordingButton" color="secondary" text-center ion-button icon-start round strong>
+                <ion-icon name="refresh"></ion-icon>
+                REDO
+            </button>
+        </ion-col>
+    </ion-row>
+</div>

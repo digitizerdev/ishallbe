@@ -1,63 +1,46 @@
-<ion-header>
-  <ion-navbar color='primary'>
+<ion-header no-border>
+  <ion-navbar >
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon color='primary' name="menu"></ion-icon>
     </button>
-    <ion-title color='primary'>{{title}}</ion-title>
-    <ion-buttons end>
+    <toolbar-logo></toolbar-logo>
+    <ion-buttons id="setRootHomePageIcon" end>
       <button ion-button icon-only (click)="setRootHomePage()">
-        <ion-icon name="ios-home"></ion-icon>
+        <ion-icon color='primary' name="md-home"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-
 <ion-content>
-  <header></header>
-  <div class="account-details" text-center padding>
-    <h3>{{name}}</h3>
-    <h5>{{email}}</h5>
+  <br>
+  <br>
+  <div class="feature" id="AccountEmail" text-center>
+    <h5>{{user?.email}}</h5>
   </div>
-  <div class="main-buttons">
+  <br>
+  <br>
+  <ion-row responsive-sm>
     <br>
-    <ion-row *ngIf="editor" responsive-sm>
-      <ion-col text-center>
-        <button ion-button id="AccountManageButton" (click)="pushManagerPage()" color="primary" round>Management</button>
-      </ion-col>
-    </ion-row>
-    <ion-row responsive-sm>
-      <ion-col text-center>
-        <button ion-button id="AccountViewProfileButton" (click)="setRootProfilePage()" color="secondary" round>Profile</button>
-      </ion-col>
-      <ion-col text-center>
-        <button ion-button id="AccountContactSupportButton" (click)="pushSupportPage()" color="secondary" round>Support</button>
-      </ion-col>
-    </ion-row>
-    <br>
-  </div>
-  <div class="update-account">
-    <ion-row>
-      <ion-col text-center>
-        <p>Update Account</p>
-      </ion-col>
-    </ion-row>
-    <ion-row  responsive-sm>
-      <ion-col text-center>
-        <button ion-button id="AccountUpdateEmailButton" (click)="pushAccountEmailPage()" color="primary" round small>Email</button>
-      </ion-col>
-      <ion-col text-center>
-        <button ion-button id="AccountUpdatePasswordButton" (click)="pushAccountPasswordPage()" color="primary" round small>Password</button>
-      </ion-col>
-    </ion-row>
-    <br>
-  </div>
+    <ion-col text-center>
+      <button ion-button (click)="pushEmailUpdatePage()" id="pushEmailUpdatePageButton" color="primary" round strong>UPDATE EMAIL</button>
+    </ion-col>
+    <ion-col text-center>
+      <button ion-button (click)="pushPasswordUpdatePage()" id="pushPasswordUpdatePageButton" color="primary" round  strong>UPDATE PASSWORD</button>
+    </ion-col>
+  </ion-row>
+  <br>
+  <ion-row responsive-sm>
+    <ion-col text-center>
+      <button ion-button (click)="pushSupportPage()" id="pushSupportPageButton" color="secondary" round strong>SUPPORT</button>
+    </ion-col>
+    <ion-col text-center>
+      <button ion-button (click)="logout()" id="logoutButton" color="danger" round strong>LOGOUT</button>
+    </ion-col>
+  </ion-row>
   <br>
   <ion-row responsive-sm>
     <ion-col text-center>
       <terms-of-service></terms-of-service>
-    </ion-col>
-    <ion-col text-center>
-      <button ion-button id="AccountLogoutButton" (click)="logout()" color="primary" round small outline>Logout</button>
     </ion-col>
   </ion-row>
   <br>

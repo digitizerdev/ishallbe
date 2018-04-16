@@ -1,0 +1,68 @@
+<ion-header no-border>
+  <ion-navbar color='light-yellow'>
+    <button ion-button menuToggle>
+      <ion-icon color="primary" name="menu"></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+<ion-content padding-left padding-right>
+  <div *ngIf="!imageReady && !loadingImage" id="SeeItButton">
+    <br>
+    <ion-row>
+      <ion-col text-center padding-left padding-right>
+        <button ion-button (click)="loadImage()" color="secondary" icon-start round block large strong>
+          <ion-icon padding-right name="ios-camera"></ion-icon>
+          SEE IT
+        </button>
+      </ion-col>
+    </ion-row>
+  </div>
+  <upload *ngIf="loadingImage" (uploaded)="setImage($event)" [method]="imageRetrievalMethod" padding></upload>
+  <ion-row *ngIf="imageReady" id="StatementImage">
+    <ion-col text-center>
+      <img (click)="loadImage()" [src]="statementImageUrl" class="full-image">
+    </ion-col>
+  </ion-row>
+  <form #createStatementForm="ngForm" novalidate padding>
+    <ion-item class="tdct-form">
+      <ion-input class="myItem" placeholder="Statement Title" [(ngModel)]="createStatementForm.title" name="title" type="text"
+        #title="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on” maxlength="25" required>
+      </ion-input>
+    </ion-item>
+    <p ion-text [hidden]="title.valid || submitted == false" color="danger" padding-left>
+      Statement Title is required
+    </p>
+    <br>
+    <ion-item class="tdct-textarea">
+      <ion-textarea [attr.rows]="4" autosize placeholder=" Statement Description" [(ngModel)]="createStatementForm.description"
+        name="description" type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on”
+        maxlength="200" required>
+      </ion-textarea>
+    </ion-item>
+    <p ion-text [hidden]="description.valid || submitted == false" color="danger" padding-left>
+      Statement Description is required
+    </p>
+    <ion-row *ngIf="!private">
+      <ion-col text-center>
+        <button id="MakePrivateButton" (click)="makePrivate()" color="danger" ion-button clear strong>
+          MAKE PRIVATE
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="private">
+      <ion-col text-center>
+        <button id="MakePublicButton" (click)="makePublic()" color="primary" ion-button clear strong>
+          MAKE PUBLIC
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-center class="submit">
+        <button id="CreateStatementButton" ion-button (click)="submit(createStatementForm)" color="primary" round block large strong>
+          CREATE STATEMENT
+        </button>
+      </ion-col>
+    </ion-row>
+  </form>
+  <br>
+</ion-content>

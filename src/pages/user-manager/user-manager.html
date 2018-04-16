@@ -1,0 +1,32 @@
+<ion-header no-border>
+  <ion-navbar no-border-bottom>
+    <button ion-button menuToggle>
+      <ion-icon color='primary' name="menu"></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <br>
+  <div *ngIf="!usersBlocked" id="NoBlockedUsers" text-center>
+    <h5 class="feature">There are no blocked users</h5>
+  </div>
+  <div *ngIf="usersBlocked" id="BlockedUsers" class="users-scroller" text-center>
+    <br>
+    <h3 ion-text color="background" text-center>
+      <b>Blocked Users</b>
+    </h3>
+    <br>
+    <ion-card>
+      <ion-item *ngFor="let user of users" (click)="viewUser(user)">
+        <ion-avatar item-left>
+          <img src="{{user?.photo}}">
+        </ion-avatar>
+        <h2 color="primary" ion-text text-center>
+          <b>{{ user?.name }}</b>
+        </h2>
+      </ion-item>
+    </ion-card>
+    <br>
+  </div>
+  <br>
+</ion-content>

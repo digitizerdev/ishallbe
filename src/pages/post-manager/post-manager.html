@@ -1,0 +1,69 @@
+<ion-header no-border>
+  <ion-navbar no-border-bottom>
+    <button ion-button menuToggle>
+      <ion-icon color='primary' name="menu"></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-segment mode="ios" [(ngModel)]="postType" color="primary" padding-top padding-left padding-right>
+    <ion-segment-button value="pins">
+      <b>PINS</b>
+    </ion-segment-button>
+    <ion-segment-button value="statements">
+      <b>STATEMENTS</b>
+    </ion-segment-button>
+    <ion-segment-button value="goals">
+      <b>GOALS</b>
+    </ion-segment-button>
+  </ion-segment>
+  <div *ngIf="postType=='pins'" id="PinsSegment" text-center>
+    <h4 color="primary" ion-text>
+      <b>{{viewTitle}}</b>
+    </h4>
+    <calendar *ngIf="pinsLoaded" id="PinsCalendar" [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate"
+      allDayLabel="{{displaySelectedDay}}" noEventsLabel="No {{displaySelectedDay}} Pin" (onEventSelected)="onEventSelected($event)"
+      (onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="onTimeSelected($event)" step="30" class="calendar" no-padding-bottom
+      no-margin-bottom>
+    </calendar>
+    <ion-row no-padding-top no-margin-top>
+      <ion-col text-center padding-left padding-right>
+        <button *ngIf="!pinCreated" id="CreatePinButton" (click)="pushPinCreatorPage()" color="primary" ion-button round block large
+          strong>CREATE PIN</button>
+        <button *ngIf="pinCreated" id="UpdatePinButton" (click)="pushPinCreatorPage()" color="primary" ion-button round block large
+          strong>UPDATE PIN</button>
+      </ion-col>
+    </ion-row>
+    <br>
+  </div>
+  <div *ngIf="postType=='statements'" id="StatementsSegment">
+    <br>
+    <h5 *ngIf="!statementsReported" class="feature" id="NoReportedStatements">There are no reported statements</h5>
+    <div *ngIf="statementsReported" class="posts-scroller" id="ReportedStatements">
+      <br>
+      <h3 ion-text color="background" text-center>
+        <b>Reported Statements</b>
+      </h3>
+      <br>
+      <ion-card *ngFor="let statement of statements">
+        <statement [post]="statement"></statement>
+      </ion-card>
+      <br>
+    </div>
+  </div>
+  <div *ngIf="postType=='goals'" id="GoalsSegment">
+    <br>
+    <h5 *ngIf="!goalsReported" class="feature" id="NoReportedGoals">There are no reported goals</h5>
+    <div *ngIf="goalsReported" class="posts-scroller" id="ReportedGoals">
+      <br>
+      <h3 ion-text color="background" text-center>
+        <b>Reported Goals</b>
+      </h3>
+      <br>
+      <ion-card *ngFor="let goal of goals">
+        <goal [post]="goal"></goal>
+      </ion-card>
+      <br>
+    </div>
+  </div>
+</ion-content>

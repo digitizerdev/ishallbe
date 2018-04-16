@@ -1,62 +1,39 @@
 import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { IonicModule, Events, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { IonicStorageModule, Storage } from '@ionic/storage';
-import { AngularFireModule } from 'angularfire2';
-import { environment } from '../../environments/environment';
-import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
-import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
 
-import { HeaderComponent } from '../../components/header/header';
-import { LoginFacebookComponent } from '../../components/login-facebook/login-facebook';
-import { TermsOfServiceComponent } from '../../components/terms-of-service/terms-of-service';
-
-import { AccountPage } from './account';
+import { IonicModule, Platform, NavController } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { environment } from '../../environments/environment';
+
+import { AccountPage } from '../account/account';
 
 import { } from 'jasmine';
 
-const fakeAuthState = new BehaviorSubject(null);
-
-const fakeSignOutHandler = (): Promise<any> => {
-  fakeAuthState.next(null);
-  return Promise.resolve();
-};
-
-const angularFireAuthStub = {
-    authState: fakeAuthState,
-    auth: {
-      signOut: jasmine
-        .createSpy('signOut')
-        .and
-        .callFake(fakeSignOutHandler),
-    },
-  }
-
 import {
-    FirebaseProviderMock,
+    PlatformMock,
     NavMock,
-    ActionSheetControllerMock,
-    StorageMock,
-    AngularFireDatabaseMock,
-    AngularFireAuthMock
+    FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
-let fixture;
-let component;
-let nav: NavController;
-let firebase: FirebaseProvider;
-let storage: Storage;
-let afAuth: AngularFireAuth;
-let isAuth$: Subscription;
-let isAuthRef: boolean;
-
 describe('AccountPage', () => {
+    let fixture;
+    let component;
+    let platform: Platform;
+    let nav: NavController;
+    let firebase: FirebaseProvider;
+    let afa: AngularFireAuth;
+    let afs: AngularFirestore;
+
+    const angularFireAuthStub = {
+    };
+
+    const angularFireDataStub = {
+    }
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -66,134 +43,96 @@ describe('AccountPage', () => {
                 AngularFireModule.initializeApp(environment.firebase)
             ],
             providers: [
-                { provide: FirebaseProvider, useClass: FirebaseProviderMock },
-                { provide: Storage, useClass: StorageMock },
+                { provide: Platform, useClass: PlatformMock },
                 { provide: NavController, useClass: NavMock },
-                { provide: NavParams, useClass: NavMock },
-                { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
+                { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
+                { provide: AngularFirestore, useValue: angularFireDataStub },
             ],
             schemas: [
                 CUSTOM_ELEMENTS_SCHEMA
             ]
-        }).compileComponents();
+        })
     }));
 
     beforeEach(() => {
         fixture = TestBed.createComponent(AccountPage);
         component = fixture.componentInstance;
-        nav = fixture.componentRef.injector.get(NavController);
-        storage = fixture.componentRef.injector.get(Storage);
-        firebase = fixture.componentRef.injector.get(FirebaseProvider);
-        afAuth = TestBed.get(AngularFireAuth);
+        platform = TestBed.get(Platform);
+        nav = TestBed.get(NavController);
+        firebase = TestBed.get(FirebaseProvider);
+        afa = TestBed.get(AngularFireAuth);
+        afs = TestBed.get(AngularFirestore);
     });
 
     afterEach(() => {
         fixture.destroy();
         component = null;
+        platform = null;
         nav = null;
-        storage = null;
         firebase = null;
-        afAuth = null;
+        afa = null;
+        afs = null;
     });
 
     it('should be created', () => {
         expect(component instanceof AccountPage).toBe(true);
     });
 
-    it('should be initialized', () => {
-        expect(component.uid).toBeUndefined();
-        expect(component.name).toBeUndefined();
-        expect(component.email).toBeUndefined();
-        expect(component.title).toBe('Account');
-    });
-
-    it('should display header component', () => {
+    it('should display setRootHomePageIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('header'));
+        de = fixture.debugElement.query(By.css('#setRootHomePageIcon'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
 
-    it('should load account', fakeAsync(() => {
-        spyOn(component, 'requestUID').and.callThrough();
-        spyOn(component, 'requestProfile').and.callThrough();
-        spyOn(storage, 'ready').and.callThrough();
-        spyOn(storage, 'get').and.callThrough();
-        component.loadAccount();
-        tick();
-        fixture.detectChanges();
-        expect(storage.ready).toHaveBeenCalled();
-        expect(storage.get).toHaveBeenCalled();
-        expect(component.requestUID).toHaveBeenCalled();
-        expect(component.requestProfile).toHaveBeenCalled();
-    }));
-
-    it('should display manage button if editor', async(() => {
-        component.editor = true;
-        fixture.detectChanges();
+    it('should display account email', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#AccountManageButton'));
+        de = fixture.debugElement.query(By.css('#AccountEmail'));
         el = de.nativeElement.innerHTML
-        expect(el).toContain('Manage');
-        expect(component.pushManagerPage).toBeDefined();
-    }));
-
-    it('should display view profile button', async(() => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#AccountViewProfileButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Profile');
-    }));
-
-    it('should display contact support button', async(() => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#AccountContactSupportButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Support');
-        expect(component.pushSupportPage).toBeDefined();
-    }));
-
-    it('should display update password button', async(() => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#AccountUpdatePasswordButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Password');
-    }));
-
-    it('should display update email button', async(() => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#AccountUpdateEmailButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Email');
-    }));
-
-    it('should display logout button', async(() => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#AccountLogoutButton'));
-        el = de.nativeElement.innerHTML
-        expect(el).toContain('Logout');
-    }));
-
-    it('should request Firebase to log out', () => {
-        component.firebase.logOut()
-        expect(afAuth.auth.signOut)
-            .toHaveBeenCalled();
+        expect(el).toContain('h5');
     });
 
-    it('should display terms of service component', () => {
+    it('should display pushEmailUpdatePageButton', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#pushEmailUpdatePageButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('UPDATE EMAIL');
+    });
+
+    it('should display pushPasswordUpdatePageButton', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#pushPasswordUpdatePageButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('UPDATE PASSWORD');
+    });
+
+    it('should display pushSupportPageButton', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#pushSupportPageButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('SUPPORT');
+    });
+
+    it('should display logoutButton', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#logoutButton'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain('LOGOUT');
+    });
+
+    it('should display TermsOfServiceComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('terms-of-service'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
-
 });
+

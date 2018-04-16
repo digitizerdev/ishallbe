@@ -1,16 +1,17 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
 
-import { EditProfilePage } from '../edit-profile/edit-profile';
-import { PostPage } from '../post/post';
-import { AccountPage } from '../account/account';
-import { CreateStatementPage } from '../create-statement/create-statement';
-import { SupportPage } from '../support/support';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+
+import moment from 'moment';
+
+import { HomePage } from '../home/home';
+import { ProfileUpdatePage } from '../profile-update/profile-update';
+import { ChatsPage } from '../chats/chats';
+import { ChatPage } from '../chat/chat';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-
-import { Observable } from 'rxjs/Observable';
 
 @IonicPage()
 @Component({
@@ -19,390 +20,167 @@ import { Observable } from 'rxjs/Observable';
 })
 export class ProfilePage {
 
-  profile: any;
-  posts: any[] = [];
-  noPosts: any;
-  postsQuery: any;
-  postLimit: any;
-  loaded: any;
-  postsLoaded: any;
-  flaggedPosts: any[] = [];
-  flaggedPostsLoaded = false;
-  uid: any;
+  statements: any[] = [];
+  goals: any[] = [];
+  user: any;
+  uid: string;
+  photo: string;
   mine = false;
-  instagram: any;
-  twitter: any;
-  linkedin: any;
-  refreshing: any;
+  loaded = false;
+  statementsLoaded = false;
+  goalsLoaded = false;
   editor = false;
+  userEditor = false;
+  blocked = false;
+  userPath: string;
+  postSegment = 'statements';
 
   constructor(
     private navCtrl: NavController,
-    private firebase: FirebaseProvider,
     private navParams: NavParams,
-    private alertCtrl: AlertController,
-    private storage: Storage
+    private inAppBrowser: InAppBrowser,
+    private firebase: FirebaseProvider
   ) {
   }
 
   ionViewDidLoad() {
-    this.postLimit = 1;
-    this.loadUID().subscribe(() => {
-      this.loadProfile();
-    });
-  }
-
-  loadProfile() {
-    this.requestProfile().subscribe((profile) => {
-      this.profile = profile;
-      console.log("Got profile");
-      console.log(this.profile);
-      this.checkIfMyProfile().subscribe((mine) => {
-        if (mine) {
-          this.mine = true;
-          this.checkForFlaggedPosts();
-        } else {
-          this.checkIfEditor();
-        }
-      });
-      this.syncProfile();
-      this.loadUserPosts().subscribe((posts) => {
-        this.loaded = true;
-        if (posts.length == 0) {
-          console.log("There are no posts");
-          this.postsLoaded = true;
-          this.noPosts = true;
-        } else {
-          posts.reverse();
-          this.presentPosts(posts);
-        }
-      });
-    });
-  }
-
-  refreshPage(refresh) {
-    this.refreshing = true;
-    this.posts = [];
-    this.firebase.profileID = this.uid;
-    this.navCtrl.setRoot(this.navCtrl.getActive().component);
-  }
-
-  ionViewDidLeave() {
-    if (!this.refreshing) {
-      this.firebase.profileID = null;
+    this.uid = this.navParams.get('uid');
+    if (!this.uid) {
+      this.mine = true;
+      this.uid = this.firebase.afa.auth.currentUser.uid;
     }
+    this.editor = this.firebase.user.editor;
+    this.loadUser();
+    if (this.mine) this.loadAllMyPosts();
+    else this.loadMyPublicPosts();
   }
 
-  loadUID() {
-    return Observable.create((observer) => {
-      this.uid = this.navParams.get('uid')
-      if (this.uid) {
-        observer.next();
-      } else {
-        this.uid = this.firebase.profileID;
-        if (this.uid) {
-          observer.next();
-        } else {
-          return this.requestUID().then((uid) => {
-            this.uid = uid;
-            observer.next();
-          });
-        }
+  loadUser() {
+    let path = "users/" + this.uid;
+    this.user = this.firebase.afs.doc(path);
+    this.user.valueChanges().subscribe((user) => {
+      this.user = user;
+      this.userEditor = user.editor;
+      this.blocked = user.blocked;
+      this.photo = user.photo;
+      this.userPath = "users/" + this.uid;
+      this.loaded = true;
+    });
+  }
+
+  openLink(link) {
+    let hyperlink = "https://" + link;
+    this.inAppBrowser.create(hyperlink, '_system');
+  }
+
+  loadAllMyPosts() {
+    this.loadAllStatements();
+    this.loadAllGoals();
+  }
+
+  loadMyPublicPosts() {
+    this.loadPublicStatements();
+    this.loadPublicGoals();
+  }
+
+  loadAllStatements() {
+    let statements = this.firebase.afs.collection('statements', ref =>
+      ref.where('uid', '==', this.uid).
+        orderBy('timestamp', 'desc'));
+    statements.valueChanges().subscribe((statements) => {
+      if (!this.statementsLoaded)
+        this.setStatements(statements);
+    });
+  }
+
+  loadPublicStatements() {
+    let statements = this.firebase.afs.collection('statements', ref =>
+      ref.where('uid', '==', this.uid).
+        where('private', '==', false).
+        orderBy('timestamp', 'desc'));
+    statements.valueChanges().subscribe((statements) => {
+      if (!this.statementsLoaded)
+        this.setStatements(statements);
+    });
+  }
+
+  setStatements(statements) {
+    statements.forEach((statement) => {
+      let date = moment.unix(statement.timestamp);
+      statement.displayTimestamp = moment(date).fromNow();
+      this.statements.push(statement);
+    });
+    this.statementsLoaded = true;
+  }
+
+  loadAllGoals() {
+    let goals = this.firebase.afs.collection('goals', ref =>
+      ref.where('uid', '==', this.uid).
+      orderBy('timestamp', 'desc'));
+    goals.valueChanges().subscribe((goals) => {
+      if (!this.goalsLoaded)
+        this.setGoals(goals);
+    });
+  }
+
+  loadPublicGoals() {
+    let goals = this.firebase.afs.collection('goals', ref =>
+      ref.where('uid', '==', this.uid).
+      where('private', '==', false).
+      orderBy('timestamp', 'desc'));
+    goals.valueChanges().subscribe((goals) => {
+      if (!this.goalsLoaded)
+        this.setGoals(goals);
+    });
+  }
+
+  setGoals(goals) {
+    goals.forEach((goal) => {
+      if (!goal.complete) {
+        let dueDate = moment.unix(goal.dueDate);
+        goal.displayDueDate = moment(dueDate).fromNow();
+        let timestamp = moment.unix(goal.timestamp);
+        goal.displayTimestamp = moment(timestamp).fromNow();
+        this.goals.push(goal);
       }
     });
-  }
-
-  checkIfMyProfile() {
-    return Observable.create((observer) => {
-      this.requestUID().then((uid) => {
-        if (this.uid == uid) {
-          observer.next(true);
-        } else {
-          observer.next(false);
-        }
-      });
-    });
-  }
-
-  checkForFlaggedPosts() {
-    console.log("Checking for flagged posts");
-    this.firebase.queriedList('flagged/posts', 'uid', this.uid).subscribe((flaggedPosts) => {
-      if (flaggedPosts.length > 0) {
-        console.log("I have at least one reported post");
-        console.log(flaggedPosts);
-        flaggedPosts.forEach((flaggedPost) => {
-          console.log("Pushing reported post");
-          console.log(flaggedPost);
-          this.flaggedPosts.push(flaggedPost);
-        });
-        this.flaggedPostsLoaded = true;
-      }
-    });
-  }
-
-  checkIfEditor() {
-    this.requestUID().then((uid) => {
-      let path = 'users/' + uid
-      this.firebase.object(path).subscribe((user) => {
-        if (user.editor) this.editor = true;
-      });
-    });
-  }
-
-  requestUID() {
-    return this.storage.ready().then(() => {
-      return this.storage.get(('uid'));
-    });
-  }
-
-  requestProfile() {
-    let path = '/users/' + this.uid;
-    return this.firebase.object(path);
-  }
-
-  syncProfile() {
-    if (this.profile.photo == 'https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png') {
-      this.profile.photo = 'assets/img/default-profile.png';
-    }
-    if (!this.profile.bio) {
-      this.addStandardBio();
-    }
-    this.instagram = this.profile.instagram;
-    this.twitter = this.profile.twitter;
-    this.linkedin = this.profile.linkedin;
-  }
-
-  addStandardBio() {
-    let profile = {
-      uid: this.profile.uid,
-      name: this.profile.name,
-      email: this.profile.email,
-      photo: this.profile.photo,
-      blocked: this.profile.blocked,
-      role: this.profile.role,
-      bio: 'Improving Every Day'
-    }
-    this.profile = profile;
-    let path = '/users/' + this.profile.uid;
-    this.firebase.object(path).update(profile);
-  }
-
-  loadUserPosts() {
-    let path = '/posts/'
-    return this.firebase.queriedLimitedList(path, 'uid', this.uid, this.postLimit);
-  }
-
-  presentPosts(posts) {
-    this.posts = [];
-    posts.forEach((post) => {
-      this.requestPostUserLikerObject(post).subscribe((liker) => {
-        if (liker[0]) {
-          post.userLiked = true;
-        } else {
-          post.userLiked = false;
-        }
-        if (post.face == 'https://ishallbe.co/wp-content/uploads/2017/09/generic-profile.png') {
-          post.face = 'assets/img/default-profile.png';
-        }
-        console.log(post);
-        if (post.onFeed || this.mine) {
-          this.posts.push(post);
-        }
-      });
-    });
-  }
-
-  doInfinite(infiniteScroll) {
-    this.postLimit++;
-    this.loadUserPosts().subscribe((posts) => {
-      if (posts.length < this.postLimit) {
-        this.postsLoaded = true;
-      } else {
-        this.presentNextPost(posts[0]);
-        infiniteScroll.complete();
-      }
-    });
-  }
-
-  presentNextPost(post) {
-    this.requestPostUserLikerObject(post).subscribe((liker) => {
-      if (liker[0]) {
-        post.userLiked = true;
-      } else {
-        post.userLiked = false;
-      }
-      console.log(post);
-      if (post.onFeed || this.mine) {
-        this.posts.push(post);
-      }
-    });
-  }
-
-  togglePostLike(post) {
-    if (post.userLiked) {
-      this.requestPostUserLikerObject(post).subscribe((liker) => {
-        this.removePostLikerObject(liker[0], post).then(() => {
-          if (post.likeCount == 1) {
-            this.unflagPostLike(post);
-          }
-          this.unlikePost(post);
-        });
-      });
-    } else {
-      this.likePost(post).subscribe(() => {
-        this.pushPostLikerObject(post).then((postLikeProps) => {
-          let postLikerID = postLikeProps.key;
-          this.addIDToPostLikerObject(postLikerID, post);
-        });
-      });
-    }
-  }
-
-  requestPostUserLikerObject(post) {
-    let path = 'posts/' + post.id + '/likers/';
-    return this.firebase.queriedList(path, 'uid', this.uid);
-  }
-
-  removePostLikerObject(liker, post) {
-    let path = 'posts/' + post.id + '/likers/' + liker.id;
-    return this.firebase.object(path).remove();;
-  }
-
-  unlikePost(myPost) {
-    myPost.userLiked = false;
-    let likeCount = --myPost.likeCount;
-    let post = {
-      "likeCount": likeCount
-    }
-    let path = 'posts/' + myPost.id;
-    return this.firebase.object(path).update(post);
-  }
-
-  unflagPostLike(myPost) {
-    let post = {
-      "liked": false,
-    }
-    let path = 'posts/' + myPost.id;
-    return this.firebase.object(path).update(post);
-  }
-
-  pushPostLikerObject(myPost) {
-    let path = 'posts/' + myPost.id + '/likers/';
-    let likerObject = {
-      "post": myPost.id,
-      "uid": this.uid
-    }
-    return this.firebase.list(path).push(likerObject);
-  }
-
-  addIDToPostLikerObject(postLikerID, myPost) {
-    let path = '/posts/' + myPost.id + '/likers/' + postLikerID;
-    let liker = {
-      id: postLikerID
-    }
-    return this.firebase.object(path).update(liker);
-  }
-
-  likePost(myPost) {
-    return Observable.create((observer) => {
-      myPost.liked = true;
-      myPost.userLiked = true;
-      let likeCount = ++myPost.likeCount;
-      let liked = true;
-      let post = {
-        "likeCount": likeCount,
-        "liked": liked
-      }
-      let path = 'posts/' + myPost.id;
-      return this.firebase.object(path).update(post).then((obj) => {
-        observer.next(obj)
-      });
-    });
-  }
-
-  pushEditProfilePage() {
-    this.navCtrl.push(EditProfilePage);
-  }
-
-  flaggedMessage(flaggedPost) {
-    let alert = this.alertCtrl.create({
-      title: 'Reported Statement',
-      message: 'Please contact support to restore this post or delete to create another statement',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-          }
-        },
-        {
-          text: 'Delete',
-          handler: () => {
-            this.removePost(flaggedPost)
-          }
-        },
-        {
-          text: 'Contact',
-          handler: () => {
-            this.navCtrl.setRoot(SupportPage);
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
-  removePost(flaggedPost) {
-    console.log("Removing flagged post");
-    console.log(flaggedPost);
-    let path = '/flagged/posts/' + flaggedPost.flaggedID
-    this.firebase.object(path).remove().then(() => {
-      this.navCtrl.setRoot(ProfilePage);
-    });
-  }
-
-  viewPost(postID) {
-    this.navCtrl.push(PostPage, { id: postID })
-  }
-
-  openSocial(socialNetwork) {
-    if (socialNetwork == 'instagram') {
-      let instagramLink = 'https://instagram.com/' + this.instagram;
-      open(instagramLink);
-    }
-    if (socialNetwork == 'twitter') {
-      let twitterLink = 'https://twitter.com/' + this.twitter;
-      open(twitterLink);
-    }
-    if (socialNetwork == 'linkedin') {
-      let linkedinLink = 'https://linkedin.com/in/' + this.linkedin;
-      open(linkedinLink);
-    }
-  }
-
-  goToCreateStatementPage() {
-    this.navCtrl.push(CreateStatementPage);
+    this.goalsLoaded = true;
   }
 
   blockUser() {
-    console.log("Block user clicked");
-    this.profile.blocked = true;
-    let path = '/users/' + this.uid;
-    this.firebase.object(path).update(this.profile).then(() => {
-      this.firebase.list('flagged/users').push(this.profile).then((token) => {
-        this.addIDToFlaggedUser(token).then(() => {
-          this.navCtrl.setRoot(AccountPage);
-        });
-      });
-    });
+    this.firebase.afs.doc(this.userPath).update({ blocked: true});
   }
 
-  addIDToFlaggedUser(token) {
-    let path = 'flagged/users/' + token.key;
-    let post = {
-      flaggedID: token.key
-    }
-    return this.firebase.object(path).update(post)
+  unblockUser() {
+    this.firebase.afs.doc(this.userPath).update({ blocked: false});
   }
-  
+
+  makeEditor() {
+    this.firebase.afs.doc(this.userPath).update({ editor: true});
+  }
+
+  makeContributor() {
+    this.firebase.afs.doc(this.userPath).update({editor: false});
+  }
+
+  refreshPage(refresh) {
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
+  }
+
+  pushProfileUpdatePage() {
+    this.navCtrl.push(ProfileUpdatePage);
+  }
+
+  pushChatsPage() {
+    this.navCtrl.push(ChatsPage);
+  }
+
+  pushChatPage() {
+    this.navCtrl.push(ChatPage, {uid: this.uid});
+  }
+
+  setRootHomePage() {
+    this.navCtrl.setRoot(HomePage);
+  }
+
 }

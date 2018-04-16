@@ -1,0 +1,22 @@
+export interface Pin {
+  id: string,
+  title: string,
+  description: string,
+  commentCount: number,
+  likeCount: number,
+  url: string,
+  link: string,
+  filename: string,
+  day: string,
+  displayAffirmationDate: string,
+  affirmationDate: number,
+  collection: string,
+  displayTimestamp: string,
+  timestamp: number,
+  startTime: string,
+  endTime: string,
+  uid: string,
+  name: string,
+  face: string,
+}
+

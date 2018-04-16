@@ -1,0 +1,41 @@
+page-post-manager {
+    .monthview-datetable {
+        border: 0 !important;
+        td,
+        th {
+            border: 0 !important;
+            padding: 3px!important;
+            font-size: .9em;
+        }
+    }
+    .monthview-primary-with-event {
+        background-color: color($colors, primary) !important;
+        color: black !important;
+    }
+    .monthview-selected {
+        background-color: color($colors, secondary) !important;
+        color: white !important;
+    }
+    .calendar-title {
+        background-color: color($colors, secondary) !important;
+        color: white !important; 
+    }
+    .monthview-eventdetail-timecolumn {
+        color: color($colors, charcoal) !important;
+        font-weight: bold;
+    }
+    .no-events-label {
+        color: color($colors, charcoal) !important;
+        font-weight: bold;
+    }
+    .event-detail {
+        font-weight: bold;
+        color: color($colors, primary) !important
+    }
+    .posts-scroller {
+        background-color: color($colors, primary) !important;
+    }
+    .card {
+        border-radius: 15px;
+    }
+}

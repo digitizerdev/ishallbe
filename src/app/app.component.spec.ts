@@ -1,122 +1,114 @@
-import { async, TestBed, ComponentFixture, tick, fakeAsync } from '@angular/core/testing';
-import { NgModule, Component, ViewChild } from '@angular/core';
-import { IonicModule, Platform } from 'ionic-angular';
-import { AngularFireModule, FirebaseApp, FirebaseAppConfig } from 'angularfire2';
-import { environment } from '../environments/environment';
-import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
-import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
+import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { Observable } from 'rxjs/Observable';
 
+import { IonicModule, Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Facebook } from '@ionic-native/facebook';
-import { Camera } from '@ionic-native/camera';
-import { Push } from '@ionic-native/push';
-import { File } from '@ionic-native/file';
-import { Storage } from '@ionic/storage';
-import { EmailComposer } from '@ionic-native/email-composer'
+import { FCM } from '@ionic-native/fcm';
 
-import { Observable } from 'rxjs/Rx';
+import { FirebaseProvider } from '../providers/firebase/firebase';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { environment } from '../environments/environment';
 
 import { StartupPage } from '../pages/startup/startup';
 
-import { FirebaseProvider } from '../providers/firebase/firebase';
+import { } from 'jasmine';
 
 import { iShallBe } from './app.component';
 
 import {
   PlatformMock,
+  NavMock,
   StatusBarMock,
   SplashScreenMock,
-  StorageMock,
-  FacebookMock,
-  FileMock,
-  PushMock,
-  CameraMock,
-  EmailComposerMock,
-  AngularFireDatabaseMock,
-  AngularFireAuthMock,
-  FirebaseAppMock,
+  FCMMock,
   FirebaseProviderMock,
-
 } from '../../test-config/mocks-ionic';
 
-import { } from 'jasmine';
+describe('iShallBe 1.4', () => {
+  let fixture;
+  let component;
+  let platform: Platform;
+  let nav: Nav;
+  let statusBar: StatusBar;
+  let splashScreen: SplashScreen;
+  let fcm: FCM;
+  let firebase: FirebaseProvider;
+  let afa: AngularFireAuth;
+  let afs: AngularFirestore;
 
-let fixture;
-let component;
-let firebase: FirebaseProvider;
-let firebaseSpy;
+  const angularFireAuthStub = {
+  };
 
-describe('iShallBe App Component', () => {
+  const angularFireDataStub = {
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [iShallBe],
       imports: [
         IonicModule.forRoot(iShallBe),
-        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireModule.initializeApp(environment.firebase)
       ],
       providers: [
+        { provide: Platform, useClass: PlatformMock },
+        { provide: Nav, useClass: NavMock },
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
-        { provide: Platform, useClass: PlatformMock },
-        { provide: Storage, useClass: StorageMock },
-        { provide: Facebook, useClass: FacebookMock },
-        { provide: File, useClass: FileMock },
-        { provide: Push, useClass: PushMock },
-        { provide: Camera, useClass: CameraMock },
-        { provide: EmailComposer, useClass: EmailComposerMock },
-        { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
-        { provide: AngularFireAuth, useClass: AngularFireAuthMock },
-        { provide: FirebaseApp, useClass: FirebaseAppMock },
-        { provide: firebase, useClass: FirebaseApp },
-        { provide: FirebaseProvider, useClass: FirebaseProviderMock }
-      ]
+        { provide: FCM, useClass: FCMMock },
+        { provide: FirebaseProvider, useClass: FirebaseProviderMock },
+        { provide: AngularFireAuth, useValue: angularFireAuthStub },
+        { provide: AngularFirestore, useValue: angularFireDataStub },
+      ],
     })
-      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(iShallBe);
     component = fixture.componentInstance;
+    platform = fixture.componentRef.injector.get(Platform);
+    nav = fixture.componentRef.injector.get(Nav);
+    statusBar = fixture.componentRef.injector.get(StatusBar);
+    splashScreen = fixture.componentRef.injector.get(SplashScreen);
+    fcm = fixture.componentRef.injector.get(FCM);
     firebase = fixture.componentRef.injector.get(FirebaseProvider);
   });
 
   afterEach(() => {
     fixture.destroy();
     component = null;
+    platform = null;
+    nav = null;
+    statusBar = null;
+    splashScreen = null;
+    fcm = null;
     firebase = null;
-    firebaseSpy = null;
+    afa = null;
+    afs = null;
   });
 
-  it('should be created', (done) => {
+  it('should be created', () => {
     expect(component instanceof iShallBe).toBe(true);
-    const promise = new Promise((res, rej) => res());
-    promise.then(done).catch(done.fail);
   });
 
-  it('should have 1 provider', () => {
-    expect(component.providers.length).toBe(1);
-  });
-
-  it('should have 5 menu pages', () => {
-    expect(component.menuPages.length).toBe(5);
-  })
-
-  it('should have 20 pages', () => {
-    expect(component.pages.length).toBe(20);
-  });
-
-  it('should have 3 components', () => {
-    expect(component.components.length).toBe(3);
-  });
-
-  it('should initialize with startup page as root page', () => {
+  it('should initialize root page to StartupPage', () => {
     expect(component['rootPage']).toBe(StartupPage);
   });
 
-  it('should be able to open page', () => {
-    expect(component.openPage).toBeDefined();
+  it('should display affirmations menu with three pages if user contributor', () => {
+    expect(component.affirmationsMenu.length).toBe(3);
+  });
+
+  it('should display account menu with three pages if user contributor', () => {
+    expect(component.accountMenu.length).toBe(3);
+  });
+
+  it('should display editor menu with three pages if user editor', () => {
+    expect(component.editorMenu.length).toBe(3);
   });
 
 });

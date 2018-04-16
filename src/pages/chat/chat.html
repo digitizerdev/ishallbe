@@ -1,0 +1,49 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-title>
+      <b>{{user?.name}}</b>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content id="Messages">
+  <div>
+    <div *ngFor="let message of messages" class="message-wrapper rlt" (hold)="onMessageHold($event, $index, message)">
+      <div *ngIf="message?.received">
+        <img class="profile-picture left" src="{{ message?.face }}" />
+        <div class="chat-bubble left">
+          <div class="message">
+            {{ message.description }}
+          </div>
+          <div class="message-detail">
+            <span class="message-time">{{ message.displayTimestamp }}</span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="message?.sent">
+        <img class="profile-picture right" src="{{ message?.face }}" />
+        <div class="chat-bubble right">
+          <div class="message" ng-bind-html="message.description">
+            {{ message.description }}
+          </div>
+          <div class="message-detail">
+            <span class="message-time">{{ message.displayTimestamp }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="cf"></div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer class="chat-footer" id="MessageBar" no-border>
+  <ion-toolbar no-border color="white">
+    <form #chatForm="ngForm" novalidate>
+      <ion-input ion-text [(ngModel)]="chatForm.description" name="description" #description="ngModel" type="text" placeholder="Write your message"
+        spellcheck="true" autocapitalize="true" required></ion-input>
+    <ion-buttons end>
+      <button ion-button (click)="submit(chatForm)" type="submit" large>
+        <ion-icon name="send" color="white"></ion-icon>
+      </button>
+    </ion-buttons>
+  </form>
+  </ion-toolbar>
+</ion-footer>
