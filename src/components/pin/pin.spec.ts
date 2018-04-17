@@ -93,16 +93,6 @@ describe('PinComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display PinImage if pin is Monday', () => {
-        component.pin = mockPins[0];
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#PinImage'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
     it('should display description', () => {
         component.pin = mockPins[3];
         fixture.detectChanges();
@@ -113,12 +103,22 @@ describe('PinComponent', () => {
         expect(el).toBeUndefined();
     });
 
+    it('should display WatchVideoButton if pin is Monday', () => {
+        component.pin = mockPins[0];
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#WatchVideoButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
     it('should display OpenTuneButton if pin is Tuesday', () => {
         component.pin = mockPins[1];
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#PinTitle'));
+        de = fixture.debugElement.query(By.css('#OpenTuneButton'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
