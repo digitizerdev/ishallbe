@@ -17,7 +17,7 @@
     <div *ngFor="let video of videos" (click)="openPin(video)" text-center padding>
       <h5><b>{{ video.description }}</b></h5>
       <h6>{{ video.displayAffirmationDate }}</h6>
-      <button (click)="openPin(video)" color="primary" text-center ion-button round strong>
+      <button color="primary" text-center ion-button round strong>
         <ion-icon padding-right name="logo-youtube"></ion-icon>
         WATCH VIDEO
     </button>
