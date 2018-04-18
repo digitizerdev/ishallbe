@@ -1,8 +1,11 @@
 import { Component, Input } from '@angular/core';
 
+import { NavParams, NavController } from 'ionic-angular';
+
 import moment from 'moment';
 import { Observable } from 'rxjs';
 
+import { PostPage } from '../../pages/post/post';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import { Like } from '../../../test-data/likes/model';
@@ -19,12 +22,18 @@ export class PostFooterComponent {
   notificationRef: any;
   liked = false;
   loaded = false;
+  opened = false;
 
   constructor(
+    private navParams: NavParams,
+    private navCtrl: NavController,
     private firebase: FirebaseProvider
   ) { }
 
   ngAfterViewInit() {
+    console.log("Initialized");
+    this.opened = this.navParams.get('opened');
+    console.log("Opened: " + this.opened);
     let postPath = this.postDoc.collection + "/" + this.postDoc.id;
     let postFooter = this.firebase.afs.doc(postPath);
     postFooter.valueChanges().subscribe((post) => {
@@ -206,5 +215,17 @@ export class PostFooterComponent {
         this.firebase.afs.doc(notificationPath).delete();
       }
     });
+  }
+
+  openPost(post) {
+    console.log("Opening Post");
+    console.log("Opened: " + this.opened);
+    if (!this.opened) {
+      this.navCtrl.push(PostPage, {
+        id: post.id,
+        type: post.collection,
+        opened: true
+      });
+    }
   }
 }
