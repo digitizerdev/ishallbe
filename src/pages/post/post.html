@@ -12,15 +12,32 @@
   </ion-navbar>
 </ion-header>
 <ion-content text-center>
-  <div *ngIf="postManagerMenu" class="post-menu" padding-bottom>
-    <button *ngIf="mine && private" (click)="togglePrivacy()" id="makePublicButton" color="primary" ion-button round strong float-right>MAKE PUBLIC</button>
-    <button *ngIf="mine && !private" (click)="togglePrivacy()" id="makePrivateButton" color="charcoal" ion-button round strong
-      float-right>MAKE PRIVATE</button>
-    <button *ngIf="mine || editor" (click)="deletePost()" id="deletePostButton" color="danger" ion-button round strong float-left>DELETE</button>
-    <button *ngIf="!mine && !reported" (click)="toggleReported()" id="reportPostButton" color="secondary" ion-button round strong
-      float-right>REPORT</button>
-    <button *ngIf="editor && reported" (click)="toggleReported()" id="unreportPostButton" color="secondary" ion-button round
-      strong float-right>UNREPORT</button>
+  <div *ngIf="postManagerMenu">
+    <ion-row *ngIf="mine && private">
+      <ion-col text-center>
+        <button (click)="togglePrivacy()" id="makePublicButton" color="primary" ion-button round strong>MAKE PUBLIC</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="mine && !private">
+      <ion-col text-center>
+        <button (click)="togglePrivacy()" id="makePrivateButton" color="charcoal" ion-button round strong>MAKE PRIVATE</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="mine || editor">
+      <ion-col text-center>
+        <button (click)="deletePost()" id="deletePostButton" color="danger" ion-button round strong>DELETE</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!mine && !reported">
+      <ion-col text-center>
+        <button (click)="toggleReported()" id="reportPostButton" color="secondary" ion-button round strong>REPORT</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="editor && reported">
+      <ion-col text-center>
+        <button (click)="toggleReported()" id="unreportPostButton" color="secondary" ion-button round strong>UNREPORT</button>
+      </ion-col>
+    </ion-row>
   </div>
   <post-header *ngIf="collection !== 'pins'" [postDoc]="post"></post-header>
   <img *ngIf="collection == 'statements' && post?.url" src="{{post?.url}}">
