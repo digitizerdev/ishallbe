@@ -5,7 +5,8 @@
     </button>
     <ion-buttons end>
       <button *ngIf="mine" (click)="pushChatsPage()" id="pushChatsPageIcon" ion-button icon-only>
-        <ion-icon color="primary" name="mail"></ion-icon>
+        <ion-icon *ngIf="newMessages" color="primary" name="ios-mail"></ion-icon>
+        <ion-icon *ngIf="!newMessages" color="primary" name="ios-mail-outline"></ion-icon>
       </button>
       <button *ngIf="!mine" (click)="pushChatPage()" id="pushChatPageIcon" ion-button icon-only>
         <ion-icon color="primary" name="mail"></ion-icon>

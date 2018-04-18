@@ -26,6 +26,7 @@ export class HomePage {
   pinsLoaded = false;
   statementsLoaded = false;
   goalsLoaded = false;
+  newNotifications = false;
   postSegment = 'statements';
 
   constructor(
@@ -36,6 +37,7 @@ export class HomePage {
 
   ionViewDidEnter() {
     this.timestampPage();
+    this.checkForNewNotifications();
     this.loadPosts();
   }
 
@@ -44,6 +46,19 @@ export class HomePage {
     this.dayNumber = moment().isoWeekday();
     this.pinEndDate = parseInt(moment().format('YYYYMMDD'));
     this.pinStartDate = this.pinEndDate - this.dayNumber;
+  }
+
+  checkForNewNotifications() {
+    console.log("Checking for new notifications");
+    let newNotifications = this.firebase.afs.collection('notifications', ref => 
+      ref.where("receiverUid", "==", this.firebase.user.uid).
+        where("read", "==", false));
+    newNotifications.valueChanges().subscribe((myNewNotifications) => {
+      console.log("Got my new notifications");
+      console.log(myNewNotifications);
+      if (myNewNotifications.length > 0) this.newNotifications = true;
+        else this.newNotifications = false;
+    });
   }
 
   loadPosts() {

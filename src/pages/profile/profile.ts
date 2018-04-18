@@ -34,6 +34,7 @@ export class ProfilePage {
   blocked = false;
   userPath: string;
   postSegment = 'statements';
+  newMessages = false;
 
   constructor(
     private navCtrl: NavController,
@@ -50,9 +51,25 @@ export class ProfilePage {
       this.uid = this.firebase.afa.auth.currentUser.uid;
     }
     this.editor = this.firebase.user.editor;
+    this.checkForNewMessages();
     this.loadUser();
     if (this.mine) this.loadAllMyPosts();
     else this.loadMyPublicPosts();
+  }
+
+  checkForNewMessages() {
+    console.log("Checking for new messages");
+    let chatsPath = "users/" + this.uid + "/chats";
+    console.log("Chats path is " + chatsPath);
+    let chats = this.firebase.afs.collection(chatsPath);
+    chats.valueChanges().subscribe((myChats) => {
+      console.log("Got my chats");
+      console.log(myChats);
+      myChats.forEach((chat) => {
+        console.log("Checking chat for new messages");
+        console.log(chat);
+      });
+    });
   }
 
   loadUser() {
