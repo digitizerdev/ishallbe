@@ -8,7 +8,7 @@
 <ion-content padding-left padding-right>
   <ion-row *ngIf="!dateSelected" id="SelectDueDateButton">
     <ion-col text-center padding-left padding-right>
-      <button (click)="pickDate()" color="steel" ion-button icon-start clear round block large strong>
+      <button (click)="pickDate()" color="steel" ion-button icon-start clear class="tdct-button" round block large strong>
         <ion-icon name="ios-calendar"></ion-icon>
         SELECT DUE DATE
       </button>
@@ -29,7 +29,7 @@
   </ion-row>
   <ion-row *ngIf="!recording" id="SpeakItButton">
     <ion-col text-center padding-left padding-right>
-      <button (click)="recordAudio()" color="secondary" ion-button icon-start round block large strong>
+      <button (click)="recordAudio()" color="secondary" ion-button icon-start class="tdct-button" round block large strong>
         <ion-icon padding-right name="ios-microphone"></ion-icon>
         SPEAK IT
       </button>
@@ -38,18 +38,18 @@
   <upload *ngIf="recording" (uploaded)="recorded($event)" [method]="contentMethod"></upload>
   <ion-row *ngIf="audioReady" id="AudioPanel" responsive-sm>
     <ion-col text-center>
-      <button *ngIf="!playingAudio" (click)="playAudio()" id="PlayAudioButton" color="primary" ion-button icon-start round strong>
+      <button *ngIf="!playingAudio" (click)="playAudio()" id="PlayAudioButton" color="primary" ion-button icon-start class="tdct-button" round strong>
         <ion-icon name="play"></ion-icon>
         PLAY
       </button>
-      <button *ngIf="playingAudio" (click)="stopPlayback()" id="StopPlaybackButton" color="danger" ion-button icon-start round
+      <button *ngIf="playingAudio" (click)="stopPlayback()" id="StopPlaybackButton" color="danger" ion-button icon-start class="tdct-button" round
         strong>
         <ion-icon name="square"></ion-icon>
         STOP
       </button>
     </ion-col>
     <ion-col text-center>
-      <button (click)="redoRecording()" id="RedoRecordingButton" color="secondary" text-center ion-button icon-start round strong>
+      <button (click)="redoRecording()" id="RedoRecordingButton" color="secondary" text-center ion-button icon-start class="tdct-button" round strong>
         <ion-icon name="refresh"></ion-icon>
         REDO
       </button>
@@ -90,7 +90,7 @@
     </ion-row>
     <ion-row>
       <ion-col text-center class="submit">
-        <button id="CreateGoalButton" (click)="submit(createGoalForm)" color="primary" ion-button round block large strong>
+        <button id="CreateGoalButton" (click)="submit(createGoalForm)" color="primary" ion-button class="tdct-button" round block large strong>
           CREATE GOAL
         </button>
       </ion-col>
