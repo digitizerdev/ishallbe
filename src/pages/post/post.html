@@ -11,7 +11,7 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content text-center>
   <div *ngIf="postManagerMenu" class="post-menu" padding-bottom>
     <button *ngIf="mine && private" (click)="togglePrivacy()" id="makePublicButton" color="primary" ion-button round strong float-right>MAKE PUBLIC</button>
     <button *ngIf="mine && !private" (click)="togglePrivacy()" id="makePrivateButton" color="charcoal" ion-button round strong
@@ -41,8 +41,13 @@
     <h2 color="primary" ion-text>
       <b>{{post?.title}}</b>
     </h2>
-    <h5 class="post-description" text-left>{{post?.description}}</h5>
+    <h5 class="post-description" text-center>{{post?.description}}</h5>
   </div>
+  <button *ngIf="post?.day == 'Tuesday'" (click)="openLink(post.link)" color="primary" id="OpenTuneButton" text-center ion-button
+    round strong>
+    <ion-icon padding-right name="musical-notes"></ion-icon>
+    OPEN TUNE
+  </button>
   <div text-center>
     <iframe *ngIf="video" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
   </div>
@@ -76,15 +81,15 @@
   </ion-row>
 </ion-content>
 <ion-footer class="comment-footer" id="CommentBar" no-border>
-    <ion-toolbar no-border color="white">
-      <form #commentForm="ngForm" novalidate>
-        <ion-input ion-text [(ngModel)]="commentForm.description" name="description" #description="ngModel" type="text" placeholder="Write your comment"
-          spellcheck="true" autocapitalize="true" required></ion-input>
+  <ion-toolbar no-border color="white">
+    <form #commentForm="ngForm" novalidate>
+      <ion-input ion-text [(ngModel)]="commentForm.description" name="description" #description="ngModel" type="text" placeholder="Write your comment"
+        spellcheck="true" autocapitalize="true" required></ion-input>
       <ion-buttons end>
         <button ion-button (click)="submit(commentForm)" type="submit" large>
           <ion-icon name="send" color="white"></ion-icon>
         </button>
       </ion-buttons>
     </form>
-    </ion-toolbar>
+  </ion-toolbar>
 </ion-footer>

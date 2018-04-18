@@ -8,8 +8,8 @@
         <ion-icon color="primary" name="mail"></ion-icon>
       </button>
       <button *ngIf="!mine" (click)="pushChatPage()" id="pushChatPageIcon" ion-button icon-only>
-          <ion-icon color="primary" name="mail"></ion-icon>
-        </button>
+        <ion-icon color="primary" name="mail"></ion-icon>
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -61,27 +61,29 @@
       </ion-col>
     </ion-row>
   </div>
-  <div class="posts-scroller">
-    <ion-segment mode="ios" class="post-segment" [(ngModel)]="postSegment" color="background" padding-top padding-left padding-right>
-      <ion-segment-button value="statements">
-        <b>STATEMENTS</b>
-      </ion-segment-button>
-      <ion-segment-button value="goals">
-        <b>GOALS</b>
-      </ion-segment-button>
+  <div class="posts-section">
+    <div class="posts-scroller">
+      <ion-segment mode="ios" class="post-segment" [(ngModel)]="postSegment" color="background" padding-top padding-left padding-right>
+        <ion-segment-button value="statements">
+          <b>STATEMENTS</b>
+        </ion-segment-button>
+        <ion-segment-button value="goals">
+          <b>GOALS</b>
+        </ion-segment-button>
+        <br>
+      </ion-segment>
+      <div *ngIf="postSegment=='statements'" id="MyStatements">
+        <ion-card *ngFor="let statement of statements">
+          <statement [post]="statement"></statement>
+        </ion-card>
+      </div>
+      <div *ngIf="postSegment=='goals'" id="MyGoals">
+        <ion-card *ngFor="let goal of goals">
+          <goal [post]="goal"></goal>
+        </ion-card>
+      </div>
       <br>
-    </ion-segment>
-    <div *ngIf="postSegment=='statements'" id="MyStatements">
-      <ion-card *ngFor="let statement of statements">
-        <statement [post]="statement"></statement>
-      </ion-card>
     </div>
-    <div *ngIf="postSegment=='goals'" id="MyGoals">
-      <ion-card *ngFor="let goal of goals">
-        <goal [post]="goal"></goal>
-      </ion-card>
-    </div>
-    <br>
   </div>
   <footer></footer>
 </ion-content>

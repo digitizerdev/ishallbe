@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import moment from 'moment';
 import { Observable } from 'rxjs';
@@ -44,6 +46,7 @@ export class PostPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private alertCtrl: AlertController,
+    private iab: InAppBrowser,
     private firebase: FirebaseProvider
   ) {
   }
@@ -348,5 +351,9 @@ export class PostPage {
         this.likedComment = false;
       }
     });
+  }
+
+  openLink(link) {
+    this.iab.create(link, '_system');
   }
 }
