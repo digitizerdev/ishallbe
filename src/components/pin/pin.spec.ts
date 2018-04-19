@@ -109,12 +109,12 @@ describe('PinComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display WatchVideoButton if pin is Monday', () => {
+    fit('should display PinImage if pin is Monday', () => {
         component.pin = mockPins[0];
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#WatchVideoButton'));
+        de = fixture.debugElement.query(By.css('#PinImage'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
