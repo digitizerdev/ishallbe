@@ -2,12 +2,12 @@
     <b>{{pin?.title}}</b>
 </h2>
 <h5 id="PinDescription" *ngIf="pin?.description" class="post-description" (click)="viewPin(pin?.id)" text-center>{{pin?.description}}</h5>
-<button *ngIf="pin?.day == 'Monday'" (click)="viewPin(pin?.id)" color="primary" id="WatchVideoButton" text-center ion-button round strong>
-    <ion-icon padding-right name="logo-youtube"></ion-icon>
-    WATCH VIDEO
-</button>
-<button *ngIf="pin?.day == 'Tuesday'" (click)="openLink()" color="primary" id="OpenTuneButton" text-center ion-button round strong>
+<div *ngIf="pin?.day == 'Monday' && pin?.url" id="PinImage" padding-top>
+    <img class="pin-image" (click)="viewPin(pin?.id)" src="{{ pin?.url }}">
+</div>
+<button *ngIf="pin?.day == 'Tuesday'" (click)="openLink()" color="primary" id="OpenTuneButton" text-center ion-button round
+    strong>
     <ion-icon padding-right name="musical-notes"></ion-icon>
     OPEN TUNE
 </button>
-<post-footer [postDoc]="pin"></post-footer> 
+<post-footer [postDoc]="pin"></post-footer>

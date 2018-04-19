@@ -18,8 +18,7 @@ import { Pin } from '../../../test-data/pins/model';
 })
 export class PinCreatorPage {
   mondayForm: {
-    title?: string,
-    description?: string,
+    title?: string
     link?: string,
   } = {};
   tuesdayForm: {
@@ -79,8 +78,11 @@ export class PinCreatorPage {
   setExistingPinFields() {
     switch (this.dayOfWeek) {
       case 'Monday': {
-        this.mondayForm.description = this.pin.description;
         this.mondayForm.link = this.pin.link;
+        this.pinImageUrl = this.pin.url;
+        this.pinName = this.pin.filename;
+        this.loadingImage = false;
+        this.imageReady = true;
       }
         break;
       case 'Tuesday': {
@@ -133,7 +135,8 @@ export class PinCreatorPage {
   checkFormFields(form) {
     switch (this.dayOfWeek) {
       case 'Monday': {
-        if (!form.title || !form.link) this.displaySubmissionErrorAlert("Please Complete All Fields");
+        if (!this.imageReady) this.displaySubmissionErrorAlert("Please Add Image to Pin");
+        else if (!form.title || !form.link) this.displaySubmissionErrorAlert("Please Complete All Fields");
         else if (form.link == '') this.displaySubmissionErrorAlert("Please Add YouTube Link");
         else this.submitValidPin(form);
       }
@@ -172,11 +175,9 @@ export class PinCreatorPage {
       if (this.pin) this.pinId = this.pin.id;
       else this.pinId = this.firebase.afs.createId();
       let time = this.selectedDay.toISOString();
-      this.pinName = "";
-      this.pinImageUrl = "";
-      if (!this.tuesday && !this.monday) form.link = "";
-      console.log("Form link is " + form.link);
-      console.log("Link length is " + form.link.length);
+      if (!this.monday) this.pinName = "";
+      if (!this.monday) this.pinImageUrl = "";
+      if (!this.monday && !this.tuesday) form.link = "";
       let link = form.link;
       if (form.link.length !== 37) {
         let youtubeID = form.link.slice(17);

@@ -115,7 +115,7 @@ export class ProfilePage {
   loadAllStatements() {
     let statements = this.firebase.afs.collection('statements', ref =>
       ref.where('uid', '==', this.uid).
-        orderBy('timestamp', 'desc'));
+        orderBy('timestamp', 'desc').limit(25));
     statements.valueChanges().subscribe((statements) => {
       if (!this.statementsLoaded)
         this.setStatements(statements);
@@ -126,7 +126,7 @@ export class ProfilePage {
     let statements = this.firebase.afs.collection('statements', ref =>
       ref.where('uid', '==', this.uid).
         where('private', '==', false).
-        orderBy('timestamp', 'desc'));
+        orderBy('timestamp', 'desc').limit(25));
     statements.valueChanges().subscribe((statements) => {
       if (!this.statementsLoaded)
         this.setStatements(statements);
@@ -145,7 +145,7 @@ export class ProfilePage {
   loadAllGoals() {
     let goals = this.firebase.afs.collection('goals', ref =>
       ref.where('uid', '==', this.uid).
-      orderBy('timestamp', 'desc'));
+      orderBy('timestamp', 'desc').limit(25));
     goals.valueChanges().subscribe((goals) => {
       if (!this.goalsLoaded)
         this.setGoals(goals);
@@ -156,7 +156,7 @@ export class ProfilePage {
     let goals = this.firebase.afs.collection('goals', ref =>
       ref.where('uid', '==', this.uid).
       where('private', '==', false).
-      orderBy('timestamp', 'desc'));
+      orderBy('timestamp', 'desc').limit(25));
     goals.valueChanges().subscribe((goals) => {
       if (!this.goalsLoaded)
         this.setGoals(goals);
