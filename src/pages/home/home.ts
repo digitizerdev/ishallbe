@@ -19,8 +19,8 @@ export class HomePage {
   pins: any[] = [];
   statements: any[] = [];
   goals: any[] = [];
-  pinStartDate: number;
-  pinEndDate: number;
+  postStartDate: number;
+  postEndDate: number;
   dayNumber: number;
   timestamp: number;
   pinsLoaded = false;
@@ -44,21 +44,18 @@ export class HomePage {
   timestampPage() {
     this.timestamp = moment().unix();
     this.dayNumber = moment().isoWeekday();
-    this.pinEndDate = parseInt(moment().format('YYYYMMDD'));
-    this.pinStartDate = this.pinEndDate - this.dayNumber;
+    this.postEndDate = parseInt(moment().format('YYYYMMDD'));
+    this.postStartDate = this.postEndDate - this.dayNumber;
   }
 
   checkForNewNotifications() {
-    console.log("Checking for new notifications");
-    let newNotifications = this.firebase.afs.collection('notifications', ref => 
+    let newNotifications = this.firebase.afs.collection('notifications', ref =>
       ref.where("receiverUid", "==", this.firebase.user.uid).
         where("read", "==", false).
         where("messages", "==", false));
     newNotifications.valueChanges().subscribe((myNewNotifications) => {
-      console.log("Got my new notifications");
-      console.log(myNewNotifications);
       if (myNewNotifications.length > 0) this.newNotifications = true;
-        else this.newNotifications = false;
+      else this.newNotifications = false;
     });
   }
 
@@ -70,7 +67,9 @@ export class HomePage {
 
   loadPins() {
     let pins = this.firebase.afs.collection('pins', ref =>
-      ref.orderBy('affirmationDate').startAt(this.pinStartDate).endAt(this.pinEndDate));
+      ref.orderBy('postDate').
+        startAt(this.postStartDate).
+        endAt(this.postEndDate));
     pins.valueChanges().subscribe((pins) => {
       if (!this.pinsLoaded) {
         this.setPins(pins).subscribe(() => {
@@ -99,8 +98,9 @@ export class HomePage {
   loadStatements() {
     let statements = this.firebase.afs.collection('statements', ref =>
       ref.where('private', '==', false).
-      where('reported', '==', false)
-      .orderBy('timestamp', 'desc').limit(25));
+        where('reported', '==', false)
+        .orderBy('timestamp', 'desc').
+        startAt(this.postStartDate).endAt(this.postEndDate));
     statements.valueChanges().subscribe((statements) => {
       if (!this.statementsLoaded)
         this.setStatements(statements);
@@ -120,7 +120,8 @@ export class HomePage {
     let goals = this.firebase.afs.collection('goals', ref =>
       ref.where('private', '==', false).
         where('reported', '==', false).
-        orderBy('timestamp', 'desc').limit(25));
+        orderBy('timestamp', 'desc').
+        startAt(this.postStartDate).endAt(this.postEndDate));
     goals.valueChanges().subscribe((goals) => {
       if (!this.goalsLoaded)
         this.setGoals(goals);

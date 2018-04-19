@@ -28,6 +28,8 @@ export class StatementCreatorPage {
   imageRetrievalMethod: string;
   timestamp: number;
   displayTimestamp: string;
+  postDate: number;
+  displayPostDate: string;
   submitted = false;
   loadingImage = false;
   imageReady = false;
@@ -44,9 +46,15 @@ export class StatementCreatorPage {
   }
 
   ionViewDidLoad() {
+    this.timestampPage();
+    this.listenForCanceledUpload();
+  }
+
+  timestampPage() {
+    this.postDate = parseInt(moment().format("YYYYMMDD"));
+    this.displayPostDate = moment().format('MMM DD YYYY');
     this.timestamp = moment().unix();
     this.displayTimestamp = moment().format('L');
-    this.listenForCanceledUpload();
   }
 
   loadImage() {
@@ -121,6 +129,8 @@ export class StatementCreatorPage {
         url: this.statementImageUrl,
         filename: this.statementName,
         collection: "statements",
+        displayPostDate: this.displayPostDate,
+        postDate: this.postDate,
         displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
         uid: this.firebase.user.uid,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { AlertController, Events } from 'ionic-angular';
+import { AlertController, Events, Platform } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 
@@ -24,6 +24,7 @@ export class FirebaseProvider {
   constructor(
     public alertCtrl: AlertController,
     public events: Events,
+    public platform: Platform,
     public afs: AngularFirestore,
     public afa: AngularFireAuth
   ) {
@@ -35,7 +36,6 @@ export class FirebaseProvider {
   }
 
   checkForSession() {
-    console.log("Checking for Session");
     this.afa.authState.subscribe((session) => {
       if (session) this.userExists();
       else this.endSession();
@@ -43,7 +43,6 @@ export class FirebaseProvider {
   }
 
   endSession() {
-    console.log("Ending Session");
     this.session = false;
     this.userDoc = null;
     this.user = null;
@@ -82,13 +81,22 @@ export class FirebaseProvider {
   }
 
   startSession(user) {
-    console.log("Starting Session");
     this.user = user;
+    this.syncFcmToken();
     if (this.user.editor) this.events.publish("editor permission granted");
     else this.events.publish("editor permission not granted")
     this.session = true;
     this.socialAuthentication = false;
     this.events.publish('contributor permission granted');
+  }
+
+  syncFcmToken() {
+    if (this.platform.is('cordova')) {
+      if (this.user.fcmToken !== this.fcmToken) {
+        let userPath = "users" + this.user.uid;
+        this.afs.doc(userPath).update({ fcmToken: this.fcmToken });
+      }
+    }
   }
 
   registerUser() {
@@ -103,7 +111,6 @@ export class FirebaseProvider {
   }
 
   showTutorial() {
-    console.log("Showing tutorial");
     this.events.publish('show tutorial')
   }
 

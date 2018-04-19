@@ -36,17 +36,12 @@ export class IshallbetvPage {
   }
 
   setLastMonday() {
-    console.log("Setting Last Monday");
     let today = parseInt(moment().format('YYYYMMDD'));
-    console.log("Today is " + today);
     let dayNumber = moment().isoWeekday();
-    console.log("Day Number is " + dayNumber);
     this.currentMonday = today - dayNumber;
-    console.log("Current Monday is " + this.currentMonday);
   }
 
   loadVideos() {
-    console.log("Loading Videos");
     return Observable.create((observer) => {
       let allVideos = this.firebase.afs.collection('pins', ref =>
         ref.where('day', '==', 'Monday').

@@ -32,8 +32,8 @@ export class GoalCreatorPage {
   contentMethod: string;
   timestamp: number;
   displayTimestamp: string;
-  rawDate: number;
-  rawNextWeekDate: number;
+  postDate: number;
+  displayPostDate: string;
   dueDate: number;
   displayDueDate: string;
   audio: any;
@@ -58,13 +58,19 @@ export class GoalCreatorPage {
     private media: Media,
     private firebase: FirebaseProvider
   ) {
-    this.timestamp = moment().unix();
-    this.displayTimestamp = moment().format('MMM D YYYY h:mmA');
-    let rawDateString = moment().format('YYYYMMDD');
-    this.rawDate = parseInt(rawDateString);
-    this.rawNextWeekDate = this.rawDate + 7;
+    this.timestampPage();
     this.listenForUploadTimeout();
     this.listenForCanceledUpload();
+  }
+
+  timestampPage() {
+    this.postDate = parseInt(moment().format("YYYYMMDD"));
+    this.displayPostDate = moment().format('MMM DD YYYY');
+    this.timestamp = moment().unix();
+    this.displayTimestamp = moment().format('L');
+    let rawDateString = moment().format('YYYYMMDD');
+    this.dueDate = this.postDate + 7;
+    this.displayDueDate = moment(this.dueDate).format('L');
   }
 
   submit(form) {
@@ -105,6 +111,8 @@ export class GoalCreatorPage {
         displayDueDate: this.displayDueDate,
         dueDate: this.dueDate,
         collection: "goals",
+        displayPostDate: this.displayPostDate,
+        postDate: this.postDate,
         displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
         uid: this.firebase.user.uid,
@@ -134,15 +142,8 @@ export class GoalCreatorPage {
     }).then((date) => {
       this.dueDate = moment(date).unix();
       this.displayDueDate = moment(date).fromNow();
-      this.formateDueDate();
+      this.dateSelected = true;
     }, (err) => { });
-  }
-
-  formateDueDate() {
-    if (this.dueDate == this.rawDate) this.dueToday = true;
-    else if (this.dueDate < this.rawNextWeekDate) this.dueThisWeek = true;
-    else this.dueLater = true;
-    this.dateSelected = true;
   }
 
   listenToAudioEvents() {

@@ -35,11 +35,12 @@ export class PinCreatorPage {
   pinImageUrl: string;
   pinName: string;
   imageRetrievalMethod: string;
+  postDate: number;
+  displayPostDate: string;
   timestamp: number;
   displayTimestamp: string;
   selectedDay: any;
   displaySelectedDay: string;
-  affirmationDate: number;
   dayOfWeek: string;
   submitted = false;
   loadingImage = false;
@@ -96,7 +97,8 @@ export class PinCreatorPage {
 
   timestampPage() {
     this.dayOfWeek = moment(this.selectedDay).format("dddd");
-    this.affirmationDate = parseInt(moment(this.selectedDay).format("YYYYMMDD"));
+    this.postDate = parseInt(moment(this.selectedDay).format("YYYYMMDD"));
+    this.displayPostDate = moment().format('MMM DD YYYY');
     if (this.dayOfWeek == "Monday") this.monday = true;
     else if (this.dayOfWeek == "Tuesday") this.tuesday = true;
     else this.wedToSun = true;
@@ -194,8 +196,8 @@ export class PinCreatorPage {
         day: this.dayOfWeek,
         filename: this.pinName,
         collection: "pins",
-        displayAffirmationDate: this.displaySelectedDay,
-        affirmationDate: this.affirmationDate,
+        displayPostDate: this.displaySelectedDay,
+        postDate: this.postDate,
         displayTimestamp: this.displayTimestamp,
         timestamp: this.timestamp,
         startTime: time,

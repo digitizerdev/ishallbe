@@ -64,30 +64,8 @@ export class iShallBe {
       console.log("Platform Ready");
       this.ready = true;
       this.statusBar.styleDefault();
-      this.fcm.subscribeToTopic('affirmations');
       this.splashScreen.hide();
-      if (this.platform.is('cordova')) this.listenToFCMPushNotifications();
     });
-  }
-
-  listenToFCMPushNotifications() {
-    console.log("Listening to Push Notifications");
-    this.fcm.getToken().then(token =>
-      this.firebase.fcmToken = token);
-    this.fcm.onNotification().subscribe(notification => {
-      if (notification.wasTapped) {
-        console.log("Notification was tapped");
-        this.tappedNotification = true;
-        this.notification = notification;
-        this.openNotification(notification);
-      }
-      else {
-        console.log("Notification was not tapped");
-        this.displayNotificationAlert(notification);
-      }
-    });
-    this.fcm.onTokenRefresh().subscribe(token =>
-      this.firebase.fcmToken = token);
   }
 
   displayNotificationAlert(notification) {
@@ -210,7 +188,7 @@ export class iShallBe {
   listenToContributorPermissionEvents() {
     this.events.subscribe('contributor permission granted', () => {
       console.log("Contributor Permission Granted");
-      this.fcm.subscribeToTopic('affirmations');
+      if (this.platform.is('cordova')) this.listenToFCMPushNotifications();
       if (this.tappedNotification) {
         if (this.notification.collection == "pins")
           this.openPin(this.notification.docId);
@@ -229,6 +207,27 @@ export class iShallBe {
       this.nav.setRoot(LoginPage);
       this.editor = false;
     });
+  }
+
+  listenToFCMPushNotifications() {
+    console.log("Listening to Push Notifications");
+    this.fcm.getToken().then(token =>
+      this.firebase.fcmToken = token);
+    this.fcm.onNotification().subscribe(notification => {
+      if (notification.wasTapped) {
+        console.log("Notification was tapped");
+        this.tappedNotification = true;
+        this.notification = notification;
+        this.openNotification(notification);
+      }
+      else {
+        console.log("Notification was not tapped");
+        this.displayNotificationAlert(notification);
+      }
+    });
+    this.fcm.subscribeToTopic('affirmations');
+    this.fcm.onTokenRefresh().subscribe(token =>
+      this.firebase.fcmToken = token);
   }
 
   setMenus() {
