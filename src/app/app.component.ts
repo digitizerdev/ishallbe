@@ -32,7 +32,7 @@ export class iShallBe {
 
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any;
+  rootPage: StartupPage;
   affirmationsMenu: Array<{ title: string, icon: string, component: any }>;
   accountMenu: Array<{ title: string, icon: string, component: any }>;
   editorMenu: Array<{ title: string, icon: string, component: any }>;
@@ -64,36 +64,12 @@ export class iShallBe {
 
   platformReady() {
     this.platform.ready().then(() => {
+      console.log("Platform Ready");
       this.ready = true;
-      if (!this.platform.is('cordova'))
-        this.startup();
-      else
-        this.initDevicePlatform();
-    });
-  }
-
-  startup() {
-    this.fcm.subscribeToTopic('affirmations');
-    this.nav.setRoot(StartupPage);
-    this.splashScreen.hide();
-  }
-
-  initDevicePlatform() {
-    this.splashScreen.show();
-    this.statusBar.styleDefault();
-    this.listenToFCMPushNotifications();
-    this.deployUpdate().subscribe((updateAvailable) => {
-      if (!updateAvailable)
-        this.startup();
-    });
-  }
-
-  deployUpdate() {
-    return Observable.create((observer) => {
-      return Pro.deploy.checkAndApply(true).then((resp) => {
-        if (resp.update) observer.next(true);
-        else observer.next(false);
-      });
+      this.statusBar.styleDefault();
+      this.fcm.subscribeToTopic('affirmations');
+      this.splashScreen.hide();
+      if (this.platform.is('cordova')) this.listenToFCMPushNotifications();
     });
   }
 
@@ -197,6 +173,7 @@ export class iShallBe {
   }
 
   listenToUserPermissionsEvents() {
+    console.log("Listening To User Permission Events");
     this.listenToTutorialLaunchEvents();
     this.listenToAccessControlEvents();
     this.listenToEditorPermissionEvents();
@@ -235,6 +212,7 @@ export class iShallBe {
 
   listenToContributorPermissionEvents() {
     this.events.subscribe('contributor permission granted', () => {
+      console.log("Contributor Permission Granted");
       this.fcm.subscribeToTopic('affirmations');
       if (this.tappedNotification) {
         if (this.notification.collection == "pins")
@@ -246,10 +224,11 @@ export class iShallBe {
         if (this.notification.message == "message")
           this.openChat(this.notification.docId);
       } else {
-        if (this.ready) this.nav.setRoot(StartupPage);
+         this.nav.setRoot(HomePage);
       }
     });
     this.events.subscribe('contributor permission not granted', () => {
+      console.log("Contributor Permission Not Granted");
       this.nav.setRoot(LoginPage);
       this.editor = false;
     });

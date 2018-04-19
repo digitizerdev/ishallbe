@@ -18,7 +18,6 @@ export class FirebaseProvider {
   session = false;
   loaded = false;
   hasSeenTutorial = false;
-  deployingUpdate = false;
   signingUp = false;
   socialAuthentication = false;
 
@@ -28,7 +27,7 @@ export class FirebaseProvider {
     public afs: AngularFirestore,
     public afa: AngularFireAuth
   ) {
-    if (!this.loaded && !this.deployingUpdate) {
+    if (!this.loaded) {
       this.loaded = true;
       this.checkForSession();
     }
@@ -36,13 +35,15 @@ export class FirebaseProvider {
   }
 
   checkForSession() {
-    this.sessionExists().subscribe((session) => {
+    console.log("Checking for Session");
+    this.afa.authState.subscribe((session) => {
       if (session) this.userExists();
       else this.endSession();
     });
   }
 
   endSession() {
+    console.log("Ending Session");
     this.session = false;
     this.userDoc = null;
     this.user = null;
@@ -50,17 +51,6 @@ export class FirebaseProvider {
     if (this.afa.auth.currentUser)
       this.afa.auth.signOut();
     this.events.publish('contributor permission not granted');
-  }
-
-  sessionExists() {
-    return Observable.create((observer) => {
-      return this.afa.authState.subscribe((session) => {
-        if (session)
-          observer.next(true);
-        else
-          observer.next(false);
-      });
-    });
   }
 
   userExists() {
@@ -92,6 +82,7 @@ export class FirebaseProvider {
   }
 
   startSession(user) {
+    console.log("Starting Session");
     this.user = user;
     if (this.user.editor) this.events.publish("editor permission granted");
     else this.events.publish("editor permission not granted")
