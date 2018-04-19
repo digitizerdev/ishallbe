@@ -4,9 +4,6 @@ import { Nav, Platform, Events, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
-import { Pro } from '@ionic/pro';
-
-import { Observable } from 'rxjs/Rx';
 
 import { StartupPage } from '../pages/startup/startup';
 import { LoginPage } from '../pages/login/login';

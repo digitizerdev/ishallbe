@@ -39,6 +39,10 @@
       </ion-col>
     </ion-row>
   </div>
+  <ion-refresher (ionRefresh)="refreshPage()" color="primary" no-border>
+    <ion-refresher-content refreshingSpinner="dots" refreshingText="Refeshing" no-border>
+    </ion-refresher-content>
+  </ion-refresher>
   <post-header *ngIf="collection !== 'pins'" [postDoc]="post"></post-header>
   <img *ngIf="collection == 'statements' && post?.url" src="{{post?.url}}">
   <ion-row *ngIf="collection == 'goals'" id="DueDate" text-center>
@@ -70,7 +74,7 @@
   </div>
   <h5 *ngIf="collection !== 'pins'" id="NonPinDescription" padding-left padding-right>{{post?.description}}</h5>
   <post-footer *ngIf="loaded" [postDoc]="post"></post-footer>
-  <ion-row *ngIf="commentsLoaded" class="post-comments" id="Comments">
+  <ion-row class="post-comments" id="Comments" text-left>
     <div *ngFor="let comment of comments" class="comment-wrapper rlt" (hold)="onCommentHold($event, $index, comment)">
       <div>
         <img class="profile-picture left" src="{{ comment?.face }}" />
@@ -79,16 +83,16 @@
         </span>
         <div class="comment-bubble left">
           <div class="comment">
-            {{comment.name}}: {{ comment.description }}
+            <b>{{comment.name}}</b>: {{ comment.description }}
           </div>
-          <div color="charcoal" class="comment-detail">
+          <div class="comment-detail">
             <span class="comment-time">{{ comment.displayTimestamp }} </span>
             <span *ngIf="comment?.likeCount > 1 || comment?.likeCount == 0" class="comment-like">{{ comment.likeCount }} Likes</span>
             <span *ngIf="comment?.likeCount == 1" class="comment-like">{{ comment.likeCount }} Like</span>
           </div>
-          <div text-right>
-            <ion-icon *ngIf="comment?.liked" (click)="removeCommentLike(comment)" name="ios-heart" color="secondary" right></ion-icon>
-            <ion-icon *ngIf="!comment?.liked" (click)="addCommentLike(comment)" name="ios-heart" right></ion-icon>
+          <div text-right *ngIf="comment.uid !== this.firebase.user.uid">
+            <ion-icon *ngIf="comment?.liked" (click)="removeCommentLike(comment)" name="ios-heart" color="primary" right></ion-icon>
+            <ion-icon *ngIf="!comment?.liked" (click)="addCommentLike(comment)" name="ios-heart-outline" color="primary" right></ion-icon>
           </div>
         </div>
       </div>

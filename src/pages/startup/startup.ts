@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
 
 @IonicPage()
 @Component({

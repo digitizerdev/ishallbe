@@ -52,7 +52,8 @@ export class HomePage {
     console.log("Checking for new notifications");
     let newNotifications = this.firebase.afs.collection('notifications', ref => 
       ref.where("receiverUid", "==", this.firebase.user.uid).
-        where("read", "==", false));
+        where("read", "==", false).
+        where("messages", "==", false));
     newNotifications.valueChanges().subscribe((myNewNotifications) => {
       console.log("Got my new notifications");
       console.log(myNewNotifications);

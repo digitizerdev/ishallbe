@@ -58,14 +58,19 @@ page-post {
         position: relative;
         margin: 10px;
         max-width: 80%;
-        color: white;
         .comment-time {
+            padding: 5px;
+            text-align: center;
             font-size: 0.7em;
             display: block;
+            color: color($colors, steel);
         }
         .comment-like {
+            padding: 5px;
+            text-align: center;
             font-size: 0.85em;
             display: block;
+            color: color($colors, steel);
         }
         &:before {
             content: "\00a0";
@@ -76,11 +81,11 @@ page-post {
             bottom: -7.5px;
         }
         &.left {
-            background-color: color($colors, primary);
+            background-color: color($colors, gray);
             float: left;
             margin-left: 55px;
             &:before {
-                background-color: color($colors, primary);
+            background-color: color($colors, gray);
                 left: 10px;
                 -webkit-transform: rotate(70deg) skew(5deg);
             }
@@ -94,7 +99,7 @@ page-post {
     }
     .comment-footer {
         border-top: thick solid color($colors, primary);
-        max-height: 10%;
+        max-height: 50px;
     }
     .bar-footer {
         height: auto;

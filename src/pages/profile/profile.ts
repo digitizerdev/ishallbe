@@ -65,11 +65,23 @@ export class ProfilePage {
     chats.valueChanges().subscribe((myChats) => {
       console.log("Got my chats");
       console.log(myChats);
-      myChats.forEach((chat) => {
-        console.log("Checking chat for new messages");
-        console.log(chat);
-      });
+      this.flagNewMessages(myChats);
     });
+  }
+
+  flagNewMessages(chats) {
+    console.log("Flagging New Messages");
+    console.log(chats);
+    let recentNewMessages = false;
+    chats.forEach((chat) => {
+      console.log("Checking chat for new messages");
+      console.log(chat);
+      if (chat.newMessages) {
+        recentNewMessages = true;
+      }
+    });
+    if (recentNewMessages) this.newMessages = true;
+    else this.newMessages = false;
   }
 
   loadUser() {

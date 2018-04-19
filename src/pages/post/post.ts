@@ -5,6 +5,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import moment from 'moment';
 import { Observable } from 'rxjs';
+import 'rxjs/add/operator/take';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -33,11 +34,11 @@ export class PostPage {
   reported = false;
   private = false;
   loaded = false;
-  commentsLoaded = false;
   editor = false;
   deleting = false;
   commented = false;
   likedComment = false;
+  commentsLoaded = false;
   commentForm: {
     description?: string
   } = {};
@@ -87,12 +88,16 @@ export class PostPage {
     this.commentsCol = this.firebase.afs.collection(commentsPath, ref => ref.
       orderBy('timestamp', 'asc'));
     this.commentsCol.valueChanges().subscribe((comments) => {
-      this.comments = [];
-      this.setComments(comments);
+      if (!this.commentsLoaded) {
+        this.setComments(comments);
+        this.commentsLoaded = true;
+      }
     });
   }
 
   setComments(comments) {
+    console.log("Setting Comments");
+    console.log("Comments Loaded: " + this.commentsLoaded);
     this.comments = [];
     comments.forEach((comment) => {
       this.checkUserCommentLike(comment).subscribe((liked) => {
@@ -100,10 +105,10 @@ export class PostPage {
         let date = moment.unix(comment.timestamp);
         comment.displayTimestamp = moment(date).fromNow();
         if (comment.uid == this.firebase.user.uid) comment.mine = true;
-        this.comments.push(comment);
-      })
+        if (!comment.pushed) this.comments.push(comment);
+        comment.pushed = true;
+      });
     });
-    this.commentsLoaded = true;
   }
 
   checkUserCommentLike(comment) {
@@ -177,13 +182,15 @@ export class PostPage {
   }
 
   submit(commentForm) {
-    this.commented = true;
-    this.buildComment(commentForm).subscribe((comment) => {
-      commentForm.description = "";
-      this.setComment(comment);
-      if (this.post.uid !== this.firebase.user.uid)
-        this.sendNotification();
-    });
+    if (commentForm.description) {
+      this.commented = true;
+      this.buildComment(commentForm).subscribe((comment) => {
+        commentForm.description = "";
+        this.setComment(comment);
+        if (this.post.uid !== this.firebase.user.uid)
+          this.sendNotification();
+      });
+    }
   }
 
   buildComment(commentForm) {
@@ -219,6 +226,10 @@ export class PostPage {
   setComment(comment) {
     let newCommentPath = this.post.collection + '/' + this.post.id + '/comments/' + comment.id;
     this.firebase.afs.doc(newCommentPath).set(comment);
+    comment.mine = true;
+    let date = moment.unix(comment.timestamp);
+    comment.displayTimestamp = moment(date).fromNow();
+    this.comments.push(comment);
     this.addToCommentCount();
   }
 
@@ -228,7 +239,9 @@ export class PostPage {
   }
 
   deleteComment(comment) {
+    console.log("Deleting Comment");
     this.commented = true;
+    this.commentsLoaded = false;
     let commentPath = this.post.collection + "/" + this.post.id + "/comments/" + comment.id;
     this.firebase.afs.doc(commentPath).delete();
     this.subtractFromCommentCount();
@@ -356,4 +369,5 @@ export class PostPage {
   openLink(link) {
     this.iab.create(link, '_system');
   }
+
 }
