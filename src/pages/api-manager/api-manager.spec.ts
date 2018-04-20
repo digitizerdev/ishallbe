@@ -94,14 +94,6 @@ describe('ApiManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display ChannelFeature', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#ChannelFeature'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
     it('should display AppBaseFeature', () => {
         let de: DebugElement;
         let el: HTMLElement;

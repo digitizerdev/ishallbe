@@ -4,9 +4,6 @@ import { Nav, Platform, Events, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
-import { Pro } from '@ionic/pro';
-
-import { Observable } from 'rxjs/Rx';
 
 import { StartupPage } from '../pages/startup/startup';
 import { LoginPage } from '../pages/login/login';
@@ -32,7 +29,7 @@ export class iShallBe {
 
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any;
+  rootPage: StartupPage;
   affirmationsMenu: Array<{ title: string, icon: string, component: any }>;
   accountMenu: Array<{ title: string, icon: string, component: any }>;
   editorMenu: Array<{ title: string, icon: string, component: any }>;
@@ -65,61 +62,12 @@ export class iShallBe {
   platformReady() {
     this.platform.ready().then(() => {
       this.ready = true;
-      if (!this.platform.is('cordova'))
-        this.startup();
-      else
-        this.initDevicePlatform();
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
     });
-  }
-
-  startup() {
-    this.fcm.subscribeToTopic('affirmations');
-    this.nav.setRoot(StartupPage);
-    this.splashScreen.hide();
-  }
-
-  initDevicePlatform() {
-    this.splashScreen.show();
-    this.statusBar.styleDefault();
-    this.listenToFCMPushNotifications();
-    this.deployUpdate().subscribe((updateAvailable) => {
-      if (!updateAvailable)
-        this.startup();
-    });
-  }
-
-  deployUpdate() {
-    return Observable.create((observer) => {
-      return Pro.deploy.checkAndApply(true).then((resp) => {
-        if (resp.update) observer.next(true);
-        else observer.next(false);
-      });
-    });
-  }
-
-  listenToFCMPushNotifications() {
-    console.log("Listening to Push Notifications");
-    this.fcm.getToken().then(token =>
-      this.firebase.fcmToken = token);
-    this.fcm.onNotification().subscribe(notification => {
-      if (notification.wasTapped) {
-        console.log("Notification was tapped");
-        this.tappedNotification = true;
-        this.notification = notification;
-        this.openNotification(notification);
-      }
-      else {
-        console.log("Notification was not tapped");
-        this.displayNotificationAlert(notification);
-      }
-    });
-    this.fcm.onTokenRefresh().subscribe(token =>
-      this.firebase.fcmToken = token);
   }
 
   displayNotificationAlert(notification) {
-    console.log("Displaying Notification Alert");
-    console.log("Aler subtitle is " + notification.aps.alert);
     let alert = this.alertCtrl.create({
       title: 'Notification',
       subTitle: notification.aps.alert,
@@ -141,15 +89,10 @@ export class iShallBe {
   }
 
   openNotification(notification) {
-    console.log("Opening Notification");
-    console.log(notification);
     let notificationId = notification.id
-    console.log("Notification ID is " + notificationId);
     let notificationPath = "notifications/" + notification.id;
-    console.log("Notification Path is " + notificationPath);
     this.firebase.afs.doc(notificationPath).update({ read: true }).then(() => {
       let notificationCollection = notification.collection;
-      console.log("Notification collection is " + notificationCollection);
       if (notificationCollection == "pins")
         this.openPin(notification.docId);
       if (notificationCollection == "statements")
@@ -162,8 +105,6 @@ export class iShallBe {
   }
 
   openPin(docId) {
-    console.log("Opening Pin");
-    console.log("Doc Id is " + docId);
     this.nav.push(PostPage, {
       id: docId,
       type: "pins"
@@ -171,8 +112,6 @@ export class iShallBe {
   }
 
   openStatement(docId) {
-    console.log("Opening Statement");
-    console.log("Doc Id is " + docId);
     this.nav.push(PostPage, {
       id: docId,
       type: "statements"
@@ -180,8 +119,6 @@ export class iShallBe {
   }
 
   openGoal(docId) {
-    console.log("Opening Goal");
-    console.log("Doc Id is " + docId);
     this.nav.push(PostPage, {
       id: docId,
       type: "goals"
@@ -189,8 +126,6 @@ export class iShallBe {
   }
 
   openChat(docId) {
-    console.log("Opening Chat");
-    console.log("Doc Id is " + docId);
     this.nav.push(ChatPage, {
       uid: docId,
     });
@@ -204,9 +139,7 @@ export class iShallBe {
   }
 
   listenToTutorialLaunchEvents() {
-    console.log("Listening to tutorial launch events");
     this.events.subscribe('show tutorial', () => {
-      console.log("Launching Tutorial");
       this.nav.setRoot(TutorialPage);
     });
   }
@@ -235,7 +168,7 @@ export class iShallBe {
 
   listenToContributorPermissionEvents() {
     this.events.subscribe('contributor permission granted', () => {
-      this.fcm.subscribeToTopic('affirmations');
+      if (this.platform.is('cordova')) this.listenToFCMPushNotifications();
       if (this.tappedNotification) {
         if (this.notification.collection == "pins")
           this.openPin(this.notification.docId);
@@ -246,13 +179,31 @@ export class iShallBe {
         if (this.notification.message == "message")
           this.openChat(this.notification.docId);
       } else {
-        if (this.ready) this.nav.setRoot(StartupPage);
+         this.nav.setRoot(HomePage);
       }
     });
     this.events.subscribe('contributor permission not granted', () => {
       this.nav.setRoot(LoginPage);
       this.editor = false;
     });
+  }
+
+  listenToFCMPushNotifications() {
+    this.fcm.getToken().then(token =>
+      this.firebase.fcmToken = token);
+    this.fcm.onNotification().subscribe(notification => {
+      if (notification.wasTapped) {
+        this.tappedNotification = true;
+        this.notification = notification;
+        this.openNotification(notification);
+      }
+      else {
+        this.displayNotificationAlert(notification);
+      }
+    });
+    this.fcm.subscribeToTopic('affirmations');
+    this.fcm.onTokenRefresh().subscribe(token =>
+      this.firebase.fcmToken = token);
   }
 
   setMenus() {

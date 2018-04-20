@@ -77,6 +77,16 @@ ion-header ion-icon.back-button-icon.icon {
     height: 20vh;
 }
 
+.tdct-button {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.auth-bar {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
 .item-input {
     background-color: white;
     border-radius: 30px;
@@ -102,4 +112,18 @@ ion-item {
 .post-description {
     text-align: left;
     padding: 10px 20px 5px 20px;
+}
+
+.card {
+    border-radius: 15px;
+}
+
+.posts-section {
+    background-color: color($colors, primary) !important;
+}
+
+.posts-scroller {
+    background-color: color($colors, primary) !important;
+    max-width: 550px;
+    margin: 0 auto;
 }

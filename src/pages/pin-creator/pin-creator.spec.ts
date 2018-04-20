@@ -90,16 +90,6 @@ describe('PinCreatorPage', () => {
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
-    
-    it('should display display UploadThumbnailButton if selected day is Monday', () => {
-        component.monday = true;
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#UploadThumbnailButton'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
 
     it('should display display MondayForm if selected day is Monday', () => {
         component.monday = true;

@@ -1,7 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Slides } from 'ionic-angular';
 
-import { NotificationsPage } from '../../pages/notifications/notifications';
+import { NotificationsPage } from '../notifications/notifications';
+import { StatementCreatorPage} from '../statement-creator/statement-creator';
+import { GoalCreatorPage } from '../goal-creator/goal-creator';
 
 import { Observable } from 'rxjs';
 import moment from 'moment';
@@ -19,13 +21,16 @@ export class HomePage {
   pins: any[] = [];
   statements: any[] = [];
   goals: any[] = [];
-  pinStartDate: number;
-  pinEndDate: number;
+  postStartDate: number;
+  postEndDate: number;
   dayNumber: number;
   timestamp: number;
   pinsLoaded = false;
   statementsLoaded = false;
   goalsLoaded = false;
+  newNotifications = false;
+  noStatements = false;
+  noGoals = false;
   postSegment = 'statements';
 
   constructor(
@@ -36,14 +41,26 @@ export class HomePage {
 
   ionViewDidEnter() {
     this.timestampPage();
+    this.checkForNewNotifications();
     this.loadPosts();
   }
 
   timestampPage() {
     this.timestamp = moment().unix();
     this.dayNumber = moment().isoWeekday();
-    this.pinEndDate = parseInt(moment().format('YYYYMMDD'));
-    this.pinStartDate = this.pinEndDate - this.dayNumber;
+    this.postEndDate = parseInt(moment().format('YYYYMMDD'));
+    this.postStartDate = this.postEndDate - this.dayNumber;
+  }
+
+  checkForNewNotifications() {
+    let newNotifications = this.firebase.afs.collection('notifications', ref =>
+      ref.where("receiverUid", "==", this.firebase.user.uid).
+        where("read", "==", false).
+        where("messages", "==", false));
+    newNotifications.valueChanges().subscribe((myNewNotifications) => {
+      if (myNewNotifications.length > 0) this.newNotifications = true;
+      else this.newNotifications = false;
+    });
   }
 
   loadPosts() {
@@ -54,7 +71,9 @@ export class HomePage {
 
   loadPins() {
     let pins = this.firebase.afs.collection('pins', ref =>
-      ref.orderBy('affirmationDate').startAt(this.pinStartDate).endAt(this.pinEndDate));
+      ref.orderBy('postDate').
+        startAt(this.postStartDate).
+        endAt(this.postEndDate));
     pins.valueChanges().subscribe((pins) => {
       if (!this.pinsLoaded) {
         this.setPins(pins).subscribe(() => {
@@ -83,11 +102,16 @@ export class HomePage {
   loadStatements() {
     let statements = this.firebase.afs.collection('statements', ref =>
       ref.where('private', '==', false).
-      where('reported', '==', false)
-      .orderBy('timestamp', 'desc'));
+        where('reported', '==', false)
+        .orderBy('timestamp', 'desc').
+        startAt(this.postStartDate).endAt(this.postEndDate));
     statements.valueChanges().subscribe((statements) => {
-      if (!this.statementsLoaded)
-        this.setStatements(statements);
+      if (statements.length > 0) {
+        if (!this.statementsLoaded)
+          this.setStatements(statements);
+      } else {
+        this.noStatements = true;
+      }
     });
   }
 
@@ -104,10 +128,15 @@ export class HomePage {
     let goals = this.firebase.afs.collection('goals', ref =>
       ref.where('private', '==', false).
         where('reported', '==', false).
-        orderBy('timestamp', 'desc'));
+        orderBy('timestamp', 'desc').
+        startAt(this.postStartDate).endAt(this.postEndDate));
     goals.valueChanges().subscribe((goals) => {
-      if (!this.goalsLoaded)
-        this.setGoals(goals);
+      if (goals.length > 0) {
+        if (!this.goalsLoaded)
+          this.setGoals(goals);
+      } else {
+        this.noGoals = true
+      }
     });
   }
 
@@ -130,5 +159,13 @@ export class HomePage {
 
   refreshPage(refresh) {
     this.navCtrl.setRoot(this.navCtrl.getActive().component);
+  }
+
+  setRootStatementCreatorPage() {
+    this.navCtrl.setRoot(StatementCreatorPage);
+  }
+
+  setRootGoalCreatorPage() {
+    this.navCtrl.setRoot(GoalCreatorPage);
   }
 }

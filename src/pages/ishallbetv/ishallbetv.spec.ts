@@ -98,6 +98,14 @@ describe('IshallbetvPage', () => {
         expect(component instanceof IshallbetvPage).toBe(true);
     });
 
+    it('should display ToolbarLogoComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('toolbar-logo'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+    
     it('should display pushAboutPageIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;

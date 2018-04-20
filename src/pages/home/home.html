@@ -6,13 +6,14 @@
     <toolbar-logo></toolbar-logo>
     <ion-buttons end>
       <button (click)="showNotifications()" id="pushNotificationsPageIcon" ion-button icon-only>
-        <ion-icon color="primary" name="notifications"></ion-icon>
+        <ion-icon *ngIf="newNotifications" color="primary" name="notifications"></ion-icon>
+        <ion-icon *ngIf="!newNotifications" color="primary" name="notifications-outline"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content class="home-content" no-border>
-  <ion-refresher (ionRefresh)="refreshPage($event)" color="primary" no-border>
+  <ion-refresher (ionRefresh)="refreshPage()" color="primary" no-border>
     <ion-refresher-content refreshingSpinner="dots" refreshingText="Refeshing" no-border>
     </ion-refresher-content>
   </ion-refresher>
@@ -21,27 +22,43 @@
       <pin [post]="pin"></pin>
     </ion-slide>
   </ion-slides>
-  <div class="posts-scroller">
-    <ion-segment mode="ios" class="post-segment" [(ngModel)]="postSegment" color="background" padding-top padding-left padding-right>
-      <ion-segment-button value="statements">
-        <b>STATEMENTS</b>
-      </ion-segment-button>
-      <ion-segment-button value="goals">
-        <b>GOALS</b>
-      </ion-segment-button>
+  <div class="posts-section">
+    <div class="posts-scroller">
+      <ion-segment mode="ios" class="post-segment" [(ngModel)]="postSegment" color="background" padding-top padding-left padding-right>
+        <ion-segment-button value="statements">
+          <b>STATEMENTS</b>
+        </ion-segment-button>
+        <ion-segment-button value="goals">
+          <b>GOALS</b>
+        </ion-segment-button>
+        <br>
+      </ion-segment>
+      <div *ngIf="postSegment=='statements'" id="StatementsScroller">
+        <ion-card *ngFor="let statement of statements">
+          <statement [post]="statement"></statement>
+        </ion-card>
+        <ion-row *ngIf="noStatements" padding-top>
+          <ion-col text-center padding>
+            <button id="HomeSetRootStatementCreatorPageButton" ion-button (click)="setRootStatementCreatorPage()" color="background" class="tdct-button" round
+             strong>
+              CREATE STATEMENT</button>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="postSegment=='goals'" id="GoalsScroller">
+        <ion-card *ngFor="let goal of goals">
+          <goal [post]="goal"></goal>
+        </ion-card>
+        <ion-row *ngIf="noGoals" padding-top>
+          <ion-col text-center padding>
+            <button id="HomeSetRootGoalCreatorPageButton" ion-button (click)="setRootGoalCreatorPage()" color="background" class="tdct-button" round
+               strong>
+              CREATE GOAL</button>
+          </ion-col>
+        </ion-row>
+      </div>
       <br>
-    </ion-segment>
-    <div *ngIf="postSegment=='statements'" id="StatementsScroller">
-      <ion-card *ngFor="let statement of statements">
-        <statement [post]="statement"></statement>
-      </ion-card>
     </div>
-    <div *ngIf="postSegment=='goals'" id="GoalsScroller">
-      <ion-card *ngFor="let goal of goals">
-        <goal [post]="goal"></goal>
-      </ion-card>
-    </div>
-    <br>
   </div>
   <footer></footer>
 </ion-content>

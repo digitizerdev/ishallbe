@@ -28,7 +28,6 @@ export class IshallbetvPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad IshallbetvPage');
     this.setLastMonday();
     this.loadVideos().subscribe((videos) => {
       this.setVideos(videos);
@@ -36,17 +35,12 @@ export class IshallbetvPage {
   }
 
   setLastMonday() {
-    console.log("Setting Last Monday");
     let today = parseInt(moment().format('YYYYMMDD'));
-    console.log("Today is " + today);
     let dayNumber = moment().isoWeekday();
-    console.log("Day Number is " + dayNumber);
     this.currentMonday = today - dayNumber;
-    console.log("Current Monday is " + this.currentMonday);
   }
 
   loadVideos() {
-    console.log("Loading Videos");
     return Observable.create((observer) => {
       let allVideos = this.firebase.afs.collection('pins', ref =>
         ref.where('day', '==', 'Monday').
@@ -62,7 +56,6 @@ export class IshallbetvPage {
     this.videos = [];
     videos.forEach((video) => {
       if (video.day == 'Monday') {
-        console.log(video);
         video.displayAffirmationDate = moment(video.displayAffirmationDate).fromNow();
         this.videos.push(video);
       }

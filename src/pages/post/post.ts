@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import moment from 'moment';
 import { Observable } from 'rxjs';
+import 'rxjs/add/operator/take';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -31,11 +34,11 @@ export class PostPage {
   reported = false;
   private = false;
   loaded = false;
-  commentsLoaded = false;
   editor = false;
   deleting = false;
   commented = false;
   likedComment = false;
+  commentsLoaded = false;
   commentForm: {
     description?: string
   } = {};
@@ -44,27 +47,22 @@ export class PostPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private alertCtrl: AlertController,
+    private iab: InAppBrowser,
     private firebase: FirebaseProvider
   ) {
   }
 
   ionViewDidLoad() {
-    console.log("Opening Post");
     this.id = this.navParams.get("id");
-    console.log("Post ID is " + this.id);
     this.collection = this.navParams.get("type");
     this.loadPost();
     this.loadComments();
   }
 
   loadPost() {
-    console.log("Loading Post");
     this.postPath = this.collection + '/' + this.id;
-    console.log("postPath is " + this.postPath);
     this.postDoc = this.firebase.afs.doc(this.postPath);
     this.postDoc.valueChanges().subscribe((post) => {
-      console.log("Got post");
-      console.log(post);
       let date = moment.unix(post.timestamp);
       post.displayTimestamp = moment(date).fromNow();
       if (post.uid == this.firebase.afa.auth.currentUser.uid) this.mine = true;
@@ -84,8 +82,10 @@ export class PostPage {
     this.commentsCol = this.firebase.afs.collection(commentsPath, ref => ref.
       orderBy('timestamp', 'asc'));
     this.commentsCol.valueChanges().subscribe((comments) => {
-      this.comments = [];
-      this.setComments(comments);
+      if (!this.commentsLoaded) {
+        this.setComments(comments);
+        this.commentsLoaded = true;
+      }
     });
   }
 
@@ -97,10 +97,10 @@ export class PostPage {
         let date = moment.unix(comment.timestamp);
         comment.displayTimestamp = moment(date).fromNow();
         if (comment.uid == this.firebase.user.uid) comment.mine = true;
-        this.comments.push(comment);
-      })
+        if (!comment.pushed) this.comments.push(comment);
+        comment.pushed = true;
+      });
     });
-    this.commentsLoaded = true;
   }
 
   checkUserCommentLike(comment) {
@@ -112,6 +112,14 @@ export class PostPage {
         else observer.next(false);
       });
     });
+  }
+
+  markIncomplete() {
+    this.firebase.afs.doc(this.postPath).update({ complete: false });
+  }
+
+  markComplete() {
+    this.firebase.afs.doc(this.postPath).update({ complete: true });
   }
 
   togglePostManagerMenu() {
@@ -174,13 +182,15 @@ export class PostPage {
   }
 
   submit(commentForm) {
-    this.commented = true;
-    this.buildComment(commentForm).subscribe((comment) => {
-      commentForm.description = "";
-      this.setComment(comment);
-      if (this.post.uid !== this.firebase.user.uid)
-        this.sendNotification();
-    });
+    if (commentForm.description) {
+      this.commented = true;
+      this.buildComment(commentForm).subscribe((comment) => {
+        commentForm.description = "";
+        this.setComment(comment);
+        if (this.post.uid !== this.firebase.user.uid)
+          this.sendNotification();
+      });
+    }
   }
 
   buildComment(commentForm) {
@@ -216,6 +226,10 @@ export class PostPage {
   setComment(comment) {
     let newCommentPath = this.post.collection + '/' + this.post.id + '/comments/' + comment.id;
     this.firebase.afs.doc(newCommentPath).set(comment);
+    comment.mine = true;
+    let date = moment.unix(comment.timestamp);
+    comment.displayTimestamp = moment(date).fromNow();
+    this.comments.push(comment);
     this.addToCommentCount();
   }
 
@@ -226,6 +240,7 @@ export class PostPage {
 
   deleteComment(comment) {
     this.commented = true;
+    this.commentsLoaded = false;
     let commentPath = this.post.collection + "/" + this.post.id + "/comments/" + comment.id;
     this.firebase.afs.doc(commentPath).delete();
     this.subtractFromCommentCount();
@@ -349,4 +364,9 @@ export class PostPage {
       }
     });
   }
+
+  openLink(link) {
+    this.iab.create(link, '_system');
+  }
+
 }

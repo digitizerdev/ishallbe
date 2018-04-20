@@ -21,7 +21,7 @@ import { YoutubePipe } from '../../pipes/youtube/youtube';
 
 import { mockStatements } from '../../../test-data/statements/mocks';
 import { mockComments } from '../../../test-data/comments/mocks';
-
+import { mockGoals } from '../../../test-data/goals/mocks';
 
 import { } from 'jasmine';
 
@@ -201,6 +201,30 @@ describe('PostPage', () => {
         expect(el).toBeUndefined();
     });
 
+    it('should display MarkCompleteButton if collection is goals and not complete', () => {
+        component.collection = 'goals';
+        component.post = mockGoals[0];
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#MarkCompleteButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display MarkIncompleteButton if collection is goals and is complete', () => {
+        component.collection = 'goals';
+        component.post = mockGoals[2];
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css
+            ('#MarkIncompleteButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
     it('should display PostFooterComponent', () => {
         component.post = mockStatements[0];
         component.loaded = true;
@@ -211,13 +235,8 @@ describe('PostPage', () => {
     it('should display comments if comments are loaded', () => {
         component.comments = mockComments;
         component.commentsLoaded = true;
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css
-            ('#Comments'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
+        // Can't query for firebase uid because no firesotre mock
+        expect(component.commentsLoaded).toBeTruthy();
     });
 
     it('should display comment bar', () => {

@@ -11,17 +11,38 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content>
-  <div *ngIf="postManagerMenu" class="post-menu" padding-bottom>
-    <button *ngIf="mine && private" (click)="togglePrivacy()" id="makePublicButton" color="primary" ion-button round strong float-right>MAKE PUBLIC</button>
-    <button *ngIf="mine && !private" (click)="togglePrivacy()" id="makePrivateButton" color="charcoal" ion-button round strong
-      float-right>MAKE PRIVATE</button>
-    <button *ngIf="mine || editor" (click)="deletePost()" id="deletePostButton" color="danger" ion-button round strong float-left>DELETE</button>
-    <button *ngIf="!mine && !reported" (click)="toggleReported()" id="reportPostButton" color="secondary" ion-button round strong
-      float-right>REPORT</button>
-    <button *ngIf="editor && reported" (click)="toggleReported()" id="unreportPostButton" color="secondary" ion-button round
-      strong float-right>UNREPORT</button>
+<ion-content text-center>
+  <div *ngIf="postManagerMenu">
+    <ion-row *ngIf="mine && private">
+      <ion-col text-center>
+        <button (click)="togglePrivacy()" id="makePublicButton" color="primary" ion-button round strong>MAKE PUBLIC</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="mine && !private">
+      <ion-col text-center>
+        <button (click)="togglePrivacy()" id="makePrivateButton" color="charcoal" ion-button round strong>MAKE PRIVATE</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="mine || editor">
+      <ion-col text-center>
+        <button (click)="deletePost()" id="deletePostButton" color="danger" ion-button round strong>DELETE</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!mine && !reported">
+      <ion-col text-center>
+        <button (click)="toggleReported()" id="reportPostButton" color="secondary" ion-button round strong>REPORT</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="editor && reported">
+      <ion-col text-center>
+        <button (click)="toggleReported()" id="unreportPostButton" color="secondary" ion-button round strong>UNREPORT</button>
+      </ion-col>
+    </ion-row>
   </div>
+  <ion-refresher (ionRefresh)="refreshPage()" color="primary" no-border>
+    <ion-refresher-content refreshingSpinner="dots" refreshingText="Refeshing" no-border>
+    </ion-refresher-content>
+  </ion-refresher>
   <post-header *ngIf="collection !== 'pins'" [postDoc]="post"></post-header>
   <img *ngIf="collection == 'statements' && post?.url" src="{{post?.url}}">
   <ion-row *ngIf="collection == 'goals'" id="DueDate" text-center>
@@ -41,14 +62,27 @@
     <h2 color="primary" ion-text>
       <b>{{post?.title}}</b>
     </h2>
-    <h5 class="post-description" text-left>{{post?.description}}</h5>
+    <h5 class="post-description" text-center>{{post?.description}}</h5>
   </div>
+  <button *ngIf="post?.day == 'Tuesday'" (click)="openLink(post.link)" color="primary" id="OpenTuneButton" text-center ion-button
+    round strong>
+    <ion-icon padding-right name="musical-notes"></ion-icon>
+    OPEN TUNE
+  </button>
   <div text-center>
     <iframe *ngIf="video" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
   </div>
   <h5 *ngIf="collection !== 'pins'" id="NonPinDescription" padding-left padding-right>{{post?.description}}</h5>
+  <button *ngIf="collection == 'goals' && !post?.complete" (click)="markIncomplete()" id="MarkCompleteButton">
+    <ion-icon padding-right name="ios-checkbox"></ion-icon>
+    MARK COMPLETE
+  </button>
+  <button *ngIf="post?.complete" (click)="markComplete()" id="MarkIncompleteButton">
+    <ion-icon padding-right name="ios-checkbox-outline"></ion-icon>
+    MARK INCOMPLETE
+  </button>
   <post-footer *ngIf="loaded" [postDoc]="post"></post-footer>
-  <ion-row *ngIf="commentsLoaded" class="post-comments" id="Comments">
+  <ion-row class="post-comments" id="Comments" text-left>
     <div *ngFor="let comment of comments" class="comment-wrapper rlt" (hold)="onCommentHold($event, $index, comment)">
       <div>
         <img class="profile-picture left" src="{{ comment?.face }}" />
@@ -57,16 +91,16 @@
         </span>
         <div class="comment-bubble left">
           <div class="comment">
-            {{ comment.description }}
+            <b>{{comment.name}}</b>: {{ comment.description }}
           </div>
           <div class="comment-detail">
             <span class="comment-time">{{ comment.displayTimestamp }} </span>
             <span *ngIf="comment?.likeCount > 1 || comment?.likeCount == 0" class="comment-like">{{ comment.likeCount }} Likes</span>
             <span *ngIf="comment?.likeCount == 1" class="comment-like">{{ comment.likeCount }} Like</span>
           </div>
-          <div text-right>
-            <ion-icon *ngIf="comment?.liked" (click)="removeCommentLike(comment)" name="ios-heart" color="secondary" right></ion-icon>
-            <ion-icon *ngIf="!comment?.liked" (click)="addCommentLike(comment)" name="ios-heart" right></ion-icon>
+          <div text-right *ngIf="comment.uid !== this.firebase.user.uid">
+            <ion-icon *ngIf="comment?.liked" (click)="removeCommentLike(comment)" name="ios-heart" color="primary" right></ion-icon>
+            <ion-icon *ngIf="!comment?.liked" (click)="addCommentLike(comment)" name="ios-heart-outline" color="primary" right></ion-icon>
           </div>
         </div>
       </div>
@@ -75,16 +109,16 @@
     </div>
   </ion-row>
 </ion-content>
-<ion-footer class="comment-footer" id="MessageBar" no-border>
-    <ion-toolbar no-border color="white">
-      <form #commentForm="ngForm" novalidate>
-        <ion-input ion-text [(ngModel)]="commentForm.description" name="description" #description="ngModel" type="text" placeholder="Write your comment"
-          spellcheck="true" autocapitalize="true" required></ion-input>
+<ion-footer class="comment-footer" id="CommentBar" no-border>
+  <ion-toolbar no-border color="white">
+    <form #commentForm="ngForm" novalidate>
+      <ion-input ion-text [(ngModel)]="commentForm.description" name="description" #description="ngModel" type="text" placeholder="Write your comment"
+        spellcheck="true" autocapitalize="true" required></ion-input>
       <ion-buttons end>
         <button ion-button (click)="submit(commentForm)" type="submit" large>
           <ion-icon name="send" color="white"></ion-icon>
         </button>
       </ion-buttons>
     </form>
-    </ion-toolbar>
+  </ion-toolbar>
 </ion-footer>

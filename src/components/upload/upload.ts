@@ -34,6 +34,7 @@ export class UploadComponent {
   imageCropped = false;
   recording = false;
   complete = false;
+  browser = false;
 
   constructor(
     private platform: Platform,
@@ -47,6 +48,8 @@ export class UploadComponent {
   }
 
   ngOnInit() {
+    if (this.platform.is('cordova')) this.browser = false;
+    else this.browser = true;
     this.contentName = moment().unix().toString();
     this.loadMedia();
     this.listenToRedoEvents();
@@ -62,7 +65,11 @@ export class UploadComponent {
       case 'audio': {
         this.contentName = this.contentName + ".m4a";
         if (this.platform.is('ios')) this.getIOSAudio();
-        if (this.platform.is('android')) this.getAndroidAudio(); 
+        if (this.platform.is('android')) this.getAndroidAudio();
+      }
+        break;
+      case 'browser-image': {
+        this.getBrowserImage();
       }
         break;
       default: {
@@ -81,6 +88,22 @@ export class UploadComponent {
     }).catch((error) => {
       this.events.publish("getImageCanceled");
     });;
+  }
+
+  getBrowserImage() {
+    let file = (<HTMLInputElement>document.getElementById("files")).files[0];
+    var storageRef = firebase.storage().ref('test/' + file.name);
+    var task = storageRef.put(file);
+    task.on('state_changed',
+      function progress(snapshot: any) {
+        var percentage = (snapshot.bytesTransferred /
+          snapshot.totalBytes) * 100;
+        this.image = snapshot.downloadUrl;
+      }, function error(err) {
+      },
+      function complete() {
+      }
+    )
   }
 
   getCameraOptions() {
@@ -132,7 +155,7 @@ export class UploadComponent {
     this.loader.present();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
     let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
-    this.storeImage(uploadPath, this.image).subscribe((snapshot) => {
+    this.storeImage(uploadPath).subscribe((snapshot) => {
       let image = {
         url: snapshot.downloadURL,
         name: this.contentName
@@ -143,11 +166,26 @@ export class UploadComponent {
     });
   }
 
-  storeImage(path, obj) {
+  uploadBrowserImage() {
+    this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
+    this.loader.present();
+    let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
+    this.storeImage(uploadPath).subscribe((snapshot) => {
+      let image = {
+        url: snapshot.downloadURL,
+        name: this.contentName
+      }
+      this.complete = true;
+      this.uploaded.emit(image);
+      this.loader.dismiss();
+    });
+  }
+
+  storeImage(path) {
     this.waitForStorageTimeout();
     return Observable.create((observer) => {
       let storagePath = firebase.storage().ref(path);
-      return storagePath.putString(obj, 'data_url', { contentType: 'image/jpeg' }).
+      return storagePath.putString(this.image, 'data_url', { contentType: 'image/jpeg' }).
         then(function (snapshot) {
           observer.next(snapshot);
         }).catch((error: any) => {

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { PostPage } from '../../pages/post/post';
 
@@ -13,6 +14,7 @@ export class PinComponent {
 
   constructor(
     private navCtrl: NavController,
+    private iab: InAppBrowser
   ) {}
 
   viewPin() {
@@ -20,5 +22,9 @@ export class PinComponent {
       id: this.pin.id,
       type: "pins"
      });
+  }
+
+  openLink() {
+    this.iab.create(this.pin.link, '_system');
   }
 }

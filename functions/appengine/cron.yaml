@@ -5,7 +5,7 @@ cron:
 
 - description: Push a "tick" onto pubsub every day
   url: /publish/daily-tick
-  schedule: every 24 hours
+  schedule: every 24 hours 08:00
 
 - description: Push a "tick" onto pubsub every week
   url: /publish/weekly-tick

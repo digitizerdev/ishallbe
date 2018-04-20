@@ -3,6 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon color="primary" name="menu"></ion-icon>
     </button>
+    <toolbar-logo></toolbar-logo>
     <ion-buttons end>
       <button (click)="pushAboutPage()" id="pushAboutPageIcon" ion-button icon-only>
         <ion-icon color="primary" name="information-circle"></ion-icon>
@@ -12,9 +13,12 @@
 </ion-header>
 <ion-content no-border class="ishallbetv-content">
   <div class="images" id="Videos">
+    <br>
     <div *ngFor="let video of videos" (click)="openPin(video)" text-center padding>
-      <h4 color="primary" ion-text><b>{{ video.displayAffirmationDate }}</b></h4>
+      <h5><b>{{ video.description }}</b></h5>
+      <h6>{{ video.displayAffirmationDate }}</h6>
       <img class="one-image" src="{{ video.url }}">
+    <br>
     </div>
   </div>
 </ion-content>

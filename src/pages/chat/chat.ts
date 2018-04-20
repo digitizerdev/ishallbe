@@ -49,8 +49,6 @@ export class ChatPage {
     let chatPath = "users/" + this.firebase.user.uid + "/chats/" + this.uid;
     let chat = this.firebase.afs.doc(chatPath);
     chat.valueChanges().subscribe((messages) => {
-      console.log("Got messages");
-      console.log(messages);
       if (messages) {
         chat.update({newMessages: false});
       }
@@ -84,8 +82,6 @@ export class ChatPage {
   }
 
   submit(chatForm) {
-    console.log("Submitted");
-    console.log(chatForm);
     if (chatForm.description) {
       if (!this.newChat) {
         this.addSenderMessage(chatForm.description);
@@ -130,8 +126,6 @@ export class ChatPage {
       let messagePath = "users/" + this.firebase.user.uid + "/chats/" + this.uid + "/messages/" + message.id;
       this.firebase.afs.doc(messagePath).set(message);
       this.chatForm.description = null;
-      console.log("Reset chat form");
-      console.log(this.chatForm)
     });
   }
 

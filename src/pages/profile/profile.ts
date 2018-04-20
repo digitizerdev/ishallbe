@@ -10,6 +10,8 @@ import { HomePage } from '../home/home';
 import { ProfileUpdatePage } from '../profile-update/profile-update';
 import { ChatsPage } from '../chats/chats';
 import { ChatPage } from '../chat/chat';
+import { StatementCreatorPage } from '../statement-creator/statement-creator';
+import { GoalCreatorPage } from '../goal-creator/goal-creator';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -25,6 +27,7 @@ export class ProfilePage {
   user: any;
   uid: string;
   photo: string;
+  userPath: string;
   mine = false;
   loaded = false;
   statementsLoaded = false;
@@ -32,7 +35,9 @@ export class ProfilePage {
   editor = false;
   userEditor = false;
   blocked = false;
-  userPath: string;
+  newMessages = false;
+  noStatements = false;
+  noGoals = false;
   postSegment = 'statements';
 
   constructor(
@@ -50,9 +55,29 @@ export class ProfilePage {
       this.uid = this.firebase.afa.auth.currentUser.uid;
     }
     this.editor = this.firebase.user.editor;
+    this.checkForNewMessages();
     this.loadUser();
     if (this.mine) this.loadAllMyPosts();
     else this.loadMyPublicPosts();
+  }
+
+  checkForNewMessages() {
+    let chatsPath = "users/" + this.uid + "/chats";
+    let chats = this.firebase.afs.collection(chatsPath);
+    chats.valueChanges().subscribe((myChats) => {
+      this.flagNewMessages(myChats);
+    });
+  }
+
+  flagNewMessages(chats) {
+    let recentNewMessages = false;
+    chats.forEach((chat) => {
+      if (chat.newMessages) {
+        recentNewMessages = true;
+      }
+    });
+    if (recentNewMessages) this.newMessages = true;
+    else this.newMessages = false;
   }
 
   loadUser() {
@@ -86,10 +111,12 @@ export class ProfilePage {
   loadAllStatements() {
     let statements = this.firebase.afs.collection('statements', ref =>
       ref.where('uid', '==', this.uid).
-        orderBy('timestamp', 'desc'));
+        orderBy('timestamp', 'desc').limit(25));
     statements.valueChanges().subscribe((statements) => {
-      if (!this.statementsLoaded)
-        this.setStatements(statements);
+      if (statements.length > 0) {
+        if (!this.statementsLoaded)
+          this.setStatements(statements);
+      } else this.noStatements = true;
     });
   }
 
@@ -97,10 +124,10 @@ export class ProfilePage {
     let statements = this.firebase.afs.collection('statements', ref =>
       ref.where('uid', '==', this.uid).
         where('private', '==', false).
-        orderBy('timestamp', 'desc'));
+        orderBy('timestamp', 'desc').limit(25));
     statements.valueChanges().subscribe((statements) => {
-      if (!this.statementsLoaded)
-        this.setStatements(statements);
+        if (!this.statementsLoaded)
+          this.setStatements(statements);
     });
   }
 
@@ -116,21 +143,23 @@ export class ProfilePage {
   loadAllGoals() {
     let goals = this.firebase.afs.collection('goals', ref =>
       ref.where('uid', '==', this.uid).
-      orderBy('timestamp', 'desc'));
+        orderBy('timestamp', 'desc').limit(25));
     goals.valueChanges().subscribe((goals) => {
-      if (!this.goalsLoaded)
-        this.setGoals(goals);
+      if (goals.length > 0) {
+        if (!this.goalsLoaded)
+          this.setGoals(goals);
+      } else this.noGoals = true;
     });
   }
 
   loadPublicGoals() {
     let goals = this.firebase.afs.collection('goals', ref =>
       ref.where('uid', '==', this.uid).
-      where('private', '==', false).
-      orderBy('timestamp', 'desc'));
+        where('private', '==', false).
+        orderBy('timestamp', 'desc').limit(25));
     goals.valueChanges().subscribe((goals) => {
-      if (!this.goalsLoaded)
-        this.setGoals(goals);
+        if (!this.goalsLoaded)
+          this.setGoals(goals);
     });
   }
 
@@ -148,19 +177,19 @@ export class ProfilePage {
   }
 
   blockUser() {
-    this.firebase.afs.doc(this.userPath).update({ blocked: true});
+    this.firebase.afs.doc(this.userPath).update({ blocked: true });
   }
 
   unblockUser() {
-    this.firebase.afs.doc(this.userPath).update({ blocked: false});
+    this.firebase.afs.doc(this.userPath).update({ blocked: false });
   }
 
   makeEditor() {
-    this.firebase.afs.doc(this.userPath).update({ editor: true});
+    this.firebase.afs.doc(this.userPath).update({ editor: true });
   }
 
   makeContributor() {
-    this.firebase.afs.doc(this.userPath).update({editor: false});
+    this.firebase.afs.doc(this.userPath).update({ editor: false });
   }
 
   refreshPage(refresh) {
@@ -176,11 +205,18 @@ export class ProfilePage {
   }
 
   pushChatPage() {
-    this.navCtrl.push(ChatPage, {uid: this.uid});
+    this.navCtrl.push(ChatPage, { uid: this.uid });
   }
 
   setRootHomePage() {
     this.navCtrl.setRoot(HomePage);
   }
 
+  setRootStatementCreatorPage() {
+    this.navCtrl.setRoot(StatementCreatorPage);
+  }
+
+  setRootGoalCreatorPage() {
+    this.navCtrl.setRoot(GoalCreatorPage);
+  }
 }
