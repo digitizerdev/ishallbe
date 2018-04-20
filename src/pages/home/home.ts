@@ -1,7 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Slides } from 'ionic-angular';
 
-import { NotificationsPage } from '../../pages/notifications/notifications';
+import { NotificationsPage } from '../notifications/notifications';
+import { StatementCreatorPage} from '../statement-creator/statement-creator';
+import { GoalCreatorPage } from '../goal-creator/goal-creator';
 
 import { Observable } from 'rxjs';
 import moment from 'moment';
@@ -27,6 +29,8 @@ export class HomePage {
   statementsLoaded = false;
   goalsLoaded = false;
   newNotifications = false;
+  noStatements = false;
+  noGoals = false;
   postSegment = 'statements';
 
   constructor(
@@ -36,6 +40,7 @@ export class HomePage {
   }
 
   ionViewDidEnter() {
+    console.log("Page Entered")
     this.timestampPage();
     this.checkForNewNotifications();
     this.loadPosts();
@@ -60,6 +65,7 @@ export class HomePage {
   }
 
   loadPosts() {
+    console.log("Loading Posts");
     this.loadPins();
     this.loadStatements();
     this.loadGoals();
@@ -102,8 +108,14 @@ export class HomePage {
         .orderBy('timestamp', 'desc').
         startAt(this.postStartDate).endAt(this.postEndDate));
     statements.valueChanges().subscribe((statements) => {
-      if (!this.statementsLoaded)
-        this.setStatements(statements);
+      console.log("Got statements");
+      console.log(statements);
+      if (statements.length > 0) {
+        if (!this.statementsLoaded)
+          this.setStatements(statements);
+      } else {
+        this.noStatements = true;
+      }
     });
   }
 
@@ -123,8 +135,14 @@ export class HomePage {
         orderBy('timestamp', 'desc').
         startAt(this.postStartDate).endAt(this.postEndDate));
     goals.valueChanges().subscribe((goals) => {
-      if (!this.goalsLoaded)
-        this.setGoals(goals);
+      console.log("Got goals");
+      console.log(goals);
+      if (goals.length > 0) {
+        if (!this.goalsLoaded)
+          this.setGoals(goals);
+      } else {
+        this.noGoals = true
+      }
     });
   }
 
@@ -147,5 +165,13 @@ export class HomePage {
 
   refreshPage(refresh) {
     this.navCtrl.setRoot(this.navCtrl.getActive().component);
+  }
+
+  setRootStatementCreatorPage() {
+    this.navCtrl.setRoot(StatementCreatorPage);
+  }
+
+  setRootGoalCreatorPage() {
+    this.navCtrl.setRoot(GoalCreatorPage);
   }
 }

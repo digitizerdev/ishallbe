@@ -211,6 +211,17 @@ describe('ProfilePage', () => {
         expect(el).toBeUndefined();
     });
 
+    it('should display ProfileSetRootStatementCreatorPageButton if selected and no statements', () => {
+        component.postSegment = 'statements';
+        component.noStatements = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ProfileSetRootStatementCreatorPageButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
     it('should display my goals', () => {
         component.postSegment = 'goals';
         fixture.detectChanges();
@@ -218,6 +229,17 @@ describe('ProfilePage', () => {
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css
             ('#MyGoals'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display ProfileSetRootGoalCreatorPageButton if selected and no goals', () => {
+        component.postSegment = 'goals';
+        component.noGoals = true;
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ProfileSetRootGoalCreatorPageButton'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });

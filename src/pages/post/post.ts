@@ -122,6 +122,14 @@ export class PostPage {
     });
   }
 
+  markIncomplete() {
+    this.firebase.afs.doc(this.postPath).update({ complete: false });
+  }
+
+  markComplete() {
+    this.firebase.afs.doc(this.postPath).update({ complete: true });
+  }
+
   togglePostManagerMenu() {
     this.postManagerMenu = !this.postManagerMenu;
   }

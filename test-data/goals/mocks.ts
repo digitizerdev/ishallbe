@@ -51,7 +51,7 @@ export const goal3 = {
   likeCount: 0,
   reported: true,
   private: false,
-  complete: false,
+  complete: true,
   url: "https://firebasestorage.googleapis.com/v0/b/ishallbe-de9a3.appspot.com/o/content%2F3yYMHPq3fpZfupL38tKJlNGPcpo2%2Fimages%2F201801091208?alt=media&token=67601464-10a2-4878-a951-b70c39a17a7e",
   filename: "20180104130000.m4a",
   displayDueDate: "MAR 11 2018 11:01PM",

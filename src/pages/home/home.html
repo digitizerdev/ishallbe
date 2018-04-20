@@ -37,11 +37,25 @@
         <ion-card *ngFor="let statement of statements">
           <statement [post]="statement"></statement>
         </ion-card>
+        <ion-row *ngIf="noStatements" padding-top>
+          <ion-col text-center padding>
+            <button id="HomeSetRootStatementCreatorPageButton" ion-button (click)="setRootStatementCreatorPage()" color="background" class="tdct-button" round
+             strong>
+              CREATE STATEMENT</button>
+          </ion-col>
+        </ion-row>
       </div>
       <div *ngIf="postSegment=='goals'" id="GoalsScroller">
         <ion-card *ngFor="let goal of goals">
           <goal [post]="goal"></goal>
         </ion-card>
+        <ion-row *ngIf="noGoals" padding-top>
+          <ion-col text-center padding>
+            <button id="HomeSetRootGoalCreatorPageButton" ion-button (click)="setRootGoalCreatorPage()" color="background" class="tdct-button" round
+               strong>
+              CREATE GOAL</button>
+          </ion-col>
+        </ion-row>
       </div>
       <br>
     </div>

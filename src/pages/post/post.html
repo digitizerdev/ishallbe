@@ -73,6 +73,14 @@
     <iframe *ngIf="video" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
   </div>
   <h5 *ngIf="collection !== 'pins'" id="NonPinDescription" padding-left padding-right>{{post?.description}}</h5>
+  <button *ngIf="collection == 'goals' && !post?.complete" (click)="markIncomplete()" id="MarkCompleteButton">
+    <ion-icon padding-right name="ios-checkbox"></ion-icon>
+    MARK COMPLETE
+  </button>
+  <button *ngIf="post?.complete" (click)="markComplete()" id="MarkIncompleteButton">
+    <ion-icon padding-right name="ios-checkbox-outline"></ion-icon>
+    MARK INCOMPLETE
+  </button>
   <post-footer *ngIf="loaded" [postDoc]="post"></post-footer>
   <ion-row class="post-comments" id="Comments" text-left>
     <div *ngFor="let comment of comments" class="comment-wrapper rlt" (hold)="onCommentHold($event, $index, comment)">

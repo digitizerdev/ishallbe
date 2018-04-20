@@ -68,7 +68,6 @@ export class GoalCreatorPage {
     this.displayPostDate = moment().format('MMM DD YYYY');
     this.timestamp = moment().unix();
     this.displayTimestamp = moment().format('L');
-    let rawDateString = moment().format('YYYYMMDD');
     this.dueDate = this.postDate + 7;
     this.displayDueDate = moment(this.dueDate).format('L');
   }

@@ -86,11 +86,11 @@ describe('PostFooterComponent', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof PostFooterComponent).toBe(true);
     });
 
-    fit('should display InteractionCounts', () => {
+    it('should display InteractionCounts', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#InteractionCounts'));
@@ -98,7 +98,7 @@ describe('PostFooterComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display ToggleLikeIcon', () => {
+    it('should display ToggleLikeIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#ToggleLikeIcon'));
@@ -106,7 +106,7 @@ describe('PostFooterComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display CommentIcon', () => {
+    it('should display CommentIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#CommentIcon'));

@@ -10,6 +10,8 @@ import { HomePage } from '../home/home';
 import { ProfileUpdatePage } from '../profile-update/profile-update';
 import { ChatsPage } from '../chats/chats';
 import { ChatPage } from '../chat/chat';
+import { StatementCreatorPage } from '../statement-creator/statement-creator';
+import { GoalCreatorPage } from '../goal-creator/goal-creator';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -25,6 +27,7 @@ export class ProfilePage {
   user: any;
   uid: string;
   photo: string;
+  userPath: string;
   mine = false;
   loaded = false;
   statementsLoaded = false;
@@ -32,9 +35,10 @@ export class ProfilePage {
   editor = false;
   userEditor = false;
   blocked = false;
-  userPath: string;
-  postSegment = 'statements';
   newMessages = false;
+  noStatements = false;
+  noGoals = false;
+  postSegment = 'statements';
 
   constructor(
     private navCtrl: NavController,
@@ -117,8 +121,12 @@ export class ProfilePage {
       ref.where('uid', '==', this.uid).
         orderBy('timestamp', 'desc').limit(25));
     statements.valueChanges().subscribe((statements) => {
-      if (!this.statementsLoaded)
-        this.setStatements(statements);
+      console.log("Got All Statements");
+      console.log(statements);
+      if (statements.length > 0) {
+        if (!this.statementsLoaded)
+          this.setStatements(statements);
+      } else this.noStatements = true;
     });
   }
 
@@ -128,8 +136,10 @@ export class ProfilePage {
         where('private', '==', false).
         orderBy('timestamp', 'desc').limit(25));
     statements.valueChanges().subscribe((statements) => {
-      if (!this.statementsLoaded)
-        this.setStatements(statements);
+      console.log("Got Public Statements");
+      console.log(statements);
+        if (!this.statementsLoaded)
+          this.setStatements(statements);
     });
   }
 
@@ -145,21 +155,27 @@ export class ProfilePage {
   loadAllGoals() {
     let goals = this.firebase.afs.collection('goals', ref =>
       ref.where('uid', '==', this.uid).
-      orderBy('timestamp', 'desc').limit(25));
+        orderBy('timestamp', 'desc').limit(25));
     goals.valueChanges().subscribe((goals) => {
-      if (!this.goalsLoaded)
-        this.setGoals(goals);
+      console.log("Got All Goals");
+      console.log(goals);
+      if (goals.length > 0) {
+        if (!this.goalsLoaded)
+          this.setGoals(goals);
+      } else this.noGoals = true;
     });
   }
 
   loadPublicGoals() {
     let goals = this.firebase.afs.collection('goals', ref =>
       ref.where('uid', '==', this.uid).
-      where('private', '==', false).
-      orderBy('timestamp', 'desc').limit(25));
+        where('private', '==', false).
+        orderBy('timestamp', 'desc').limit(25));
     goals.valueChanges().subscribe((goals) => {
-      if (!this.goalsLoaded)
-        this.setGoals(goals);
+      console.log("Got Public Goals");
+      console.log(goals);
+        if (!this.goalsLoaded)
+          this.setGoals(goals);
     });
   }
 
@@ -177,19 +193,19 @@ export class ProfilePage {
   }
 
   blockUser() {
-    this.firebase.afs.doc(this.userPath).update({ blocked: true});
+    this.firebase.afs.doc(this.userPath).update({ blocked: true });
   }
 
   unblockUser() {
-    this.firebase.afs.doc(this.userPath).update({ blocked: false});
+    this.firebase.afs.doc(this.userPath).update({ blocked: false });
   }
 
   makeEditor() {
-    this.firebase.afs.doc(this.userPath).update({ editor: true});
+    this.firebase.afs.doc(this.userPath).update({ editor: true });
   }
 
   makeContributor() {
-    this.firebase.afs.doc(this.userPath).update({editor: false});
+    this.firebase.afs.doc(this.userPath).update({ editor: false });
   }
 
   refreshPage(refresh) {
@@ -205,11 +221,18 @@ export class ProfilePage {
   }
 
   pushChatPage() {
-    this.navCtrl.push(ChatPage, {uid: this.uid});
+    this.navCtrl.push(ChatPage, { uid: this.uid });
   }
 
   setRootHomePage() {
     this.navCtrl.setRoot(HomePage);
   }
 
+  setRootStatementCreatorPage() {
+    this.navCtrl.setRoot(StatementCreatorPage);
+  }
+
+  setRootGoalCreatorPage() {
+    this.navCtrl.setRoot(GoalCreatorPage);
+  }
 }

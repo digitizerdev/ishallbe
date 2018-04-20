@@ -87,11 +87,11 @@ describe('PinComponent', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof PinComponent).toBe(true);
     });
 
-    fit('should display title', () => {
+    it('should display title', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#PinTitle'));
@@ -99,7 +99,7 @@ describe('PinComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display description', () => {
+    it('should display description', () => {
         component.pin = mockPins[3];
         fixture.detectChanges();
         let de: DebugElement;
@@ -109,7 +109,7 @@ describe('PinComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display PinImage if pin is Monday', () => {
+    it('should display PinImage if pin is Monday', () => {
         component.pin = mockPins[0];
         fixture.detectChanges();
         let de: DebugElement;
@@ -119,7 +119,7 @@ describe('PinComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display OpenTuneButton if pin is Tuesday', () => {
+    it('should display OpenTuneButton if pin is Tuesday', () => {
         component.pin = mockPins[1];
         fixture.detectChanges();
         let de: DebugElement;
@@ -129,7 +129,7 @@ describe('PinComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display post-footer', () => {
+    it('should display post-footer', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('post-footer'));
