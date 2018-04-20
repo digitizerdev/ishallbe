@@ -89,7 +89,6 @@ export class iShallBe {
   }
 
   openNotification(notification) {
-    let notificationId = notification.id
     let notificationPath = "notifications/" + notification.id;
     this.firebase.afs.doc(notificationPath).update({ read: true }).then(() => {
       let notificationCollection = notification.collection;

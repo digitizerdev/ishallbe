@@ -96,8 +96,6 @@ export class UploadComponent {
     var task = storageRef.put(file);
     task.on('state_changed',
       function progress(snapshot: any) {
-        var percentage = (snapshot.bytesTransferred /
-          snapshot.totalBytes) * 100;
         this.image = snapshot.downloadUrl;
       }, function error(err) {
       },
