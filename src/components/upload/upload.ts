@@ -49,16 +49,13 @@ export class UploadComponent {
 
   ngOnInit() {
     if (this.platform.is('cordova')) this.browser = false;
-      else this.browser = true;
+    else this.browser = true;
     this.contentName = moment().unix().toString();
     this.loadMedia();
     this.listenToRedoEvents();
   }
 
   loadMedia() {
-    console.log("Loading Media");
-    console.log("Browser: " + this.browser);
-    console.log("Content Type is " + this.contentType);
     switch (this.contentType) {
       case 'camera': {
         this.sourceType = this.camera.PictureSourceType.CAMERA;
@@ -94,7 +91,6 @@ export class UploadComponent {
   }
 
   getBrowserImage() {
-    console.log("Getting Browser Image");
     let file = (<HTMLInputElement>document.getElementById("files")).files[0];
     var storageRef = firebase.storage().ref('test/' + file.name);
     var task = storageRef.put(file);
@@ -102,13 +98,10 @@ export class UploadComponent {
       function progress(snapshot: any) {
         var percentage = (snapshot.bytesTransferred /
           snapshot.totalBytes) * 100;
-        console.log(percentage);
         this.image = snapshot.downloadUrl;
       }, function error(err) {
-        console.error(err);
       },
       function complete() {
-        console.log("Complete!");
       }
     )
   }
@@ -174,7 +167,6 @@ export class UploadComponent {
   }
 
   uploadBrowserImage() {
-    console.log("Uploading Browser Image");
     this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
     this.loader.present();
     let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
@@ -187,7 +179,7 @@ export class UploadComponent {
       this.uploaded.emit(image);
       this.loader.dismiss();
     });
-  } 
+  }
 
   storeImage(path) {
     this.waitForStorageTimeout();

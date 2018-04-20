@@ -62,24 +62,16 @@ export class ProfilePage {
   }
 
   checkForNewMessages() {
-    console.log("Checking for new messages");
     let chatsPath = "users/" + this.uid + "/chats";
-    console.log("Chats path is " + chatsPath);
     let chats = this.firebase.afs.collection(chatsPath);
     chats.valueChanges().subscribe((myChats) => {
-      console.log("Got my chats");
-      console.log(myChats);
       this.flagNewMessages(myChats);
     });
   }
 
   flagNewMessages(chats) {
-    console.log("Flagging New Messages");
-    console.log(chats);
     let recentNewMessages = false;
     chats.forEach((chat) => {
-      console.log("Checking chat for new messages");
-      console.log(chat);
       if (chat.newMessages) {
         recentNewMessages = true;
       }
@@ -121,8 +113,6 @@ export class ProfilePage {
       ref.where('uid', '==', this.uid).
         orderBy('timestamp', 'desc').limit(25));
     statements.valueChanges().subscribe((statements) => {
-      console.log("Got All Statements");
-      console.log(statements);
       if (statements.length > 0) {
         if (!this.statementsLoaded)
           this.setStatements(statements);
@@ -136,8 +126,6 @@ export class ProfilePage {
         where('private', '==', false).
         orderBy('timestamp', 'desc').limit(25));
     statements.valueChanges().subscribe((statements) => {
-      console.log("Got Public Statements");
-      console.log(statements);
         if (!this.statementsLoaded)
           this.setStatements(statements);
     });
@@ -157,8 +145,6 @@ export class ProfilePage {
       ref.where('uid', '==', this.uid).
         orderBy('timestamp', 'desc').limit(25));
     goals.valueChanges().subscribe((goals) => {
-      console.log("Got All Goals");
-      console.log(goals);
       if (goals.length > 0) {
         if (!this.goalsLoaded)
           this.setGoals(goals);
@@ -172,8 +158,6 @@ export class ProfilePage {
         where('private', '==', false).
         orderBy('timestamp', 'desc').limit(25));
     goals.valueChanges().subscribe((goals) => {
-      console.log("Got Public Goals");
-      console.log(goals);
         if (!this.goalsLoaded)
           this.setGoals(goals);
     });

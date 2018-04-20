@@ -49,8 +49,6 @@ export class ChatPage {
     let chatPath = "users/" + this.firebase.user.uid + "/chats/" + this.uid;
     let chat = this.firebase.afs.doc(chatPath);
     chat.valueChanges().subscribe((messages) => {
-      console.log("Got messages");
-      console.log(messages);
       if (messages) {
         chat.update({newMessages: false});
       }

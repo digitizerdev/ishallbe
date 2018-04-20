@@ -28,7 +28,6 @@ export class IshallbetvPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad IshallbetvPage');
     this.setLastMonday();
     this.loadVideos().subscribe((videos) => {
       this.setVideos(videos);
@@ -57,7 +56,6 @@ export class IshallbetvPage {
     this.videos = [];
     videos.forEach((video) => {
       if (video.day == 'Monday') {
-        console.log(video);
         video.displayAffirmationDate = moment(video.displayAffirmationDate).fromNow();
         this.videos.push(video);
       }

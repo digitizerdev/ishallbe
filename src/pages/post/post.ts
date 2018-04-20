@@ -53,22 +53,16 @@ export class PostPage {
   }
 
   ionViewDidLoad() {
-    console.log("Opening Post");
     this.id = this.navParams.get("id");
-    console.log("Post ID is " + this.id);
     this.collection = this.navParams.get("type");
     this.loadPost();
     this.loadComments();
   }
 
   loadPost() {
-    console.log("Loading Post");
     this.postPath = this.collection + '/' + this.id;
-    console.log("postPath is " + this.postPath);
     this.postDoc = this.firebase.afs.doc(this.postPath);
     this.postDoc.valueChanges().subscribe((post) => {
-      console.log("Got post");
-      console.log(post);
       let date = moment.unix(post.timestamp);
       post.displayTimestamp = moment(date).fromNow();
       if (post.uid == this.firebase.afa.auth.currentUser.uid) this.mine = true;
@@ -96,8 +90,6 @@ export class PostPage {
   }
 
   setComments(comments) {
-    console.log("Setting Comments");
-    console.log("Comments Loaded: " + this.commentsLoaded);
     this.comments = [];
     comments.forEach((comment) => {
       this.checkUserCommentLike(comment).subscribe((liked) => {
@@ -247,7 +239,6 @@ export class PostPage {
   }
 
   deleteComment(comment) {
-    console.log("Deleting Comment");
     this.commented = true;
     this.commentsLoaded = false;
     let commentPath = this.post.collection + "/" + this.post.id + "/comments/" + comment.id;

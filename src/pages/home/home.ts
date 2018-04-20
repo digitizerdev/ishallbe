@@ -40,7 +40,6 @@ export class HomePage {
   }
 
   ionViewDidEnter() {
-    console.log("Page Entered")
     this.timestampPage();
     this.checkForNewNotifications();
     this.loadPosts();
@@ -65,7 +64,6 @@ export class HomePage {
   }
 
   loadPosts() {
-    console.log("Loading Posts");
     this.loadPins();
     this.loadStatements();
     this.loadGoals();
@@ -108,8 +106,6 @@ export class HomePage {
         .orderBy('timestamp', 'desc').
         startAt(this.postStartDate).endAt(this.postEndDate));
     statements.valueChanges().subscribe((statements) => {
-      console.log("Got statements");
-      console.log(statements);
       if (statements.length > 0) {
         if (!this.statementsLoaded)
           this.setStatements(statements);
@@ -135,8 +131,6 @@ export class HomePage {
         orderBy('timestamp', 'desc').
         startAt(this.postStartDate).endAt(this.postEndDate));
     goals.valueChanges().subscribe((goals) => {
-      console.log("Got goals");
-      console.log(goals);
       if (goals.length > 0) {
         if (!this.goalsLoaded)
           this.setGoals(goals);

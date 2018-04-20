@@ -31,9 +31,7 @@ export class PostFooterComponent {
   ) { }
 
   ngAfterViewInit() {
-    console.log("Initialized");
     this.opened = this.navParams.get('opened');
-    console.log("Opened: " + this.opened);
     let postPath = this.postDoc.collection + "/" + this.postDoc.id;
     let postFooter = this.firebase.afs.doc(postPath);
     postFooter.valueChanges().subscribe((post) => {
@@ -218,8 +216,6 @@ export class PostFooterComponent {
   }
 
   openPost(post) {
-    console.log("Opening Post");
-    console.log("Opened: " + this.opened);
     if (!this.opened) {
       this.navCtrl.push(PostPage, {
         id: post.id,

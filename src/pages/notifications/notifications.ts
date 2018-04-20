@@ -44,8 +44,6 @@ export class NotificationsPage {
     this.unreadNotifications = [];
     this.readNotifications = [];
     notifications.forEach((notification) => {
-      console.log("Pushing Notificaiton");
-      console.log(notification);
       let date = moment.unix(notification.timestamp);
       notification.displayTimestamp = moment(date).fromNow();
       if (notification.read)
