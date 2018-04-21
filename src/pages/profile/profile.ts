@@ -49,10 +49,19 @@ export class ProfilePage {
   }
 
   ionViewDidLoad() {
+    console.log("Profile Loaded");
     this.uid = this.navParams.get('uid');
     if (!this.uid) {
       this.mine = true;
       this.uid = this.firebase.afa.auth.currentUser.uid;
+    }
+    let tapped = this.navParams.get('tapped');
+    if (tapped) {
+      console.log("Tapped Notification");
+      console.log("UID is " + this.uid);
+      this.navCtrl.push(ChatPage, {
+        uid: this.uid
+      })
     }
     this.editor = this.firebase.user.editor;
     this.checkForNewMessages();

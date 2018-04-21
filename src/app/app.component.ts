@@ -12,8 +12,6 @@ import { IshallbetvPage } from '../pages/ishallbetv/ishallbetv';
 import { ProfilePage } from '../pages/profile/profile';
 import { GoalCreatorPage } from '../pages/goal-creator/goal-creator';
 import { StatementCreatorPage } from '../pages/statement-creator/statement-creator';
-import { PostPage } from '../pages/post/post';
-import { ChatPage } from '../pages/chat/chat';
 import { AccountPage } from '../pages/account/account';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { UserManagerPage } from '../pages/user-manager/user-manager';
@@ -117,29 +115,30 @@ export class iShallBe {
   }
 
   openPin(docId) {
-    this.nav.setRoot(PostPage, {
+    this.nav.setRoot(HomePage, {
       id: docId,
-      type: "pins"
+      type: "pins",
     });
   }
 
   openStatement(docId) {
-    this.nav.setRoot(PostPage, {
+    this.nav.setRoot(HomePage, {
       id: docId,
-      type: "statements"
+      type: "statements",
     });
   }
 
   openGoal(docId) {
-    this.nav.setRoot(PostPage, {
+    this.nav.setRoot(HomePage, {
       id: docId,
-      type: "goals"
+      type: "goals",
     });
   }
 
   openChat(docId) {
-    this.nav.setRoot(ChatPage, {
+    this.nav.setRoot(ProfilePage, {
       uid: docId,
+      tapped: true
     });
   }
 

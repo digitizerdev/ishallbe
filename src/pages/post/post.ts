@@ -191,8 +191,10 @@ export class PostPage {
       this.buildComment(commentForm).subscribe((comment) => {
         commentForm.description = "";
         this.setComment(comment);
-        if (this.post.uid !== this.firebase.user.uid)
+        if (this.post.uid !== this.firebase.user.uid) {
+          comment.receiverUid = this.post.uid;
           this.sendNotification(comment);
+        }
       });
     }
   }
@@ -262,8 +264,10 @@ export class PostPage {
     this.buildCommentLike().subscribe((like) => {
       this.firebase.afs.doc(commentLikePath).set(like);
       this.addToCommentLikeCount(comment);
-      if (comment.uid !== this.firebase.user.uid)
+      if (comment.uid !== this.firebase.user.uid) {
+        comment.receiverUid = comment.uid;
         this.sendNotification(comment);
+      }
     });
   }
 
@@ -335,7 +339,7 @@ export class PostPage {
         read: false,
         collection: this.post.collection,
         docId: this.post.id,
-        receiverUid: comment.uid,
+        receiverUid: comment.receiverUid,
         message: false,
         pinLike: false,
         statementLike: false,
