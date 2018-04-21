@@ -91,15 +91,10 @@ export class FirebaseProvider {
   }
 
   syncFcmToken() {
-    console.log("Syncing Fcm Token");
-    console.log("Device FCM Token: " + this.fcmToken);
-    console.log("User FCM Token: " + this.user.fcmToken);
     if (this.platform.is('cordova')) {
       if (this.fcmToken) {
         if (this.user.fcmToken !== this.fcmToken) {
-          console.log("Updating User");
           let userPath = "users/" + this.user.uid;
-          console.log("User path is " + userPath);
           this.afs.doc(userPath).update({ fcmToken: this.fcmToken});
         }
       }

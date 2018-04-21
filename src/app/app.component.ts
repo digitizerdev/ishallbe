@@ -69,8 +69,6 @@ export class iShallBe {
 
   listenToFCMPushNotifications() {
     this.fcm.onNotification().subscribe(notification => {
-      console.log("Received notification");
-      console.log(notification);
       if (notification.wasTapped) {
         this.tappedNotification = true;
         this.notification = notification;
@@ -119,28 +117,28 @@ export class iShallBe {
   }
 
   openPin(docId) {
-    this.nav.push(PostPage, {
+    this.nav.setRoot(PostPage, {
       id: docId,
       type: "pins"
     });
   }
 
   openStatement(docId) {
-    this.nav.push(PostPage, {
+    this.nav.setRoot(PostPage, {
       id: docId,
       type: "statements"
     });
   }
 
   openGoal(docId) {
-    this.nav.push(PostPage, {
+    this.nav.setRoot(PostPage, {
       id: docId,
       type: "goals"
     });
   }
 
   openChat(docId) {
-    this.nav.push(ChatPage, {
+    this.nav.setRoot(ChatPage, {
       uid: docId,
     });
   }
