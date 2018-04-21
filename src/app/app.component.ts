@@ -3,7 +3,6 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, Events, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { FCM } from '@ionic-native/fcm';
 
 import { StartupPage } from '../pages/startup/startup';
 import { LoginPage } from '../pages/login/login';
@@ -62,8 +61,24 @@ export class iShallBe {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      if (this.platform.is('cordova'))
+        this.listenToFCMPushNotifications();
     });
   }
+
+  listenToFCMPushNotifications() {
+    this.fcm.onNotification().subscribe(notification => {
+      if (notification.wasTapped) {
+        this.tappedNotification = true;
+        this.notification = notification;
+        this.openNotification(notification);
+      }
+      else {
+        this.displayNotificationAlert(notification);
+      }
+    });
+  }
+
 
   displayNotificationAlert(notification) {
     let alert = this.alertCtrl.create({
@@ -178,28 +193,6 @@ export class iShallBe {
     this.events.subscribe('contributor permission not granted', () => {
       this.nav.setRoot(LoginPage);
       this.editor = false;
-    });
-  }
-
-  listenToFCMPushNotifications() {
-    this.fcm.getToken().then(token => {
-      this.firebase.fcmToken = token
-      this.firebase.syncFcmToken();
-    });
-    this.fcm.onNotification().subscribe(notification => {
-      if (notification.wasTapped) {
-        this.tappedNotification = true;
-        this.notification = notification;
-        this.openNotification(notification);
-      }
-      else {
-        this.displayNotificationAlert(notification);
-      }
-    });
-    this.fcm.subscribeToTopic('affirmations');
-    this.fcm.onTokenRefresh().subscribe(token => {
-      this.firebase.fcmToken = token;
-      this.firebase.syncFcmToken();
     });
   }
 

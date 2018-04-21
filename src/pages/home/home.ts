@@ -1,5 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
+
 import { IonicPage, NavController, Slides } from 'ionic-angular';
+import { FCM } from '@ionic-native/fcm';
 
 import { NotificationsPage } from '../notifications/notifications';
 import { StatementCreatorPage} from '../statement-creator/statement-creator';
@@ -35,6 +37,7 @@ export class HomePage {
 
   constructor(
     private navCtrl: NavController,
+    private fcm: FCM,
     private firebase: FirebaseProvider
   ) {
   }
@@ -50,6 +53,18 @@ export class HomePage {
     this.dayNumber = moment().isoWeekday();
     this.postEndDate = parseInt(moment().format('YYYYMMDD'));
     this.postStartDate = this.postEndDate - this.dayNumber;
+  }
+
+  listenToFCMPushNotifications() {
+    this.fcm.getToken().then(token => {
+      this.firebase.fcmToken = token
+      this.firebase.syncFcmToken();
+    });
+    this.fcm.subscribeToTopic('affirmations');
+    this.fcm.onTokenRefresh().subscribe(token => {
+      this.firebase.fcmToken = token;
+      this.firebase.syncFcmToken();
+    });
   }
 
   checkForNewNotifications() {
