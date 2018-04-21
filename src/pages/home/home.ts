@@ -127,6 +127,7 @@ export class HomePage {
     let goals = this.firebase.afs.collection('goals', ref =>
       ref.where('private', '==', false).
         where('reported', '==', false).
+        where('complete', '==', false).
         orderBy('timestamp', 'desc').limit(25));
     goals.valueChanges().subscribe((goals) => {
       if (goals.length > 0) {
@@ -140,13 +141,11 @@ export class HomePage {
 
   setGoals(goals) {
     goals.forEach((goal) => {
-      if (!goal.complete) {
         let dueDate = moment.unix(goal.dueDate);
         goal.displayDueDate = moment(dueDate).fromNow();
         let timestamp = moment.unix(goal.timestamp);
         goal.displayTimestamp = moment(timestamp).fromNow();
         this.goals.push(goal);
-      }
     });
     this.goalsLoaded = true;
   }
