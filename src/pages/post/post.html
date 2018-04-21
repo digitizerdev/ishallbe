@@ -94,7 +94,7 @@
             <b>{{comment.name}}</b>: {{ comment.description }}
           </div>
           <div class="comment-detail">
-            <span class="comment-time">{{ comment.displayTimestamp }} </span>
+            <span class="comment-time" text-left>{{ comment.displayTimestamp }} </span>
             <span *ngIf="comment?.likeCount > 1 || comment?.likeCount == 0" class="comment-like">{{ comment.likeCount }} Likes</span>
             <span *ngIf="comment?.likeCount == 1" class="comment-like">{{ comment.likeCount }} Like</span>
           </div>

@@ -19,7 +19,7 @@
         <br>
         <ion-item class="tdct-textarea">
             <ion-textarea [attr.rows]="4" autosize placeholder="Body" [(ngModel)]="supportForm.body" name="body" type="text-area" #body="ngModel"
-                spellcheck="false" autocapitalize="off" required>
+                spellcheck="false" autocapitalize="off" autocorrect=“on” maxlength="250" required>
             </ion-textarea>
         </ion-item>
         <p ion-text [hidden]="body.valid || submitted == false" color="danger" padding-left>

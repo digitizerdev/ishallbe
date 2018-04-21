@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { IonicPage, NavController, Slides } from 'ionic-angular';
+import { IonicPage, NavController, Platform, Slides } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 
 import { NotificationsPage } from '../notifications/notifications';
@@ -37,6 +37,7 @@ export class HomePage {
 
   constructor(
     private navCtrl: NavController,
+    private platform: Platform,
     private fcm: FCM,
     private firebase: FirebaseProvider
   ) {
@@ -46,6 +47,9 @@ export class HomePage {
     this.timestampPage();
     this.checkForNewNotifications();
     this.loadPosts();
+    if (this.platform.is('cordova')) {
+      this.listenToFCMPushNotifications();
+    }
   }
 
   timestampPage() {

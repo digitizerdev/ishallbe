@@ -1,4 +1,4 @@
-<ion-row id="InteractionCounts">
+<ion-row id="InteractionCounts" (click)="openPost(post)">
   <ion-col text-center>
     <p color="steel" ion-text>
       <a *ngIf="post?.likeCount > 1 || post?.likeCount == 0" class="subdued">{{post?.likeCount}} Likes</a>

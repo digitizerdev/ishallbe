@@ -38,7 +38,7 @@
   <ion-toolbar no-border color="white">
     <form #chatForm="ngForm" novalidate>
       <ion-input ion-text [(ngModel)]="chatForm.description" name="description" #description="ngModel" type="text" placeholder="Write your message"
-        spellcheck="true" autocapitalize="true" required></ion-input>
+        spellcheck="true" autocapitalize="true" autocorrect=“on” maxlength="250" required></ion-input>
     <ion-buttons end>
       <button ion-button (click)="submit(chatForm)" type="submit" large>
         <ion-icon name="send" color="white"></ion-icon>
