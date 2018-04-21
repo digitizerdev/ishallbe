@@ -39,10 +39,6 @@
       </ion-col>
     </ion-row>
   </div>
-  <ion-refresher (ionRefresh)="refreshPage()" color="primary" no-border>
-    <ion-refresher-content refreshingSpinner="dots" refreshingText="Refeshing" no-border>
-    </ion-refresher-content>
-  </ion-refresher>
   <post-header *ngIf="collection !== 'pins'" [postDoc]="post"></post-header>
   <img *ngIf="collection == 'statements' && post?.url" src="{{post?.url}}">
   <ion-row *ngIf="collection == 'goals'" id="DueDate" text-center>
