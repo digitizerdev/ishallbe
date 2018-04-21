@@ -143,7 +143,9 @@ exports.createNotification = functions.firestore.document('notifications/{notifi
     let userPath = "users/" + message.receiverUid;
     let user = fireData.doc(userPath);
     return user.get().then((user) => {
+        console.log("Sending Notification to User");
         contributor = user.data();
+        console.log(contributor);
         admin.messaging().sendToDevice(contributor.fcmToken, payload);
         return true;
     });

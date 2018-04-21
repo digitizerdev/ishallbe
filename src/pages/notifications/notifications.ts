@@ -34,7 +34,7 @@ export class NotificationsPage {
     this.notificationsCol = this.firebase.afs.collection('notifications', ref => ref.
       where("receiverUid", "==", this.firebase.user.uid).
       where("message", "==", false).
-      orderBy('timestamp', 'desc'));
+      orderBy('timestamp', 'desc').limit(50));
     this.notificationsCol.valueChanges().subscribe((notifications) => {
       this.setNotifications(notifications);
     });

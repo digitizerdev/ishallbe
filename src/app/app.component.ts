@@ -69,6 +69,8 @@ export class iShallBe {
 
   listenToFCMPushNotifications() {
     this.fcm.onNotification().subscribe(notification => {
+      console.log("Received notification");
+      console.log(notification);
       if (notification.wasTapped) {
         this.tappedNotification = true;
         this.notification = notification;

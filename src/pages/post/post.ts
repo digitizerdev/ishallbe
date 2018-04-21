@@ -192,7 +192,7 @@ export class PostPage {
         commentForm.description = "";
         this.setComment(comment);
         if (this.post.uid !== this.firebase.user.uid)
-          this.sendNotification();
+          this.sendNotification(comment);
       });
     }
   }
@@ -263,7 +263,7 @@ export class PostPage {
       this.firebase.afs.doc(commentLikePath).set(like);
       this.addToCommentLikeCount(comment);
       if (comment.uid !== this.firebase.user.uid)
-        this.sendNotification();
+        this.sendNotification(comment);
     });
   }
 
@@ -309,11 +309,11 @@ export class PostPage {
     this.firebase.afs.doc(commentLikeCountPath).update({ likeCount: commentLikeCount });
   }
 
-  sendNotification() {
-    let description = "";
-    if (this.commented) description = "commented on your post";
-    if (this.likedComment) description = "liked your comment";
-    this.buildNotification(description).subscribe((notification) => {
+  sendNotification(comment) {
+    comment.notification = "";
+    if (this.commented) comment.notification = "commented on your post";
+    if (this.likedComment) comment.notification = "liked your comment";
+    this.buildNotification(comment).subscribe((notification) => {
       let notificationPath = "notifications/" + notification.id;
       this.firebase.afs.doc(notificationPath).set(notification);
       this.commented = false;
@@ -321,7 +321,7 @@ export class PostPage {
     });
   }
 
-  buildNotification(description) {
+  buildNotification(comment) {
     return Observable.create((observer) => {
       let id = this.firebase.afs.createId();
       let displayTimestamp = moment().format('MMM DD YYYY');
@@ -331,11 +331,11 @@ export class PostPage {
         uid: this.firebase.user.uid,
         name: this.firebase.user.name,
         face: this.firebase.user.photo,
-        description: description,
+        description: comment.notification,
         read: false,
         collection: this.post.collection,
         docId: this.post.id,
-        receiverUid: this.post.uid,
+        receiverUid: comment.uid,
         message: false,
         pinLike: false,
         statementLike: false,

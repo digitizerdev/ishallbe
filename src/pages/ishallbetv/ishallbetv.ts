@@ -44,7 +44,7 @@ export class IshallbetvPage {
     return Observable.create((observer) => {
       let allVideos = this.firebase.afs.collection('pins', ref =>
         ref.where('day', '==', 'Monday').
-          orderBy('affirmationDate', 'desc').
+          orderBy('postDate', 'desc').
             startAfter(this.currentMonday));
       allVideos.valueChanges().subscribe((videos) => {
         observer.next(videos);
