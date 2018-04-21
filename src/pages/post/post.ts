@@ -115,10 +115,14 @@ export class PostPage {
   }
 
   markIncomplete() {
+    console.log("Marking Incomplete");
+    console.log(this.post);
     this.firebase.afs.doc(this.postPath).update({ complete: false });
   }
 
   markComplete() {
+    console.log("Marking Complete");
+    console.log(this.post);
     this.firebase.afs.doc(this.postPath).update({ complete: true });
   }
 

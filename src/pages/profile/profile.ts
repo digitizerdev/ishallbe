@@ -126,8 +126,8 @@ export class ProfilePage {
         where('private', '==', false).
         orderBy('timestamp', 'desc').limit(25));
     statements.valueChanges().subscribe((statements) => {
-        if (!this.statementsLoaded)
-          this.setStatements(statements);
+      if (!this.statementsLoaded)
+        this.setStatements(statements);
     });
   }
 
@@ -145,6 +145,8 @@ export class ProfilePage {
       ref.where('uid', '==', this.uid).
         orderBy('timestamp', 'desc').limit(25));
     goals.valueChanges().subscribe((goals) => {
+      console.log("Got Goals");
+      console.log(goals);
       if (goals.length > 0) {
         if (!this.goalsLoaded)
           this.setGoals(goals);
@@ -158,20 +160,20 @@ export class ProfilePage {
         where('private', '==', false).
         orderBy('timestamp', 'desc').limit(25));
     goals.valueChanges().subscribe((goals) => {
-        if (!this.goalsLoaded)
-          this.setGoals(goals);
+      console.log("Got Goals");
+      console.log(goals);
+      if (!this.goalsLoaded)
+        this.setGoals(goals);
     });
   }
 
   setGoals(goals) {
     goals.forEach((goal) => {
-      if (!goal.complete) {
-        let dueDate = moment.unix(goal.dueDate);
-        goal.displayDueDate = moment(dueDate).fromNow();
-        let timestamp = moment.unix(goal.timestamp);
-        goal.displayTimestamp = moment(timestamp).fromNow();
-        this.goals.push(goal);
-      }
+      let dueDate = moment.unix(goal.dueDate);
+      goal.displayDueDate = moment(dueDate).fromNow();
+      let timestamp = moment.unix(goal.timestamp);
+      goal.displayTimestamp = moment(timestamp).fromNow();
+      this.goals.push(goal);
     });
     this.goalsLoaded = true;
   }

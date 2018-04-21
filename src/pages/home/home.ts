@@ -103,8 +103,7 @@ export class HomePage {
     let statements = this.firebase.afs.collection('statements', ref =>
       ref.where('private', '==', false).
         where('reported', '==', false)
-        .orderBy('timestamp', 'desc').
-        startAt(this.postStartDate).endAt(this.postEndDate));
+        .orderBy('timestamp', 'desc').limit(25));
     statements.valueChanges().subscribe((statements) => {
       if (statements.length > 0) {
         if (!this.statementsLoaded)
@@ -128,8 +127,7 @@ export class HomePage {
     let goals = this.firebase.afs.collection('goals', ref =>
       ref.where('private', '==', false).
         where('reported', '==', false).
-        orderBy('timestamp', 'desc').
-        startAt(this.postStartDate).endAt(this.postEndDate));
+        orderBy('timestamp', 'desc').limit(25));
     goals.valueChanges().subscribe((goals) => {
       if (goals.length > 0) {
         if (!this.goalsLoaded)

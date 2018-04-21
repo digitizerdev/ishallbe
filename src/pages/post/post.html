@@ -53,6 +53,18 @@
       </h5>
     </ion-col>
   </ion-row>
+  <ion-row>
+      <ion-col *ngIf="collection == 'goals' && !post?.complete" text-center>
+        <button (click)="markComplete()" color="secondary" id="MarkCompleteButton" ion-button round strong padding>
+          MARK COMPLETE
+        </button>
+      </ion-col>
+      <ion-col *ngIf="post?.complete" text-center>
+        <button (click)="markIncomplete()" color="danger" id="MarkIncompleteButton" ion-button round strong padding>
+          MARK INCOMPLETE
+        </button>
+      </ion-col>
+    </ion-row>
   <ion-row *ngIf="audio">
     <ion-col text-center>
       <audio-player [postDoc]="post"></audio-player>
@@ -73,14 +85,6 @@
     <iframe *ngIf="video" [src]="video | youtube" frameborder="0" allowfullscreen></iframe>
   </div>
   <h5 *ngIf="collection !== 'pins'" id="NonPinDescription" padding-left padding-right>{{post?.description}}</h5>
-  <button *ngIf="collection == 'goals' && !post?.complete" (click)="markIncomplete()" id="MarkCompleteButton">
-    <ion-icon padding-right name="ios-checkbox"></ion-icon>
-    MARK COMPLETE
-  </button>
-  <button *ngIf="post?.complete" (click)="markComplete()" id="MarkIncompleteButton">
-    <ion-icon padding-right name="ios-checkbox-outline"></ion-icon>
-    MARK INCOMPLETE
-  </button>
   <post-footer *ngIf="loaded" [postDoc]="post"></post-footer>
   <ion-row class="post-comments" id="Comments" text-left>
     <div *ngFor="let comment of comments" class="comment-wrapper rlt" (hold)="onCommentHold($event, $index, comment)">

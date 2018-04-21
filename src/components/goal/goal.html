@@ -1,9 +1,15 @@
 <post-header [postDoc]="goal"></post-header>
 <ion-row (click)="viewGoal(goal.id)">
-  <ion-col text-center>
+  <ion-col *ngIf="!goal?.complete" text-center>
     <h2 id="GoalDueDate">
       <ion-icon name="alarm" color="secondary"></ion-icon>
       <b>Due {{goal?.displayDueDate}}</b>
+    </h2>
+  </ion-col>
+  <ion-col *ngIf="goal?.complete" text-center>
+    <h2 id="GoalCompleteMarker">
+      <ion-icon name="checkbox" color="secondary"></ion-icon>
+      <b>COMPLETE</b>
     </h2>
   </ion-col>
 </ion-row>
