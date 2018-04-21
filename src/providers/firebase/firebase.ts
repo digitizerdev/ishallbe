@@ -81,6 +81,8 @@ export class FirebaseProvider {
   }
 
   startSession(user) {
+    console.log("Starting Session");
+    console.log(user);
     this.user = user;
     this.syncFcmToken();
     if (this.user.editor) this.events.publish("editor permission granted");
@@ -91,10 +93,15 @@ export class FirebaseProvider {
   }
 
   syncFcmToken() {
+    console.log("Syncing FCM Token");
+    console.log("User FCM Token: " + this.user.fcmToken);
+    console.log("FCM Token: " + this.fcmToken)
     if (this.platform.is('cordova')) {
-      if (this.user.fcmToken !== this.fcmToken) {
-        let userPath = "users" + this.user.uid;
-        this.afs.doc(userPath).update({ fcmToken: this.fcmToken });
+      if (this.fcmToken) {
+        if (this.user.fcmToken !== this.fcmToken) {
+          let userPath = "users" + this.user.uid;
+          this.afs.doc(userPath).update({ fcmToken: this.fcmToken });
+        }
       }
     }
   }

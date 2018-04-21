@@ -38,7 +38,6 @@ export class iShallBe {
   notification: any;
   tappedNotification = false;
   editor = false;
-  ready = false;
 
   constructor(
     private platform: Platform,
@@ -49,8 +48,8 @@ export class iShallBe {
     private fcm: FCM,
     private firebase: FirebaseProvider,
   ) {
-    this.listenToUserPermissionsEvents();
     this.rootPage = StartupPage;
+    this.listenToUserPermissionsEvents();
     this.platformReady();
     this.setMenus();
   }
@@ -61,7 +60,6 @@ export class iShallBe {
 
   platformReady() {
     this.platform.ready().then(() => {
-      this.ready = true;
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
@@ -75,7 +73,6 @@ export class iShallBe {
         {
           text: 'Dismiss',
           handler: () => {
-            console.log("Dismissed");
           }
         },
         {
@@ -149,18 +146,15 @@ export class iShallBe {
       this.fcm.unsubscribeFromTopic('affirmations');
       if (this.editor) {
         this.editor = false;
-        this.fcm.unsubscribeFromTopic('editor');
       }
     });
   }
 
   listenToEditorPermissionEvents() {
     this.events.subscribe('editor permission granted', () => {
-      this.fcm.subscribeToTopic('editor');
       this.editor = true;
     });
     this.events.subscribe('editor permission not granted', () => {
-      this.fcm.unsubscribeFromTopic('editor');
       this.editor = false;
     });
   }
@@ -178,7 +172,7 @@ export class iShallBe {
         if (this.notification.message == "message")
           this.openChat(this.notification.docId);
       } else {
-         this.nav.setRoot(HomePage);
+        this.nav.setRoot(HomePage);
       }
     });
     this.events.subscribe('contributor permission not granted', () => {
@@ -188,8 +182,10 @@ export class iShallBe {
   }
 
   listenToFCMPushNotifications() {
-    this.fcm.getToken().then(token =>
-      this.firebase.fcmToken = token);
+    this.fcm.getToken().then(token => {
+      this.firebase.fcmToken = token
+      this.firebase.syncFcmToken();
+    });
     this.fcm.onNotification().subscribe(notification => {
       if (notification.wasTapped) {
         this.tappedNotification = true;
@@ -201,8 +197,10 @@ export class iShallBe {
       }
     });
     this.fcm.subscribeToTopic('affirmations');
-    this.fcm.onTokenRefresh().subscribe(token =>
-      this.firebase.fcmToken = token);
+    this.fcm.onTokenRefresh().subscribe(token => {
+      this.firebase.fcmToken = token;
+      this.firebase.syncFcmToken();
+    });
   }
 
   setMenus() {
