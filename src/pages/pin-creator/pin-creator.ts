@@ -60,7 +60,9 @@ export class PinCreatorPage {
   }
 
   ionViewDidLoad() {
+    console.log("Loaded Pin Creator");
     this.selectedDay = this.navParams.get('selectedDay');
+    console.log("Selected Day: " + this.selectedDay);
     this.displaySelectedDay = moment(this.selectedDay).format("MMM D YYYY").toUpperCase();
     this.timestampPage();
     this.listenForCanceledUpload();
@@ -69,8 +71,10 @@ export class PinCreatorPage {
 
   checkForExistingPin() {
     let today = parseInt(moment(this.selectedDay).format("YYYYMMDD"));
-    let pinCol = this.firebase.afs.collection('pins', ref => ref.where('affirmationDate', '==', today));
+    let pinCol = this.firebase.afs.collection('pins', ref => ref.where('postDate', '==', today));
     return pinCol.valueChanges().subscribe((existingPin) => {
+      console.log("Got existing pin");
+      console.log(existingPin);
       this.pin = existingPin[0];
       if (existingPin.length == 1) this.setExistingPinFields();
     });

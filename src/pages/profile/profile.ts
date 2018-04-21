@@ -145,12 +145,8 @@ export class ProfilePage {
       ref.where('uid', '==', this.uid).
         orderBy('timestamp', 'desc').limit(25));
     goals.valueChanges().subscribe((goals) => {
-      console.log("Got Goals");
-      console.log(goals);
-      if (goals.length > 0) {
-        if (!this.goalsLoaded)
-          this.setGoals(goals);
-      } else this.noGoals = true;
+      if (!this.goalsLoaded)
+        this.setGoals(goals);
     });
   }
 
@@ -160,14 +156,13 @@ export class ProfilePage {
         where('private', '==', false).
         orderBy('timestamp', 'desc').limit(25));
     goals.valueChanges().subscribe((goals) => {
-      console.log("Got Goals");
-      console.log(goals);
       if (!this.goalsLoaded)
         this.setGoals(goals);
     });
   }
 
   setGoals(goals) {
+    if (!goals) this.noGoals = true;
     goals.forEach((goal) => {
       let dueDate = moment.unix(goal.dueDate);
       goal.displayDueDate = moment(dueDate).fromNow();
