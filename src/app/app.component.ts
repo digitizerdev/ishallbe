@@ -72,6 +72,7 @@ export class iShallBe {
         if (notification.wasTapped) {
           let notificationPath = "notifications/" + notification.id;
           this.nav.setRoot(NotificationsPage);
+          this.notification = null;
           this.firebase.afs.doc(notificationPath).update({ read: true });
         }
         else {
@@ -95,6 +96,7 @@ export class iShallBe {
           text: 'Open',
           handler: () => {
             this.nav.setRoot(NotificationsPage);
+            this.notification = null;
           }
         }]
     });
@@ -135,7 +137,12 @@ export class iShallBe {
 
   listenToContributorPermissionEvents() {
     this.events.subscribe('contributor permission granted', () => {
-      this.nav.setRoot(HomePage);
+      if (this.notification) {
+        this.nav.setRoot(NotificationsPage);
+        this.notification = null;
+      } else {
+        this.nav.setRoot(HomePage);
+      }
     });
     this.events.subscribe('contributor permission not granted', () => {
       this.nav.setRoot(LoginPage);
@@ -151,29 +158,29 @@ export class iShallBe {
         component: HomePage
       },
       {
+        title: 'Profile',
+        icon: 'ios-person',
+        component: ProfilePage
+      },
+      {
         title: 'iShallBe TV',
         icon: 'ios-desktop',
         component: IshallbetvPage
       },
-      {
-        title: 'Manage Profile',
-        icon: 'ios-person',
-        component: ProfilePage
-      }
     ];
     this.accountMenu = [
-      {
-        title: 'Create Goal',
-        icon: 'ios-microphone',
-        component: GoalCreatorPage
-      },
       {
         title: 'Create Statement',
         icon: 'ios-camera',
         component: StatementCreatorPage
       },
       {
-        title: 'Manage Account',
+        title: 'Create Goal',
+        icon: 'ios-microphone',
+        component: GoalCreatorPage
+      },
+      {
+        title: 'Account',
         icon: 'ios-settings',
         component: AccountPage
       }

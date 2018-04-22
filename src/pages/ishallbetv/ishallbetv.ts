@@ -72,4 +72,8 @@ export class IshallbetvPage {
       type: "pins"
     });
   }
+
+  refreshPage(refresh) {
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
+  }
 }
