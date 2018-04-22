@@ -19,7 +19,8 @@ export class StatementComponent {
   viewStatement() {
     this.navCtrl.push(PostPage, { 
       id: this.statement.id,
-      type: "statements"
+      type: "statements",
+      opened: true
      });
   }
 

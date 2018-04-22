@@ -1,15 +1,20 @@
 <ion-header no-border>
   <ion-navbar>
-    <ion-title>
+    <ion-title (click)="viewUser(user?.uid)">
       <b>{{user?.name}}</b>
     </ion-title>
+    <ion-buttons id="setRootHomePageIcon" end>
+        <button ion-button icon-only (click)="setRootHomePage()">
+          <ion-icon color='primary' name="md-home"></ion-icon>
+        </button>
+      </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content id="Messages">
   <div>
     <div *ngFor="let message of messages" class="message-wrapper rlt" (hold)="onMessageHold($event, $index, message)">
       <div *ngIf="message?.received">
-        <img class="profile-picture left" src="{{ message?.face }}" />
+        <img (click)="viewUser(user?.uid)" class="profile-picture left" src="{{ message?.face }}" />
         <div class="chat-bubble left">
           <div class="message">
             {{ message.description }}

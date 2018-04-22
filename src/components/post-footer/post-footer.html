@@ -1,4 +1,4 @@
-<ion-row id="InteractionCounts" (click)="openPost(post)">
+<ion-row (click)="openPost(post)" id="InteractionCounts">
   <ion-col text-center>
     <p color="steel" ion-text>
       <a *ngIf="post?.likeCount > 1 || post?.likeCount == 0" class="subdued">{{post?.likeCount}} Likes</a>
@@ -8,7 +8,7 @@
     </p>
   </ion-col>
 </ion-row>
-<ion-row padding >
+<ion-row padding>
   <ion-col (click)="toggleLike()" id="ToggleLikeIcon" text-center>
     <ion-icon name="thumbs-up" color="charcoal" *ngIf="!liked"></ion-icon>
     <ion-icon name="thumbs-up" color="primary" *ngIf="liked"></ion-icon>

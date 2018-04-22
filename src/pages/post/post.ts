@@ -7,6 +7,8 @@ import moment from 'moment';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/take';
 
+import { ProfilePage } from '../profile/profile';
+
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import { Comment } from '../../../test-data/comments/model';
@@ -39,6 +41,7 @@ export class PostPage {
   commented = false;
   likedComment = false;
   commentsLoaded = false;
+  postOpened = false;
   commentForm: {
     description?: string
   } = {};
@@ -55,6 +58,8 @@ export class PostPage {
   ionViewDidLoad() {
     this.id = this.navParams.get("id");
     this.collection = this.navParams.get("type");
+    let opened = this.navParams.get("opened");
+    this.postOpened = opened;
     this.loadPost();
     this.loadComments();
   }
@@ -375,6 +380,11 @@ export class PostPage {
 
   openLink(link) {
     this.iab.create(link, '_system');
+  }
+
+  viewUser(uid) {
+    if (uid !== this.firebase.user.uid)
+      this.navCtrl.push(ProfilePage, { uid: uid});
   }
 
 }

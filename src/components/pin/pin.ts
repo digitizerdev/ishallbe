@@ -20,7 +20,8 @@ export class PinComponent {
   viewPin() {
     this.navCtrl.push(PostPage, { 
       id: this.pin.id,
-      type: "pins"
+      type: "pins",
+      opened: true
      });
   }
 

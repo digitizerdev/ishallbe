@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { IonicPage, NavController, NavParams, Platform, Slides } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Platform, Slides } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 
 import { PostPage } from '../post/post';
@@ -39,6 +39,7 @@ export class HomePage {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
+    private alertCtrl: AlertController,
     private platform: Platform,
     private fcm: FCM,
     private firebase: FirebaseProvider
@@ -47,28 +48,10 @@ export class HomePage {
 
   ionViewDidEnter() {
     this.timestampPage();
-    this.checkForIncomingNotification();
     this.checkForNewNotifications();
     this.loadPosts();
     if (this.platform.is('cordova')) {
       this.listenToFCMPushNotifications();
-    }
-  }
-
-  checkForIncomingNotification() {
-    console.log("Checking for Incoming Notification");
-    let docId = this.navParams.get('id');
-    let col = this.navParams.get('type');
-    if (docId) {
-      console.log("Opening Notification");
-      console.log("Doc ID: " + docId);
-      console.log("Collection Path: " + col);
-      this.navCtrl.push(PostPage, {
-        id: docId,
-        type: col
-      });
-    } else {
-      console.log("No incoming notification");
     }
   }
 

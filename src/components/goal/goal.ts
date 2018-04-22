@@ -18,7 +18,8 @@ export class GoalComponent {
   viewGoal() {
     this.navCtrl.push(PostPage, { 
       id: this.goal.id,
-      type: "goals"
+      type: "goals",
+      opened: true
      });
   }
 }

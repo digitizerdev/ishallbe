@@ -86,6 +86,22 @@ describe('NotificationsPage', () => {
         expect(component instanceof NotificationsPage).toBe(true);
     });
 
+    it('should display ToolbarLogoComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('toolbar-logo'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display setRootProfilePageIcon', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#setRootProfilePageIcon'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
     it('should display new notifications', () => {
         let de: DebugElement;
         let el: HTMLElement;

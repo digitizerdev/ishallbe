@@ -2,7 +2,7 @@
     <b>{{pin?.title}}</b>
 </h2>
 <h5 id="PinDescription" *ngIf="pin?.description" class="post-description" (click)="viewPin(pin?.id)" text-center>{{pin?.description}}</h5>
-<div *ngIf="pin?.day == 'Monday' && pin?.url" id="PinImage" padding-top>
+<div *ngIf="pin?.day == 'Monday' && pin?.url" id="PinImage" padding-top text-center>
     <img class="pin-image" (click)="viewPin(pin?.id)" src="{{ pin?.url }}">
 </div>
 <button *ngIf="pin?.day == 'Tuesday'" (click)="openLink()" color="primary" id="OpenTuneButton" text-center ion-button round

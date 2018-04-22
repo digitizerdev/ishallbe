@@ -17,12 +17,12 @@ import { Notification } from '../../../test-data/notifications/model';
 })
 export class PostFooterComponent {
   @Input('postDoc') postDoc;
+  @Input('opened') docOpened;
   post: any;
   postLike: any;
   notificationRef: any;
   liked = false;
   loaded = false;
-  opened = false;
 
   constructor(
     private navParams: NavParams,
@@ -31,7 +31,8 @@ export class PostFooterComponent {
   ) { }
 
   ngAfterViewInit() {
-    this.opened = this.navParams.get('opened');
+    let opened = this.navParams.get('opened');
+    if (opened) this.docOpened = true;
     let postPath = this.postDoc.collection + "/" + this.postDoc.id;
     let postFooter = this.firebase.afs.doc(postPath);
     postFooter.valueChanges().subscribe((post) => {
@@ -216,7 +217,7 @@ export class PostFooterComponent {
   }
 
   openPost(post) {
-    if (!this.opened) {
+    if (!this.docOpened) {
       this.navCtrl.push(PostPage, {
         id: post.id,
         type: post.collection,

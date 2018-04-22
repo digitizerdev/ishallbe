@@ -17,6 +17,7 @@ import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { UserManagerPage } from '../pages/user-manager/user-manager';
 import { ApiManagerPage } from '../pages/api-manager/api-manager';
 import { TutorialPage } from '../pages/tutorial/tutorial';
+import { NotificationsPage } from '../pages/notifications/notifications';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
@@ -35,7 +36,6 @@ export class iShallBe {
   providers: Array<{ title: string, component: any }>;
   pages: Array<{ title: string, component: any }>;
   notification: any;
-  tappedNotification = false;
   editor = false;
 
   constructor(
@@ -47,7 +47,6 @@ export class iShallBe {
     private fcm: FCM,
     private firebase: FirebaseProvider,
   ) {
-    this.listenToFCMPushNotifications();
     this.listenToUserPermissionsEvents();
     this.platformReady();
     this.setMenus();
@@ -59,26 +58,28 @@ export class iShallBe {
 
   platformReady() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
       this.splashScreen.hide();
-      if (this.platform.is('cordova'))
+      if (this.platform.is('cordova')) {
+        this.statusBar.styleDefault();
         this.listenToFCMPushNotifications();
+      }
     });
   }
 
   listenToFCMPushNotifications() {
-    this.fcm.onNotification().subscribe(notification => {
-      if (notification.wasTapped) {
-        this.tappedNotification = true;
-        this.notification = notification;
-        this.openNotification(notification);
-      }
-      else {
-        this.displayNotificationAlert(notification);
-      }
+    this.events.subscribe('fcm synced', () => {
+      this.fcm.onNotification().subscribe(notification => {
+        if (notification.wasTapped) {
+          let notificationPath = "notifications/" + notification.id;
+          this.nav.setRoot(NotificationsPage);
+          this.firebase.afs.doc(notificationPath).update({ read: true });
+        }
+        else {
+          this.displayNotificationAlert(notification);
+        }
+      });
     });
   }
-
 
   displayNotificationAlert(notification) {
     let alert = this.alertCtrl.create({
@@ -93,54 +94,11 @@ export class iShallBe {
         {
           text: 'Open',
           handler: () => {
-            this.events.publish(notification)
+            this.nav.setRoot(NotificationsPage);
           }
         }]
     });
     alert.present();
-  }
-
-  openNotification(notification) {
-    let notificationPath = "notifications/" + notification.id;
-    this.firebase.afs.doc(notificationPath).update({ read: true }).then(() => {
-      let notificationCollection = notification.collection;
-      if (notificationCollection == "pins")
-        this.openPin(notification.docId);
-      if (notificationCollection == "statements")
-        this.openStatement(notification.docId);
-      if (notificationCollection == "goals")
-        this.openGoal(notification.docId);
-      if (notification.message == "message")
-        this.openChat(notification.docId);
-    });
-  }
-
-  openPin(docId) {
-    this.navCtrl.setRoot(HomePage, {
-      id: docId,
-      type: "pins",
-    });
-  }
-
-  openStatement(docId) {
-    this.navCtrl.setRoot(HomePage, {
-      id: docId,
-      type: "statements",
-    });
-  }
-
-  openGoal(docId) {
-    this.navCtrl.setRoot(HomePage, {
-      id: docId,
-      type: "goals",
-    });
-  }
-
-  openChat(docId) {
-    this.navCtrl.setRoot(ProfilePage, {
-      uid: docId,
-      tapped: true
-    });
   }
 
   listenToUserPermissionsEvents() {
@@ -177,19 +135,7 @@ export class iShallBe {
 
   listenToContributorPermissionEvents() {
     this.events.subscribe('contributor permission granted', () => {
-      if (this.platform.is('cordova')) this.listenToFCMPushNotifications();
-      if (this.tappedNotification) {
-        if (this.notification.collection == "pins")
-          this.openPin(this.notification.docId);
-        if (this.notification.collection == "statements")
-          this.openStatement(this.notification.docId);
-        if (this.notification.collection == "goals")
-          this.openGoal(this.notification.docId);
-        if (this.notification.message == "message")
-          this.openChat(this.notification.docId);
-      } else {
-        this.nav.setRoot(HomePage);
-      }
+      this.nav.setRoot(HomePage);
     });
     this.events.subscribe('contributor permission not granted', () => {
       this.nav.setRoot(LoginPage);

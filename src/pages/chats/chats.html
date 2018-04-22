@@ -17,7 +17,7 @@
     <h5 class="feature">New Messages</h5>
     <ion-list class="chats" id="NewMessages" no-lines>
       <ion-item *ngFor="let newChat of newChats" text-wrap (click)="viewChat(newChat)" class="chat">
-        <ion-avatar item-left>
+        <ion-avatar (click)="viewUser(chat.uid)" item-left>
           <img class="profile-picture" src="{{ newChat.face }}" alt="" />
         </ion-avatar>
         <h2>{{newChat.name}}</h2>

@@ -96,6 +96,7 @@ export class FirebaseProvider {
         if (this.user.fcmToken !== this.fcmToken) {
           let userPath = "users/" + this.user.uid;
           this.afs.doc(userPath).update({ fcmToken: this.fcmToken});
+          this.events.publish('fcm synced');
         }
       }
     }

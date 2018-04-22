@@ -98,6 +98,14 @@ describe('ChatPage', () => {
         expect(component instanceof ChatPage).toBe(true);
     });
 
+    it('should display setRootHomePageIcon', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#setRootHomePageIcon'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
     it('should display messages', () => {
         let de: DebugElement;
         let el: HTMLElement;

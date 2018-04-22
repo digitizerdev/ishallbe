@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import { PostPage } from '../post/post';
 import { ChatPage } from '../chat/chat';
+import { ProfilePage } from '../profile/profile';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -94,4 +95,16 @@ export class NotificationsPage {
     });
   }
 
+  setRootProfilePage() {
+    this.navCtrl.setRoot(ProfilePage);
+  }
+
+  viewUser(uid) {
+    if (uid !== this.firebase.user.uid)
+      this.navCtrl.push(ProfilePage, { uid: uid});
+  }
+
+  refreshPage(refresh) {
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
+  }
 }

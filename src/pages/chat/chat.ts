@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import moment from 'moment';
 
 import { ProfilePage } from '../profile/profile';
+import { HomePage } from '../home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -240,7 +241,14 @@ export class ChatPage {
     });
   }
 
-  viewUser(user) {
-    this.navCtrl.push(ProfilePage, { uid: user.uid });
+  viewUser(uid) {
+    console.log("Viewing User");
+    console.log("User UID: " + uid);
+    if (uid !== this.firebase.user.uid)
+      this.navCtrl.push(ProfilePage, { uid: uid});
+  }
+
+  setRootHomePage() {
+    this.navCtrl.setRoot(HomePage);
   }
 }

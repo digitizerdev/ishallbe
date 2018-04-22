@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
+import { ProfilePage } from '../profile/profile';
 import { ChatPage } from '../chat/chat';
 import { HomePage } from '../home/home';
 
@@ -48,6 +49,11 @@ export class ChatsPage {
 
   viewChat(chat) {
     this.navCtrl.push(ChatPage, { id: chat.id });
+  }
+
+  viewUser(uid) {
+    if (uid !== this.firebase.user.uid)
+      this.navCtrl.push(ProfilePage, { uid: uid});
   }
 
   setRootHomePage() {
