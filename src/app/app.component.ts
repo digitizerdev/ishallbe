@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { Nav, Platform, Events, AlertController } from 'ionic-angular';
+import { Nav, NavController, Platform, Events, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
@@ -26,6 +26,7 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
 export class iShallBe {
 
   @ViewChild(Nav) nav: Nav;
+  @ViewChild('myNav') navCtrl: NavController;
 
   rootPage: StartupPage;
   affirmationsMenu: Array<{ title: string, icon: string, component: any }>;
@@ -46,7 +47,7 @@ export class iShallBe {
     private fcm: FCM,
     private firebase: FirebaseProvider,
   ) {
-    this.rootPage = StartupPage;
+    this.listenToFCMPushNotifications();
     this.listenToUserPermissionsEvents();
     this.platformReady();
     this.setMenus();
@@ -92,7 +93,7 @@ export class iShallBe {
         {
           text: 'Open',
           handler: () => {
-            this.openNotification(notification)
+            this.events.publish(notification)
           }
         }]
     });
@@ -115,28 +116,28 @@ export class iShallBe {
   }
 
   openPin(docId) {
-    this.nav.setRoot(HomePage, {
+    this.navCtrl.setRoot(HomePage, {
       id: docId,
       type: "pins",
     });
   }
 
   openStatement(docId) {
-    this.nav.setRoot(HomePage, {
+    this.navCtrl.setRoot(HomePage, {
       id: docId,
       type: "statements",
     });
   }
 
   openGoal(docId) {
-    this.nav.setRoot(HomePage, {
+    this.navCtrl.setRoot(HomePage, {
       id: docId,
       type: "goals",
     });
   }
 
   openChat(docId) {
-    this.nav.setRoot(ProfilePage, {
+    this.navCtrl.setRoot(ProfilePage, {
       uid: docId,
       tapped: true
     });
