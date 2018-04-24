@@ -95,9 +95,6 @@ describe('iShallBe 1.4', () => {
     expect(component instanceof iShallBe).toBe(true);
   });
 
-  it('should initialize root page to StartupPage', () => {
-    expect(component['rootPage']).toBe(StartupPage);
-  });
 
   it('should display affirmations menu with three pages if user contributor', () => {
     expect(component.affirmationsMenu.length).toBe(3);

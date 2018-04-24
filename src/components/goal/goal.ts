@@ -13,7 +13,13 @@ export class GoalComponent {
 
   constructor(
     private navCtrl: NavController
-  ) {}
+  ) {
+  }
+
+  ngOnInit() {
+    console.log("Initialized Goal Component");
+    console.log(this.goal);
+  }
 
   viewGoal() {
     this.navCtrl.push(PostPage, { 

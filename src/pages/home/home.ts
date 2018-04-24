@@ -1,9 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { IonicPage, NavController, NavParams, AlertController, Platform, Slides } from 'ionic-angular';
+import { IonicPage, NavController, Platform, Slides } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 
-import { PostPage } from '../post/post';
 import { NotificationsPage } from '../notifications/notifications';
 import { StatementCreatorPage} from '../statement-creator/statement-creator';
 import { GoalCreatorPage } from '../goal-creator/goal-creator';
@@ -38,8 +37,6 @@ export class HomePage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
-    private alertCtrl: AlertController,
     private platform: Platform,
     private fcm: FCM,
     private firebase: FirebaseProvider
@@ -75,15 +72,11 @@ export class HomePage {
   }
 
   checkForNewNotifications() {
-    console.log("Checking for new notifications");
-    console.log("My UID: " + this.firebase.user.uid);
     let newNotifications = this.firebase.afs.collection('notifications', ref =>
       ref.where("receiverUid", "==", this.firebase.user.uid).
         where("read", "==", false).
         where("message", "==", false));
     newNotifications.valueChanges().subscribe((myNewNotifications) => {
-      console.log("Got New Notifications");
-      console.log(myNewNotifications);
       if (myNewNotifications.length > 0) this.newNotifications = true;
       else this.newNotifications = false;
     });
@@ -154,7 +147,9 @@ export class HomePage {
       ref.where('private', '==', false).
         where('reported', '==', false).
         where('complete', '==', false).
-        orderBy('timestamp', 'desc').limit(25));
+        where('dueDate', '>', this.timestamp).
+        orderBy('dueDate', 'desc').
+        limit(25));
     goals.valueChanges().subscribe((goals) => {
       if (goals.length > 0) {
         if (!this.goalsLoaded)
@@ -167,6 +162,8 @@ export class HomePage {
 
   setGoals(goals) {
     goals.forEach((goal) => {
+        console.log("Setting goal");
+        console.log(goal);
         let dueDate = moment.unix(goal.dueDate);
         goal.displayDueDate = moment(dueDate).fromNow();
         let timestamp = moment.unix(goal.timestamp);

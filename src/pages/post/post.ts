@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/take';
 
 import { ProfilePage } from '../profile/profile';
+import { HomePage} from '../home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -73,6 +74,10 @@ export class PostPage {
       if (post.uid == this.firebase.afa.auth.currentUser.uid) this.mine = true;
       if (post.day == 'Monday') this.video = post.link;
       if (this.collection == 'goals' && post.url) this.audio = true;
+      if (post.dueDate) {
+        let dueDate = moment.unix(post.dueDate);
+        post.displayDueDate = moment(dueDate).fromNow();
+      }
       this.editor = this.firebase.user.editor;
       this.private = post.private;
       this.reported = post.reported;
@@ -120,14 +125,10 @@ export class PostPage {
   }
 
   markIncomplete() {
-    console.log("Marking Incomplete");
-    console.log(this.post);
     this.firebase.afs.doc(this.postPath).update({ complete: false });
   }
 
   markComplete() {
-    console.log("Marking Complete");
-    console.log(this.post);
     this.firebase.afs.doc(this.postPath).update({ complete: true });
   }
 
@@ -141,6 +142,7 @@ export class PostPage {
     this.confirm(action).subscribe((confirmed) => {
       if (confirmed) {
         this.reported = !this.reported;
+        this.navCtrl.setRoot(HomePage);
         this.firebase.afs.doc(this.postPath).update({ reported: this.reported });
       }
     });
@@ -148,18 +150,16 @@ export class PostPage {
 
   togglePrivacy() {
     this.private = !this.private;
-    this.firebase.afs.doc(this.postPath).update({ private: this.private }).then(() => {
-      this.navCtrl.pop();
-    });
+    this.navCtrl.setRoot(HomePage);
+    this.firebase.afs.doc(this.postPath).update({ private: this.private });
   }
 
   deletePost() {
     this.deleting = true;
     this.confirm('delete').subscribe((confirmed) => {
       if (confirmed) {
-        this.firebase.afs.doc(this.postPath).delete().then(() => {
-          this.navCtrl.pop();
-        });
+        this.navCtrl.setRoot(HomePage);
+        this.firebase.afs.doc(this.postPath).delete();
       }
     });
   }

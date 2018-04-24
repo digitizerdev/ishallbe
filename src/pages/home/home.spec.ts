@@ -2,10 +2,11 @@ import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { IonicModule, Platform, NavController, NavParams } from 'ionic-angular';
+import { IonicModule, Platform, NavController, NavParams, AlertController } from 'ionic-angular';
 import { Media } from '@ionic-native/media';
 import { FileTransfer } from '@ionic-native/file-transfer';
-
+import { FCM } from '@ionic-native/fcm';
+ 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -23,6 +24,7 @@ import {
     NavParamsMock,
     MediaMock,
     FileTransferMock,
+    FCMMock,
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
@@ -34,6 +36,7 @@ describe('HomePage', () => {
     let navParams: NavParams;
     let media: Media;
     let fileTransfer: FileTransfer;
+    let fcm: FCM;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -59,6 +62,7 @@ describe('HomePage', () => {
                 { provide: Media, useClass: MediaMock },
                 { provide: FileTransfer, useClass: FileTransferMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
+                { provide: FCM, useClass: FCMMock},
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
             ],
@@ -77,6 +81,7 @@ describe('HomePage', () => {
         media = TestBed.get(Media);
         fileTransfer = TestBed.get(FileTransfer);
         firebase = TestBed.get(FirebaseProvider);
+        
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
     });

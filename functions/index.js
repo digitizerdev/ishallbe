@@ -31,7 +31,8 @@ function createGoalReminder(goal) {
     console.log("Creating Goal Reminder");
     console.log(goal);
     let fireData = admin.firestore();
-    let id = this.fireData.createId();
+    let id = goal.id + moment(new Date()).unix();
+    console.log("Id is " + id);
     let displayTimestamp = moment().format('MMM DD YYYY');
     let timestamp = moment().unix();
     let notification = {
@@ -39,6 +40,7 @@ function createGoalReminder(goal) {
       uid: goal.uid,
       name: goal.name,
       face: goal.face,
+      title: goal.title,
       description: goal.description,
       read: false,
       collection: "reminder",

@@ -95,6 +95,8 @@ describe('GoalComponent', () => {
     });
 
     it('should display due date', () => {
+        component.goal = mockGoals[0];
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#GoalDueDate'));
