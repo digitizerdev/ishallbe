@@ -5,7 +5,10 @@ admin.initializeApp(functions.config().firebase);
 
 exports.hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => {
     console.log("Cron Hourly Tick");
-    let currentTime = moment.unix();
+    var wrapped = moment(new Date()); 
+    console.log("Moment Date is ");
+    console.log(wrapped); 
+    let currentTime = moment(new Date()).unix();
     console.log("Current time in unix is " + currentTime);
     let overNextHourTime = currentTime + 3600;
     console.log("Over Next Hour Time in unix is " + overNextHourTime);
