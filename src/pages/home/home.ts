@@ -1,9 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { IonicPage, NavController, NavParams, AlertController, Platform, Slides } from 'ionic-angular';
+import { IonicPage, NavController, Platform, Slides } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 
-import { PostPage } from '../post/post';
 import { NotificationsPage } from '../notifications/notifications';
 import { StatementCreatorPage} from '../statement-creator/statement-creator';
 import { GoalCreatorPage } from '../goal-creator/goal-creator';
@@ -38,8 +37,6 @@ export class HomePage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
-    private alertCtrl: AlertController,
     private platform: Platform,
     private fcm: FCM,
     private firebase: FirebaseProvider
