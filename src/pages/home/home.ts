@@ -91,9 +91,6 @@ export class HomePage {
   }
 
   loadPins() {
-    console.log("Loading Pins");
-    console.log("Post Start Date is " + this.postStartDate);
-    console.log("Post End Date is " + this.postEndDate);
     let pins = this.firebase.afs.collection('pins', ref =>
       ref.orderBy('postDate').
         startAt(this.postStartDate).
