@@ -148,7 +148,7 @@ export class HomePage {
         where('reported', '==', false).
         where('complete', '==', false).
         where('dueDate', '>', this.timestamp).
-        orderBy('dueDate', 'desc').
+        orderBy('dueDate', 'asc').
         limit(25));
     goals.valueChanges().subscribe((goals) => {
       if (goals.length > 0) {

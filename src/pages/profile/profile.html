@@ -79,20 +79,26 @@
         </ion-card>
         <ion-row *ngIf="noStatements" padding-top>
           <ion-col text-center padding>
-            <button id="ProfileSetRootStatementCreatorPageButton" ion-button (click)="setRootStatementCreatorPage()" color="background" class="tdct-button" round
-               strong>
+            <button id="ProfileSetRootStatementCreatorPageButton" ion-button (click)="setRootStatementCreatorPage()" color="background"
+              class="tdct-button" round strong>
               CREATE STATEMENT</button>
           </ion-col>
         </ion-row>
       </div>
       <div *ngIf="postSegment=='goals'" id="MyGoals">
+        <ion-list *ngIf="mine" padding-top>
+          <ion-item (click)="toggleCompletedGoals()" color="primary">
+            <ion-label><b>Show Completed Goals</b></ion-label>
+            <ion-toggle [(ngModel)]="completedGoals" color="secondary"></ion-toggle>
+          </ion-item>
+        </ion-list>
         <ion-card *ngFor="let goal of goals">
           <goal [post]="goal"></goal>
         </ion-card>
         <ion-row *ngIf="noGoals" padding-top>
           <ion-col text-center padding>
-            <button id="ProfileSetRootGoalCreatorPageButton" ion-button (click)="setRootGoalCreatorPage()" color="background" class="tdct-button" round
-              strong>
+            <button id="ProfileSetRootGoalCreatorPageButton" ion-button (click)="setRootGoalCreatorPage()" color="background" class="tdct-button"
+              round strong>
               CREATE GOAL</button>
           </ion-col>
         </ion-row>
