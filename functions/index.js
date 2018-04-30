@@ -35,13 +35,14 @@ function createGoalReminder(goal) {
     console.log("Id is " + id);
     let displayTimestamp = moment().format('MMM DD YYYY');
     let timestamp = moment().unix();
+    let description = "Your " + goal.title + " goal is due soon";
     let notification = {
       id: id,
       uid: goal.uid,
       name: goal.name,
       face: goal.face,
       title: goal.title,
-      description: goal.description,
+      description: description,
       read: false,
       collection: "reminder",
       docId: goal.id,
@@ -114,9 +115,11 @@ function updateGoals(user) {
 }
 
 exports.createNotification = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
+    console.log("Creating Notification");
     let message = event.data.data();
-    let pushMessage = message.name + " " + message.description;
-    if (message.reminder) pushMessage = message.title + " goal is due";
+    console.log(message);
+    let pushMessage = message.name + message.description;
+    if (message.reminder) pushMessage = "Your " + message.title + " goal is due soon";
     let payload = {
         notification: {
             body: pushMessage,
@@ -126,7 +129,7 @@ exports.createNotification = functions.firestore.document('notifications/{notifi
             uid: message.uid,
             name: message.name,
             face: message.face,
-            description: message.description,
+            description: pushMessage,
             read: message.read.toString(),
             collection: message.collection,
             docId: message.docId,

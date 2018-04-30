@@ -162,8 +162,6 @@ export class HomePage {
 
   setGoals(goals) {
     goals.forEach((goal) => {
-        console.log("Setting goal");
-        console.log(goal);
         let dueDate = moment.unix(goal.dueDate);
         goal.displayDueDate = moment(dueDate).fromNow();
         let timestamp = moment.unix(goal.timestamp);

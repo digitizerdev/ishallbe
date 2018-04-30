@@ -17,8 +17,6 @@ export class GoalComponent {
   }
 
   ngOnInit() {
-    console.log("Initialized Goal Component");
-    console.log(this.goal);
   }
 
   viewGoal() {

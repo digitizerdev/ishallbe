@@ -17,14 +17,16 @@ export class ChatsPage {
   chatsCol: any;
   newChats: any[] = [];
   earlierChats: any[] = [];
-  
+  viewingUser = false;
+
   constructor(
     private navCtrl: NavController,
     private firebase: FirebaseProvider
   ) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
+    this.viewingUser = false;
     this.loadChats();
   }
 
@@ -36,24 +38,27 @@ export class ChatsPage {
     });
   }
 
-  setChats(chats) { 
+  setChats(chats) {
     this.newChats = [];
     this.earlierChats = [];
     chats.forEach((chat) => {
       if (chat.newMessages)
         this.newChats.push(chat);
-      else 
+      else
         this.earlierChats.push(chat);
     });
   }
 
   viewChat(chat) {
-    this.navCtrl.push(ChatPage, { id: chat.id });
+    if (!this.viewingUser)
+      this.navCtrl.push(ChatPage, { id: chat.id });
   }
 
   viewUser(uid) {
+    console.log("Viewing User");
+    this.viewingUser = true;
     if (uid !== this.firebase.user.uid)
-      this.navCtrl.push(ProfilePage, { uid: uid});
+      this.navCtrl.push(ProfilePage, { uid: uid });
   }
 
   setRootHomePage() {

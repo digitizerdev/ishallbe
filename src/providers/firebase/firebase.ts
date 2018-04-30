@@ -20,6 +20,7 @@ export class FirebaseProvider {
   hasSeenTutorial = false;
   signingUp = false;
   socialAuthentication = false;
+  notification = false;
 
   constructor(
     public alertCtrl: AlertController,
