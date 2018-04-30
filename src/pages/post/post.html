@@ -44,23 +44,25 @@
   <ion-row *ngIf="collection == 'goals'" id="DueDate" text-center>
     <ion-col text-center>
       <h5>
-        <ion-icon name="alarm" color="secondary"></ion-icon>
+        <ion-icon *ngIf="pastDue" name="alarm" color="danger"></ion-icon>
+        <ion-icon *ngIf="dueIn24HoursOrLess" name="alarm" color="secondary"></ion-icon>
+        <ion-icon *ngIf="dueIn24HoursOrMore" name="alarm" color="primary"></ion-icon>
         <b>Due {{post?.displayDueDate}}</b>
       </h5>
     </ion-col>
   </ion-row>
   <ion-row>
-      <ion-col *ngIf="collection == 'goals' && !post?.complete" text-center>
-        <button (click)="markComplete()" color="secondary" id="MarkCompleteButton" ion-button round strong padding>
-          MARK COMPLETE
-        </button>
-      </ion-col>
-      <ion-col *ngIf="post?.complete" text-center>
-        <button (click)="markIncomplete()" color="danger" id="MarkIncompleteButton" ion-button round strong padding>
-          MARK INCOMPLETE
-        </button>
-      </ion-col>
-    </ion-row>
+    <ion-col *ngIf="collection == 'goals' && !post?.complete" text-center>
+      <button (click)="markComplete()" color="secondary" id="MarkCompleteButton" ion-button round strong padding>
+        MARK COMPLETE
+      </button>
+    </ion-col>
+    <ion-col *ngIf="post?.complete" text-center>
+      <button (click)="markIncomplete()" color="danger" id="MarkIncompleteButton" ion-button round strong padding>
+        MARK INCOMPLETE
+      </button>
+    </ion-col>
+  </ion-row>
   <ion-row *ngIf="audio">
     <ion-col text-center>
       <audio-player [postDoc]="post"></audio-player>

@@ -27,6 +27,7 @@ export class HomePage {
   postEndDate: number;
   dayNumber: number;
   timestamp: number;
+  dayOfWeek: string;
   pinsLoaded = false;
   statementsLoaded = false;
   goalsLoaded = false;
@@ -55,8 +56,9 @@ export class HomePage {
   timestampPage() {
     this.timestamp = moment().unix();
     this.dayNumber = moment().isoWeekday();
+    this.dayOfWeek = moment().format('dddd');
     this.postEndDate = parseInt(moment().format('YYYYMMDD'));
-    this.postStartDate = this.postEndDate - this.dayNumber;
+    this.postStartDate = parseInt(moment().subtract(this.dayNumber, 'days').format('YYYYMMDD'));
   }
 
   listenToFCMPushNotifications() {
@@ -72,15 +74,11 @@ export class HomePage {
   }
 
   checkForNewNotifications() {
-    console.log("Checking for new notifications");
-    console.log("My UID: " + this.firebase.user.uid);
     let newNotifications = this.firebase.afs.collection('notifications', ref =>
       ref.where("receiverUid", "==", this.firebase.user.uid).
         where("read", "==", false).
         where("message", "==", false));
     newNotifications.valueChanges().subscribe((myNewNotifications) => {
-      console.log("Got New Notifications");
-      console.log(myNewNotifications);
       if (myNewNotifications.length > 0) this.newNotifications = true;
       else this.newNotifications = false;
     });
@@ -151,7 +149,9 @@ export class HomePage {
       ref.where('private', '==', false).
         where('reported', '==', false).
         where('complete', '==', false).
-        orderBy('timestamp', 'desc').limit(25));
+        where('dueDate', '>', this.timestamp).
+        orderBy('dueDate', 'asc').
+        limit(25));
     goals.valueChanges().subscribe((goals) => {
       if (goals.length > 0) {
         if (!this.goalsLoaded)

@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { Nav, NavController, Platform, Events, AlertController } from 'ionic-angular';
+import { Nav, NavController, Platform, Events, AlertController, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
@@ -35,7 +35,6 @@ export class iShallBe {
   editorMenu: Array<{ title: string, icon: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
   pages: Array<{ title: string, component: any }>;
-  notification: any;
   editor = false;
 
   constructor(
@@ -44,6 +43,7 @@ export class iShallBe {
     private splashScreen: SplashScreen,
     private events: Events,
     private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     private fcm: FCM,
     private firebase: FirebaseProvider,
   ) {
@@ -67,12 +67,15 @@ export class iShallBe {
   }
 
   listenToFCMPushNotifications() {
+    console.log("Listening To FCM Notifications");
     this.events.subscribe('fcm synced', () => {
       this.fcm.onNotification().subscribe(notification => {
+        console.log("Got Notification");
+        console.log(notification);
+        this.firebase.notification = true;
         if (notification.wasTapped) {
           let notificationPath = "notifications/" + notification.id;
           this.nav.setRoot(NotificationsPage);
-          this.notification = null;
           this.firebase.afs.doc(notificationPath).update({ read: true });
         }
         else {
@@ -83,6 +86,8 @@ export class iShallBe {
   }
 
   displayNotificationAlert(notification) {
+    console.log("Displaying Notification Alert");
+    console.log("Subtitle is " + notification.aps.alert);
     let alert = this.alertCtrl.create({
       title: 'Notification',
       subTitle: notification.aps.alert,
@@ -96,7 +101,6 @@ export class iShallBe {
           text: 'Open',
           handler: () => {
             this.nav.setRoot(NotificationsPage);
-            this.notification = null;
           }
         }]
     });
@@ -137,9 +141,8 @@ export class iShallBe {
 
   listenToContributorPermissionEvents() {
     this.events.subscribe('contributor permission granted', () => {
-      if (this.notification) {
+      if (this.firebase.notification) {
         this.nav.setRoot(NotificationsPage);
-        this.notification = null;
       } else {
         this.nav.setRoot(HomePage);
       }

@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/take';
 
 import { ProfilePage } from '../profile/profile';
+import { HomePage} from '../home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -30,6 +31,7 @@ export class PostPage {
   post: any;
   video: any;
   notificationRef: any;
+  timestamp: number;
   postManagerMenu = false;
   mine = false;
   audio = false;
@@ -42,6 +44,9 @@ export class PostPage {
   likedComment = false;
   commentsLoaded = false;
   postOpened = false;
+  pastDue = false;
+  dueIn24HoursOrLess = false;
+  dueIn24HoursOrMore = false;
   commentForm: {
     description?: string
   } = {};
@@ -73,12 +78,30 @@ export class PostPage {
       if (post.uid == this.firebase.afa.auth.currentUser.uid) this.mine = true;
       if (post.day == 'Monday') this.video = post.link;
       if (this.collection == 'goals' && post.url) this.audio = true;
+      if (post.dueDate) {
+        let dueDate = moment.unix(post.dueDate);
+        post.displayDueDate = moment(dueDate).fromNow();
+      }
       this.editor = this.firebase.user.editor;
       this.private = post.private;
       this.reported = post.reported;
       this.post = post;
+      console.log(this.post);
+      if (this.collection == 'goals') this.timestampGoal();
       this.loaded = true;
     });
+  }
+
+  timestampGoal() {
+    this.timestamp = moment().unix();
+    console.log("Timestamp is " + this.timestamp);
+    console.log("Goal Due Date is " + this.post.dueDate);
+    if (this.timestamp > this.post.dueDate) this.pastDue = true;
+    if (this.timestamp + 86400 > this.post.dueDate && this.post.dueDate > this.timestamp) this.dueIn24HoursOrLess = true;
+    if (this.post.dueDate > this.timestamp + 86400) this.dueIn24HoursOrMore = true;
+    console.log("Past Due: " + this.pastDue);
+    console.log("Due in 24 Hours or Less: " + this.dueIn24HoursOrLess);
+    console.log("Due in 24 Hours or More: " + this.dueIn24HoursOrMore);
   }
 
   loadComments() {
@@ -120,14 +143,10 @@ export class PostPage {
   }
 
   markIncomplete() {
-    console.log("Marking Incomplete");
-    console.log(this.post);
     this.firebase.afs.doc(this.postPath).update({ complete: false });
   }
 
   markComplete() {
-    console.log("Marking Complete");
-    console.log(this.post);
     this.firebase.afs.doc(this.postPath).update({ complete: true });
   }
 
@@ -141,6 +160,7 @@ export class PostPage {
     this.confirm(action).subscribe((confirmed) => {
       if (confirmed) {
         this.reported = !this.reported;
+        this.navCtrl.setRoot(HomePage);
         this.firebase.afs.doc(this.postPath).update({ reported: this.reported });
       }
     });
@@ -148,18 +168,16 @@ export class PostPage {
 
   togglePrivacy() {
     this.private = !this.private;
-    this.firebase.afs.doc(this.postPath).update({ private: this.private }).then(() => {
-      this.navCtrl.pop();
-    });
+    this.navCtrl.setRoot(HomePage);
+    this.firebase.afs.doc(this.postPath).update({ private: this.private });
   }
 
   deletePost() {
     this.deleting = true;
     this.confirm('delete').subscribe((confirmed) => {
       if (confirmed) {
-        this.firebase.afs.doc(this.postPath).delete().then(() => {
-          this.navCtrl.pop();
-        });
+        this.navCtrl.setRoot(HomePage);
+        this.firebase.afs.doc(this.postPath).delete();
       }
     });
   }

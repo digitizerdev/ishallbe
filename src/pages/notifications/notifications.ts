@@ -4,7 +4,6 @@ import { IonicPage, NavController } from 'ionic-angular';
 import moment from 'moment';
 
 import { PostPage } from '../post/post';
-import { ChatPage } from '../chat/chat';
 import { ProfilePage } from '../profile/profile';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -20,6 +19,7 @@ export class NotificationsPage {
   notificationsCol: any;
   readNotifications: any[];
   unreadNotifications: any[];
+  viewingUser = false;
 
   constructor(
     private navCtrl: NavController,
@@ -27,7 +27,9 @@ export class NotificationsPage {
   ) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
+    this.viewingUser = false;
+    this.firebase.notification = false;
     this.loadNotifications();
   }
 
@@ -55,17 +57,18 @@ export class NotificationsPage {
   }
 
   openNotification(notification) {
-    let notificationPath = "notifications/" + notification.id;
-    this.firebase.afs.doc(notificationPath).update({ read: true }).then(() => {
+    if (!this.viewingUser) {
+      let notificationPath = "notifications/" + notification.id;
       if (notification.collection == "pins")
         this.openPin(notification);
       if (notification.collection == "statements")
         this.openStatement(notification);
       if (notification.collection == "goals")
         this.openGoal(notification)
-      if (notification.message)
-        this.openChat(notification);
-    });
+      if (notification.reminder)
+        this.openGoal(notification);
+      this.firebase.afs.doc(notificationPath).update({ read: true });
+    }
   }
 
   openPin(notification) {
@@ -89,19 +92,14 @@ export class NotificationsPage {
     });
   }
 
-  openChat(notification) {
-    this.navCtrl.push(ChatPage, {
-      uid: notification.uid,
-    });
-  }
-
   setRootProfilePage() {
     this.navCtrl.setRoot(ProfilePage);
   }
 
   viewUser(uid) {
+    this.viewingUser = true;
     if (uid !== this.firebase.user.uid)
-      this.navCtrl.push(ProfilePage, { uid: uid});
+      this.navCtrl.push(ProfilePage, { uid: uid });
   }
 
   refreshPage(refresh) {

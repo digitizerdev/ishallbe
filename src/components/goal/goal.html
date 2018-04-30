@@ -2,20 +2,22 @@
 <ion-row (click)="viewGoal(goal.id)">
   <ion-col *ngIf="!goal?.complete" text-center>
     <h2 id="GoalDueDate">
-      <ion-icon name="alarm" color="secondary"></ion-icon>
+      <ion-icon *ngIf="pastDue" name="alarm" color="danger"></ion-icon>
+      <ion-icon *ngIf="dueIn24HoursOrLess" name="alarm" color="secondary"></ion-icon>
+      <ion-icon *ngIf="dueIn24HoursOrMore" name="alarm" color="primary"></ion-icon>
       <b>Due {{goal?.displayDueDate}}</b>
     </h2>
   </ion-col>
   <ion-col *ngIf="goal?.complete" text-center>
     <h2 id="GoalCompleteMarker">
-      <ion-icon name="checkbox" color="secondary"></ion-icon>
+      <ion-icon name="checkbox" color="primary"></ion-icon>
       <b>COMPLETE</b>
     </h2>
   </ion-col>
 </ion-row>
 <ion-row *ngIf="goal?.url">
   <ion-col text-center>
-    <audio-player [postDoc]="goal" ></audio-player>
+    <audio-player [postDoc]="goal"></audio-player>
   </ion-col>
 </ion-row>
 <h2 class="post-description" (click)="viewGoal(goal.id)" id="GoalDescription">

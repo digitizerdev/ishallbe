@@ -38,6 +38,7 @@ export class ProfilePage {
   newMessages = false;
   noStatements = false;
   noGoals = false;
+  completedGoals = false;
   postSegment = 'statements';
 
   constructor(
@@ -48,7 +49,7 @@ export class ProfilePage {
   ) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.uid = this.navParams.get('uid');
     if (!this.uid) {
       this.mine = true;
@@ -100,7 +101,7 @@ export class ProfilePage {
 
   loadAllMyPosts() {
     this.loadAllStatements();
-    this.loadAllGoals();
+    this.loadAllIncompleteGoals();
   }
 
   loadMyPublicPosts() {
@@ -111,7 +112,7 @@ export class ProfilePage {
   loadAllStatements() {
     let statements = this.firebase.afs.collection('statements', ref =>
       ref.where('uid', '==', this.uid).
-        orderBy('timestamp', 'desc').limit(25));
+        orderBy('timestamp', 'desc').limit(50));
     statements.valueChanges().subscribe((statements) => {
       if (statements.length > 0) {
         if (!this.statementsLoaded)
@@ -124,7 +125,7 @@ export class ProfilePage {
     let statements = this.firebase.afs.collection('statements', ref =>
       ref.where('uid', '==', this.uid).
         where('private', '==', false).
-        orderBy('timestamp', 'desc').limit(25));
+        orderBy('timestamp', 'desc').limit(50));
     statements.valueChanges().subscribe((statements) => {
       if (!this.statementsLoaded)
         this.setStatements(statements);
@@ -140,28 +141,40 @@ export class ProfilePage {
     this.statementsLoaded = true;
   }
 
-  loadAllGoals() {
-    let goals = this.firebase.afs.collection('goals', ref =>
-      ref.where('uid', '==', this.uid).
-        orderBy('timestamp', 'desc').limit(25));
-    goals.valueChanges().subscribe((goals) => {
-      if (!this.goalsLoaded)
-        this.setGoals(goals);
-    });
-  }
-
   loadPublicGoals() {
     let goals = this.firebase.afs.collection('goals', ref =>
       ref.where('uid', '==', this.uid).
         where('private', '==', false).
-        orderBy('timestamp', 'desc').limit(25));
+        orderBy('dueDate', 'asc').limit(50));
     goals.valueChanges().subscribe((goals) => {
       if (!this.goalsLoaded)
         this.setGoals(goals);
     });
   }
 
+  loadAllGoals() {
+    let goals = this.firebase.afs.collection('goals', ref =>
+      ref.where('uid', '==', this.uid).
+        orderBy('dueDate', 'desc').limit(50));
+    goals.valueChanges().subscribe((goals) => {
+      if (!this.goalsLoaded)
+        this.setGoals(goals);
+    });
+  }
+
+  loadAllIncompleteGoals() {
+    let goals = this.firebase.afs.collection('goals', ref =>
+    ref.where('uid', '==', this.uid).
+      where('complete', '==', false).
+      orderBy('dueDate', 'asc').limit(50));
+  goals.valueChanges().subscribe((goals) => {
+    if (!this.goalsLoaded)
+      this.setGoals(goals);
+  });
+  }
+
   setGoals(goals) {
+    this.goals = [];
     if (!goals) this.noGoals = true;
     goals.forEach((goal) => {
       let dueDate = moment.unix(goal.dueDate);
@@ -171,6 +184,12 @@ export class ProfilePage {
       this.goals.push(goal);
     });
     this.goalsLoaded = true;
+  }
+
+  toggleCompletedGoals() {
+    this.goalsLoaded = false;
+    if (this.completedGoals) this.loadAllGoals();
+    else this.loadAllIncompleteGoals();
   }
 
   blockUser() {

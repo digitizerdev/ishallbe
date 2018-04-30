@@ -3,6 +3,67 @@ const admin = require('firebase-admin');
 const moment = require('moment');
 admin.initializeApp(functions.config().firebase);
 
+exports.hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => {
+    console.log("Cron Hourly Tick");
+    var wrapped = moment(new Date()); 
+    console.log("Moment Date is ");
+    console.log(wrapped); 
+    let currentTime = moment(new Date()).unix();
+    console.log("Current time in unix is " + currentTime);
+    let overNextHourTime = currentTime + 3600;
+    console.log("Over Next Hour Time in unix is " + overNextHourTime);
+    let fireData = admin.firestore();
+    let goals = fireData.collection('goals').where("dueDate", ">=", currentTime).
+    where("dueDate", "<=", overNextHourTime);
+    return goals.get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            let goal = doc.data()
+            console.log("Got goal");
+            console.log(goal);
+            console.log("Goal due date in unix is " + goal.dueDate);
+            createGoalReminder(goal);
+        });
+        return;
+    });
+});
+
+function createGoalReminder(goal) {
+    console.log("Creating Goal Reminder");
+    console.log(goal);
+    let fireData = admin.firestore();
+    let id = goal.id + moment(new Date()).unix();
+    console.log("Id is " + id);
+    let displayTimestamp = moment().format('MMM DD YYYY');
+    let timestamp = moment().unix();
+    let description = "Your " + goal.title + " goal is due soon";
+    let notification = {
+      id: id,
+      uid: goal.uid,
+      name: goal.name,
+      face: goal.face,
+      title: goal.title,
+      description: description,
+      read: false,
+      collection: "reminder",
+      docId: goal.id,
+      receiverUid: goal.uid,
+      message: false,
+      pinLike: false,
+      statementLike: false,
+      goalLike: false,
+      commentLike: false,
+      comment: false,
+      reminder: true,
+      displayTimestamp: displayTimestamp,
+      timestamp: timestamp
+    }
+    console.log("Notification Built");
+    console.log(notification);
+    let goalReminderPath = "notifications/" + id;
+    console.log("Goal reminder path is " + goalReminderPath);
+    return fireData.doc(goalReminderPath).create(notification);
+}
+
 exports.updateProfilePosts = functions.firestore.document('users/{userId}').onUpdate(event => {
     console.log("Updating Profile Posts");
     console.log(event);
@@ -55,35 +116,33 @@ function updateGoals(user) {
 
 exports.createNotification = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
     console.log("Creating Notification");
-    let notification = event.data.data();
-    console.log("Notification is ");
-    console.log(notification);
-    let message = notification.description;
-    if (!notification.reminder) message = notification.name + " " + notification.description;
+    let message = event.data.data();
     console.log(message);
+    let pushMessage = message.name + message.description;
+    if (message.reminder) pushMessage = "Your " + message.title + " goal is due soon";
     let payload = {
         notification: {
             body: message,
         },
         data: {
-            id: notification.id,
-            uid: notification.uid,
-            name: notification.name,
-            face: notification.face,
-            description: notification.description,
-            read: notification.read.toString(),
-            collection: notification.collection,
-            docId: notification.docId,
-            receiverUid: notification.receiverUid,
-            notification: message.toString(),
-            pinLike: notification.pinLike.toString(),
-            statementLike: notification.statementLike.toString(),
-            goalLike: notification.goalLike.toString(),
-            comment: notification.comment.toString(),
-            commentLike: notification.commentLike.toString(),
-            reminder: notification.reminder.toString(),
-            displayTimestamp: notification.displayTimestamp,
-            timestamp: notification.timestamp.toString(),
+            id: message.id,
+            uid: message.uid,
+            name: message.name,
+            face: message.face,
+            description: pushMessage,
+            read: message.read.toString(),
+            collection: message.collection,
+            docId: message.docId,
+            receiverUid: message.receiverUid,
+            message: message.message.toString(),
+            pinLike: message.pinLike.toString(),
+            statementLike: message.statementLike.toString(),
+            goalLike: message.goalLike.toString(),
+            comment: message.comment.toString(),
+            commentLike: message.commentLike.toString(),
+            reminder: message.reminder.toString(),
+            displayTimestamp: message.displayTimestamp,
+            timestamp: message.timestamp.toString(),
         }
     }
     console.log("Built Notification Payload");
@@ -123,40 +182,3 @@ exports.hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => 
         return;
     });
 });
-
-function createGoalReminder(goal) {
-    console.log("Creating Goal Reminder");
-    console.log(goal);
-    let fireData = admin.firestore();
-    let displayTimestamp = moment().format('MMM DD YYYY');
-    let timestamp = moment().unix();
-    let id = goal.id + moment(new Date()).unix();
-    let description = "your " + goal.title + " goal is due soon";
-    console.log("Description is " + description);
-    let notification = {
-      id: id,
-      uid: goal.uid,
-      name: goal.name,
-      face: goal.face,
-      title: goal.title,
-      description: description,
-      read: false,
-      collection: "goals",
-      docId: goal.id,
-      receiverUid: goal.uid,
-      notification: false,
-      pinLike: false,
-      statementLike: false,
-      goalLike: false,
-      commentLike: false,
-      comment: false,
-      reminder: true,
-      displayTimestamp: displayTimestamp,
-      timestamp: timestamp
-    }
-    console.log("Notification Built");
-    console.log(notification);
-    let goalReminderPath = "notifications/" + id;
-    console.log("Goal reminder path is " + goalReminderPath);
-    return fireData.doc(goalReminderPath).create(notification);
-}

@@ -19,40 +19,40 @@
   <ion-list no-lines>
     <div id="NewNotifications">
       <h5 class="feature">New Notifications</h5>
-      <ion-item *ngFor="let unreadNotification of unreadNotifications" text-wrap no-lines>
-        <ion-avatar (click)="viewUser(readNotification.uid)" item-left>
+      <ion-item *ngFor="let unreadNotification of unreadNotifications" (click)="openNotification(unreadNotification)" text-wrap no-lines>
+        <ion-avatar (click)="viewUser(unreadNotification.uid)" item-left>
           <img src="{{ unreadNotification.face }}">
         </ion-avatar>
         <ion-icon item-end *ngIf="unreadNotification.pinLike || unreadNotification.statementLike || unreadNotification.goalLike || unreadNotification.commentLike "
-          (click)="openNotification(unreadNotification)" name="heart" color="primary"></ion-icon>
-        <ion-icon item-end *ngIf="unreadNotification.comment " (click)="openNotification(unreadNotification)" name="ios-chatboxes"
+          name="heart" color="primary"></ion-icon>
+        <ion-icon item-end *ngIf="unreadNotification.comment " name="ios-chatboxes"
           color="primary"></ion-icon>
-        <ion-icon item-end *ngIf="unreadNotification.reminder" (click)="openNotification(unreadNotification)" name="ios-checkbox"
+        <ion-icon item-end *ngIf="unreadNotification.reminder" name="ios-checkbox"
           color="primary"></ion-icon>
-        <span (click)="openNotification(unreadNotification)" ion-text color="primary">
+        <span  ion-text color="primary">
           <b>{{ unreadNotification.name }}</b>
         </span>
-        <span (click)="openNotification(unreadNotification)"> {{ unreadNotification.description }} </span>
+        <span> {{ unreadNotification.description }} </span>
         <br>
-        <span (click)="openNotification(unreadNotification)" ion-text color="steel">{{ unreadNotification.displayTimestamp }}</span>
+        <span ion-text color="steel">{{ unreadNotification.displayTimestamp }}</span>
       </ion-item>
     </div>
     <div id="EarlierNotifications">
       <h5 class="feature">Earlier Notifications</h5>
-      <ion-item *ngFor="let readNotification of readNotifications" text-wrap no-lines>
+      <ion-item *ngFor="let readNotification of readNotifications" (click)="openNotification(readNotification)" text-wrap no-lines>
         <ion-avatar (click)="viewUser(readNotification.uid)" item-left>
           <img src="{{ readNotification.face }}">
         </ion-avatar>
         <ion-icon item-end *ngIf="readNotification.pinLike || readNotification.statementLike || readNotification.goalLike || readNotification.commentLike "
-          (click)="openNotification(readNotification)" name="heart" color="primary"></ion-icon>
-        <ion-icon item-end *ngIf="readNotification.comment " (click)="openNotification(readNotification)" name="ios-chatboxes" color="primary"></ion-icon>
-        <ion-icon item-end *ngIf="readNotification.reminder" (click)="openNotification(readNotification)" name="ios-checkbox" color="primary"></ion-icon>
-        <span (click)="openNotification(readNotification)" ion-text color="primary">
+           name="heart-outline" color="primary"></ion-icon>
+        <ion-icon item-end *ngIf="readNotification.comment " name="ios-chatboxes-outline" color="primary"></ion-icon>
+        <ion-icon item-end *ngIf="readNotification.reminder" name="ios-checkbox-outline" color="primary"></ion-icon>
+        <span ion-text color="primary">
           <b>{{ readNotification.name }}</b>
         </span>
-        <span (click)="openNotification(readNotification)"> {{ readNotification.description }} </span>
+        <span> {{ readNotification.description }} </span>
         <br>
-        <span (click)="openNotification(readNotification)" ion-text color="steel">{{ readNotification.displayTimestamp }}</span>
+        <span ion-text color="steel">{{ readNotification.displayTimestamp }}</span>
       </ion-item>
     </div>
   </ion-list>
