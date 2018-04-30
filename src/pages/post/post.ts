@@ -31,6 +31,7 @@ export class PostPage {
   post: any;
   video: any;
   notificationRef: any;
+  timestamp: number;
   postManagerMenu = false;
   mine = false;
   audio = false;
@@ -43,6 +44,9 @@ export class PostPage {
   likedComment = false;
   commentsLoaded = false;
   postOpened = false;
+  pastDue = false;
+  dueIn24HoursOrLess = false;
+  dueIn24HoursOrMore = false;
   commentForm: {
     description?: string
   } = {};
@@ -82,8 +86,22 @@ export class PostPage {
       this.private = post.private;
       this.reported = post.reported;
       this.post = post;
+      console.log(this.post);
+      if (this.collection == 'goals') this.timestampGoal();
       this.loaded = true;
     });
+  }
+
+  timestampGoal() {
+    this.timestamp = moment().unix();
+    console.log("Timestamp is " + this.timestamp);
+    console.log("Goal Due Date is " + this.post.dueDate);
+    if (this.timestamp > this.post.dueDate) this.pastDue = true;
+    if (this.timestamp + 86400 > this.post.dueDate && this.post.dueDate > this.timestamp) this.dueIn24HoursOrLess = true;
+    if (this.post.dueDate > this.timestamp + 86400) this.dueIn24HoursOrMore = true;
+    console.log("Past Due: " + this.pastDue);
+    console.log("Due in 24 Hours or Less: " + this.dueIn24HoursOrLess);
+    console.log("Due in 24 Hours or More: " + this.dueIn24HoursOrMore);
   }
 
   loadComments() {
