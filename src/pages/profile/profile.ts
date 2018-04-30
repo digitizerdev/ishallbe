@@ -162,7 +162,7 @@ export class ProfilePage {
     console.log("Loading All Goals");
     let goals = this.firebase.afs.collection('goals', ref =>
       ref.where('uid', '==', this.uid).
-        orderBy('dueDate', 'asc').limit(50));
+        orderBy('dueDate', 'desc').limit(50));
     goals.valueChanges().subscribe((goals) => {
       if (!this.goalsLoaded)
         this.setGoals(goals);
@@ -173,7 +173,6 @@ export class ProfilePage {
     console.log("Loading All Incomplete Goals");
     let goals = this.firebase.afs.collection('goals', ref =>
     ref.where('uid', '==', this.uid).
-      where('private', '==', false).
       where('complete', '==', false).
       orderBy('dueDate', 'asc').limit(50));
   goals.valueChanges().subscribe((goals) => {
