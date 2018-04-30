@@ -27,6 +27,7 @@ export class HomePage {
   postEndDate: number;
   dayNumber: number;
   timestamp: number;
+  dayOfWeek: string;
   pinsLoaded = false;
   statementsLoaded = false;
   goalsLoaded = false;
@@ -55,8 +56,9 @@ export class HomePage {
   timestampPage() {
     this.timestamp = moment().unix();
     this.dayNumber = moment().isoWeekday();
+    this.dayOfWeek = moment().format('dddd');
     this.postEndDate = parseInt(moment().format('YYYYMMDD'));
-    this.postStartDate = this.postEndDate - this.dayNumber;
+    this.postStartDate = parseInt(moment().subtract(this.dayNumber, 'days').format('YYYYMMDD'));
   }
 
   listenToFCMPushNotifications() {
@@ -89,6 +91,9 @@ export class HomePage {
   }
 
   loadPins() {
+    console.log("Loading Pins");
+    console.log("Post Start Date is " + this.postStartDate);
+    console.log("Post End Date is " + this.postEndDate);
     let pins = this.firebase.afs.collection('pins', ref =>
       ref.orderBy('postDate').
         startAt(this.postStartDate).

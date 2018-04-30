@@ -86,7 +86,7 @@
         </ion-row>
       </div>
       <div *ngIf="postSegment=='goals'" id="MyGoals">
-        <ion-list *ngIf="mine" padding-top>
+        <ion-list *ngIf="mine" padding-top no-lines>
           <ion-item (click)="toggleCompletedGoals()" color="primary">
             <ion-label><b>Show Completed Goals</b></ion-label>
             <ion-toggle [(ngModel)]="completedGoals" color="secondary"></ion-toggle>

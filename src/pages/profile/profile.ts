@@ -50,7 +50,6 @@ export class ProfilePage {
   }
 
   ionViewDidEnter() {
-    console.log("Entered Profile");
     this.uid = this.navParams.get('uid');
     if (!this.uid) {
       this.mine = true;
@@ -101,13 +100,11 @@ export class ProfilePage {
   }
 
   loadAllMyPosts() {
-    console.log("Loading All My Posts");
     this.loadAllStatements();
     this.loadAllIncompleteGoals();
   }
 
   loadMyPublicPosts() {
-    console.log("Loading My Public Posts");
     this.loadPublicStatements();
     this.loadPublicGoals();
   }
@@ -145,21 +142,17 @@ export class ProfilePage {
   }
 
   loadPublicGoals() {
-    console.log("Loading Public Goals");
     let goals = this.firebase.afs.collection('goals', ref =>
       ref.where('uid', '==', this.uid).
         where('private', '==', false).
         orderBy('dueDate', 'asc').limit(50));
     goals.valueChanges().subscribe((goals) => {
-      console.log("Got Public Goals");
-      console.log(goals);
       if (!this.goalsLoaded)
         this.setGoals(goals);
     });
   }
 
   loadAllGoals() {
-    console.log("Loading All Goals");
     let goals = this.firebase.afs.collection('goals', ref =>
       ref.where('uid', '==', this.uid).
         orderBy('dueDate', 'desc').limit(50));
@@ -170,7 +163,6 @@ export class ProfilePage {
   }
 
   loadAllIncompleteGoals() {
-    console.log("Loading All Incomplete Goals");
     let goals = this.firebase.afs.collection('goals', ref =>
     ref.where('uid', '==', this.uid).
       where('complete', '==', false).
@@ -195,8 +187,6 @@ export class ProfilePage {
   }
 
   toggleCompletedGoals() {
-    console.log("Toggling Completed Goals");
-    console.log("Completed Goals: " + this.completedGoals);
     this.goalsLoaded = false;
     if (this.completedGoals) this.loadAllGoals();
     else this.loadAllIncompleteGoals();

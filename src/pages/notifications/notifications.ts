@@ -28,7 +28,6 @@ export class NotificationsPage {
   }
 
   ionViewDidEnter() {
-    console.log("Entered Page");
     this.viewingUser = false;
     this.firebase.notification = false;
     this.loadNotifications();
@@ -40,8 +39,6 @@ export class NotificationsPage {
       where("message", "==", false).
       orderBy('timestamp', 'desc').limit(50));
     this.notificationsCol.valueChanges().subscribe((notifications) => {
-      console.log("Got notifications");
-      console.log(notifications);
       this.setNotifications(notifications);
     });
   }
@@ -57,16 +54,10 @@ export class NotificationsPage {
       else
         this.unreadNotifications.push(notification);
     });
-    console.log("Read Notifications");
-    console.log(this.readNotifications);
-    console.log("Unread Notifications");
-    console.log(this.unreadNotifications);
   }
 
   openNotification(notification) {
     if (!this.viewingUser) {
-      console.log("Opening Notification");
-      console.log(notification);
       let notificationPath = "notifications/" + notification.id;
       if (notification.collection == "pins")
         this.openPin(notification);
