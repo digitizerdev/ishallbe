@@ -116,33 +116,33 @@ function updateGoals(user) {
 
 exports.createNotification = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
     console.log("Creating Notification");
-    let message = event.data.data();
-    console.log(message);
-    let pushMessage = message.name + message.description;
-    if (message.reminder) pushMessage = "Your " + message.title + " goal is due soon";
+    let notification = event.data.data();
+    console.log(notification);
+    let pushMessage = notification.name + " " + notification.description;
+    if (notification.reminder) pushMessage = "Your " + notification.title + " goal is due soon";
     let payload = {
         notification: {
-            body: message,
+            body: pushMessage,
         },
         data: {
-            id: message.id,
-            uid: message.uid,
-            name: message.name,
-            face: message.face,
+            id: notification.id,
+            uid: notification.uid,
+            name: notification.name,
+            face: notification.face,
             description: pushMessage,
-            read: message.read.toString(),
-            collection: message.collection,
-            docId: message.docId,
-            receiverUid: message.receiverUid,
-            message: message.message.toString(),
-            pinLike: message.pinLike.toString(),
-            statementLike: message.statementLike.toString(),
-            goalLike: message.goalLike.toString(),
-            comment: message.comment.toString(),
-            commentLike: message.commentLike.toString(),
-            reminder: message.reminder.toString(),
-            displayTimestamp: message.displayTimestamp,
-            timestamp: message.timestamp.toString(),
+            read: notification.read.toString(),
+            collection: notification.collection,
+            docId: notification.docId,
+            receiverUid: notification.receiverUid,
+            message: notification.message.toString(),
+            pinLike: notification.pinLike.toString(),
+            statementLike: notification.statementLike.toString(),
+            goalLike: notification.goalLike.toString(),
+            comment: notification.comment.toString(),
+            commentLike: notification.commentLike.toString(),
+            reminder: notification.reminder.toString(),
+            displayTimestamp: notification.displayTimestamp,
+            timestamp: notification.timestamp.toString(),
         }
     }
     console.log("Built Notification Payload");
