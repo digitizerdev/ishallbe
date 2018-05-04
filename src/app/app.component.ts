@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { Nav, NavController, Platform, Events, AlertController, ToastController } from 'ionic-angular';
+import { Nav, NavController, Platform, Events, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
@@ -42,7 +42,6 @@ export class iShallBe {
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
     private events: Events,
-    private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private fcm: FCM,
     private firebase: FirebaseProvider,
@@ -88,23 +87,12 @@ export class iShallBe {
   displayNotificationAlert(notification) {
     console.log("Displaying Notification Alert");
     console.log("Subtitle is " + notification.aps.alert);
-    let alert = this.alertCtrl.create({
-      title: 'Notification',
-      subTitle: notification.aps.alert,
-      buttons: [
-        {
-          text: 'Dismiss',
-          handler: () => {
-          }
-        },
-        {
-          text: 'Open',
-          handler: () => {
-            this.nav.setRoot(NotificationsPage);
-          }
-        }]
+    let toast = this.toastCtrl.create({
+      message: notification.aps.alert,
+      duration: 3000,
+      position: 'top'
     });
-    alert.present();
+    toast.present();
   }
 
   listenToUserPermissionsEvents() {
@@ -141,6 +129,7 @@ export class iShallBe {
 
   listenToContributorPermissionEvents() {
     this.events.subscribe('contributor permission granted', () => {
+      this.fcm.subscribeToTopic('affirmations');
       if (this.firebase.notification) {
         this.nav.setRoot(NotificationsPage);
       } else {
