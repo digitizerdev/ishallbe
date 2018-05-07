@@ -48,6 +48,7 @@ export class UploadComponent {
   }
 
   ngOnInit() {
+    console.log("Upload Component Initialized");
     if (this.platform.is('cordova')) this.browser = false;
     else this.browser = true;
     this.contentName = moment().unix().toString();
@@ -56,6 +57,8 @@ export class UploadComponent {
   }
 
   loadMedia() {
+    console.log("Loading Media");
+    console.log("Content Type: " + this.contentType);
     switch (this.contentType) {
       case 'camera': {
         this.sourceType = this.camera.PictureSourceType.CAMERA;
@@ -69,7 +72,7 @@ export class UploadComponent {
       }
         break;
       case 'browser-image': {
-        this.getBrowserImage();
+        this.getBrowserFile();
       }
         break;
       default: {
@@ -80,6 +83,7 @@ export class UploadComponent {
   }
 
   getImage() {
+    console.log("Getting Image");
     this.gettingImage = true;
     this.camera.getPicture(this.getCameraOptions()).then((image) => {
       this.imageElement.nativeElement.src = image;
@@ -90,21 +94,33 @@ export class UploadComponent {
     });;
   }
 
-  getBrowserImage() {
+  getBrowserFile() {
+    console.log("Getting Browser File");
     let file = (<HTMLInputElement>document.getElementById("files")).files[0];
     var storageRef = firebase.storage().ref('test/' + file.name);
     var task = storageRef.put(file);
     task.on('state_changed',
-      function progress(snapshot: any) {
-        this.image = snapshot.downloadUrl;
-      }, function error(err) {
-      },
-      function complete() {
-      }
-    )
+       (snapshot: any) => {
+        var percentage = (snapshot.bytesTransferred /
+          snapshot.totalBytes) * 100;
+        console.log(percentage);
+        this.image = snapshot.downloadURL;
+      }, (err) => {
+        console.error(err);
+      }, () => {
+        console.log("Complete!");
+        console.log("Storage url is " + this.image);
+        let image = {
+          url: this.image,
+          name: this.contentName
+        }
+        this.complete = true;
+        this.uploaded.emit(image);
+      });
   }
 
   getCameraOptions() {
+    console.log("Getting Camera Options");
     let cameraOpts: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
@@ -118,6 +134,7 @@ export class UploadComponent {
   }
 
   cropImage() {
+    console.log("Cropping Image");
     this.cropperInstance = new Cropper(this.imageElement.nativeElement, {
       aspectRatio: 3 / 3,
       dragMode: 'move',
@@ -134,6 +151,7 @@ export class UploadComponent {
   }
 
   cropPin() {
+    console.log("Cropping Pin");
     this.cropperInstance = new Cropper(this.imageElement.nativeElement, {
       dragMode: 'move',
       modal: true,
@@ -149,6 +167,7 @@ export class UploadComponent {
   }
 
   uploadImage() {
+    console.log("Uploading Image");
     this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
     this.loader.present();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
@@ -165,6 +184,7 @@ export class UploadComponent {
   }
 
   uploadBrowserImage() {
+    console.log("Uploading Browser Image");
     this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
     this.loader.present();
     let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
@@ -180,6 +200,7 @@ export class UploadComponent {
   }
 
   storeImage(path) {
+    console.log("Storing Image");
     this.waitForStorageTimeout();
     return Observable.create((observer) => {
       let storagePath = firebase.storage().ref(path);
@@ -193,6 +214,7 @@ export class UploadComponent {
   }
 
   getAndroidAudio() {
+    console.log("Getting Android Audio");
     this.recording = true;
     this.filepath = this.file.externalDataDirectory + this.contentName;
     const audio: MediaObject = this.media.create(this.filepath);
@@ -204,6 +226,7 @@ export class UploadComponent {
   }
 
   getIOSAudio() {
+    console.log("Getting iOS Audio");
     this.recording = true;
     this.filepath = this.file.tempDirectory.replace(/^file:\/\//, '') + this.contentName;
     this.file.createFile(this.file.tempDirectory, this.contentName, true).then(() => {
@@ -219,6 +242,7 @@ export class UploadComponent {
   }
 
   uploadAudio() {
+    console.log("Uploading Audio");
     this.recording = false;
     this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
     this.loader.present();
@@ -243,6 +267,7 @@ export class UploadComponent {
   }
 
   storeAudio() {
+    console.log("Storing Audio");
     return Observable.create((observer) => {
       this.waitForStorageTimeout();
       let filePath = "";
@@ -280,6 +305,7 @@ export class UploadComponent {
   }
 
   listenToRedoEvents() {
+    console.log("Listening to Redo Events");
     this.events.subscribe('redoUpload', (contentType, contentName) => {
       this.contentType = contentType;
       this.resetUpload();
@@ -288,6 +314,7 @@ export class UploadComponent {
   }
 
   resetUpload() {
+    console.log("Resetting Upload");
     this.sourceType = null;
     this.cameraOptions = null;
     this.cropperInstance = null;
@@ -300,6 +327,7 @@ export class UploadComponent {
   }
 
   waitForStorageTimeout() {
+    console.log("Waiting for Storage Timeout");
     setTimeout(() => {
       if (!this.complete) {
         this.loader.dismiss();

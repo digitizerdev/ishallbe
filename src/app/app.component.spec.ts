@@ -29,7 +29,7 @@ import {
   FirebaseProviderMock,
 } from '../../test-config/mocks-ionic';
 
-describe('iShallBe 1.4', () => {
+describe('iShallBe 2.1.0', () => {
   let fixture;
   let component;
   let platform: Platform;
@@ -94,7 +94,6 @@ describe('iShallBe 1.4', () => {
   it('should be created', () => {
     expect(component instanceof iShallBe).toBe(true);
   });
-
 
   it('should display affirmations menu with three pages if user contributor', () => {
     expect(component.affirmationsMenu.length).toBe(3);

@@ -3,7 +3,6 @@ import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { Pro } from '@ionic/pro';
 import { NgCalendarModule } from 'ionic2-calendar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -55,10 +54,6 @@ import { YoutubePipe } from '../pipes/youtube/youtube';
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
 import { ComponentsModule } from '../components/components.module';
-
-Pro.init('69d144ed', {
-  appVersion: '1.3.0'
-});
 
 @NgModule({
   declarations: [

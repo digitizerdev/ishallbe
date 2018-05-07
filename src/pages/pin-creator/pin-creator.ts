@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, Events, Platform } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
@@ -55,6 +55,7 @@ export class PinCreatorPage {
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private events: Events,
+    private platform: Platform,
     private firebase: FirebaseProvider
   ) {
   }
@@ -122,7 +123,9 @@ export class PinCreatorPage {
   }
 
   loadImage() {
-    this.imageRetrievalMethod = "pin";
+    console.log("Loading Image");
+    if (!this.platform.is('cordova')) this.imageRetrievalMethod = 'browser-image';
+    else this.imageRetrievalMethod = "pin";
     this.loadingImage = true;
   }
 

@@ -35,10 +35,8 @@
     "@ionic-native/file-transfer": "^4.5.3",
     "@ionic-native/in-app-browser": "^4.5.3",
     "@ionic-native/media": "^4.5.3",
-    "@ionic-native/pro": "^4.5.3",
     "@ionic-native/splash-screen": "4.4.2",
     "@ionic-native/status-bar": "4.4.2",
-    "@ionic/pro": "^1.0.19",
     "@ionic/storage": "2.0.1",
     "angularfire2": "^5.0.0-rc.3",
     "babel-minify": "^0.2.0",
@@ -131,14 +129,6 @@
       "cordova-plugin-email-composer": {},
       "cordova-plugin-youtube-video-player": {},
       "cordova-plugin-inappbrowser": {},
-      "cordova-plugin-ionic": {
-        "APP_ID": "69d144ed",
-        "CHANNEL_NAME": "Production",
-        "UPDATE_METHOD": "none",
-        "WARN_DEBUG": "true",
-        "UPDATE_API": "https://api.ionicjs.com",
-        "MAX_STORE": "2"
-      },
       "cordova-plugin-datepicker": {},
       "cordova-plugin-media": {
         "KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE": "NO",
