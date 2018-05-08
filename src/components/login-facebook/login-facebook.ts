@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AlertController, LoadingController, Platform } from 'ionic-angular';
-import { Pro } from '@ionic/pro';
 import { Facebook } from '@ionic-native/facebook';
 
 import firebase from 'firebase';
@@ -61,7 +60,6 @@ export class LoginFacebookComponent {
   }
 
   errorHandler(error) {
-    Pro.monitoring.exception(error);
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: error.message,

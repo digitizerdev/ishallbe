@@ -51,6 +51,7 @@ export class UploadComponent {
     console.log("Upload Component Initialized");
     if (this.platform.is('cordova')) this.browser = false;
     else this.browser = true;
+    console.log("Browser: " + this.browser);
     this.contentName = moment().unix().toString();
     this.loadMedia();
     this.listenToRedoEvents();
@@ -72,7 +73,7 @@ export class UploadComponent {
       }
         break;
       case 'browser-image': {
-        this.getBrowserFile();
+        this.gettingImage = true;
       }
         break;
       default: {
@@ -97,25 +98,27 @@ export class UploadComponent {
   getBrowserFile() {
     console.log("Getting Browser File");
     let file = (<HTMLInputElement>document.getElementById("files")).files[0];
-    var storageRef = firebase.storage().ref('test/' + file.name);
-    var task = storageRef.put(file);
+    let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
+    console.log("Upload Path is " + uploadPath);
+    let storageRef = firebase.storage().ref(uploadPath);
+    let task = storageRef.put(file);
     task.on('state_changed',
-       (snapshot: any) => {
-        var percentage = (snapshot.bytesTransferred /
-          snapshot.totalBytes) * 100;
-        console.log(percentage);
-        this.image = snapshot.downloadURL;
+      (snapshot: any) => {
+        console.log(snapshot);
       }, (err) => {
         console.error(err);
       }, () => {
-        console.log("Complete!");
-        console.log("Storage url is " + this.image);
-        let image = {
-          url: this.image,
-          name: this.contentName
-        }
-        this.complete = true;
-        this.uploaded.emit(image);
+        console.log("Upload complete");
+        storageRef.getDownloadURL().then((url: any) => {
+          this.image = url;
+          console.log("Storage url is " + this.image);
+          let image = {
+            url: this.image,
+            name: this.contentName
+          }
+          this.complete = true;
+          this.uploaded.emit(image);
+        });
       });
   }
 
@@ -171,22 +174,6 @@ export class UploadComponent {
     this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
     this.loader.present();
     this.image = this.cropperInstance.getCroppedCanvas({ width: 1000, height: 1000 }).toDataURL('image/jpeg');
-    let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
-    this.storeImage(uploadPath).subscribe((snapshot) => {
-      let image = {
-        url: snapshot.downloadURL,
-        name: this.contentName
-      }
-      this.complete = true;
-      this.uploaded.emit(image);
-      this.loader.dismiss();
-    });
-  }
-
-  uploadBrowserImage() {
-    console.log("Uploading Browser Image");
-    this.loader = this.loadingCtrl.create({ spinner: 'bubbles', content: 'Loading..' });
-    this.loader.present();
     let uploadPath = 'content/' + this.firebase.user.uid + '/images/' + this.contentName;
     this.storeImage(uploadPath).subscribe((snapshot) => {
       let image = {
@@ -281,13 +268,13 @@ export class UploadComponent {
             let arrayBuffer = result.target.result;
             let blob = new Blob([new Uint8Array(arrayBuffer)], { type: 'audio/m4a' });
             let uploadPath = 'content/' + this.firebase.user.uid + '/audio/' + this.contentName;
-            var storageRef = firebase.storage().ref(uploadPath);
-            var uploadTask = storageRef.put(blob);
+            let storageRef = firebase.storage().ref(uploadPath);
+            let uploadTask = storageRef.put(blob);
             uploadTask.on('state_changed', (snapshot) => {
             }, (e) => {
               observer.error(e);
             }, () => {
-              var downloadURL = uploadTask.snapshot.downloadURL;
+              let downloadURL = uploadTask.snapshot.downloadURL;
               observer.next(downloadURL);
             });
           };
@@ -307,7 +294,10 @@ export class UploadComponent {
   listenToRedoEvents() {
     console.log("Listening to Redo Events");
     this.events.subscribe('redoUpload', (contentType, contentName) => {
+      console.log("Redoing Upload");
+      console.log("Content Name is " + contentName);
       this.contentType = contentType;
+      console.log("Content Type is " + this.contentType);
       this.resetUpload();
       this.loadMedia();
     });
