@@ -5,9 +5,9 @@ admin.initializeApp(functions.config().firebase);
 
 exports.hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => {
     console.log("Cron Hourly Tick");
-    var wrapped = moment(new Date()); 
+    var wrapped = moment(new Date());
     console.log("Moment Date is ");
-    console.log(wrapped); 
+    console.log(wrapped);
     let currentTime = moment(new Date()).unix();
     console.log("Current time in unix is " + currentTime);
     let overNextHourTime = currentTime + 3600;
@@ -37,25 +37,25 @@ function createGoalReminder(goal) {
     let timestamp = moment().unix();
     let description = "Your " + goal.title + " goal is due soon";
     let notification = {
-      id: id,
-      uid: goal.uid,
-      name: goal.name,
-      face: goal.face,
-      title: goal.title,
-      description: description,
-      read: false,
-      collection: "reminder",
-      docId: goal.id,
-      receiverUid: goal.uid,
-      message: false,
-      pinLike: false,
-      statementLike: false,
-      goalLike: false,
-      commentLike: false,
-      comment: false,
-      reminder: true,
-      displayTimestamp: displayTimestamp,
-      timestamp: timestamp
+        id: id,
+        uid: goal.uid,
+        name: goal.name,
+        face: goal.face,
+        title: goal.title,
+        description: description,
+        read: false,
+        collection: "reminder",
+        docId: goal.id,
+        receiverUid: goal.uid,
+        message: false,
+        pinLike: false,
+        statementLike: false,
+        goalLike: false,
+        commentLike: false,
+        comment: false,
+        reminder: true,
+        displayTimestamp: displayTimestamp,
+        timestamp: timestamp
     }
     console.log("Notification Built");
     console.log(notification);
@@ -159,11 +159,41 @@ exports.createNotification = functions.firestore.document('notifications/{notifi
     });
 });
 
-exports.hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => {
-    console.log("Cron Hourly Tick");
-    var wrapped = moment(new Date()); 
+function sendNotificationToAllUsers(notification) {
+    console.log("Sending Notification to All Users");
+    let date = moment(new Date());
     console.log("Moment Date is ");
-    console.log(wrapped); 
+    console.log(date);
+    let currentTime = moment(new Date()).unix();
+    console.log("Current time in unix is " + currentTime);
+    let overNextHourTime = currentTime + 3600;
+    console.log("Over Next Hour Time in unix is " + overNextHourTime);
+    let fireData = admin.firestore();
+    let notifications = fireData.collection('notifications').
+        where("pin", "==", true).
+        where("timestamp", ">=", currentTime).
+        where("timestamp", "<=", overNextHourTime);
+    return notifications.get().then((pendingNotifications) => {
+        console.log(pendingNotifications);
+        return pendingNotifications.forEach((pendingNotification) => {
+            let users = fireData.collection('users');
+            return users.get().then((allUsers) => {
+                return allUsers.forEach((userDoc) => {
+                    let user = userDoc.data();
+                    console.log("User is ");
+                    console.log(user);
+                    admin.messaging().sendToDevice(user.fcmToken, pendingNotification);
+                    return true;
+                });
+            });
+        });
+    });
+}
+
+function sendGoalReminders() {
+    let date = moment(new Date());
+    console.log("Moment Date is ");
+    console.log(date);
     let currentTime = moment(new Date()).unix();
     console.log("Current time in unix is " + currentTime);
     let overNextHourTime = currentTime + 3600;
@@ -171,8 +201,8 @@ exports.hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => 
     let fireData = admin.firestore();
     let goals = fireData.collection('goals').where("dueDate", ">=", currentTime).
     where("dueDate", "<=", overNextHourTime);
-    return goals.get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
+    return goals.get().then((pendingReminders) => {
+        pendingReminders.forEach((doc) => {
             let goal = doc.data()
             console.log("Got goal");
             console.log(goal);
@@ -181,4 +211,12 @@ exports.hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => 
         });
         return;
     });
+}
+
+exports.hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => {
+    console.log("Cron Hourly Tick");
+    return sendGoalReminders().then(() => {
+        console.log("Sent Goal Reminders");
+        return sendNotificationToAllUsers();
+    })
 });
