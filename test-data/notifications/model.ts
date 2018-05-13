@@ -8,6 +8,7 @@ export interface Notification {
   collection: string,
   docId: string,
   receiverUid: string,
+  report: boolean,
   message: boolean,
   pinLike: boolean,
   statementLike: boolean,
@@ -18,4 +19,3 @@ export interface Notification {
   displayTimestamp: string,
   timestamp: number,
 }
-

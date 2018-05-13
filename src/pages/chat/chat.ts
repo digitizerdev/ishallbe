@@ -227,6 +227,7 @@ export class ChatPage {
         collection: "users",
         docId: message.id,
         receiverUid: this.uid,
+        report: false,
         message: true,
         pinLike: false,
         statementLike: false,
