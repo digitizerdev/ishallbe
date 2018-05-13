@@ -13,6 +13,8 @@ import { AudioPlayerComponent } from './audio-player/audio-player';
 import { PinComponent } from './pin/pin';
 import { StatementComponent } from './statement/statement';
 import { GoalComponent } from './goal/goal';
+import { NotificationManagerComponent } from './notification-manager/notification-manager';
+import { ReportManagerComponent } from './report-manager/report-manager';
 
 @NgModule({
     declarations: [
@@ -28,6 +30,8 @@ import { GoalComponent } from './goal/goal';
         PinComponent,
         StatementComponent,
     GoalComponent,
+    NotificationManagerComponent,
+    ReportManagerComponent,
     ],
     imports: [
         IonicModule,
@@ -44,7 +48,9 @@ import { GoalComponent } from './goal/goal';
         AudioPlayerComponent,
         PinComponent,
         StatementComponent,
-    GoalComponent
+    GoalComponent,
+    NotificationManagerComponent,
+    ReportManagerComponent
     ],
     providers: [
         InAppBrowser

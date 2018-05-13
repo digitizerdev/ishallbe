@@ -54,6 +54,8 @@ import { YoutubePipe } from '../pipes/youtube/youtube';
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
 import { ComponentsModule } from '../components/components.module';
+import { NotificationProvider } from '../providers/notification/notification';
+import { ReportProvider } from '../providers/report/report';
 
 @NgModule({
   declarations: [
@@ -137,7 +139,9 @@ import { ComponentsModule } from '../components/components.module';
     Media,
     DatePicker,
     FCM,
-    FirebaseProvider
+    FirebaseProvider,
+    NotificationProvider,
+    ReportProvider
    ]
 })
 export class AppModule { }
