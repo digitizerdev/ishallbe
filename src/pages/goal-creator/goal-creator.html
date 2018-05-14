@@ -6,7 +6,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding-left padding-right>
-  <ion-row *ngIf="!dateSelected" id="SelectDueDateButton">
+  <ion-row *ngIf="!dateSelected && !browser" id="SelectDueDateButton">
     <ion-col text-center padding-left padding-right>
       <button (click)="pickDate()" color="steel" ion-button icon-start clear class="tdct-button" round block large strong>
         <ion-icon name="ios-calendar"></ion-icon>
@@ -14,12 +14,26 @@
       </button>
     </ion-col>
   </ion-row>
-  <ion-row *ngIf="dateSelected" id="DueDateText">
-    <ion-col (click)="pickDate()" text-center>
+  <ion-row *ngIf="browser && !dueDate" id="SelectDueDateButton">
+    <ion-col text-center padding-left padding-right>
+      <button (click)="pickBrowserDate()" color="steel" ion-button icon-start clear class="tdct-button" round block large strong>
+        <ion-icon name="ios-calendar"></ion-icon>
+        SELECT DUE DATE
+        <ion-datetime displayFormat="MMM DD, YYYY hh:mma" [min]="getCurrentTime()" [(ngModel)]="dueDate" (ionChange)="setDate(this.dueDate)" ></ion-datetime>
+      </button>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="dueDate" id="DueDateText">
+    <ion-col *ngIf="!browser" (click)="pickDate()" text-center>
       <h4 color="dark" ion-text>
         <b>Due {{ displayDueDate }}</b>
       </h4>
     </ion-col>
+    <ion-col *ngIf="browser" (click)="pickBrowserDate()" text-center>
+        <h4 color="dark" ion-text>
+          <b>Due {{ displayDueDate }}</b>
+        </h4>
+      </ion-col>
   </ion-row>
   <ion-row *ngIf="!recording" id="SpeakItButton">
     <ion-col text-center padding-left padding-right>
@@ -32,18 +46,20 @@
   <upload *ngIf="recording" (uploaded)="recorded($event)" [method]="contentMethod"></upload>
   <ion-row *ngIf="audioReady" id="AudioPanel" responsive-sm>
     <ion-col text-center>
-      <button *ngIf="!playingAudio" (click)="playAudio()" id="PlayAudioButton" color="primary" ion-button icon-start class="tdct-button" round strong>
+      <button *ngIf="!playingAudio" (click)="playAudio()" id="PlayAudioButton" color="primary" ion-button icon-start class="tdct-button"
+        round strong>
         <ion-icon name="play"></ion-icon>
         PLAY
       </button>
-      <button *ngIf="playingAudio" (click)="stopPlayback()" id="StopPlaybackButton" color="danger" ion-button icon-start class="tdct-button" round
-        strong>
+      <button *ngIf="playingAudio" (click)="stopPlayback()" id="StopPlaybackButton" color="danger" ion-button icon-start class="tdct-button"
+        round strong>
         <ion-icon name="square"></ion-icon>
         STOP
       </button>
     </ion-col>
     <ion-col text-center>
-      <button (click)="redoRecording()" id="RedoRecordingButton" color="secondary" text-center ion-button icon-start class="tdct-button" round strong>
+      <button (click)="redoRecording()" id="RedoRecordingButton" color="secondary" text-center ion-button icon-start class="tdct-button"
+        round strong>
         <ion-icon name="refresh"></ion-icon>
         REDO
       </button>
@@ -61,8 +77,7 @@
     <br>
     <ion-item class="appFormTextArea">
       <ion-textarea [attr.rows]="4" autosize placeholder="Goal Description" [(ngModel)]="createGoalForm.description" name="description"
-        type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on” maxlength="250"
-        required>
+        type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on” maxlength="250" required>
       </ion-textarea>
     </ion-item>
     <p ion-text [hidden]="description.valid || submitted == false" color="danger" padding-left>
@@ -84,7 +99,8 @@
     </ion-row>
     <ion-row>
       <ion-col text-center class="submit">
-        <button id="CreateGoalButton" (click)="submit(createGoalForm)" color="primary" ion-button class="tdct-button" round block large strong>
+        <button id="CreateGoalButton" (click)="submit(createGoalForm)" color="primary" ion-button class="tdct-button" round block
+          large strong>
           CREATE GOAL
         </button>
       </ion-col>
