@@ -21,6 +21,7 @@ export class FirebaseProvider {
   signingUp = false;
   socialAuthentication = false;
   notification = false;
+  browser = false;
 
   constructor(
     public alertCtrl: AlertController,
@@ -29,6 +30,8 @@ export class FirebaseProvider {
     public afs: AngularFirestore,
     public afa: AngularFireAuth
   ) {
+    this.browser = !this.platform.is('cordova');
+    console.log("Browser: " + this.browser);
     if (!this.loaded) {
       this.loaded = true;
       this.checkForSession();
@@ -61,6 +64,8 @@ export class FirebaseProvider {
         this.registerUser();
       else if (user.blocked) {
         this.blockUser();
+      } else if (this.browser && !user.editor) {
+        this.haltNonManager();
       } else {
         this.startSession(user);
       }
@@ -81,6 +86,20 @@ export class FirebaseProvider {
     alert.present();
   }
 
+  haltNonManager() {
+    this.endSession();
+    let alert = this.alertCtrl.create({
+      title: 'Access Denied',
+      message: 'Download iShallBe on the iOS App Store and Google Play',
+      buttons: [
+        {
+          text: 'Okay'
+        }
+      ]
+    });
+    alert.present();
+  }
+
   startSession(user) {
     this.user = user;
     this.syncFcmToken();
@@ -92,7 +111,7 @@ export class FirebaseProvider {
   }
 
   syncFcmToken() {
-    if (this.platform.is('cordova')) {
+    if (!this.browser) {
       if (this.fcmToken) {
         if (this.user.fcmToken !== this.fcmToken) {
           let userPath = "users/" + this.user.uid;
