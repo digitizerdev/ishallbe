@@ -42,6 +42,7 @@ import { PinCreatorPage } from '../pages/pin-creator/pin-creator';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { UserManagerPage } from '../pages/user-manager/user-manager';
 import { ApiManagerPage } from '../pages/api-manager/api-manager';
+import { NotificationsManagerPage } from '../pages/notifications-manager/notifications-manager';
 import { PostPage } from '../pages/post/post';
 import { IshallbetvPage } from '../pages/ishallbetv/ishallbetv';
 import { NotificationsPage } from '../pages/notifications/notifications';
@@ -83,6 +84,7 @@ import { ReportProvider } from '../providers/report/report';
     PostManagerPage,
     UserManagerPage,
     ApiManagerPage,
+    NotificationsManagerPage,
     NotificationsPage,
     TutorialPage,
     YoutubePipe
@@ -123,6 +125,7 @@ import { ReportProvider } from '../providers/report/report';
     PostManagerPage,
     UserManagerPage,
     ApiManagerPage,
+    NotificationsManagerPage,
     NotificationsPage,
     TutorialPage
   ],
