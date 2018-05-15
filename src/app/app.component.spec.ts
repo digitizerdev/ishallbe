@@ -103,8 +103,8 @@ describe('iShallBe 2.1.0', () => {
     expect(component.accountMenu.length).toBe(3);
   });
 
-  it('should display editor menu with three pages if user editor', () => {
-    expect(component.editorMenu.length).toBe(3);
+  it('should display editor menu with four pages if user editor', () => {
+    expect(component.editorMenu.length).toBe(4);
   });
 
 });
