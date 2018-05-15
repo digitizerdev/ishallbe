@@ -3,30 +3,6 @@ const admin = require('firebase-admin');
 const moment = require('moment');
 admin.initializeApp(functions.config().firebase);
 
-exports.hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => {
-    console.log("Cron Hourly Tick");
-    var wrapped = moment(new Date());
-    console.log("Moment Date is ");
-    console.log(wrapped);
-    let currentTime = moment(new Date()).unix();
-    console.log("Current time in unix is " + currentTime);
-    let overNextHourTime = currentTime + 3600;
-    console.log("Over Next Hour Time in unix is " + overNextHourTime);
-    let fireData = admin.firestore();
-    let goals = fireData.collection('goals').where("dueDate", ">=", currentTime).
-    where("dueDate", "<=", overNextHourTime);
-    return goals.get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            let goal = doc.data()
-            console.log("Got goal");
-            console.log(goal);
-            console.log("Goal due date in unix is " + goal.dueDate);
-            createGoalReminder(goal);
-        });
-        return;
-    });
-});
-
 function createGoalReminder(goal) {
     console.log("Creating Goal Reminder");
     console.log(goal);

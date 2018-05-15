@@ -8,11 +8,16 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class NotificationsManagerPage {
 
-  constructor(public navCtrl: NavController) {
+  upcomingNotifications: any;
+  noUpcomingNotifications = true;
+  constructor(
+    public navCtrl: NavController
+  ) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad NotificationsManagerPage');
+    console.log("No Upcoming Notifications: " + this.noUpcomingNotifications);
   }
 
 }
