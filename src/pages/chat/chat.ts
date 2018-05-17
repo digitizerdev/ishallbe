@@ -228,7 +228,6 @@ export class ChatPage {
         docId: message.id,
         receiverUid: this.uid,
         pin: false,
-        report: false,
         message: true,
         pinLike: false,
         statementLike: false,

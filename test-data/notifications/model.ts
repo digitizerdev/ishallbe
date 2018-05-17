@@ -9,7 +9,6 @@ export interface Notification {
   docId: string,
   receiverUid: string,
   pin: boolean,
-  report: boolean,
   message: boolean,
   pinLike: boolean,
   statementLike: boolean,

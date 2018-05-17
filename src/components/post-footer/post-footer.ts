@@ -188,7 +188,6 @@ export class PostFooterComponent {
         docId: this.post.id,
         receiverUid: this.post.uid,
         pin: false,
-        report: false,
         message: false,
         pinLike: pinLike,
         statementLike: statementLike,

@@ -10,7 +10,6 @@ export const message = {
   docId: "2",
   receiverUid: "2",
   pin: false,
-  report: false,
   message: true,
   pinLike: false,
   statementLike: false,

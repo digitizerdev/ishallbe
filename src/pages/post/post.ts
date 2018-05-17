@@ -364,7 +364,6 @@ export class PostPage {
         docId: this.post.id,
         receiverUid: comment.receiverUid,
         pin: false,
-        report: false,
         message: false,
         pinLike: false,
         statementLike: false,
