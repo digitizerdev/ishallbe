@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
+import { HomePage } from '../home/home';
+
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 @IonicPage()
@@ -29,6 +31,10 @@ export class ApiManagerPage {
 
   openLink() {
     this.iab.create('https://tdct.io', '_system');
+  }
+
+  setRootHomePage() {
+    this.navCtrl.setRoot(HomePage):
   }
 
 }

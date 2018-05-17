@@ -86,10 +86,18 @@ describe('ApiManagerPage', () => {
         expect(component instanceof ApiManagerPage).toBe(true);
     });
 
-    it('should display header', () => {
+    it('should display ToolbarLogoComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('header'));
+        de = fixture.debugElement.query(By.css('toolbar-logo'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display setRootHomePageIcon', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#setRootHomePageIcon'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
