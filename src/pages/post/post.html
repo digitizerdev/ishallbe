@@ -52,12 +52,12 @@
     </ion-col>
   </ion-row>
   <ion-row>
-    <ion-col *ngIf="collection == 'goals' && !post?.complete" text-center>
+    <ion-col *ngIf="collection == 'goals' && !post?.complete && mine" text-center>
       <button (click)="markComplete()" color="secondary" id="MarkCompleteButton" ion-button round strong padding>
         MARK COMPLETE
       </button>
     </ion-col>
-    <ion-col *ngIf="post?.complete" text-center>
+    <ion-col *ngIf="post?.complete && mine" text-center>
       <button (click)="markIncomplete()" color="danger" id="MarkIncompleteButton" ion-button round strong padding>
         MARK INCOMPLETE
       </button>

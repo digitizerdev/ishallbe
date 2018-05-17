@@ -49,6 +49,7 @@ export class PinCreatorPage {
   monday = false;
   tuesday = false;
   wedToSun = false;
+  complete = false;
 
   constructor(
     private navCtrl: NavController,
@@ -183,7 +184,7 @@ export class PinCreatorPage {
     loading.present();
     this.buildPin(form).subscribe((pin) => {
       this.createPin(pin).then(() => {
-        this.navCtrl.setRoot(PostManagerPage);
+        this.complete = true;
         loading.dismiss();
       }, (error) => {
       });
