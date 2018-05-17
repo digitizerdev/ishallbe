@@ -47,6 +47,7 @@ import { PostPage } from '../pages/post/post';
 import { IshallbetvPage } from '../pages/ishallbetv/ishallbetv';
 import { NotificationsPage } from '../pages/notifications/notifications';
 import { HomePage } from '../pages/home/home';
+import { NotificationCreatorPage } from '../pages/notification-creator/notification-creator';
 
 import { TutorialPage } from '../pages/tutorial/tutorial';
 
@@ -85,6 +86,7 @@ import { ComponentsModule } from '../components/components.module';
     NotificationsManagerPage,
     NotificationsPage,
     TutorialPage,
+    NotificationCreatorPage,
     YoutubePipe
   ],
   imports: [
@@ -125,7 +127,8 @@ import { ComponentsModule } from '../components/components.module';
     ApiManagerPage,
     NotificationsManagerPage,
     NotificationsPage,
-    TutorialPage
+    TutorialPage,
+    NotificationCreatorPage
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
