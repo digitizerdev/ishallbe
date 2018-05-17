@@ -56,7 +56,6 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
 
 import { ComponentsModule } from '../components/components.module';
 import { NotificationProvider } from '../providers/notification/notification';
-import { ReportProvider } from '../providers/report/report';
 
 @NgModule({
   declarations: [
@@ -144,7 +143,6 @@ import { ReportProvider } from '../providers/report/report';
     FCM,
     FirebaseProvider,
     NotificationProvider,
-    ReportProvider
    ]
 })
 export class AppModule { }
