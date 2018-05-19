@@ -117,6 +117,14 @@ describe('NotificationsManagerPage', () => {
         expect(component instanceof NotificationsManagerPage).toBe(true);
     });
 
+    it('should display BrandHeaderComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('brand-header'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
     fit('should show upcoming notifications', () => {
         component.upcomingNotifications = true;
         fixture.detectChanges();

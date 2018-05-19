@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { HomePage } from '../home/home';
@@ -20,6 +20,7 @@ export class ApiManagerPage {
   editor = false;
 
   constructor(
+    private navCtrl: NavController,
     private firebase: FirebaseProvider,
     public iab: InAppBrowser
   ) {
@@ -34,7 +35,7 @@ export class ApiManagerPage {
   }
 
   setRootHomePage() {
-    this.navCtrl.setRoot(HomePage):
+    this.navCtrl.setRoot(HomePage);
   }
 
 }

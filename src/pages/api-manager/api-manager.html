@@ -1,18 +1,7 @@
 <ion-header no-border>
-    <ion-navbar >
-      <button ion-button menuToggle>
-        <ion-icon color='primary' name="menu"></ion-icon>
-      </button>
-      <toolbar-logo></toolbar-logo>
-      <ion-buttons id="setRootHomePageIcon" end>
-        <button ion-button icon-only (click)="setRootHomePage()">
-          <ion-icon color='primary' name="md-home"></ion-icon>
-        </button>
-      </ion-buttons>
-    </ion-navbar>
-  </ion-header>
+  <brand-header></brand-header>
+</ion-header>
 <ion-content>
-  <header></header>
   <br>
   <div class="section">
     <ion-list class="list-full-border" (click)="openLink()" id="AppBaseFeature" text-center>
