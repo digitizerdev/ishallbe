@@ -23,8 +23,24 @@ export class NotificationManagerPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NotificationsManagerPage');
-    console.log("No Upcoming Notifications: " + this.noUpcomingNotifications);
+    console.log("Current Time in unix is " + this.currentTime());
+    this.checkForUpcomingNotifications();
+  }
+
+  checkForUpcomingNotifications() {
+    console.log("Checking for upcoming notifications");
+    let upcomingNotifications = this.firebase.afs.collection('notifications', ref => ref.
+      where('pin', '==', true).
+      where('timestamp', '>=', this.currentTime()));
+    upcomingNotifications.valueChanges().subscribe((notifications) => {
+      console.log("Got Notifications");
+      console.log(notifications);
+    });
+  }
+
+  currentTime() {
+    console.log("Getting Current Time in Unix");
+    return moment.unix(parseInt(moment().format()));
   }
 
   pushNotificationCreatorPage() {

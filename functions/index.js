@@ -131,8 +131,7 @@ exports.createNotification = functions.firestore.document('notifications/{notifi
             console.log("Sending Notification to User");
             contributor = user.data();
             console.log(contributor);
-            admin.messaging().sendToDevice(contributor.fcmToken, payload);
-            return true;
+            return admin.messaging().sendToDevice(contributor.fcmToken, payload);
         });
     }
 });
@@ -154,13 +153,45 @@ function sendNotificationToAllUsers(notification) {
     return notifications.get().then((pendingNotifications) => {
         console.log(pendingNotifications);
         return pendingNotifications.forEach((pendingNotification) => {
+            let notification = pendingNotification.data.data();
+            console.log("Pushing Notification");
+            console.log(notification);
+            console.log("Push message is " + notification.description);
+            let pushMessage = notification.description;
+            let payload = {
+                notification: {
+                    body: pushMessage,
+                },
+                data: {
+                    id: notification.id,
+                    uid: notification.uid,
+                    name: notification.name,
+                    face: notification.face,
+                    description: pushMessage,
+                    read: notification.read.toString(),
+                    collection: notification.collection,
+                    docId: notification.docId,
+                    receiverUid: notification.receiverUid,
+                    message: notification.message.toString(),
+                    pinLike: notification.pinLike.toString(),
+                    statementLike: notification.statementLike.toString(),
+                    goalLike: notification.goalLike.toString(),
+                    comment: notification.comment.toString(),
+                    commentLike: notification.commentLike.toString(),
+                    reminder: notification.reminder.toString(),
+                    displayTimestamp: notification.displayTimestamp,
+                    timestamp: notification.timestamp.toString(),
+                }
+            }
+            console.log("Built Notification Payload");
+            console.log(payload);
             let users = fireData.collection('users');
             return users.get().then((allUsers) => {
                 return allUsers.forEach((userDoc) => {
                     let user = userDoc.data();
                     console.log("User is ");
                     console.log(user);
-                    admin.messaging().sendToDevice(user.fcmToken, pendingNotification);
+                    admin.messaging().sendToDevice(user.fcmToken, payload);
                     return true;
                 });
             });

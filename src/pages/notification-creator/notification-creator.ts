@@ -103,7 +103,10 @@ export class NotificationCreatorPage {
       displayTimestamp: this.displayPushTime,
       timestamp: this.pushTime
     }
-    this.firebase.afs.doc('notifications/' + id).set(notification);
+    this.firebase.afs.doc('notifications/' + id).set(notification).then(() => {
+      console.log("Notification Created");
+    });
+    this.navCtrl.pop();
   }
 
   displayNotReadyAlert() {
