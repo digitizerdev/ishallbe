@@ -6,11 +6,11 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding-left padding-right>
-  <ion-row *ngIf="!dateSelected && !browser" id="SelectPushTimeButton">
+  <ion-row *ngIf="!browser && !pushTime" id="SelectPushTimeButton">
     <ion-col text-center padding-left padding-right>
-      <button (click)="pickTime()" color="steel" ion-button icon-start clear class="tdct-button" round block large strong>
+      <button (click)="pickCordovaTime()" color="steel" ion-button icon-start clear class="tdct-button" round block large strong>
         <ion-icon name="ios-calendar"></ion-icon>
-        Push Time
+        SELECT PUSH TIME
       </button>
     </ion-col>
   </ion-row>
@@ -18,36 +18,38 @@
     <ion-col text-center padding-left padding-right>
       <button (click)="pickBrowserTime()" color="steel" ion-button icon-start clear class="tdct-button" round block large strong>
         <ion-icon name="ios-calendar"></ion-icon>
-       Push Time
-        <ion-datetime displayFormat="MMM DD, YYYY hh:mma" [min]="getCurrentTime()" [(ngModel)]="pushTime" (ionChange)="setTime(this.pushTime)" ></ion-datetime>
+        SELECT PUSH TIME
+        <ion-datetime displayFormat="MMM DD, YYYY hh:mma" [(ngModel)]="pushTime" (ionChange)="setPushTime(this.pushTime)"></ion-datetime>
       </button>
     </ion-col>
   </ion-row>
   <ion-row *ngIf="pushTime" id="PushTimeText">
     <ion-col *ngIf="!browser" (click)="pickTime()" text-center>
       <h4 color="dark" ion-text>
-        <b>Pushing around {{ displayPush }}</b>
+        <b>Pushing {{ displayPushTime }}</b>
       </h4>
     </ion-col>
     <ion-col *ngIf="browser" (click)="pickBrowserTime()" text-center>
-        <h4 color="dark" ion-text>
-          <b>Pushing around {{ displayPushTime }}</b>
-        </h4>
-      </ion-col>
+      <h4 color="dark" ion-text>
+        <b>Pushing {{ displayPushTime }}</b>
+      </h4>
+    </ion-col>
   </ion-row>
   <form class="my-form" #createNotificationForm="ngForm" novalidate padding>
     <ion-item class="appFormTextArea">
-      <ion-textarea [attr.rows]="4" autosize placeholder="Notification Description" [(ngModel)]="createNotificationForm.description" name="description"
-        type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on” maxlength="250" required>
+      <ion-textarea [attr.rows]="4" autosize placeholder="Notification Description" [(ngModel)]="createNotificationForm.description"
+        name="description" type="text-area" #description="ngModel" spellcheck="false" autocapitalize="off" autocorrect=“on”
+        maxlength="250" required>
       </ion-textarea>
     </ion-item>
     <p ion-text [hidden]="description.valid || submitted == false" color="danger" padding-left>
       Push Description is required
     </p>
+    <br>
     <ion-row>
       <ion-col text-center class="submit">
-        <button id="CreateNotificationButton" (click)="submit(createNotificationForm)" color="primary" ion-button class="tdct-button" round block
-          large strong>
+        <button id="CreateNotificationButton" (click)="submit(createNotificationForm)" color="primary" ion-button class="tdct-button"
+          round block large strong>
           CREATE NOTIFICATION
         </button>
       </ion-col>
