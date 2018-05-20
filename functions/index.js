@@ -91,48 +91,50 @@ function updateGoals(user) {
 }
 
 exports.createNotification = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
-    console.log("Creating Notification");
     let notification = event.data.data();
-    console.log(notification);
-    let pushMessage = notification.name + " " + notification.description;
-    if (notification.reminder) pushMessage = "Your " + notification.title + " goal is due soon";
-    let payload = {
-        notification: {
-            body: pushMessage,
-        },
-        data: {
-            id: notification.id,
-            uid: notification.uid,
-            name: notification.name,
-            face: notification.face,
-            description: pushMessage,
-            read: notification.read.toString(),
-            collection: notification.collection,
-            docId: notification.docId,
-            receiverUid: notification.receiverUid,
-            message: notification.message.toString(),
-            pinLike: notification.pinLike.toString(),
-            statementLike: notification.statementLike.toString(),
-            goalLike: notification.goalLike.toString(),
-            comment: notification.comment.toString(),
-            commentLike: notification.commentLike.toString(),
-            reminder: notification.reminder.toString(),
-            displayTimestamp: notification.displayTimestamp,
-            timestamp: notification.timestamp.toString(),
+    if (notification.pin) {
+        console.log("Creating Notification");
+        console.log(notification);
+        let pushMessage = notification.name + " " + notification.description;
+        if (notification.reminder) pushMessage = "Your " + notification.title + " goal is due soon";
+        let payload = {
+            notification: {
+                body: pushMessage,
+            },
+            data: {
+                id: notification.id,
+                uid: notification.uid,
+                name: notification.name,
+                face: notification.face,
+                description: pushMessage,
+                read: notification.read.toString(),
+                collection: notification.collection,
+                docId: notification.docId,
+                receiverUid: notification.receiverUid,
+                message: notification.message.toString(),
+                pinLike: notification.pinLike.toString(),
+                statementLike: notification.statementLike.toString(),
+                goalLike: notification.goalLike.toString(),
+                comment: notification.comment.toString(),
+                commentLike: notification.commentLike.toString(),
+                reminder: notification.reminder.toString(),
+                displayTimestamp: notification.displayTimestamp,
+                timestamp: notification.timestamp.toString(),
+            }
         }
+        console.log("Built Notification Payload");
+        console.log(payload);
+        let fireData = admin.firestore();
+        let userPath = "users/" + notification.receiverUid;
+        let user = fireData.doc(userPath);
+        return user.get().then((user) => {
+            console.log("Sending Notification to User");
+            contributor = user.data();
+            console.log(contributor);
+            admin.messaging().sendToDevice(contributor.fcmToken, payload);
+            return true;
+        });
     }
-    console.log("Built Notification Payload");
-    console.log(payload);
-    let fireData = admin.firestore();
-    let userPath = "users/" + notification.receiverUid;
-    let user = fireData.doc(userPath);
-    return user.get().then((user) => {
-        console.log("Sending Notification to User");
-        contributor = user.data();
-        console.log(contributor);
-        admin.messaging().sendToDevice(contributor.fcmToken, payload);
-        return true;
-    });
 });
 
 function sendNotificationToAllUsers(notification) {
@@ -146,9 +148,9 @@ function sendNotificationToAllUsers(notification) {
     console.log("Over Next Hour Time in unix is " + overNextHourTime);
     let fireData = admin.firestore();
     let notifications = fireData.collection('notifications').
-        where("pin", "==", true).
-        where("timestamp", ">=", currentTime).
-        where("timestamp", "<=", overNextHourTime);
+    where("pin", "==", true).
+    where("timestamp", ">=", currentTime).
+    where("timestamp", "<=", overNextHourTime);
     return notifications.get().then((pendingNotifications) => {
         console.log(pendingNotifications);
         return pendingNotifications.forEach((pendingNotification) => {

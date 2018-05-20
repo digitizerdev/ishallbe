@@ -125,7 +125,15 @@ describe('NotificationsManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should show upcoming notifications', () => {
+    fit('should display CreateNotificationButton', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#CreateNotificationButton'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should show UpcomingNotifications', () => {
         component.upcomingNotifications = true;
         fixture.detectChanges();
         let de: DebugElement;

@@ -5,7 +5,7 @@ import { IonicPage, NavController, NavParams, AlertController, LoadingController
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 
-import { PostManagerPage } from '../post-manager/post-manager';
+import { HomePage } from '../home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -184,7 +184,7 @@ export class PinCreatorPage {
     loading.present();
     this.buildPin(form).subscribe((pin) => {
       this.createPin(pin).then(() => {
-        this.complete = true;
+        this.navCtrl.setRoot(HomePage);
         loading.dismiss();
       }, (error) => {
       });

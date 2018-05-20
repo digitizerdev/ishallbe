@@ -2,7 +2,12 @@
   <brand-header></brand-header>
 </ion-header>
 <ion-content>
-  <header></header>
+  <br>
+  <ion-row>
+    <ion-col text-center>
+      <button ion-button id="CreateNotificationButton" (click)="createNotification()" color="primary" round strong>CREATE NOTIFICATION</button>
+    </ion-col>
+  </ion-row>
   <br>
   <div text-center>
     <h5 *ngIf="noUpcomingNotifications" class="feature" id="NoUpcomingNotifications">There are no upcoming notifications</h5>
