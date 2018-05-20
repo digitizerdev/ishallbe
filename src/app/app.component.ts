@@ -16,7 +16,7 @@ import { AccountPage } from '../pages/account/account';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { UserManagerPage } from '../pages/user-manager/user-manager';
 import { ApiManagerPage } from '../pages/api-manager/api-manager';
-import { NotificationsManagerPage } from '../pages/notifications-manager/notifications-manager';
+import { NotificationManagerPage } from '../pages/notification-manager/notification-manager';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { NotificationsPage } from '../pages/notifications/notifications';
 
@@ -190,9 +190,9 @@ export class iShallBe {
         component: UserManagerPage
       },
       {
-        title: 'Notifications Manager',
+        title: 'Notification Manager',
         icon: 'ios-alert',
-        component: NotificationsManagerPage
+        component: NotificationManagerPage
       },
       {
         title: 'API Manager',

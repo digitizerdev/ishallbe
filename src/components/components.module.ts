@@ -14,6 +14,7 @@ import { PinComponent } from './pin/pin';
 import { StatementComponent } from './statement/statement';
 import { GoalComponent } from './goal/goal';
 import { BrandHeaderComponent } from './brand-header/brand-header';
+import { NotificationCreatorComponent } from './notification-creator/notification-creator';
 
 @NgModule({
     declarations: [
@@ -30,6 +31,7 @@ import { BrandHeaderComponent } from './brand-header/brand-header';
         StatementComponent,
         GoalComponent,
         BrandHeaderComponent,
+    NotificationCreatorComponent,
     ],
     imports: [
         IonicModule,
@@ -48,6 +50,7 @@ import { BrandHeaderComponent } from './brand-header/brand-header';
         StatementComponent,
         GoalComponent,
         BrandHeaderComponent,
+    NotificationCreatorComponent,
     ],
     providers: [
         InAppBrowser

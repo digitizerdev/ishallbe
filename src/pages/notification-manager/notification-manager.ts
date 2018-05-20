@@ -9,10 +9,10 @@ import moment from 'moment';
 
 @IonicPage()
 @Component({
-  selector: 'page-notifications-manager',
-  templateUrl: 'notifications-manager.html',
+  selector: 'page-notification-manager',
+  templateUrl: 'notification-manager.html',
 })
-export class NotificationsManagerPage {
+export class NotificationManagerPage {
 
   upcomingNotifications: any;
   noUpcomingNotifications = true;

@@ -42,7 +42,7 @@ import { PinCreatorPage } from '../pages/pin-creator/pin-creator';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { UserManagerPage } from '../pages/user-manager/user-manager';
 import { ApiManagerPage } from '../pages/api-manager/api-manager';
-import { NotificationsManagerPage } from '../pages/notifications-manager/notifications-manager';
+import { NotificationManagerPage } from '../pages/notification-manager/notification-manager';
 import { PostPage } from '../pages/post/post';
 import { IshallbetvPage } from '../pages/ishallbetv/ishallbetv';
 import { NotificationsPage } from '../pages/notifications/notifications';
@@ -83,7 +83,7 @@ import { ComponentsModule } from '../components/components.module';
     PostManagerPage,
     UserManagerPage,
     ApiManagerPage,
-    NotificationsManagerPage,
+    NotificationManagerPage,
     NotificationsPage,
     TutorialPage,
     NotificationCreatorPage,
@@ -125,7 +125,7 @@ import { ComponentsModule } from '../components/components.module';
     PostManagerPage,
     UserManagerPage,
     ApiManagerPage,
-    NotificationsManagerPage,
+    NotificationManagerPage,
     NotificationsPage,
     TutorialPage,
     NotificationCreatorPage
