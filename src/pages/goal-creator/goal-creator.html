@@ -19,7 +19,7 @@
       <button (click)="pickBrowserDate()" color="steel" ion-button icon-start clear class="tdct-button" round block large strong>
         <ion-icon name="ios-calendar"></ion-icon>
         SELECT DUE DATE
-        <ion-datetime displayFormat="MMM DD, YYYY hh:mma" [min]="getCurrentTime()" [(ngModel)]="dueDate" (ionChange)="setDate(this.dueDate)" ></ion-datetime>
+        <ion-datetime displayFormat="MMM DD, YYYY hh:mma" minuteValues="0" [(ngModel)]="dueDate" (ionChange)="setDate(this.dueDate)" ></ion-datetime>
       </button>
     </ion-col>
   </ion-row>

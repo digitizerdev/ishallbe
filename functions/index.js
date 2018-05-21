@@ -79,6 +79,7 @@ exports.createNotificationForSingleUser = functions.firestore.document('notifica
     }
     console.log("Built Notification Payload");
     console.log(payload);
+    return sendNotificationToSingleUser(payload);
 });
 
 function sendNotificationToSingleUser(notification) {
@@ -90,7 +91,7 @@ function sendNotificationToSingleUser(notification) {
     return user.get().then((userDoc) => {
         user = userDoc.data();
         console.log("Sending Notification to " + user.fcmToken);
-        return admin.messaging().sendToDevice(user.fcmToken, payload);
+        return admin.messaging().sendToDevice(user.fcmToken, notification);
     });
 }
 
@@ -162,7 +163,7 @@ function checkForAffirmations(affirmation) {
     return affirmations.get().then((scheduledAffirmations) => {
         return scheduledAffirmations.forEach((affirmationDoc) => {
             let affirmation = affirmationDoc.data();
-            return buildAffirmationPayload(affirmation)
+            return buildAffirmationPayload(affirmation);
         });
     });
 }
