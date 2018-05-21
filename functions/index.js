@@ -92,48 +92,46 @@ function updateGoals(user) {
 
 exports.createNotification = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
     let notification = event.data.data();
-    if (notification.pin) {
-        console.log("Creating Notification");
-        console.log(notification);
-        let pushMessage = notification.name + " " + notification.description;
-        if (notification.reminder) pushMessage = "Your " + notification.title + " goal is due soon";
-        let payload = {
-            notification: {
-                body: pushMessage,
-            },
-            data: {
-                id: notification.id,
-                uid: notification.uid,
-                name: notification.name,
-                face: notification.face,
-                description: pushMessage,
-                read: notification.read.toString(),
-                collection: notification.collection,
-                docId: notification.docId,
-                receiverUid: notification.receiverUid,
-                message: notification.message.toString(),
-                pinLike: notification.pinLike.toString(),
-                statementLike: notification.statementLike.toString(),
-                goalLike: notification.goalLike.toString(),
-                comment: notification.comment.toString(),
-                commentLike: notification.commentLike.toString(),
-                reminder: notification.reminder.toString(),
-                displayTimestamp: notification.displayTimestamp,
-                timestamp: notification.timestamp.toString(),
-            }
+    console.log("Creating Notification");
+    console.log(notification);
+    let pushMessage = notification.name + " " + notification.description;
+    if (notification.reminder) pushMessage = "Your " + notification.title + " goal is due soon";
+    let payload = {
+        notification: {
+            body: pushMessage,
+        },
+        data: {
+            id: notification.id,
+            uid: notification.uid,
+            name: notification.name,
+            face: notification.face,
+            description: pushMessage,
+            read: notification.read.toString(),
+            collection: notification.collection,
+            docId: notification.docId,
+            receiverUid: notification.receiverUid,
+            message: notification.message.toString(),
+            pinLike: notification.pinLike.toString(),
+            statementLike: notification.statementLike.toString(),
+            goalLike: notification.goalLike.toString(),
+            comment: notification.comment.toString(),
+            commentLike: notification.commentLike.toString(),
+            reminder: notification.reminder.toString(),
+            displayTimestamp: notification.displayTimestamp,
+            timestamp: notification.timestamp.toString(),
         }
-        console.log("Built Notification Payload");
-        console.log(payload);
-        let fireData = admin.firestore();
-        let userPath = "users/" + notification.receiverUid;
-        let user = fireData.doc(userPath);
-        return user.get().then((user) => {
-            console.log("Sending Notification to User");
-            contributor = user.data();
-            console.log(contributor);
-            return admin.messaging().sendToDevice(contributor.fcmToken, payload);
-        });
     }
+    console.log("Built Notification Payload");
+    console.log(payload);
+    let fireData = admin.firestore();
+    let userPath = "users/" + notification.receiverUid;
+    let user = fireData.doc(userPath);
+    return user.get().then((user) => {
+        console.log("Sending Notification to User");
+        contributor = user.data();
+        console.log(contributor);
+        return admin.messaging().sendToDevice(contributor.fcmToken, payload);
+    });
 });
 
 function sendNotificationToAllUsers(notification) {
