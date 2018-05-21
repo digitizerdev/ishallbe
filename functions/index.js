@@ -49,7 +49,6 @@ function updateGoals(user) {
 exports.createNotificationForSingleUser = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
     let notification = event.data.data();
     console.log("Creating Notification For Single User");
-    console.log(notification);
     let pushMessage = notification.name + " " + notification.description;
     if (notification.reminder) pushMessage = "Your " + notification.title + " goal is due soon";
     let payload = {
@@ -76,9 +75,7 @@ exports.createNotificationForSingleUser = functions.firestore.document('notifica
             displayTimestamp: notification.displayTimestamp,
             timestamp: notification.timestamp.toString(),
         }
-    }
-    console.log("Built Notification Payload");
-    console.log(payload);
+    };
     return sendNotificationToSingleUser(payload);
 });
 
@@ -111,7 +108,7 @@ function checkForGoalsDueSoon() {
     where("dueDate", "<=", overNextHourTime);
     return goals.get().then((pendingReminders) => {
         pendingReminders.forEach((goalDoc) => {
-            let goal = goalDoc.data()
+            let goal = goalDoc.data();
             return createGoalReminder(goal);
         });
         return;
@@ -196,9 +193,7 @@ function buildAffirmationPayload(affirmation) {
             timestamp: affirmation.timestamp.toString(),
         }
     }
-    console.log("Built Affirmation Payload");
-    console.log(payload);
-    sendAffirmationToAllUsers(payload);
+    return sendAffirmationToAllUsers(payload);
 }
 
 function sendAffirmationToAllUsers(payload) {
@@ -210,6 +205,6 @@ function sendAffirmationToAllUsers(payload) {
             let user = userSnapshot.data();
             console.log("Sending Affirmation To " + user.fcmToken);
             return admin.messaging().sendToDevice(user.fcmToken, payload);
-        })
+        });
     });
 }
