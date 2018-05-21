@@ -12,5 +12,6 @@ export interface User {
     linkedin: string,
     twitter: string
     contributor: boolean,
-    editor: boolean
+    editor: boolean,
+    admin: boolean
 }

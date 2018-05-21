@@ -34,6 +34,15 @@
         </button>
       </ion-list>
     </div>
+    <div>
+      <ion-list *ngIf="editor" class="list-full-border" no-lines>
+        <button class="menu-pages" menuClose ion-item *ngFor="let p of adminMenu" (click)="openPage(p)">
+          <ion-icon color="primary" item-left name="{{ p.icon }}"></ion-icon>
+          {{ p.title }}
+          <ion-icon class="menu-icon" color="gray" item-right name="ios-arrow-forward"></ion-icon>
+        </button>
+      </ion-list>
+    </div>
   </ion-content>
 </ion-menu>
 <ion-nav #myNav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

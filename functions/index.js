@@ -142,7 +142,7 @@ function createGoalReminder(goal) {
         reminder: true,
         displayTimestamp: displayTimestamp,
         timestamp: timestamp
-    }
+    };
     let goalReminderPath = "notifications/" + id;
     return fs.doc(goalReminderPath).create(notification);
 }
@@ -192,7 +192,7 @@ function buildAffirmationPayload(affirmation) {
             displayTimestamp: affirmation.displayTimestamp,
             timestamp: affirmation.timestamp.toString(),
         }
-    }
+    };
     return sendAffirmationToAllUsers(payload);
 }
 

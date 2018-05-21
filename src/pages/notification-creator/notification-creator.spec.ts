@@ -87,7 +87,11 @@ describe('NotificationCreatorPage', () => {
     });
 
     it('should display EnableMenuIcon', () => {
-
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.DebugElement.query(By.css('#EnableMenuIcon'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 
     it('should display ToolbarLogoComponent', () => {
@@ -95,6 +99,18 @@ describe('NotificationCreatorPage', () => {
     });
 
     it('should display PushNotificationCreatorPageIcon', () => {
+
+    });
+
+    it('should display CordovaSelectPushTimeText if not browser and no pushTime determined', () => {
+
+    });
+
+    it('should display BrowserSelectPushTimeText if browser and no pushTime determined', () => {
+
+    });
+
+    it('should PushTimeText if pushTime determined', () => {
 
     });
 

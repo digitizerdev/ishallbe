@@ -213,7 +213,8 @@ export class FirebaseProvider {
         linkedin: "",
         twitter: "",
         contributor: true,
-        editor: false
+        editor: false,
+        admin: false
       }
       observer.next(user);
     });

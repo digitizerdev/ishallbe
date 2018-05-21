@@ -34,6 +34,7 @@ export class iShallBe {
   affirmationsMenu: Array<{ title: string, icon: string, component: any }>;
   accountMenu: Array<{ title: string, icon: string, component: any }>;
   editorMenu: Array<{ title: string, icon: string, component: any }>;
+  adminMenu: Array<{ title: string, icon: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
   pages: Array<{ title: string, component: any }>;
   editor = false;
@@ -178,24 +179,28 @@ export class iShallBe {
         component: AccountPage
       }
     ];
+
     this.editorMenu = [
       {
-        title: 'Post Manager',
+        title: 'Posts',
         icon: 'ios-albums',
         component: PostManagerPage
       },
       {
-        title: 'User Manager',
+        title: 'Notifications',
+        icon: 'ios-alert',
+        component: NotificationManagerPage
+      }
+    ];
+
+    this.adminMenu = [
+      {
+        title: 'Users',
         icon: 'ios-people',
         component: UserManagerPage
       },
       {
-        title: 'Notification Manager',
-        icon: 'ios-alert',
-        component: NotificationManagerPage
-      },
-      {
-        title: 'API Manager',
+        title: 'API',
         icon: 'ios-pulse',
         component: ApiManagerPage
       }
