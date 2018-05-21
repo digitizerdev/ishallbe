@@ -197,14 +197,16 @@ function buildAffirmationPayload(affirmation) {
 }
 
 function sendAffirmationToAllUsers(payload) {
-    console.log("Sending Affirmation To All Users")
+    console.log("Sending Affirmation To All Users");
+    let tokens = [];
     let fs = admin.firestore();
     let users = fs.collection('users');
     return users.get().then((allUsers) => {
-        return allUsers.forEach((userSnapshot) => {
+        allUsers.forEach((userSnapshot) => {
             let user = userSnapshot.data();
             console.log("Sending Affirmation To " + user.fcmToken);
-            return admin.messaging().sendToDevice(user.fcmToken, payload);
+            tokens.push(user.fcmToken);
         });
+        return admin.messaging().subscribeToTopic(tokens, 'affirmations');
     });
 }
