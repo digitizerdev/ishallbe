@@ -63,7 +63,7 @@ export class NotificationCreatorPage {
     console.log("Setting Push Time")
     this.pushTime = moment(time).unix();
     console.log(this.pushTime)
-    this.displayPushTime = moment(time).format('[Around] ha [on] dddd, MMMM Do');
+    this.displayPushTime = moment(time).format('ha [on] dddd, MMMM Do');
     console.log(this.displayPushTime);
   }
 

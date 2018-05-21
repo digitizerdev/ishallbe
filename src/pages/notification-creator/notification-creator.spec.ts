@@ -85,5 +85,21 @@ describe('NotificationCreatorPage', () => {
     it('should be created', () => {
         expect(component instanceof NotificationCreatorPage).toBe(true);
     });
+
+    it('should display EnableMenuIcon', () => {
+
+    });
+
+    it('should display ToolbarLogoComponent', () => {
+
+    });
+
+    it('should display PushNotificationCreatorPageIcon', () => {
+
+    });
+
+    it('should display NotificationCreatorForm', () => {
+
+    });
 });
 
