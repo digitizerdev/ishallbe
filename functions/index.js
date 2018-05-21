@@ -157,7 +157,6 @@ function sendNotificationToAllUsers(notification) {
             console.log("Push message is " + notification.description);
             let pushMessage = notification.description;
             let payload = {
-                "to": "/topics/affirmations",
                 notification: {
                     body: pushMessage,
                 },
@@ -184,8 +183,20 @@ function sendNotificationToAllUsers(notification) {
             }
             console.log("Built Notification Payload");
             console.log(payload);
-            return admin.messaging().sendToTopic("/topics/affirmations", payload);
+            sendToMultipleDevices(payload);
         });
+    });
+}
+
+function sendToMultipleDevices(payload) {
+    console.log("Sending To Multiple Devices")
+    let users = fireData.collection('users');
+    return users.get().then((allUsers) => {
+        return allUsers.forEach((userSnapshot) => {
+            let user = userSnapshot.data();
+            console.log("Pushing notification to " + user.fcmToken);
+            return admin.messaging().sendToDevice(user.fcmToken, payload);
+        })
     });
 }
 
