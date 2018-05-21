@@ -63,7 +63,7 @@ export class NotificationCreatorPage {
     console.log("Setting Push Time")
     this.pushTime = moment(time).unix();
     console.log(this.pushTime)
-    this.displayPushTime = moment(time).fromNow();
+    this.displayPushTime = moment(time).format('[Around] ha [on] dddd, MMMM Do');
     console.log(this.displayPushTime);
   }
 
@@ -80,8 +80,6 @@ export class NotificationCreatorPage {
   createNotification(form) {
     console.log("Creating Notification");
     let id = this.firebase.afs.createId();
-    let displayTimestamp = moment().format('MMM DD YYYY');
-    let timestamp = moment().unix();
     let notification: Notification = {
       id: id,
       uid: this.firebase.user.uid,
@@ -105,6 +103,7 @@ export class NotificationCreatorPage {
     }
     this.firebase.afs.doc('notifications/' + id).set(notification).then(() => {
       console.log("Notification Created");
+      console.log(notification);
     });
     this.navCtrl.pop();
   }

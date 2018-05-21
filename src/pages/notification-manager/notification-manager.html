@@ -10,6 +10,23 @@
   </ion-row>
   <br>
   <div text-center>
-    <h5 *ngIf="noUpcomingNotifications" class="feature" id="NoUpcomingNotifications">There are no upcoming notifications</h5>
+    <h5 *ngIf="!upcomingNotifications" id="NoUpcomingNotifications" class="feature">There are no scheduled notifications</h5>
+    <h5 *ngIf="upcomingNotifications" id="NoUpcomingNotifications" class="feature">Scheduled Notifications</h5>
   </div>
+  <ion-list *ngIf="upcomingNotifications" no-lines padding-left padding-right>
+    <ion-item-sliding *ngFor="let notification of upcomingNotifications" #item class="upcoming-notifications" text-wrap>
+      <ion-item>
+        <ion-avatar item-left>
+          <img (click)="viewUser(notification.uid)" src="{{ notification.face }}">
+        </ion-avatar>
+        <h4 ion-text color="primary"><b>{{ notification.displayTimestamp }}</b></h4>
+        <h2>{{ notification.description }}</h2>
+      </ion-item>
+      <ion-item-options side="left">
+        <button (click)="delete(notification)" color="background" ion-button>
+          <ion-icon name="trash" color="danger"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>

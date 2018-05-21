@@ -6,6 +6,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding-left padding-right>
+  <br>
   <ion-row *ngIf="!browser && !pushTime" id="SelectPushTimeButton">
     <ion-col text-center padding-left padding-right>
       <button (click)="pickCordovaTime()" color="steel" ion-button icon-start clear class="tdct-button" round block large strong>
@@ -19,19 +20,19 @@
       <button (click)="pickBrowserTime()" color="steel" ion-button icon-start clear class="tdct-button" round block large strong>
         <ion-icon name="ios-calendar"></ion-icon>
         SELECT PUSH TIME
-        <ion-datetime displayFormat="MMM DD, YYYY hh:mma" [(ngModel)]="pushTime" (ionChange)="setPushTime(this.pushTime)"></ion-datetime>
+        <ion-datetime displayFormat="MMM DD, YYYY hh:mma" minuteValues="0" [(ngModel)]="pushTime" (ionChange)="setPushTime(this.pushTime)"></ion-datetime>
       </button>
     </ion-col>
   </ion-row>
   <ion-row *ngIf="pushTime" id="PushTimeText">
     <ion-col *ngIf="!browser" (click)="pickTime()" text-center>
       <h4 color="dark" ion-text>
-        <b>Pushing {{ displayPushTime }}</b>
+        <b>Scheduled for <br> {{ displayPushTime }}</b>
       </h4>
     </ion-col>
     <ion-col *ngIf="browser" (click)="pickBrowserTime()" text-center>
       <h4 color="dark" ion-text>
-        <b>Pushing {{ displayPushTime }}</b>
+        <b>Scheduled for <br> {{ displayPushTime }}</b>
       </h4>
     </ion-col>
   </ion-row>

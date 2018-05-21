@@ -153,12 +153,13 @@ function sendNotificationToAllUsers(notification) {
     return notifications.get().then((pendingNotifications) => {
         console.log(pendingNotifications);
         return pendingNotifications.forEach((pendingNotification) => {
-            let notification = pendingNotification.data.data();
+            let notification = pendingNotification.data();
             console.log("Pushing Notification");
             console.log(notification);
             console.log("Push message is " + notification.description);
             let pushMessage = notification.description;
             let payload = {
+                "to": "/topics/affirmations",
                 notification: {
                     body: pushMessage,
                 },
@@ -185,16 +186,7 @@ function sendNotificationToAllUsers(notification) {
             }
             console.log("Built Notification Payload");
             console.log(payload);
-            let users = fireData.collection('users');
-            return users.get().then((allUsers) => {
-                return allUsers.forEach((userDoc) => {
-                    let user = userDoc.data();
-                    console.log("User is ");
-                    console.log(user);
-                    admin.messaging().sendToDevice(user.fcmToken, payload);
-                    return true;
-                });
-            });
+            return admin.messaging().sendToTopic("/topics/affirmations", payload);
         });
     });
 }

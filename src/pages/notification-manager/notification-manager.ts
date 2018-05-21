@@ -3,6 +3,8 @@ import { IonicPage, NavController } from 'ionic-angular';
 
 import { NotificationCreatorPage } from '../notification-creator/notification-creator';
 
+import { ProfilePage } from '../profile/profile';
+
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import moment from 'moment';
@@ -15,7 +17,6 @@ import moment from 'moment';
 export class NotificationManagerPage {
 
   upcomingNotifications: any;
-  noUpcomingNotifications = true;
   constructor(
     private navCtrl: NavController,
     private firebase: FirebaseProvider
@@ -23,24 +24,34 @@ export class NotificationManagerPage {
   }
 
   ionViewDidLoad() {
-    console.log("Current Time in unix is " + this.currentTime());
-    this.checkForUpcomingNotifications();
+    console.log("Current Time in unix is " + moment().unix());
+    this.checkForUpcomingNotifications()
   }
 
   checkForUpcomingNotifications() {
     console.log("Checking for upcoming notifications");
     let upcomingNotifications = this.firebase.afs.collection('notifications', ref => ref.
       where('pin', '==', true).
-      where('timestamp', '>=', this.currentTime()));
+      where('timestamp', '>=', moment().unix()));
     upcomingNotifications.valueChanges().subscribe((notifications) => {
       console.log("Got Notifications");
       console.log(notifications);
+      if (notifications.length == 0 ) this.upcomingNotifications = false;
+      else this.upcomingNotifications = notifications;
     });
   }
 
-  currentTime() {
-    console.log("Getting Current Time in Unix");
-    return moment.unix(parseInt(moment().format()));
+  delete(notification) {
+    console.log("Deleting Notification");
+    console.log(notification);
+    this.firebase.afs.doc('notifications/' + notification.id).delete();
+  }
+
+  viewUser(uid) {
+    console.log("Viewing User");
+    console.log(uid);
+    if (this.firebase.user.uid !== uid)
+     this.navCtrl.setRoot(ProfilePage, { uid: uid });
   }
 
   pushNotificationCreatorPage() {
