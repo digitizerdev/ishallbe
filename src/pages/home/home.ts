@@ -65,13 +65,15 @@ export class HomePage {
     this.fcm.getToken().then(token => {
       this.firebase.fcmToken = token
       this.firebase.syncFcmToken();
-      this.fcm.subscribeToTopic('all').then((resp) => {
-        console.log("Subscribed to all");
-        console.log(resp);
-      }).catch((error) => {
-        console.log("Error subscribing to affirmations");
-        console.log(error);
-      });
+      setTimeout( function() {
+        this.fcm.subscribeToTopic('pings').then((resp) => {
+          console.log("Subscribed to pings");
+          console.log(resp);
+        }).catch((error) => {
+          console.log("Error subscribing to pings");
+          console.log(error);
+        });
+      }, 2000)
     });
     this.fcm.onTokenRefresh().subscribe(token => {
       this.firebase.fcmToken = token;

@@ -20,6 +20,7 @@ export class NotificationCreatorPage {
   }
   pushTime: number;
   displayPushTime: string;
+  minTime: any;
   submitted = false;
   browser = false;
   sendNow = false;
@@ -36,6 +37,12 @@ export class NotificationCreatorPage {
   ionViewDidLoad() {
     console.log("Loaded Notification Creator Page");
     if (!this.platform.is('cordova')) this.browser = true;
+    let minTime = moment().unix();
+    console.log("Original min time is " + minTime);
+    minTime = minTime - 39600;
+    console.log("Updated min time is " + minTime);
+    this.minTime = moment.unix(minTime).format();
+    console.log("Minimum time is " + this.minTime);
   }
 
   getCurrentTime() {
