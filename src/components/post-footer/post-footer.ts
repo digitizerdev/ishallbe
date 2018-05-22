@@ -187,7 +187,7 @@ export class PostFooterComponent {
         collection: this.post.collection,
         docId: this.post.id,
         receiverUid: this.post.uid,
-        pin: false,
+        sendNow: false,
         message: false,
         pinLike: pinLike,
         statementLike: statementLike,
