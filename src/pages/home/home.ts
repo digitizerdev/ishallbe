@@ -65,8 +65,8 @@ export class HomePage {
     this.fcm.getToken().then(token => {
       this.firebase.fcmToken = token
       this.firebase.syncFcmToken();
-      this.fcm.subscribeToTopic('affirmations').then((resp) => {
-        console.log("Subscribed to Affirmations");
+      this.fcm.subscribeToTopic('all').then((resp) => {
+        console.log("Subscribed to all");
         console.log(resp);
       }).catch((error) => {
         console.log("Error subscribing to affirmations");
