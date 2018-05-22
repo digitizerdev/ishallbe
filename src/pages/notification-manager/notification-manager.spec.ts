@@ -10,7 +10,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
-import { NotificationCreatorPage } from '../notification-creator/notification-creator';
+import { NotificationManagerPage } from '../notification-manager/notification-manager';
 import { ComponentsModule } from '../../components/components.module';
 
 import { } from 'jasmine';
@@ -22,7 +22,7 @@ import {
     FirebaseProviderMock,
 } from '../../../test-config/mocks-ionic';
 
-describe('NotificationCreatorPage', () => {
+describe('NotificationManagerPage', () => {
     let fixture;
     let component;
     let platform: Platform;
@@ -40,9 +40,9 @@ describe('NotificationCreatorPage', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [NotificationCreatorPage],
+            declarations: [NotificationManagerPage],
             imports: [
-                IonicModule.forRoot(NotificationCreatorPage),
+                IonicModule.forRoot(NotificationManagerPage),
                 AngularFireModule.initializeApp(environment.firebase),
                 ComponentsModule
             ],
@@ -61,7 +61,7 @@ describe('NotificationCreatorPage', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(NotificationCreatorPage);
+        fixture = TestBed.createComponent(NotificationManagerPage);
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(NavController);
@@ -83,7 +83,7 @@ describe('NotificationCreatorPage', () => {
     });
 
     it('should be created', () => {
-        expect(component instanceof NotificationCreatorPage).toBe(true);
+        expect(component instanceof NotificationManagerPage).toBe(true);
     });
 
     it('should display EnableMenuIcon', () => {
@@ -94,23 +94,11 @@ describe('NotificationCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display CordovaSelectPushTimeText if not browser and no pushTime determined', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.DebugElement.query(By.css('#CordovaSelectPushTimeText'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    it('should display BrowserSelectPushTimeText if browser and no pushTime determined', () => {
+    it('should display ToolbarLogoComponent', () => {
 
     });
 
-    it('should PushTimeText if pushTime determined', () => {
-
-    });
-
-    it('should display NotificationCreatorForm', () => {
+    it('should display PushNotificationCreatorPageIcon', () => {
 
     });
 });

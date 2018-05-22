@@ -162,7 +162,8 @@ export class GoalCreatorPage {
     console.log("Setting Date");
     console.log(date);
     this.dueDate = moment(date).unix();
-    this.displayDueDate = moment(date).fromNow();
+    if (this.browser) this.displayDueDate = moment(date).add(4, 'hours').fromNow();
+    else this.displayDueDate = moment(date).add(4, 'hours').fromNow();
     this.dateSelected = true;
   }
 

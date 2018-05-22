@@ -22,6 +22,7 @@ export class NotificationCreatorPage {
   displayPushTime: string;
   submitted = false;
   browser = false;
+  sendNow = false;
 
   constructor(
     private navCtrl: NavController,
@@ -60,10 +61,11 @@ export class NotificationCreatorPage {
   }
 
   setPushTime(time) {
-    console.log("Setting Push Time")
+    console.log("Setting Push Time");
     this.pushTime = moment(time).unix();
-    console.log(this.pushTime)
-    this.displayPushTime = moment(time).format('ha [on] dddd, MMMM Do');
+    console.log(this.pushTime);
+    if (this.browser) this.displayPushTime = moment(time).add(4, 'hours').format('ha [on] dddd, MMMM Do');
+    else this.displayPushTime = moment(time).format('ha [on] dddd, MMMM Do');
     console.log(this.displayPushTime);
   }
 
@@ -80,6 +82,7 @@ export class NotificationCreatorPage {
   createNotification(form) {
     console.log("Creating Notification");
     let id = this.firebase.afs.createId();
+    if (this.sendNow) this.pushTime = moment().unix();
     let notification: Notification = {
       id: id,
       uid: this.firebase.user.uid,
@@ -90,7 +93,7 @@ export class NotificationCreatorPage {
       collection: 'pins',
       docId: id,
       receiverUid: 'all',
-      pin: true,
+      sendNow: this.sendNow,
       message: false,
       pinLike: false,
       statementLike: false,
