@@ -131,7 +131,9 @@ export class iShallBe {
 
   listenToContributorPermissionEvents() {
     this.events.subscribe('contributor permission granted', () => {
-      this.fcm.subscribeToTopic('affirmations');
+      this.fcm.subscribeToTopic('affirmations').then(() => {
+        console.log("Subscribed to Affirmations Topic")
+      }).catch(e => console.log('Error subscribing to topic', e));
       if (this.firebase.notification) {
         this.nav.setRoot(NotificationsPage);
       } else {
