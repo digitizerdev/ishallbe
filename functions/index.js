@@ -4,9 +4,9 @@ const moment = require('moment');
 admin.initializeApp(functions.config().firebase);
 
 
-exports.updateProfilePosts = functions.firestore.document('users/{userId}').onUpdate(event => {
-    console.log("Updating Profile Posts");
+exports.updatedProfile = functions.firestore.document('users/{userId}').onUpdate(event => {
     let user = event.data.data();
+    console.log(user.name + " updated their profile");
     return updateStatements(user).then(() => {
         return updateGoals(user);
     });
@@ -46,8 +46,20 @@ function updateGoals(user) {
     });
 }
 
-exports.createNotificationForSingleUser = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
+exports.newNotification = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
     let notification = event.data.data();
+    console.log("New Notification");
+    console.log(notification);
+    if (notification.receiverUid !== "all") {
+        createNotificationForSingleUser(notification);
+    } else {
+        if (notification.sendNow) {
+            createNotificationForAllUsers(notification);
+        }
+    }
+});
+
+function createNotificationForSingleUser(notification) {
     console.log("Creating Notification For Single User");
     let pushMessage = notification.name + " " + notification.description;
     if (notification.reminder) pushMessage = "Your " + notification.title + " goal is due soon";
@@ -77,7 +89,7 @@ exports.createNotificationForSingleUser = functions.firestore.document('notifica
         }
     };
     return sendNotificationToSingleUser(payload);
-});
+}
 
 function sendNotificationToSingleUser(notification) {
     console.log("Sending Notification to Single User");
@@ -89,6 +101,53 @@ function sendNotificationToSingleUser(notification) {
         user = userDoc.data();
         console.log("Sending Notification to " + user.fcmToken);
         return admin.messaging().sendToDevice(user.fcmToken, notification);
+    });
+}
+
+function createNotificationForAllUsers(notification) {
+    console.log("Creating Notification For All Users");
+    let payload = {
+        notification: {
+            body: notification.description,
+        },
+        data: {
+            id: notification.id,
+            uid: notification.uid,
+            name: notification.name,
+            face: notification.face,
+            description: pushMessage,
+            read: notification.read.toString(),
+            collection: notification.collection,
+            docId: notification.docId,
+            receiverUid: notification.receiverUid,
+            message: notification.message.toString(),
+            pinLike: notification.pinLike.toString(),
+            statementLike: notification.statementLike.toString(),
+            goalLike: notification.goalLike.toString(),
+            comment: notification.comment.toString(),
+            commentLike: notification.commentLike.toString(),
+            reminder: notification.reminder.toString(),
+            displayTimestamp: notification.displayTimestamp,
+            timestamp: notification.timestamp.toString(),
+        }
+    };
+    return subscribeAllUsersToAffirmations().then(() => {
+        console.log("Sending Payload");
+        return admin.messaging().send(payload);
+    });
+}
+
+function subscribeAllUsersToAffirmations() {
+    console.log("Subscribing All Users to Affiramtions");
+    let tokens = [];
+    let fs = admin.firestore();
+    let users = fs.collection('users');
+    return users.get().then((allUsers) => {
+        allUsers.forEach((userSnapshot) => {
+            let user = userSnapshot.data();
+            tokens.push(user.fcmToken);
+        });
+        return admin.messaging().subscribeToTopic(tokens, 'affirmations');
     });
 }
 
@@ -191,22 +250,10 @@ function buildAffirmationPayload(affirmation) {
             reminder: affirmation.reminder.toString(),
             displayTimestamp: affirmation.displayTimestamp,
             timestamp: affirmation.timestamp.toString(),
-        }
+        },
+        topic: "affirmations"
     };
-    return sendAffirmationToAllUsers(payload);
-}
-
-function sendAffirmationToAllUsers(payload) {
-    console.log("Sending Affirmation To All Users");
-    let tokens = [];
-    let fs = admin.firestore();
-    let users = fs.collection('users');
-    return users.get().then((allUsers) => {
-        allUsers.forEach((userSnapshot) => {
-            let user = userSnapshot.data();
-            console.log("Sending Affirmation To " + user.fcmToken);
-            tokens.push(user.fcmToken);
-        });
-        return admin.messaging().subscribeToTopic(tokens, 'affirmations');
+    return subscribeAllUsersToAffirmations().then(() => {
+        return admin.messaging().send(payload);
     });
 }
