@@ -20,7 +20,7 @@ export class NotificationCreatorPage {
   }
   pushTime: number;
   displayPushTime: string;
-  minTime: any;
+  nextAvailablePushTime: string;
   submitted = false;
   browser = false;
   sendNow = false;
@@ -39,10 +39,40 @@ export class NotificationCreatorPage {
     if (!this.platform.is('cordova')) this.browser = true;
     let minTime = moment().unix();
     console.log("Original min time is " + minTime);
-    minTime = minTime - 39600;
-    console.log("Updated min time is " + minTime);
-    this.minTime = moment.unix(minTime).format();
-    console.log("Minimum time is " + this.minTime);
+    minTime = minTime - 36000;
+    console.log("Minimum time is " + moment.unix(minTime).format());
+    if (this.missedPushTime(moment().unix())) {
+      console.log("Next Available Push Time is " + moment().hour(parseInt(moment().
+      format('HH'))).minute(45).second(0).add(2, 'hour').
+      format('ha [on] dddd, MMMM Do'));
+      this.nextAvailablePushTime = moment().hour(parseInt(moment().
+      format('HH'))).minute(45).second(0).add(2, 'hour').format();
+      console.log("In unix: " + moment(this.nextAvailablePushTime).unix());
+    } else {
+      console.log("Next Available Push Time is " + 
+      moment().hour(parseInt(moment().
+      format('HH'))).minute(45).second(0).add(1, 'hour').
+      format('ha [on] dddd, MMMM Do')) ;
+      this.nextAvailablePushTime = moment().hour(parseInt(moment().
+      format('HH'))).minute(45).second(0).add(1, 'hour').format();
+      console.log("In unix: " + moment(this.nextAvailablePushTime).unix());
+    }
+  }
+
+  missedPushTime(time) {
+    console.log("Getting Whether I Missed This Hour's Push Time");
+    console.log("Inputted time: " + time);
+    let thisHourPushTime = moment().hour(parseInt(moment().format('HH'))).minute(45).second(0).unix();
+    console.log("This Hour Push Time: " + thisHourPushTime);
+    if (time > thisHourPushTime) {
+      console.log("Push Time Passed");
+      console.log(time - thisHourPushTime + " seconds past the push time");
+      return true;
+    } else {
+      console.log("Push Time Upcoming");
+      console.log(thisHourPushTime - time + " seconds until the push time");
+      return false;
+    }
   }
 
   getCurrentTime() {
@@ -69,11 +99,27 @@ export class NotificationCreatorPage {
 
   setPushTime(time) {
     console.log("Setting Push Time");
-    this.pushTime = moment(time).unix();
-    console.log(this.pushTime);
+    this.pushTime = moment(time).add(4, 'hours').unix();
+    console.log("Push Time is " + moment(this.pushTime).format('ha [on] dddd, MMMM Do'));
+    this.sendNow = this.pushTimePassed(this.pushTime);
+    console.log("Send Now?: " + this.sendNow);
     if (this.browser) this.displayPushTime = moment(time).add(4, 'hours').format('ha [on] dddd, MMMM Do');
     else this.displayPushTime = moment(time).format('ha [on] dddd, MMMM Do');
-    console.log(this.displayPushTime);
+    console.log("Scheduled for " + this.displayPushTime);
+  }
+
+  pushTimePassed(pushTime) {
+    console.log("Checking to see if we can make this push time");
+    console.log("Inputted Push Time: " + pushTime);
+    console.log("Next Available Push Time: " + this.nextAvailablePushTime);
+    console.log("In Unix: " + moment(this.nextAvailablePushTime).unix());
+    if (pushTime < moment(this.nextAvailablePushTime).unix()) {
+      console.log("Push Time Passed");
+      return true;
+    } else {
+      console.log("Push Time Not Passed");
+      return false;
+    }
   }
 
   submit(form) {

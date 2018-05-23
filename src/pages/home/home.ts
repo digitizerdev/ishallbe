@@ -65,15 +65,6 @@ export class HomePage {
     this.fcm.getToken().then(token => {
       this.firebase.fcmToken = token
       this.firebase.syncFcmToken();
-      setTimeout( function() {
-        this.fcm.subscribeToTopic('pings').then((resp) => {
-          console.log("Subscribed to pings");
-          console.log(resp);
-        }).catch((error) => {
-          console.log("Error subscribing to pings");
-          console.log(error);
-        });
-      }, 2000)
     });
     this.fcm.onTokenRefresh().subscribe(token => {
       this.firebase.fcmToken = token;

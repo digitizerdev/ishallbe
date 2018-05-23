@@ -69,6 +69,7 @@ export class iShallBe {
 
   listenToFCMPushNotifications() {
     console.log("Listening To FCM Notifications");
+    this.subscribeToPings();
     this.events.subscribe('fcm synced', () => {
       this.fcm.onNotification().subscribe(notification => {
         console.log("Got Notification");
@@ -83,6 +84,17 @@ export class iShallBe {
           this.displayNotificationAlert(notification);
         }
       });
+    });
+  }
+
+  subscribeToPings() {
+    console.log("Subscribing to Pings");
+    this.fcm.subscribeToTopic('pings').then((resp) => {
+      console.log("Subscribed to pings");
+      console.log(resp);
+    }).catch((error) => {
+      console.log("Error subscribing to pings");
+      console.log(error);
     });
   }
 

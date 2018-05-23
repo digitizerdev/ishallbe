@@ -20,19 +20,27 @@
       <button (click)="pickBrowserTime()" color="steel" ion-button icon-start clear class="tdct-button" round block large strong>
         <ion-icon name="ios-calendar"></ion-icon>
         SELECT PUSH TIME
-        <ion-datetime displayFormat="MMM DD, YYYY hh:mma" minuteValues="0" [min]="minTime" [(ngModel)]="pushTime" (ionChange)="setPushTime(this.pushTime)"></ion-datetime>
+        <ion-datetime displayFormat="MMM DD, YYYY hh:mma" minuteValues="0" [min]="nextAvailablePushTime" [(ngModel)]="pushTime" (ionChange)="setPushTime(this.pushTime)"></ion-datetime>
       </button>
     </ion-col>
   </ion-row>
   <ion-row *ngIf="pushTime" id="PushTimeText">
     <ion-col *ngIf="!browser" (click)="pickTime()" text-center>
-      <h4 color="dark" ion-text>
-        <b>Scheduled for <br> {{ displayPushTime }}</b>
+      <h4 *ngIf="!sendNow" color="dark" ion-text>
+        <b>Scheduled for
+          <br> {{ displayPushTime }}</b>
+      </h4>
+      <h4 *ngIf="sendNow" color="dark" ion-text>
+        <b>Sending Now</b>
       </h4>
     </ion-col>
     <ion-col *ngIf="browser" (click)="pickBrowserTime()" text-center>
-      <h4 color="dark" ion-text>
-        <b>Scheduled for <br> {{ displayPushTime }}</b>
+      <h4 *ngIf="!sendNow" color="dark" ion-text>
+        <b>Scheduled for
+          <br> {{ displayPushTime }}</b>
+      </h4>
+      <h4 *ngIf="sendNow" color="dark" ion-text>
+        <b>Sending Now</b>
       </h4>
     </ion-col>
   </ion-row>
