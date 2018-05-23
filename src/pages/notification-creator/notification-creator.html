@@ -57,10 +57,14 @@
     <br>
     <ion-row>
       <ion-col text-center class="submit">
-        <button id="CreateNotificationButton" (click)="submit(createNotificationForm)" color="primary" ion-button class="tdct-button"
+        <button *ngIf="sendNow" id="PushButton" (click)="submit(createNotificationForm)" color="primary" ion-button class="tdct-button"
           round block large strong>
-          CREATE NOTIFICATION
+          PUSH
         </button>
+        <button *ngIf="!sendNow" id="PushButton" (click)="submit(createNotificationForm)" color="primary" ion-button class="tdct-button"
+        round block large strong>
+        SCHEDULE
+      </button>
       </ion-col>
     </ion-row>
   </form>

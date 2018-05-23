@@ -8,6 +8,7 @@ import { Notification } from '../../../test-data/notifications/model';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 import moment from 'moment';
+import { Observable } from 'rxjs';
 
 @IonicPage()
 @Component({
@@ -43,18 +44,18 @@ export class NotificationCreatorPage {
     console.log("Minimum time is " + moment.unix(minTime).format());
     if (this.missedPushTime(moment().unix())) {
       console.log("Next Available Push Time is " + moment().hour(parseInt(moment().
-      format('HH'))).minute(45).second(0).add(2, 'hour').
-      format('ha [on] dddd, MMMM Do'));
+        format('HH'))).minute(45).second(0).add(2, 'hour').
+        format('ha [on] dddd, MMMM Do'));
       this.nextAvailablePushTime = moment().hour(parseInt(moment().
-      format('HH'))).minute(45).second(0).add(2, 'hour').format();
+        format('HH'))).minute(45).second(0).add(2, 'hour').format();
       console.log("In unix: " + moment(this.nextAvailablePushTime).unix());
     } else {
-      console.log("Next Available Push Time is " + 
-      moment().hour(parseInt(moment().
-      format('HH'))).minute(45).second(0).add(1, 'hour').
-      format('ha [on] dddd, MMMM Do')) ;
+      console.log("Next Available Push Time is " +
+        moment().hour(parseInt(moment().
+          format('HH'))).minute(45).second(0).add(1, 'hour').
+          format('ha [on] dddd, MMMM Do'));
       this.nextAvailablePushTime = moment().hour(parseInt(moment().
-      format('HH'))).minute(45).second(0).add(1, 'hour').format();
+        format('HH'))).minute(45).second(0).add(1, 'hour').format();
       console.log("In unix: " + moment(this.nextAvailablePushTime).unix());
     }
   }
@@ -127,14 +128,20 @@ export class NotificationCreatorPage {
     this.submitted = true;
     if (!this.pushTime) this.displayNotReadyAlert();
     else {
-      if (form.valid)
-        this.createNotification(form);
+      if (form.valid) {
+        if (!this.sendNow) {
+          this.scheduleNotification(form);
+        } else {
+          this.pushNotification(form)
+        }
+      }
     }
   }
 
-  createNotification(form) {
+  scheduleNotification(form) {
     console.log("Creating Notification");
     let id = this.firebase.afs.createId();
+    console.log("Id is " + id);
     if (this.sendNow) this.pushTime = moment().unix();
     let notification: Notification = {
       id: id,
@@ -164,8 +171,65 @@ export class NotificationCreatorPage {
     this.navCtrl.pop();
   }
 
+  pushNotification(form) {
+    console.log("Pushing Notification");
+    let users = this.firebase.afs.collection('users');
+    let notificationCount = 0;
+    users.valueChanges().subscribe((usersCol) => {
+      console.log("Got users");
+      console.log(usersCol);
+      usersCol.forEach((user) => {
+        console.log('Got user: ');
+        console.log(user);
+        console.log("User uid is " + user.uid);
+        let message = {
+          description: form.description,
+          uid: user.uid
+        }
+        this.buildNotification(message).subscribe((notification) => {
+          console.log("Built Payload");
+          console.log(notification);
+          let notificationPath = "notifications/" + notification.id;
+          notificationCount++;
+          console.log("Notification Count is " + notificationCount);
+          this.firebase.afs.doc(notificationPath).set(notification);
+        });
+      });
+    });
+  }
+
+  buildNotification(message) {
+    return Observable.create((observer) => {
+      let id = this.firebase.afs.createId();
+      let displayTimestamp = moment().format('MMM DD YYYY');
+      let timestamp = moment().unix();
+      let notification: Notification = {
+        id: id,
+        uid: this.firebase.user.uid,
+        name: this.firebase.user.name,
+        face: this.firebase.user.photo,
+        description: message.description,
+        read: false,
+        collection: "notifications",
+        docId: id,
+        receiverUid: message.uid,
+        sendNow: false,
+        message: true,
+        pinLike: false,
+        statementLike: false,
+        goalLike: false,
+        comment: false,
+        commentLike: false,
+        reminder: false,
+        displayTimestamp: displayTimestamp,
+        timestamp: timestamp
+      }
+      observer.next(notification);
+    });
+  }
+
   displayNotReadyAlert() {
-    let alertMessage = "Please Set a Due Date";
+    let alertMessage = "Please Select a Push Time";
     let alert = this.alertCtrl.create({
       title: 'Almost There!',
       subTitle: alertMessage,

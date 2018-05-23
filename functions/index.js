@@ -61,8 +61,10 @@ exports.newNotification = functions.firestore.document('notifications/{notificat
 
 function createNotificationForSingleUser(notification) {
     console.log("Creating Notification For Single User");
+    console.log(notification);
     let pushMessage = notification.name + " " + notification.description;
     if (notification.reminder) pushMessage = "Your " + notification.title + " goal is due soon";
+    if (notification.collection.toString() === 'notifications') pushMessage = notification.description;
     let payload = {
         notification: {
             body: pushMessage,
