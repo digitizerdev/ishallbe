@@ -156,9 +156,8 @@ export class NotificationCreatorPage {
       console.log("Built Payload");
       console.log(notification);
       let notificationPath = "notifications/" + notification.id;
-      this.firebase.afs.doc(notificationPath).set(notification).then(() => {
-        this.navCtrl.pop();
-      });
+      this.navCtrl.pop();
+      this.firebase.afs.doc(notificationPath);
     });
   }
 

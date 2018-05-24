@@ -1,6 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { NgCalendarModule } from 'ionic2-calendar';
@@ -91,6 +92,7 @@ import { ComponentsModule } from '../components/components.module';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpModule,
     IonicModule.forRoot(iShallBe, {}, { links: [] }),
     ComponentsModule,

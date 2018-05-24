@@ -10,13 +10,13 @@
       </button>
     </ion-buttons>
   </ion-navbar></ion-header>
-<ion-content>
+<ion-content [@listAnimation]="scheduledNotifications.length">
   <br>
   <div text-center id="ScheduledNotifications">
     <h5 *ngIf="scheduledNotifications.length !== 1" id="ScheduledNotifications" class="feature">{{scheduledNotifications.length}} Scheduled Notifications</h5>
     <h5 *ngIf="scheduledNotifications.length == 1" id="ScheduledNotifications" class="feature">{{scheduledNotifications.length}} Scheduled Notification</h5>
   </div>
-  <ion-list *ngIf="scheduledNotifications" no-lines padding-left padding-right>
+  <ion-list no-lines padding-left padding-right>
     <ion-item-sliding *ngFor="let notification of scheduledNotifications" #item class="scheduled-notifications" text-wrap>
       <ion-item>
         <ion-avatar item-left>

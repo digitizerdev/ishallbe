@@ -17,7 +17,7 @@
     </ion-col>
   </ion-row>
   <ion-row *ngIf="pushTime" id="PushTimeText">
-    <ion-col (click)="pickBrowserTime()" text-center>
+    <ion-col (click)="pickTime()" text-center>
       <h4 *ngIf="!sendNow" color="dark" ion-text>
         <b>Scheduled for
           <br> {{ displayPushTime }}</b>
