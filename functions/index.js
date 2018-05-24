@@ -51,10 +51,10 @@ exports.newNotification = functions.firestore.document('notifications/{notificat
     console.log("New Notification");
     console.log(notification);
     if (notification.receiverUid !== "all") {
-        createNotificationForSingleUser(notification);
+        return createNotificationForSingleUser(notification);
     } else {
         if (notification.sendNow) {
-            createNotificationForAllUsers(notification);
+            return createNotificationForAllUsers(notification);
         }
     }
 });
@@ -64,7 +64,6 @@ function createNotificationForSingleUser(notification) {
     console.log(notification);
     let pushMessage = notification.name + " " + notification.description;
     if (notification.reminder) pushMessage = "Your " + notification.title + " goal is due soon";
-    if (notification.collection.toString() === 'notifications') pushMessage = notification.description;
     let payload = {
         notification: {
             body: pushMessage,
@@ -117,7 +116,7 @@ function createNotificationForAllUsers(notification) {
             uid: notification.uid,
             name: notification.name,
             face: notification.face,
-            description: pushMessage,
+            description: notification.description,
             read: notification.read.toString(),
             collection: notification.collection,
             docId: notification.docId,
@@ -133,23 +132,19 @@ function createNotificationForAllUsers(notification) {
             timestamp: notification.timestamp.toString(),
         }
     };
-    return subscribeAllUsersToAffirmations().then(() => {
-        console.log("Sending Payload");
-        return admin.messaging().send(payload);
-    });
+    return pushPayloadToEachUser(payload);
 }
 
-function subscribeAllUsersToAffirmations() {
-    console.log("Subscribing All Users to Affiramtions");
-    let tokens = [];
+function pushPayloadToEachUser(payload) {
+    console.log("Pushing Payload To Each User");
     let fs = admin.firestore();
     let users = fs.collection('users');
-    return users.get().then((allUsers) => {
-        allUsers.forEach((userSnapshot) => {
+    return users.get().then((usersCol) => {
+        return usersCol.forEach((userSnapshot) => {
             let user = userSnapshot.data();
-            tokens.push(user.fcmToken);
+            console.log("Pushing Payload to " + user.fcmToken);
+            return admin.messaging().sendToDevice(user.fcmToken, payload)
         });
-        return admin.messaging().subscribeToTopic(tokens, 'affirmations');
     });
 }
 

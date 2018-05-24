@@ -141,8 +141,6 @@ export class NotificationCreatorPage {
   scheduleNotification(form) {
     console.log("Creating Notification");
     let id = this.firebase.afs.createId();
-    console.log("Id is " + id);
-    if (this.sendNow) this.pushTime = moment().unix();
     let notification: Notification = {
       id: id,
       uid: this.firebase.user.uid,
@@ -151,9 +149,9 @@ export class NotificationCreatorPage {
       description: form.description,
       read: false,
       collection: 'pins',
-      docId: id,
+      docId: id, 
       receiverUid: 'all',
-      sendNow: this.sendNow,
+      sendNow: false,
       message: false,
       pinLike: false,
       statementLike: false,
@@ -167,38 +165,23 @@ export class NotificationCreatorPage {
     this.firebase.afs.doc('notifications/' + id).set(notification).then(() => {
       console.log("Notification Created");
       console.log(notification);
+      this.navCtrl.pop();
     });
-    this.navCtrl.pop();
   }
 
   pushNotification(form) {
     console.log("Pushing Notification");
-    let users = this.firebase.afs.collection('users');
-    let notificationCount = 0;
-    users.valueChanges().subscribe((usersCol) => {
-      console.log("Got users");
-      console.log(usersCol);
-      usersCol.forEach((user) => {
-        console.log('Got user: ');
-        console.log(user);
-        console.log("User uid is " + user.uid);
-        let message = {
-          description: form.description,
-          uid: user.uid
-        }
-        this.buildNotification(message).subscribe((notification) => {
-          console.log("Built Payload");
-          console.log(notification);
-          let notificationPath = "notifications/" + notification.id;
-          notificationCount++;
-          console.log("Notification Count is " + notificationCount);
-          this.firebase.afs.doc(notificationPath).set(notification);
-        });
+    this.buildNotification(form).subscribe((notification) => {
+      console.log("Built Payload");
+      console.log(notification);
+      let notificationPath = "notifications/" + notification.id;
+      this.firebase.afs.doc(notificationPath).set(notification).then(() => {
+        this.navCtrl.pop();
       });
     });
   }
 
-  buildNotification(message) {
+  buildNotification(form) {
     return Observable.create((observer) => {
       let id = this.firebase.afs.createId();
       let displayTimestamp = moment().format('MMM DD YYYY');
@@ -208,12 +191,12 @@ export class NotificationCreatorPage {
         uid: this.firebase.user.uid,
         name: this.firebase.user.name,
         face: this.firebase.user.photo,
-        description: message.description,
+        description: form.description,
         read: false,
         collection: "notifications",
         docId: id,
-        receiverUid: message.uid,
-        sendNow: false,
+        receiverUid: "all",
+        sendNow: true,
         message: true,
         pinLike: false,
         statementLike: false,
