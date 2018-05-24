@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, NavParams, Platform, AlertController } from 'ionic-angular';
-import { DatePicker } from '@ionic-native/date-picker';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { Notification } from '../../../test-data/notifications/model';
 
@@ -23,21 +22,17 @@ export class NotificationCreatorPage {
   displayPushTime: string;
   nextAvailablePushTime: string;
   submitted = false;
-  browser = false;
   sendNow = false;
 
   constructor(
     private navCtrl: NavController,
     private firebase: FirebaseProvider,
-    private platform: Platform,
-    private datePicker: DatePicker,
     private alertCtrl: AlertController
   ) {
   }
 
   ionViewDidLoad() {
     console.log("Loaded Notification Creator Page");
-    if (!this.platform.is('cordova')) this.browser = true;
     let minTime = moment().unix();
     console.log("Original min time is " + minTime);
     minTime = minTime - 36000;
@@ -80,21 +75,8 @@ export class NotificationCreatorPage {
     return moment().format();
   }
 
-  pickCordovaTime() {
-    console.log("Picking Cordova Time");
-    this.pushTime = null;
-    this.datePicker.show({
-      date: new Date(),
-      mode: 'datetime',
-      allowOldDates: false,
-      androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
-    }).then((time) => {
-      this.setPushTime(time);
-    }, (err) => { });
-  }
-
-  pickBrowserTime() {
-    console.log("Picking Browser Time");
+  pickTime() {
+    console.log("Picking Time");
     this.pushTime = null;
   }
 
@@ -104,8 +86,7 @@ export class NotificationCreatorPage {
     console.log("Push Time is " + moment(this.pushTime).format('ha [on] dddd, MMMM Do'));
     this.sendNow = this.pushTimePassed(this.pushTime);
     console.log("Send Now?: " + this.sendNow);
-    if (this.browser) this.displayPushTime = moment(time).add(4, 'hours').format('ha [on] dddd, MMMM Do');
-    else this.displayPushTime = moment(time).format('ha [on] dddd, MMMM Do');
+    this.displayPushTime = moment(time).add(4, 'hours').format('ha [on] dddd, MMMM Do');
     console.log("Scheduled for " + this.displayPushTime);
   }
 

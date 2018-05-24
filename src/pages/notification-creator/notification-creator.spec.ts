@@ -82,36 +82,43 @@ describe('NotificationCreatorPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof NotificationCreatorPage).toBe(true);
     });
 
-    it('should display EnableMenuIcon', () => {
+    fit('should display EnableMenuIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.DebugElement.query(By.css('#EnableMenuIcon'));
+        de = fixture.debugElement.query(By.css('#EnableMenuIcon'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
 
-    it('should display CordovaSelectPushTimeText if not browser and no pushTime determined', () => {
+    fit('should display SelectPushTimeText if no pushTime determined', () => {
+        fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.DebugElement.query(By.css('#CordovaSelectPushTimeText'));
+        de = fixture.debugElement.query(By.css('#SelectPushTimeText'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
 
-    it('should display BrowserSelectPushTimeText if browser and no pushTime determined', () => {
-
+    fit('should display PushTimeText if pushTime determined', () => {
+        component.pushTime = "Time to Push";
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PushTimeText'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 
-    it('should PushTimeText if pushTime determined', () => {
-
-    });
-
-    it('should display NotificationCreatorForm', () => {
-
+    fit('should display NotificationCreatorForm', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#NotificationCreatorForm'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 });
 
