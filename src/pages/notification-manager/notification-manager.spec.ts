@@ -82,24 +82,43 @@ describe('NotificationManagerPage', () => {
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof NotificationManagerPage).toBe(true);
     });
 
-    it('should display EnableMenuIcon', () => {
+    fit('should display EnableMenuIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.DebugElement.query(By.css('#EnableMenuIcon'));
+        de = fixture.debugElement.query(By.css('#EnableMenuIcon'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
 
-    it('should display ToolbarLogoComponent', () => {
-
+    fit('should display ToolbarLogoComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('toolbar-logo'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
 
-    it('should display PushNotificationCreatorPageIcon', () => {
-
+    fit('should display PushNotificationCreatorPageIcon', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PushNotificationCreatorPageIcon'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
     });
+
+    fit('should display number of ScheduledNotifications', () => {
+        component.scheduledNotifications = [1, 2]
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#ScheduledNotifications'));
+        el = de.nativeElement.innerHTML;
+        expect(el).toContain("2 Scheduled Notifications")
+    });
+
 });
 

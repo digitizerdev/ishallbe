@@ -16,28 +16,30 @@ import moment from 'moment';
 })
 export class NotificationManagerPage {
 
-  upcomingNotifications: any;
+  scheduledNotifications: any[] = [];
+
   constructor(
     private navCtrl: NavController,
     private firebase: FirebaseProvider
   ) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     console.log("Current Time in unix is " + moment().unix());
-    this.checkForUpcomingNotifications()
+    this.checkForScheduledNotifications()
   }
 
-  checkForUpcomingNotifications() {
-    console.log("Checking for upcoming notifications");
-    let upcomingNotifications = this.firebase.afs.collection('notifications', ref => ref.
-      where('pin', '==', true).
-      where('timestamp', '>=', moment().unix()));
-    upcomingNotifications.valueChanges().subscribe((notifications) => {
+  checkForScheduledNotifications() {
+    console.log("Checking for scheduled notifications");
+    let currentTime = moment().unix();
+    console.log("Current Time in unix is " + currentTime);
+    let scheduledNotifications = this.firebase.afs.collection('notifications', ref => ref.
+      where('timestamp', '>=', currentTime).
+      where('receiverUid', '==', 'all'));
+    scheduledNotifications.valueChanges().subscribe((notifications) => {
       console.log("Got Notifications");
       console.log(notifications);
-      if (notifications.length == 0 ) this.upcomingNotifications = false;
-      else this.upcomingNotifications = notifications;
+      this.scheduledNotifications = notifications;
     });
   }
 

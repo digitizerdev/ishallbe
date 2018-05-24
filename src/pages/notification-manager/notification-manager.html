@@ -1,20 +1,23 @@
 <ion-header no-border>
-  <brand-header></brand-header>
-</ion-header>
+  <ion-navbar padding-top>
+    <button ion-button menuToggle>
+      <ion-icon color='primary' name="menu" id="EnableMenuIcon"></ion-icon>
+    </button>
+    <toolbar-logo></toolbar-logo>
+    <ion-buttons id="PushNotificationCreatorPageIcon" end>
+      <button ion-button icon-only (click)="pushNotificationCreatorPage()">
+        <ion-icon color='primary' name="ios-add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar></ion-header>
 <ion-content>
   <br>
-  <ion-row>
-    <ion-col text-center>
-      <button ion-button id="CreateNotificationButton" (click)="pushNotificationCreatorPage()" color="primary" round strong>CREATE NOTIFICATION</button>
-    </ion-col>
-  </ion-row>
-  <br>
-  <div text-center>
-    <h5 *ngIf="!upcomingNotifications" id="NoUpcomingNotifications" class="feature">There are no scheduled notifications</h5>
-    <h5 *ngIf="upcomingNotifications" id="NoUpcomingNotifications" class="feature">Scheduled Notifications</h5>
+  <div text-center id="ScheduledNotifications">
+    <h5 *ngIf="scheduledNotifications.length !== 1" id="ScheduledNotifications" class="feature">{{scheduledNotifications.length}} Scheduled Notifications</h5>
+    <h5 *ngIf="scheduledNotifications.length == 1" id="ScheduledNotifications" class="feature">{{scheduledNotifications.length}} Scheduled Notification</h5>
   </div>
-  <ion-list *ngIf="upcomingNotifications" no-lines padding-left padding-right>
-    <ion-item-sliding *ngFor="let notification of upcomingNotifications" #item class="upcoming-notifications" text-wrap>
+  <ion-list *ngIf="scheduledNotifications" no-lines padding-left padding-right>
+    <ion-item-sliding *ngFor="let notification of scheduledNotifications" #item class="scheduled-notifications" text-wrap>
       <ion-item>
         <ion-avatar item-left>
           <img (click)="viewUser(notification.uid)" src="{{ notification.face }}">
