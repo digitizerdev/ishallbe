@@ -11,7 +11,7 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content [@staggerIn]="unreadNotifications.length" >
+<ion-content [@staggerIn]="unreadNotifications.length" [@staggerIn]="readNotifications.length">
   <ion-refresher (ionRefresh)="refreshPage()" color="primary" no-border>
     <ion-refresher-content refreshingSpinner="dots" refreshingText="Refeshing" no-border>
     </ion-refresher-content>

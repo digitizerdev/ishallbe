@@ -11,7 +11,7 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content no-border id="Videos">
+<ion-content [@listAnimation]="videos.length" no-border id="Videos">
   <ion-refresher (ionRefresh)="refreshPage()" color="primary" no-border>
     <ion-refresher-content refreshingSpinner="dots" refreshingText="Refeshing" no-border>
     </ion-refresher-content>
@@ -22,7 +22,6 @@
       <b>{{ video.description }}</b>
     </h5>
     <img class="one-image" src="{{ video.url }}">
-    <h6>{{ video.displayPostDate }}</h6>
   </div>
   <footer></footer>
 </ion-content>

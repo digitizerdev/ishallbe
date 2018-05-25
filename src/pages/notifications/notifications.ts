@@ -59,8 +59,6 @@ export class NotificationsPage {
   }
 
   setNotifications(notifications) {
-    this.unreadNotifications = [];
-    this.readNotifications = [];
     notifications.forEach((notification) => {
       let date = moment.unix(notification.timestamp);
       notification.displayTimestamp = moment(date).fromNow();

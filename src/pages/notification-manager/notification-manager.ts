@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
-import { trigger,state,style,transition,animate,keyframes, query, stagger } from '@angular/animations';
+import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 
 import { NotificationCreatorPage } from '../notification-creator/notification-creator';
 
@@ -15,42 +15,13 @@ import moment from 'moment';
   selector: 'page-notification-manager',
   templateUrl: 'notification-manager.html',
   animations: [
-
-    trigger('listAnimation', [
+    trigger('staggerIn', [
       transition('* => *', [
-
-        query(':enter', style({ opacity: 0 }), { optional: true }),
-
-        query(':enter', stagger('300ms', [
-          animate('1s ease-in', keyframes([
-            style({ opacity: 0, transform: 'translateY(-75%)', offset: 0 }),
-            style({ opacity: .5, transform: 'translateY(35px)', offset: 0.3 }),
-            style({ opacity: 1, transform: 'translateY(0)', offset: 1.0 }),
-          ]))]), { optional: true }),
-
-        query(':leave', stagger('300ms', [
-          animate('1s ease-in', keyframes([
-            style({ opacity: 1, transform: 'translateY(0)', offset: 0 }),
-            style({ opacity: .5, transform: 'translateY(35px)', offset: 0.3 }),
-            style({ opacity: 0, transform: 'translateY(-75%)', offset: 1.0 }),
-          ]))]), { optional: true })
-      ])
-    ]),
-    trigger('explainerAnimation', [
-      transition('* => *', [
-        query('.col', style({ opacity: 0, transform: 'translateX(-40px)' })),
-
-        query('.col', stagger('500ms', [
-          animate('800ms 1.2s ease-out', style({ opacity: 1, transform: 'translateX(0)' })),
-        ])),
-
-        query('.col', [
-          animate(1000, style('*'))
-        ])
-
+        query(':enter', style({ opacity: 0, transform: `translate3d(0,10px,0)` }), { optional: true }),
+        query(':enter', stagger('100ms', [animate('300ms', style({ opacity: 1, transform: `translate3d(0,0,0)` }))]), { optional: true })
       ])
     ])
-  ],
+  ]
 })
 export class NotificationManagerPage {
 
@@ -73,7 +44,8 @@ export class NotificationManagerPage {
     console.log("Current Time in unix is " + currentTime);
     let scheduledNotifications = this.firebase.afs.collection('notifications', ref => ref.
       where('timestamp', '>=', currentTime).
-      where('receiverUid', '==', 'all'));
+      where('receiverUid', '==', 'all').
+      limit(50));
     scheduledNotifications.valueChanges().subscribe((notifications) => {
       console.log("Got Notifications");
       console.log(notifications);
@@ -91,7 +63,7 @@ export class NotificationManagerPage {
     console.log("Viewing User");
     console.log(uid);
     if (this.firebase.user.uid !== uid)
-     this.navCtrl.setRoot(ProfilePage, { uid: uid });
+      this.navCtrl.setRoot(ProfilePage, { uid: uid });
   }
 
   pushNotificationCreatorPage() {

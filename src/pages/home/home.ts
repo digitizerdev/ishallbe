@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 
 import { IonicPage, NavController, Platform, Slides } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
-import { trigger,state,style,transition,animate,keyframes, query, stagger } from '@angular/animations';
 
 import { NotificationsPage } from '../notifications/notifications';
 import { StatementCreatorPage} from '../statement-creator/statement-creator';
