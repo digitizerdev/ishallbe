@@ -4,7 +4,7 @@ import { IonicPage, NavController, Platform, Slides } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 
 import { NotificationsPage } from '../notifications/notifications';
-import { StatementCreatorPage} from '../statement-creator/statement-creator';
+import { StatementCreatorPage } from '../statement-creator/statement-creator';
 import { GoalCreatorPage } from '../goal-creator/goal-creator';
 
 import { Observable } from 'rxjs';
@@ -23,16 +23,17 @@ export class HomePage {
   pins: any[] = [];
   statements: any[] = [];
   goals: any[] = [];
+  lastStatementTimestamp: number;
+  lastGoalTimestamp: number;
   postStartDate: number;
   postEndDate: number;
   dayNumber: number;
   timestamp: number;
   dayOfWeek: string;
   pinsLoaded = false;
-  statementsLoaded = false;
   goalsLoaded = false;
   newNotifications = false;
-  noStatements = false;
+  noMoreStatements = false;
   noGoals = false;
   postSegment = 'statements';
 
@@ -123,13 +124,13 @@ export class HomePage {
     let statements = this.firebase.afs.collection('statements', ref =>
       ref.where('private', '==', false).
         where('reported', '==', false)
-        .orderBy('timestamp', 'desc').limit(25));
+        .orderBy('timestamp', 'desc').
+        limit(5));
     statements.valueChanges().subscribe((statements) => {
       if (statements.length > 0) {
-        if (!this.statementsLoaded)
           this.setStatements(statements);
       } else {
-        this.noStatements = true;
+        this.noMoreStatements = true;
       }
     });
   }
@@ -140,7 +141,9 @@ export class HomePage {
       statement.displayTimestamp = moment(date).fromNow();
       this.statements.push(statement);
     });
-    this.statementsLoaded = true;
+    let lastStatement = this.statements.pop();
+    this.lastStatementTimestamp = lastStatement.timestamp;
+    console.log("Last Statement Timestamp is " + this.lastStatementTimestamp);
   }
 
   loadGoals() {
@@ -163,13 +166,44 @@ export class HomePage {
 
   setGoals(goals) {
     goals.forEach((goal) => {
-        let dueDate = moment.unix(goal.dueDate);
-        goal.displayDueDate = moment(dueDate).fromNow();
-        let timestamp = moment.unix(goal.timestamp);
-        goal.displayTimestamp = moment(timestamp).fromNow();
-        this.goals.push(goal);
+      let dueDate = moment.unix(goal.dueDate);
+      goal.displayDueDate = moment(dueDate).fromNow();
+      let timestamp = moment.unix(goal.timestamp);
+      goal.displayTimestamp = moment(timestamp).fromNow();
+      this.goals.push(goal);
     });
     this.goalsLoaded = true;
+  }
+
+  loadMoreStatements(event) {
+    console.log("Loading More Statements");
+    console.log(event);
+    return new Promise((resolve) => {
+      let statements = this.firebase.afs.collection('statements', ref =>
+        ref.where('private', '==', false).
+          where('reported', '==', false)
+          .orderBy('timestamp', 'desc').
+          limit(5).
+          startAfter(this.lastStatementTimestamp));
+      return statements.valueChanges().subscribe((statements) => {
+        console.log("Got Statements");
+        console.log(statements);
+        if (statements.length > 0 ) this.setStatements(statements);
+        if (statements.length < 5 ) this.endStatementsInfinityScroll(event);
+        resolve();
+      });
+    });
+  }
+
+  endStatementsInfinityScroll(event) {
+    console.log("Ending Statements Infinity Scroll");
+    event.complete();
+    this.noMoreStatements = true;
+  }
+
+  loadMoreGoals(event) {
+    console.log("Loading More Goals");
+    console.log(event);
   }
 
   showNotifications() {
