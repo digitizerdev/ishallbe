@@ -38,23 +38,19 @@
           <statement [post]="statement"></statement>
         </ion-card>
         <ion-infinite-scroll *ngIf="!this.noMoreStatements" (ionInfinite)="$event.waitFor(loadMoreStatements($event))">
-            <ion-infinite-scroll-content
-            loadingSpinner="dots"
-            ></ion-infinite-scroll-content>
-          </ion-infinite-scroll>
+          <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       </div>
       <div *ngIf="postSegment=='goals'" id="GoalsScroller">
         <ion-card *ngFor="let goal of goals">
           <goal [post]="goal"></goal>
         </ion-card>
-        <ion-infinite-scroll (ionInfinite)="$event.waitFor(loadMoreGoals($event))">
-            <ion-infinite-scroll-content
-            loadingSpinner="dots"
-            ></ion-infinite-scroll-content>
-          </ion-infinite-scroll>
+        <ion-infinite-scroll *ngIf="!this.noMoreGoals" (ionInfinite)="$event.waitFor(loadMoreGoals($event))">
+          <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       </div>
-      <br>
     </div>
+    <br>
   </div>
   <footer></footer>
 </ion-content>

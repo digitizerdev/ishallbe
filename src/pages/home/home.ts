@@ -34,7 +34,7 @@ export class HomePage {
   goalsLoaded = false;
   newNotifications = false;
   noMoreStatements = false;
-  noGoals = false;
+  noMoreGoals = false;
   postSegment = 'statements';
 
   constructor(
@@ -129,8 +129,9 @@ export class HomePage {
     statements.valueChanges().subscribe((statements) => {
       if (statements.length > 0) {
           this.setStatements(statements);
+          if (statements.length < 5) this.noMoreStatements = true;
       } else {
-        this.noMoreStatements = true;
+          this.noMoreStatements = true;
       }
     });
   }
@@ -143,7 +144,6 @@ export class HomePage {
     });
     let lastStatement = this.statements.pop();
     this.lastStatementTimestamp = lastStatement.timestamp;
-    console.log("Last Statement Timestamp is " + this.lastStatementTimestamp);
   }
 
   loadGoals() {
@@ -153,13 +153,15 @@ export class HomePage {
         where('complete', '==', false).
         where('dueDate', '>', this.timestamp).
         orderBy('dueDate', 'asc').
-        limit(25));
+        limit(5));
     goals.valueChanges().subscribe((goals) => {
       if (goals.length > 0) {
-        if (!this.goalsLoaded)
           this.setGoals(goals);
+          if (goals.length < 5) {
+            this.noMoreGoals = true
+          } 
       } else {
-        this.noGoals = true
+        this.noMoreGoals = true;
       }
     });
   }
@@ -176,8 +178,6 @@ export class HomePage {
   }
 
   loadMoreStatements(event) {
-    console.log("Loading More Statements");
-    console.log(event);
     return new Promise((resolve) => {
       let statements = this.firebase.afs.collection('statements', ref =>
         ref.where('private', '==', false).
@@ -186,8 +186,6 @@ export class HomePage {
           limit(5).
           startAfter(this.lastStatementTimestamp));
       return statements.valueChanges().subscribe((statements) => {
-        console.log("Got Statements");
-        console.log(statements);
         if (statements.length > 0 ) this.setStatements(statements);
         if (statements.length < 5 ) this.endStatementsInfinityScroll(event);
         resolve();
@@ -196,14 +194,30 @@ export class HomePage {
   }
 
   endStatementsInfinityScroll(event) {
-    console.log("Ending Statements Infinity Scroll");
     event.complete();
     this.noMoreStatements = true;
   }
 
+
   loadMoreGoals(event) {
-    console.log("Loading More Goals");
-    console.log(event);
+    return new Promise((resolve) => {
+      let goals = this.firebase.afs.collection('goals', ref =>
+        ref.where('private', '==', false).
+          where('reported', '==', false)
+          .orderBy('timestamp', 'desc').
+          limit(5).
+          startAfter(this.lastGoalTimestamp));
+      return goals.valueChanges().subscribe((goals) => {
+        if (goals.length > 0 ) this.setGoals(goals);
+        if (goals.length < 5 ) this.endGoalsInfinityScroll(event);
+        resolve();
+      });
+    });
+  }
+
+  endGoalsInfinityScroll(event) {
+    event.complete();
+    this.noMoreGoals = true;
   }
 
   showNotifications() {
