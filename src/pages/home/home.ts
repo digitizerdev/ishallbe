@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 
 import { IonicPage, NavController, Platform, Slides } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
+import { trigger,state,style,transition,animate,keyframes, query, stagger } from '@angular/animations';
 
 import { NotificationsPage } from '../notifications/notifications';
 import { StatementCreatorPage} from '../statement-creator/statement-creator';
@@ -15,7 +16,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 @IonicPage()
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html',
+  templateUrl: 'home.html'
 })
 export class HomePage {
   @ViewChild(Slides) slider: Slides;

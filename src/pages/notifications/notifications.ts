@@ -1,4 +1,11 @@
 import { Component } from '@angular/core';
+import { trigger, 
+         style, 
+         transition, 
+         animate, 
+         query, 
+         stagger } from '@angular/animations';
+
 import { IonicPage, NavController } from 'ionic-angular';
 
 import moment from 'moment';
@@ -12,13 +19,21 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 @Component({
   selector: 'page-notifications',
   templateUrl: 'notifications.html',
+  animations: [
+    trigger('staggerIn', [
+      transition('* => *', [
+        query(':enter', style({ opacity: 0, transform: `translate3d(0,10px,0)` }), { optional: true }),
+        query(':enter', stagger('100ms', [animate('300ms', style({ opacity: 1, transform: `translate3d(0,0,0)` }))]), { optional: true })
+      ])
+    ])
+  ]
 })
 export class NotificationsPage {
 
   rawDate: number;
   notificationsCol: any;
-  readNotifications: any[];
-  unreadNotifications: any[];
+  readNotifications: any[] = [];
+  unreadNotifications: any[] = [];
   viewingUser = false;
 
   constructor(

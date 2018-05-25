@@ -140,8 +140,8 @@
       "cordova-plugin-fcm": {}
     },
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   },
   "config": {
