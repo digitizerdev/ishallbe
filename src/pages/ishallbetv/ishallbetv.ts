@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { trigger, 
-  style, 
-  transition, 
-  animate, 
-  query, 
+import {
+  trigger,
+  style,
+  transition,
+  animate,
+  query,
   keyframes,
-  stagger } from '@angular/animations';
+  stagger
+} from '@angular/animations';
 
 import { IonicPage, NavController } from 'ionic-angular';
 
@@ -63,6 +65,8 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 export class IshallbetvPage {
 
   currentMonday: number;
+  lastVideopostDate: number;
+  noMoreVideos = false;
   videos: any[] = [];
 
   constructor(
@@ -89,7 +93,8 @@ export class IshallbetvPage {
       let allVideos = this.firebase.afs.collection('pins', ref =>
         ref.where('day', '==', 'Monday').
           orderBy('postDate', 'desc').
-            startAfter(this.currentMonday));
+          startAfter(this.currentMonday).
+          limit(5));
       allVideos.valueChanges().subscribe((videos) => {
         observer.next(videos);
       });
@@ -97,13 +102,36 @@ export class IshallbetvPage {
   }
 
   setVideos(videos) {
-    this.videos = [];
+    console.log("Setting Videos");
     videos.forEach((video) => {
       if (video.day == 'Monday') {
         video.displayAffirmationDate = moment(video.displayAffirmationDate).fromNow();
         this.videos.push(video);
       }
     });
+    let lastVideo = this.videos.pop();
+    this.lastVideopostDate = lastVideo.postDate;
+  }
+
+  loadMoreVideos(event) {
+    console.log("Loading More Videos")
+    return new Promise((resolve) => {
+      let videos = this.firebase.afs.collection('pins', ref =>
+        ref.where('day', '==', 'Monday').
+          orderBy('postDate', 'desc').
+          limit(5).
+          startAfter(this.lastVideopostDate));
+      return videos.valueChanges().subscribe((videos) => {
+        if (videos.length > 0) this.setVideos(videos);
+        if (videos.length < 5) this.endVideosInfinityScroll(event);
+        resolve();
+      });
+    });
+  }
+
+  endVideosInfinityScroll(event) {
+    event.complete();
+    this.noMoreVideos = true;
   }
 
   pushAboutPage() {

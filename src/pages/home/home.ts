@@ -24,14 +24,13 @@ export class HomePage {
   statements: any[] = [];
   goals: any[] = [];
   lastStatementTimestamp: number;
-  lastGoalTimestamp: number;
+  lastGoalDueDate: number;
   postStartDate: number;
   postEndDate: number;
   dayNumber: number;
   timestamp: number;
   dayOfWeek: string;
   pinsLoaded = false;
-  goalsLoaded = false;
   newNotifications = false;
   noMoreStatements = false;
   noMoreGoals = false;
@@ -129,7 +128,6 @@ export class HomePage {
     statements.valueChanges().subscribe((statements) => {
       if (statements.length > 0) {
           this.setStatements(statements);
-          if (statements.length < 5) this.noMoreStatements = true;
       } else {
           this.noMoreStatements = true;
       }
@@ -137,12 +135,13 @@ export class HomePage {
   }
 
   setStatements(statements) {
+    if (statements.length < 5 ) this.noMoreStatements = true;
     statements.forEach((statement) => {
       let date = moment.unix(statement.timestamp);
       statement.displayTimestamp = moment(date).fromNow();
       this.statements.push(statement);
     });
-    let lastStatement = this.statements.pop();
+    let lastStatement = statements.pop();
     this.lastStatementTimestamp = lastStatement.timestamp;
   }
 
@@ -157,9 +156,6 @@ export class HomePage {
     goals.valueChanges().subscribe((goals) => {
       if (goals.length > 0) {
           this.setGoals(goals);
-          if (goals.length < 5) {
-            this.noMoreGoals = true
-          } 
       } else {
         this.noMoreGoals = true;
       }
@@ -167,6 +163,7 @@ export class HomePage {
   }
 
   setGoals(goals) {
+    if (goals.length < 5 ) this.noMoreGoals = true;
     goals.forEach((goal) => {
       let dueDate = moment.unix(goal.dueDate);
       goal.displayDueDate = moment(dueDate).fromNow();
@@ -174,7 +171,8 @@ export class HomePage {
       goal.displayTimestamp = moment(timestamp).fromNow();
       this.goals.push(goal);
     });
-    this.goalsLoaded = true;
+    let lastGoal = goals.pop();
+    this.lastGoalDueDate = lastGoal.dueDate;
   }
 
   loadMoreStatements(event) {
@@ -187,17 +185,10 @@ export class HomePage {
           startAfter(this.lastStatementTimestamp));
       return statements.valueChanges().subscribe((statements) => {
         if (statements.length > 0 ) this.setStatements(statements);
-        if (statements.length < 5 ) this.endStatementsInfinityScroll(event);
         resolve();
       });
     });
   }
-
-  endStatementsInfinityScroll(event) {
-    event.complete();
-    this.noMoreStatements = true;
-  }
-
 
   loadMoreGoals(event) {
     return new Promise((resolve) => {
@@ -206,18 +197,12 @@ export class HomePage {
           where('reported', '==', false)
           .orderBy('timestamp', 'desc').
           limit(5).
-          startAfter(this.lastGoalTimestamp));
+          startAfter(this.lastGoalDueDate));
       return goals.valueChanges().subscribe((goals) => {
         if (goals.length > 0 ) this.setGoals(goals);
-        if (goals.length < 5 ) this.endGoalsInfinityScroll(event);
         resolve();
       });
     });
-  }
-
-  endGoalsInfinityScroll(event) {
-    event.complete();
-    this.noMoreGoals = true;
   }
 
   showNotifications() {

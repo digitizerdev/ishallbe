@@ -163,15 +163,15 @@ export class iShallBe {
         component: HomePage
       },
       {
-        title: 'Profile',
-        icon: 'ios-person',
-        component: ProfilePage
-      },
-      {
         title: 'iShallBe TV',
         icon: 'ios-desktop',
         component: IshallbetvPage
       },
+      {
+        title: 'Profile',
+        icon: 'ios-person',
+        component: ProfilePage
+      }
     ];
     this.accountMenu = [
       {

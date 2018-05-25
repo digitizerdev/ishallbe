@@ -23,5 +23,8 @@
     </h5>
     <img class="one-image" src="{{ video.url }}">
   </div>
+  <ion-infinite-scroll *ngIf="!this.noMoreVideos" (ionInfinite)="$event.waitFor(loadMoreVideos($event))">
+      <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   <footer></footer>
 </ion-content>
