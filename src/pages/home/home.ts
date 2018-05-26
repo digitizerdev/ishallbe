@@ -48,6 +48,7 @@ export class HomePage {
 
   ionViewDidEnter() {
     this.timestampPage();
+    this.checkForUnnamedUser();
     this.checkForNewNotifications();
     this.loadPosts();
     if (this.platform.is('cordova')) {
@@ -55,39 +56,43 @@ export class HomePage {
     }
   }
 
-  checkForIncompleteProfile() {
-    console.log("Checking For Incomplete Profile");
-    console.log("Incomplete Profile Alerted: " + this.firebase.incompleteProfileResolved);
+  checkForUnnamedUser() {
+    console.log("Checking For Unnamed User");
+    console.log("Unnamed User Alerted: " + this.firebase.incompleteProfileResolved);
     console.log("User: " );
     console.log(this.firebase.user);
-    if (!this.firebase.user.name) {
-      this.displayIncompleteProfileAlert();
-    } else {
-      console.log("User Name Complete");
-      this.firebase.incompleteProfileResolved = true;
+    if (!this.firebase.incompleteProfileResolved) {
+      if (!this.firebase.user.name || !this.firebase.user.photo ) {
+        setTimeout(() => {
+          this.displayUnnamedUserAlert();
+        }, 3000);
+      } else {
+        console.log("User Name Complete");
+        this.firebase.incompleteProfileResolved = true;
+      }
     }
   }
 
-  displayIncompleteProfileAlert() {
-    console.log("Displaying Incomplete Profile Alert");
+  displayUnnamedUserAlert() {
+    console.log("Displaying Unnamed User Alert");
+    this.firebase.incompleteProfileResolved = true;
     let alert = this.alert.create({
-      title: 'Unnamed User',
-      subTitle: 'Click UPDATE to Update Your Profile Details',
+      title: "Build Your Profile",
       buttons: [ {
-        text: 'Cancel',
+        text: 'Later',
         role: 'cancel',
         handler: () => {
           console.log("Canceled");
-          alert.dismiss();
         }
       }, {
-        text: 'UPDATE',
+        text: 'Update',
         handler: () => {
           console.log("Updating Profile");
-          this.navCtrl.setRoot(ProfileUpdatePage);
+          this.navCtrl.push(ProfileUpdatePage);
         }
       }]
-    })
+    });
+    alert.present();
   }
 
   checkForNewNotifications() {

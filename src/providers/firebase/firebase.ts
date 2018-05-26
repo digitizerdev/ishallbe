@@ -115,7 +115,7 @@ export class FirebaseProvider {
       if (this.fcmToken) {
         if (this.user.fcmToken !== this.fcmToken) {
           let userPath = "users/" + this.user.uid;
-          this.afs.doc(userPath).update({ fcmToken: this.fcmToken});
+          this.afs.doc(userPath).update({ fcmToken: this.fcmToken });
           this.events.publish('fcm synced');
         }
       }
@@ -127,21 +127,12 @@ export class FirebaseProvider {
       this.showTutorial();
     }
     else {
-      this.createNonSocialUser().then(() => {
-        this.showTutorial();
-      });
+      this.showTutorial();
     }
   }
 
   showTutorial() {
     this.events.publish('show tutorial')
-  }
-
-  createNonSocialUser() {
-    return this.afa.auth.currentUser.updateProfile({
-      displayName: "Unnamed User",
-      photoURL: "assets/img/default-profile.png"
-    });
   }
 
   signupUser() {
