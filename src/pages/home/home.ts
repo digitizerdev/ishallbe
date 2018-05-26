@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { IonicPage, NavController, Platform, Slides } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, Platform, Slides } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 
 import { NotificationsPage } from '../notifications/notifications';
 import { StatementCreatorPage } from '../statement-creator/statement-creator';
 import { GoalCreatorPage } from '../goal-creator/goal-creator';
+import { ProfileUpdatePage } from '../profile-update/profile-update';
 
 import { Observable } from 'rxjs';
 import moment from 'moment';
@@ -37,6 +38,7 @@ export class HomePage {
   postSegment = 'statements';
 
   constructor(
+    private alert: AlertController,
     private navCtrl: NavController,
     private platform: Platform,
     private fcm: FCM,
@@ -59,11 +61,33 @@ export class HomePage {
     console.log("User: " );
     console.log(this.firebase.user);
     if (!this.firebase.user.name) {
-      console.log("User Name Incomplete");
+      this.displayIncompleteProfileAlert();
     } else {
       console.log("User Name Complete");
       this.firebase.incompleteProfileResolved = true;
     }
+  }
+
+  displayIncompleteProfileAlert() {
+    console.log("Displaying Incomplete Profile Alert");
+    let alert = this.alert.create({
+      title: 'Unnamed User',
+      subTitle: 'Click UPDATE to Update Your Profile Details',
+      buttons: [ {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => {
+          console.log("Canceled");
+          alert.dismiss();
+        }
+      }, {
+        text: 'UPDATE',
+        handler: () => {
+          console.log("Updating Profile");
+          this.navCtrl.setRoot(ProfileUpdatePage);
+        }
+      }]
+    })
   }
 
   checkForNewNotifications() {

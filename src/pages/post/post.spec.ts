@@ -201,7 +201,8 @@ describe('PostPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display MarkCompleteButton if collection is goals and not complete', () => {
+    it('should display MarkCompleteButton if collection is goals, mine, and not complete', () => {
+        component.mine = true;
         component.collection = 'goals';
         component.post = mockGoals[0];
         fixture.detectChanges();
@@ -213,7 +214,8 @@ describe('PostPage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display MarkIncompleteButton if collection is goals and is complete', () => {
+    it('should display MarkIncompleteButton if collection is goals, mine, and complete', () => {
+        component.mine = true;
         component.collection = 'goals';
         component.post = mockGoals[2];
         fixture.detectChanges();

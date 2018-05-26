@@ -80,11 +80,11 @@ describe('BrandHeaderComponent', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof BrandHeaderComponent).toBe(true);
     });
 
-    fit('should display EnableMenuIcon', () => {
+    it('should display EnableMenuIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#EnableMenuIcon'));
@@ -92,7 +92,7 @@ describe('BrandHeaderComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display toolbar-logo', () => {
+    it('should display toolbar-logo', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('toolbar-logo'));
@@ -100,7 +100,7 @@ describe('BrandHeaderComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display setRootHomePageIcon', () => {
+    it('should display setRootHomePageIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#setRootHomePageIcon'));
