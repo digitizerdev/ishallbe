@@ -22,6 +22,7 @@ export class FirebaseProvider {
   socialAuthentication = false;
   notification = false;
   browser = false;
+  incompleteProfileResolved = false;
 
   constructor(
     public alertCtrl: AlertController,
@@ -31,7 +32,6 @@ export class FirebaseProvider {
     public afa: AngularFireAuth
   ) {
     this.browser = !this.platform.is('cordova');
-    console.log("Browser: " + this.browser);
     if (!this.loaded) {
       this.loaded = true;
       this.checkForSession();

@@ -82,11 +82,11 @@ describe('NotificationCreatorPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof NotificationCreatorPage).toBe(true);
     });
 
-    fit('should display EnableMenuIcon', () => {
+    it('should display EnableMenuIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#EnableMenuIcon'));
@@ -94,7 +94,7 @@ describe('NotificationCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display SelectPushTimeText if no pushTime determined', () => {
+    it('should display SelectPushTimeText if no pushTime determined', () => {
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
@@ -103,7 +103,7 @@ describe('NotificationCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display PushTimeText if pushTime determined', () => {
+    it('should display PushTimeText if pushTime determined', () => {
         component.pushTime = "Time to Push";
         fixture.detectChanges();
         let de: DebugElement;
@@ -113,7 +113,7 @@ describe('NotificationCreatorPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display NotificationCreatorForm', () => {
+    it('should display NotificationCreatorForm', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#NotificationCreatorForm'));

@@ -53,6 +53,30 @@ export class HomePage {
     }
   }
 
+  checkForIncompleteProfile() {
+    console.log("Checking For Incomplete Profile");
+    console.log("Incomplete Profile Alerted: " + this.firebase.incompleteProfileResolved);
+    console.log("User: " );
+    console.log(this.firebase.user);
+    if (!this.firebase.user.name) {
+      console.log("User Name Incomplete");
+    } else {
+      console.log("User Name Complete");
+      this.firebase.incompleteProfileResolved = true;
+    }
+  }
+
+  checkForNewNotifications() {
+    let newNotifications = this.firebase.afs.collection('notifications', ref =>
+      ref.where("receiverUid", "==", this.firebase.user.uid).
+        where("read", "==", false).
+        where("message", "==", false));
+    newNotifications.valueChanges().subscribe((myNewNotifications) => {
+      if (myNewNotifications.length > 0) this.newNotifications = true;
+      else this.newNotifications = false;
+    });
+  }
+
   timestampPage() {
     this.timestamp = moment().unix();
     this.dayNumber = moment().isoWeekday();
@@ -69,17 +93,6 @@ export class HomePage {
     this.fcm.onTokenRefresh().subscribe(token => {
       this.firebase.fcmToken = token;
       this.firebase.syncFcmToken();
-    });
-  }
-
-  checkForNewNotifications() {
-    let newNotifications = this.firebase.afs.collection('notifications', ref =>
-      ref.where("receiverUid", "==", this.firebase.user.uid).
-        where("read", "==", false).
-        where("message", "==", false));
-    newNotifications.valueChanges().subscribe((myNewNotifications) => {
-      if (myNewNotifications.length > 0) this.newNotifications = true;
-      else this.newNotifications = false;
     });
   }
 

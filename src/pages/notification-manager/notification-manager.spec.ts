@@ -1,6 +1,7 @@
 import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IonicModule, Platform, NavController, NavParams } from 'ionic-angular';
 
@@ -44,6 +45,7 @@ describe('NotificationManagerPage', () => {
             imports: [
                 IonicModule.forRoot(NotificationManagerPage),
                 AngularFireModule.initializeApp(environment.firebase),
+                BrowserAnimationsModule,
                 ComponentsModule
             ],
             providers: [
@@ -82,11 +84,11 @@ describe('NotificationManagerPage', () => {
         afs = null;
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(component instanceof NotificationManagerPage).toBe(true);
     });
 
-    fit('should display EnableMenuIcon', () => {
+    it('should display EnableMenuIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#EnableMenuIcon'));
@@ -94,7 +96,7 @@ describe('NotificationManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display ToolbarLogoComponent', () => {
+    it('should display ToolbarLogoComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('toolbar-logo'));
@@ -102,7 +104,7 @@ describe('NotificationManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display PushNotificationCreatorPageIcon', () => {
+    it('should display PushNotificationCreatorPageIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#PushNotificationCreatorPageIcon'));
@@ -110,7 +112,7 @@ describe('NotificationManagerPage', () => {
         expect(el).toBeUndefined();
     });
 
-    fit('should display number of ScheduledNotifications', () => {
+    it('should display number of ScheduledNotifications', () => {
         component.scheduledNotifications = [1, 2]
         fixture.detectChanges();
         let de: DebugElement;

@@ -2,7 +2,7 @@ import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { IonicModule, Platform, Nav } from 'ionic-angular';
+import { IonicModule, Platform, Nav, NavController } from 'ionic-angular';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
@@ -11,6 +11,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { environment } from '../../environments/environment';
 
 import { BrandHeaderComponent } from '../brand-header/brand-header';
+import { ToolbarLogoComponent } from '../toolbar-logo/toolbar-logo';
 
 import { } from 'jasmine';
 
@@ -25,6 +26,7 @@ describe('BrandHeaderComponent', () => {
     let component;
     let platform: Platform;
     let nav: Nav;
+    let navCtrl: NavController;
     let firebase: FirebaseProvider;
     let afa: AngularFireAuth;
     let afs: AngularFirestore;
@@ -45,10 +47,14 @@ describe('BrandHeaderComponent', () => {
             providers: [
                 { provide: Platform, useClass: PlatformMock },
                 { provide: Nav, useClass: NavMock },
+                { provide: NavController, useClass: NavMock },
                 { provide: FirebaseProvider, useClass: FirebaseProviderMock },
                 { provide: AngularFireAuth, useValue: angularFireAuthStub },
                 { provide: AngularFirestore, useValue: angularFireDataStub },
             ],
+            schemas: [
+                CUSTOM_ELEMENTS_SCHEMA
+            ]
         })
     }));
 
@@ -57,6 +63,7 @@ describe('BrandHeaderComponent', () => {
         component = fixture.componentInstance;
         platform = TestBed.get(Platform);
         nav = TestBed.get(Nav);
+        navCtrl = TestBed.get(NavController);
         firebase = TestBed.get(FirebaseProvider);
         afa = TestBed.get(AngularFireAuth);
         afs = TestBed.get(AngularFirestore);
@@ -67,16 +74,25 @@ describe('BrandHeaderComponent', () => {
         component = null;
         platform = null;
         nav = null;
+        navCtrl = null;
         firebase = null;
         afa = null;
         afs = null;
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(component instanceof BrandHeaderComponent).toBe(true);
     });
 
-    it('should display ToolbarLogoComponent', () => {
+    fit('should display EnableMenuIcon', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#EnableMenuIcon'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    fit('should display toolbar-logo', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('toolbar-logo'));
@@ -84,7 +100,7 @@ describe('BrandHeaderComponent', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display setRootHomePageIcon', () => {
+    fit('should display setRootHomePageIcon', () => {
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#setRootHomePageIcon'));
