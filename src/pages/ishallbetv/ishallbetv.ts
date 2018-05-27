@@ -15,10 +15,13 @@ import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 
 import { PostPage } from '../post/post';
-
 import { AboutPage } from '../about/about';
 
+import { Pin } from '../../../test-data/pins/model';
+
+import { AngularFirestoreCollection } from 'angularfire2/firestore';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+import 'rxjs/add/operator/take';
 
 @IonicPage()
 @Component({
@@ -64,6 +67,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 })
 export class IshallbetvPage {
 
+  pinsCollection: AngularFirestoreCollection<Pin>;
   currentMonday: number;
   lastVideopostDate: number;
   noMoreVideos = false;
@@ -90,12 +94,12 @@ export class IshallbetvPage {
 
   loadVideos() {
     return Observable.create((observer) => {
-      let allVideos = this.firebase.afs.collection('pins', ref =>
+      this.pinsCollection = this.firebase.afs.collection('pins', ref =>
         ref.where('day', '==', 'Monday').
           orderBy('postDate', 'desc').
           startAfter(this.currentMonday).
           limit(5));
-      allVideos.valueChanges().subscribe((videos) => {
+      this.pinsCollection.valueChanges().take(1).subscribe((videos) => {
         observer.next(videos);
       });
     });
@@ -123,7 +127,7 @@ export class IshallbetvPage {
           orderBy('postDate', 'desc').
           limit(5).
           startAfter(this.lastVideopostDate));
-      return videos.valueChanges().subscribe((videos) => {
+      return videos.valueChanges().take(1).subscribe((videos) => {
         if (videos.length > 0) this.setVideos(videos);
         else this.noMoreVideos = true;
         resolve();

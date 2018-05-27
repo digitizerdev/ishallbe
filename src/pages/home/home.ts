@@ -112,7 +112,7 @@ export class HomePage {
       ref.where("receiverUid", "==", this.firebase.user.uid).
         where("read", "==", false).
         where("message", "==", false));
-    this.notificationsCollection.valueChanges().subscribe((myNewNotifications) => {
+    this.notificationsCollection.valueChanges().take(1).subscribe((myNewNotifications) => {
       if (myNewNotifications.length > 0) this.newNotifications = true;
       else this.newNotifications = false;
     });
@@ -148,7 +148,7 @@ export class HomePage {
       ref.orderBy('postDate').
         startAt(this.postStartDate).
         endAt(this.postEndDate));
-    pins.valueChanges().subscribe((pins) => {
+    pins.valueChanges().take(1).subscribe((pins) => {
       if (!this.pinsLoaded) {
         this.setPins(pins).subscribe(() => {
           this.pinsLoaded = true;
@@ -233,7 +233,7 @@ export class HomePage {
           orderBy('timestamp', 'desc').
           limit(5).
           startAfter(this.lastStatementTimestamp));
-      return this.statementsCollection.valueChanges().subscribe((statements) => {
+      return this.statementsCollection.valueChanges().take(1).subscribe((statements) => {
         if (statements.length > 0 ) this.setStatements(statements);
         resolve();
       });
@@ -248,7 +248,7 @@ export class HomePage {
           .orderBy('timestamp', 'desc').
           limit(5).
           startAfter(this.lastGoalDueDate));
-      return this.goalsCollection.valueChanges().subscribe((goals) => {
+      return this.goalsCollection.valueChanges().take(1).subscribe((goals) => {
         if (goals.length > 0 ) this.setGoals(goals);
         resolve();
       });
