@@ -140,11 +140,31 @@ function pushPayloadToEachUser(payload) {
     let fs = admin.firestore();
     let users = fs.collection('users');
     return users.get().then((usersCol) => {
-        return usersCol.forEach((userSnapshot) => {
+        let promises = [];
+        usersCol.forEach((userSnapshot) => {
             let user = userSnapshot.data();
             console.log("Pushing Payload to " + user.fcmToken);
-            return admin.messaging().sendToDevice(user.fcmToken, payload)
+            if (user.fcmToken) {
+                let promise = admin.messaging().sendToDevice(user.fcmToken, payload)
+                promises.push(promise);
+            }
         });
+        console.log("Finished Loading Promises");
+        console.log(promises);
+        return sendMessages(promises);
+    });
+}
+
+function sendMessages(messages) {
+    console.log("Sending Messages");
+    console.log(messages);
+    return Promise.all(messages).then((res) => {
+        console.log("All Promises Resolved");
+        console.log(res);
+        return true;
+    }).catch((error) => {
+        console.error("There was an error");
+        console.error(error);
     });
 }
 

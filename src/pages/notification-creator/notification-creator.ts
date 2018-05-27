@@ -143,11 +143,8 @@ export class NotificationCreatorPage {
       displayTimestamp: this.displayPushTime,
       timestamp: this.pushTime
     }
-    this.firebase.afs.doc('notifications/' + id).set(notification).then(() => {
-      console.log("Notification Created");
-      console.log(notification);
-      this.navCtrl.pop();
-    });
+    this.navCtrl.pop();
+    this.firebase.afs.doc('notifications/' + id).set(notification);
   }
 
   pushNotification(form) {
@@ -157,7 +154,7 @@ export class NotificationCreatorPage {
       console.log(notification);
       let notificationPath = "notifications/" + notification.id;
       this.navCtrl.pop();
-      this.firebase.afs.doc(notificationPath);
+      this.firebase.afs.doc(notificationPath).set(notification);
     });
   }
 
