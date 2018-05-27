@@ -11,7 +11,11 @@ import { ProfileUpdatePage } from '../profile-update/profile-update';
 import { Observable } from 'rxjs';
 import moment from 'moment';
 
+import { Statement } from '../../../test-data/statements/model';
+
+import { AngularFirestoreCollection } from 'angularfire2/firestore';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+import 'rxjs/add/operator/take';
 
 @IonicPage()
 @Component({
@@ -21,8 +25,9 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 export class HomePage {
   @ViewChild(Slides) slider: Slides;
 
-  pins: any[] = [];
+  statementsCollection: AngularFirestoreCollection<Statement[]>;
   statements: any[] = [];
+  pins: any[] = [];
   goals: any[] = [];
   lastStatementTimestamp: number;
   lastGoalDueDate: number;
@@ -31,10 +36,12 @@ export class HomePage {
   dayNumber: number;
   timestamp: number;
   dayOfWeek: string;
+  goalsCollection: any;
   pinsLoaded = false;
   newNotifications = false;
   noMoreStatements = false;
   noMoreGoals = false;
+  loadingMore = true;
   postSegment = 'statements';
 
   constructor(
@@ -45,6 +52,7 @@ export class HomePage {
     private firebase: FirebaseProvider
   ) {
   }
+
 
   ionViewDidEnter() {
     this.timestampPage();
@@ -162,17 +170,16 @@ export class HomePage {
   }
 
   loadStatements() {
-    let statements = this.firebase.afs.collection('statements', ref =>
+    this.statementsCollection = this.firebase.afs.collection('statements', ref =>
       ref.where('private', '==', false).
         where('reported', '==', false)
         .orderBy('timestamp', 'desc').
         limit(5));
-    statements.valueChanges().subscribe((statements) => {
-      if (statements.length > 0) {
-          this.setStatements(statements);
-      } else {
-          this.noMoreStatements = true;
-      }
+    this.statementsCollection.valueChanges().take(1).subscribe((statements) => {
+      console.log("Got Statements");
+      console.log(statements);
+      if (statements.length > 0) this.setStatements(statements);
+      else this.noMoreStatements = true;
     });
   }
 
@@ -196,11 +203,8 @@ export class HomePage {
         orderBy('dueDate', 'asc').
         limit(5));
     goals.valueChanges().subscribe((goals) => {
-      if (goals.length > 0) {
-          this.setGoals(goals);
-      } else {
-        this.noMoreGoals = true;
-      }
+      if (goals.length > 0) this.setGoals(goals);
+      else this.noMoreGoals = true;
     });
   }
 
@@ -221,8 +225,8 @@ export class HomePage {
     return new Promise((resolve) => {
       let statements = this.firebase.afs.collection('statements', ref =>
         ref.where('private', '==', false).
-          where('reported', '==', false)
-          .orderBy('timestamp', 'desc').
+          where('reported', '==', false).
+          orderBy('timestamp', 'desc').
           limit(5).
           startAfter(this.lastStatementTimestamp));
       return statements.valueChanges().subscribe((statements) => {

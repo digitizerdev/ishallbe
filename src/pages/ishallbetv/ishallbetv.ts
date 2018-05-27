@@ -103,13 +103,15 @@ export class IshallbetvPage {
 
   setVideos(videos) {
     console.log("Setting Videos");
+    console.log(videos);
+    if (videos.length < 5 ) this.noMoreVideos = true;
     videos.forEach((video) => {
       if (video.day == 'Monday') {
         video.displayAffirmationDate = moment(video.displayAffirmationDate).fromNow();
         this.videos.push(video);
       }
     });
-    let lastVideo = this.videos.pop();
+    let lastVideo = videos.pop();
     this.lastVideopostDate = lastVideo.postDate;
   }
 
@@ -123,15 +125,10 @@ export class IshallbetvPage {
           startAfter(this.lastVideopostDate));
       return videos.valueChanges().subscribe((videos) => {
         if (videos.length > 0) this.setVideos(videos);
-        if (videos.length < 5) this.endVideosInfinityScroll(event);
+        else this.noMoreVideos = true;
         resolve();
       });
     });
-  }
-
-  endVideosInfinityScroll(event) {
-    event.complete();
-    this.noMoreVideos = true;
   }
 
   pushAboutPage() {
@@ -141,7 +138,8 @@ export class IshallbetvPage {
   openPin(pin) {
     this.navCtrl.push(PostPage, {
       id: pin.id,
-      type: "pins"
+      type: "pins",
+      opened: true
     });
   }
 
