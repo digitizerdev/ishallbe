@@ -11,7 +11,10 @@ import { ProfileUpdatePage } from '../profile-update/profile-update';
 import { Observable } from 'rxjs';
 import moment from 'moment';
 
+import { Notification } from '../../../test-data/notifications/model';
 import { Statement } from '../../../test-data/statements/model';
+import { Goal } from '../../../test-data/goals/model';
+import { Pin } from '../../../test-data/pins/model';
 
 import { AngularFirestoreCollection } from 'angularfire2/firestore';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -25,7 +28,10 @@ import 'rxjs/add/operator/take';
 export class HomePage {
   @ViewChild(Slides) slider: Slides;
 
+  notificationsCollection: AngularFirestoreCollection<Notification[]>;
+  pinsCollection: AngularFirestoreCollection<Pin[]>;
   statementsCollection: AngularFirestoreCollection<Statement[]>;
+  goalsCollection: AngularFirestoreCollection<Goal[]>;
   statements: any[] = [];
   pins: any[] = [];
   goals: any[] = [];
@@ -36,12 +42,10 @@ export class HomePage {
   dayNumber: number;
   timestamp: number;
   dayOfWeek: string;
-  goalsCollection: any;
   pinsLoaded = false;
   newNotifications = false;
   noMoreStatements = false;
   noMoreGoals = false;
-  loadingMore = true;
   postSegment = 'statements';
 
   constructor(
@@ -104,11 +108,11 @@ export class HomePage {
   }
 
   checkForNewNotifications() {
-    let newNotifications = this.firebase.afs.collection('notifications', ref =>
+    this.notificationsCollection = this.firebase.afs.collection('notifications', ref =>
       ref.where("receiverUid", "==", this.firebase.user.uid).
         where("read", "==", false).
         where("message", "==", false));
-    newNotifications.valueChanges().subscribe((myNewNotifications) => {
+    this.notificationsCollection.valueChanges().subscribe((myNewNotifications) => {
       if (myNewNotifications.length > 0) this.newNotifications = true;
       else this.newNotifications = false;
     });
@@ -195,14 +199,14 @@ export class HomePage {
   }
 
   loadGoals() {
-    let goals = this.firebase.afs.collection('goals', ref =>
+    this.goalsCollection = this.firebase.afs.collection('goals', ref =>
       ref.where('private', '==', false).
         where('reported', '==', false).
         where('complete', '==', false).
         where('dueDate', '>', this.timestamp).
         orderBy('dueDate', 'asc').
         limit(5));
-    goals.valueChanges().subscribe((goals) => {
+    this.goalsCollection.valueChanges().take(1).subscribe((goals) => {
       if (goals.length > 0) this.setGoals(goals);
       else this.noMoreGoals = true;
     });
@@ -223,13 +227,13 @@ export class HomePage {
 
   loadMoreStatements(event) {
     return new Promise((resolve) => {
-      let statements = this.firebase.afs.collection('statements', ref =>
+      this.statementsCollection = this.firebase.afs.collection('statements', ref =>
         ref.where('private', '==', false).
           where('reported', '==', false).
           orderBy('timestamp', 'desc').
           limit(5).
           startAfter(this.lastStatementTimestamp));
-      return statements.valueChanges().subscribe((statements) => {
+      return this.statementsCollection.valueChanges().subscribe((statements) => {
         if (statements.length > 0 ) this.setStatements(statements);
         resolve();
       });
@@ -238,13 +242,13 @@ export class HomePage {
 
   loadMoreGoals(event) {
     return new Promise((resolve) => {
-      let goals = this.firebase.afs.collection('goals', ref =>
+      this.statementsCollection = this.firebase.afs.collection('goals', ref =>
         ref.where('private', '==', false).
           where('reported', '==', false)
           .orderBy('timestamp', 'desc').
           limit(5).
           startAfter(this.lastGoalDueDate));
-      return goals.valueChanges().subscribe((goals) => {
+      return this.goalsCollection.valueChanges().subscribe((goals) => {
         if (goals.length > 0 ) this.setGoals(goals);
         resolve();
       });
