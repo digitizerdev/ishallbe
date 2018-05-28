@@ -129,7 +129,7 @@ export class NotificationCreatorPage {
       face: this.firebase.user.photo,
       description: form.description,
       read: false,
-      collection: 'pins',
+      collection: 'notifications',
       docId: id, 
       receiverUid: 'all',
       sendNow: false,

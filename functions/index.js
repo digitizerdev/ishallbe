@@ -230,47 +230,14 @@ function checkForAffirmations(affirmation) {
     let overNextHourTime = currentTime + 3600;
     let fs = admin.firestore();
     let affirmations = fs.collection('notifications').
-    where("pin", "==", true).
+    where("receiverUid", "==", "all").
     where("timestamp", ">=", currentTime).
     where("timestamp", "<=", overNextHourTime);
     return affirmations.get().then((scheduledAffirmations) => {
         return scheduledAffirmations.forEach((affirmationDoc) => {
             let affirmation = affirmationDoc.data();
-            return buildAffirmationPayload(affirmation);
+            return createNotificationForAllUsers(affirmation)
         });
     });
 }
 
-function buildAffirmationPayload(affirmation) {
-    console.log("Building Affirmation Payload");
-    let pushMessage = affirmation.description;
-    let payload = {
-        notification: {
-            body: pushMessage,
-        },
-        data: {
-            id: affirmation.id,
-            uid: affirmation.uid,
-            name: affirmation.name,
-            face: affirmation.face,
-            description: pushMessage,
-            read: affirmation.read.toString(),
-            collection: affirmation.collection,
-            docId: affirmation.docId,
-            receiverUid: affirmation.receiverUid,
-            message: affirmation.message.toString(),
-            pinLike: affirmation.pinLike.toString(),
-            statementLike: affirmation.statementLike.toString(),
-            goalLike: affirmation.goalLike.toString(),
-            comment: affirmation.comment.toString(),
-            commentLike: affirmation.commentLike.toString(),
-            reminder: affirmation.reminder.toString(),
-            displayTimestamp: affirmation.displayTimestamp,
-            timestamp: affirmation.timestamp.toString(),
-        },
-        topic: "affirmations"
-    };
-    return subscribeAllUsersToAffirmations().then(() => {
-        return admin.messaging().send(payload);
-    });
-}
