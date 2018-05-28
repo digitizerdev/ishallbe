@@ -38,4 +38,5 @@ export class ApiManagerPage {
     this.navCtrl.setRoot(HomePage);
   }
 
+
 }

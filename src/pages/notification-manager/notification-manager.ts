@@ -23,6 +23,7 @@ import moment from 'moment';
     ])
   ]
 })
+
 export class NotificationManagerPage {
 
   scheduledNotifications: any[] = [];
@@ -34,34 +35,26 @@ export class NotificationManagerPage {
   }
 
   ionViewDidEnter() {
-    console.log("Current Time in unix is " + moment().unix());
     this.checkForScheduledNotifications()
   }
 
   checkForScheduledNotifications() {
-    console.log("Checking for scheduled notifications");
     let currentTime = moment().unix();
-    console.log("Current Time in unix is " + currentTime);
     let scheduledNotifications = this.firebase.afs.collection('notifications', ref => ref.
       where('timestamp', '>=', currentTime).
       where('receiverUid', '==', 'all').
+      where('sendNow', '==', false).
       limit(50));
     scheduledNotifications.valueChanges().subscribe((notifications) => {
-      console.log("Got Notifications");
-      console.log(notifications);
       this.scheduledNotifications = notifications;
     });
   }
 
   delete(notification) {
-    console.log("Deleting Notification");
-    console.log(notification);
     this.firebase.afs.doc('notifications/' + notification.id).delete();
   }
 
   viewUser(uid) {
-    console.log("Viewing User");
-    console.log(uid);
     if (this.firebase.user.uid !== uid)
       this.navCtrl.setRoot(ProfilePage, { uid: uid });
   }
@@ -69,5 +62,4 @@ export class NotificationManagerPage {
   pushNotificationCreatorPage() {
     this.navCtrl.push(NotificationCreatorPage);
   }
-
 }

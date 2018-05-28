@@ -11,7 +11,6 @@
     </ion-buttons>
   </ion-navbar></ion-header>
 <ion-content [@staggerIn]="scheduledNotifications.length">
-  <br>
   <div text-center id="ScheduledNotifications">
     <h5 *ngIf="scheduledNotifications.length !== 1" id="ScheduledNotifications" class="feature">{{scheduledNotifications.length}} Scheduled Notifications</h5>
     <h5 *ngIf="scheduledNotifications.length == 1" id="ScheduledNotifications" class="feature">{{scheduledNotifications.length}} Scheduled Notification</h5>
