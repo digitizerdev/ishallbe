@@ -44,37 +44,29 @@ export class ApiManagerPage {
     this.loadGoals();  }
 
   loadUsers() {
-    console.log("Loading Users");
     this.userCollection = this.firebase.afs.collection('users');
     this.userCollection.valueChanges().subscribe((users) => {
-      console.log("Users length is " + users.length);
       this.users = users;
     });
   }
 
   loadPins() {
-    console.log("Loading Pins");
     this.pinCollection = this.firebase.afs.collection('pins');
     this.pinCollection.valueChanges().subscribe((pins) => {
-      console.log("Pins length is " + pins.length);
       this.pins = pins;
     });
   }
 
   loadStatements() {
-    console.log("Loading Statements");
     this.statementCollection = this.firebase.afs.collection('statements');
     this.statementCollection.valueChanges().subscribe((statements) => {
-      console.log("Statements length is " + statements.length);
       this.statements = statements;
     });
   }
 
   loadGoals() {
-    console.log("Loading Goals");
     this.goalCollection = this.firebase.afs.collection('goals');
     this.goalCollection.valueChanges().subscribe((goals) => {
-      console.log("Goals length is " + goals.length);
       this.goals = goals;
     });
   }

@@ -148,10 +148,7 @@ export class NotificationCreatorPage {
   }
 
   pushNotification(form) {
-    console.log("Pushing Notification");
     this.buildNotification(form).subscribe((notification) => {
-      console.log("Built Payload");
-      console.log(notification);
       let notificationPath = "notifications/" + notification.id;
       this.navCtrl.pop();
       this.firebase.afs.doc(notificationPath).set(notification);

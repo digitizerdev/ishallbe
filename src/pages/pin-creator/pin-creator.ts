@@ -63,9 +63,7 @@ export class PinCreatorPage {
   }
 
   ionViewDidLoad() {
-    console.log("Loaded Pin Creator Page");
     this.selectedDay = this.navParams.get('selectedDay');
-    console.log("Selected Day: " + this.selectedDay);
     this.displaySelectedDay = moment(this.selectedDay).format("MMM D YYYY").toUpperCase();
     this.timestampPage();
     this.listenForCanceledUpload();
@@ -73,20 +71,15 @@ export class PinCreatorPage {
   }
 
   checkForExistingPin() {
-    console.log("Checking For Existing Pin");
     let today = parseInt(moment(this.selectedDay).format("YYYYMMDD"));
     let pinCol = this.firebase.afs.collection('pins', ref => ref.where('postDate', '==', today));
     return pinCol.valueChanges().subscribe((existingPin) => {
-      console.log("Got existing pin");
-      console.log(existingPin);
       this.pin = existingPin[0];
       if (existingPin.length == 1) this.setExistingPinFields();
     });
   }
 
   setExistingPinFields() {
-    console.log("Setting Existing Pin Fields");
-    console.log("Today is " + this.dayOfWeek);
     switch (this.dayOfWeek) {
       case 'Monday': {
         this.mondayForm.link = this.pin.link;
@@ -107,7 +100,6 @@ export class PinCreatorPage {
   }
 
   timestampPage() {
-    console.log("Timestamping Page");
     this.dayOfWeek = moment(this.selectedDay).format("dddd");
     this.postDate = parseInt(moment(this.selectedDay).format("YYYYMMDD"));
     this.displayPostDate = moment().format('MMM DD YYYY');
@@ -120,7 +112,6 @@ export class PinCreatorPage {
   }
 
   setPinForm() {
-    console.log("Setting Pin Form");
     if (this.dayOfWeek == 'Monday') this.mondayForm.title = "Motivational Monday";
     if (this.dayOfWeek == 'Tuesday') this.tuesdayForm.title = "Tuesday's Tune of the Day";
     if (this.dayOfWeek == 'Wednesday') this.wedToSunForm.title = "Wise Words Wednesday";
@@ -131,14 +122,12 @@ export class PinCreatorPage {
   }
 
   loadImage() {
-    console.log("Loading Image");
     if (!this.platform.is('cordova')) this.imageRetrievalMethod = 'browser-image';
     else this.imageRetrievalMethod = "pin";
     this.loadingImage = true;
   }
 
   setImage(image) {
-    console.log("Setting Image");
     this.pinImageUrl = image.url;
     this.pinName = image.name;
     this.loadingImage = false;
@@ -146,13 +135,11 @@ export class PinCreatorPage {
   }
 
   submit(form) {
-    console.log("Submitting Form");
     this.submitted = true;
     this.checkFormFields(form);
   }
 
   checkFormFields(form) {
-    console.log("Checking Form Fields");
     switch (this.dayOfWeek) {
       case 'Monday': {
         if (!this.imageReady) this.displaySubmissionErrorAlert("Please Add Image to Pin");
@@ -175,7 +162,6 @@ export class PinCreatorPage {
   }
 
   submitValidPin(form) {
-    console.log("Submitting Valid Pin");
     let loading = this.loadingCtrl.create({
       spinner: 'bubbles',
       content: 'Loading...',
@@ -192,7 +178,6 @@ export class PinCreatorPage {
   }
 
   buildPin(form) {
-    console.log("Building Pin");
     return Observable.create((observer) => {
       if (this.pin) this.pinId = this.pin.id;
       else this.pinId = this.firebase.afs.createId();
@@ -231,13 +216,11 @@ export class PinCreatorPage {
   }
 
   createPin(pin) {
-    console.log("Creating Pin");
     let pinPath = "/pins/" + this.pinId;
     return this.firebase.afs.doc(pinPath).set(pin);
   }
 
   displaySubmissionErrorAlert(message) {
-    console.log("Displaying Submission Error Alert");
     let alert = this.alertCtrl.create({
       title: 'Submission Error',
       subTitle: message,
@@ -247,7 +230,6 @@ export class PinCreatorPage {
   }
 
   listenForCanceledUpload() {
-    console.log("Listening for Canceled Upload");
     this.events.subscribe('getImageCanceled', () => {
       this.pinImageUrl = null;
       this.imageReady = false;
@@ -256,7 +238,6 @@ export class PinCreatorPage {
   }
 
   listenForUploadTimeout() {
-    console.log("Listening For Upload Timeout");
     this.events.subscribe('timeout', () => {
       this.pinImageUrl = null;
       this.imageReady = false;
@@ -271,14 +252,12 @@ export class PinCreatorPage {
   }
 
   redoImageLoad() {
-    console.log("Redoing Image Upload");
     this.pinImageUrl = null;
     this.imageReady = false;
     this.loadingImage = true;
     let contentType = 'pin';
     if (!this.platform.is('cordova'))
       contentType = 'browser-image';
-    console.log("Content Type is " + contentType);
     this.events.publish('redoUpload', contentType, this.pinName);
   }
 }
