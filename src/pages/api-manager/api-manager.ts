@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-
-import { HomePage } from '../home/home';
 
 import { AngularFirestoreCollection } from 'angularfire2/firestore';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
@@ -31,7 +29,6 @@ export class ApiManagerPage {
   goals = [];
 
   constructor(
-    private navCtrl: NavController,
     private firebase: FirebaseProvider,
     public iab: InAppBrowser
   ) {
