@@ -165,6 +165,7 @@ function sendMessages(messages) {
     }).catch((error) => {
         console.error("There was an error");
         console.error(error);
+        return true;
     });
 }
 
