@@ -46,7 +46,6 @@ export class AccountPage {
   logout() {
     this.events.publish('contributor permission not granted');
     this.firebase.afa.auth.signOut();
-    this.firebase.hasSeenTutorial = true;
     this.navCtrl.setRoot(LoginPage);
   }
 
