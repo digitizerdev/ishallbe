@@ -69,24 +69,18 @@ export class HomePage {
   }
 
   checkForUnnamedUser() {
-    console.log("Checking For Unnamed User");
-    console.log("Unnamed User Alerted: " + this.firebase.incompleteProfileResolved);
-    console.log("User: " );
-    console.log(this.firebase.user);
     if (!this.firebase.incompleteProfileResolved) {
       if (!this.firebase.user.name || !this.firebase.user.photo ) {
         setTimeout(() => {
           this.displayUnnamedUserAlert();
         }, 3000);
       } else {
-        console.log("User Name Complete");
         this.firebase.incompleteProfileResolved = true;
       }
     }
   }
 
   displayUnnamedUserAlert() {
-    console.log("Displaying Unnamed User Alert");
     this.firebase.incompleteProfileResolved = true;
     let alert = this.alert.create({
       title: "Build Your Profile",
@@ -94,12 +88,10 @@ export class HomePage {
         text: 'Later',
         role: 'cancel',
         handler: () => {
-          console.log("Canceled");
         }
       }, {
         text: 'Update',
         handler: () => {
-          console.log("Updating Profile");
           this.navCtrl.push(ProfileUpdatePage);
         }
       }]
@@ -180,8 +172,6 @@ export class HomePage {
         .orderBy('timestamp', 'desc').
         limit(5));
     this.statementsCollection.valueChanges().take(1).subscribe((statements) => {
-      console.log("Got Statements");
-      console.log(statements);
       if (statements.length > 0) this.setStatements(statements);
       else this.noMoreStatements = true;
     });

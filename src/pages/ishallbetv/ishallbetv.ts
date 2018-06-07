@@ -106,8 +106,6 @@ export class IshallbetvPage {
   }
 
   setVideos(videos) {
-    console.log("Setting Videos");
-    console.log(videos);
     if (videos.length < 5 ) this.noMoreVideos = true;
     videos.forEach((video) => {
       if (video.day == 'Monday') {
@@ -120,7 +118,6 @@ export class IshallbetvPage {
   }
 
   loadMoreVideos(event) {
-    console.log("Loading More Videos")
     return new Promise((resolve) => {
       let videos = this.firebase.afs.collection('pins', ref =>
         ref.where('day', '==', 'Monday').
