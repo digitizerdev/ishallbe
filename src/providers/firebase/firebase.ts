@@ -17,7 +17,6 @@ export class FirebaseProvider {
   fcmToken: string;
   session = false;
   loaded = false;
-  hasSeenTutorial = false;
   signingUp = false;
   socialAuthentication = false;
   notification = false;
@@ -87,17 +86,7 @@ export class FirebaseProvider {
   }
 
   haltNonManager() {
-    this.endSession();
-    let alert = this.alertCtrl.create({
-      title: 'Access Denied',
-      message: 'Download iShallBe on the iOS App Store and Google Play',
-      buttons: [
-        {
-          text: 'Okay'
-        }
-      ]
-    });
-    alert.present();
+    this.events.publish('access denied');
   }
 
   startSession(user) {

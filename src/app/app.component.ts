@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { Nav, NavController, Platform, Events, ToastController } from 'ionic-angular';
+import { Nav, NavController, Platform, Events, ToastController, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
@@ -38,9 +38,11 @@ export class iShallBe {
   providers: Array<{ title: string, component: any }>;
   pages: Array<{ title: string, component: any }>;
   editor = false;
+  blocked = false;
 
   constructor(
     private platform: Platform,
+    private alertCtrl: AlertController,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
     private events: Events,
@@ -118,17 +120,33 @@ export class iShallBe {
 
   listenToTutorialLaunchEvents() {
     this.events.subscribe('show tutorial', () => {
-      this.nav.setRoot(TutorialPage);
+      if (!this.blocked) this.nav.setRoot(TutorialPage);
     });
   }
 
   listenToAccessControlEvents() {
     this.events.subscribe('user blocked', () => {
+      this.blocked = true;
       this.nav.setRoot(LoginPage);
       this.fcm.unsubscribeFromTopic('affirmations');
       if (this.editor) {
         this.editor = false;
       }
+    });
+    this.events.subscribe('access denied', () => {
+      this.blocked = true;
+      this.nav.setRoot(LoginPage);
+      this.firebase.endSession();
+      let alert = this.alertCtrl.create({
+        title: 'Access Denied',
+        message: 'Download iShallBe on the iOS App Store and Google Play',
+        buttons: [
+          {
+            text: 'Okay'
+          }
+        ]
+      });
+      alert.present();
     });
   }
 
