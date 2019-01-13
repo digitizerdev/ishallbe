@@ -128,7 +128,7 @@ describe('GoalCreatorPage', () => {
     });
 
     it('should display DueDateText if date selected', () => {
-        component.dateSelected = true;
+        component.dueDate = true;
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;

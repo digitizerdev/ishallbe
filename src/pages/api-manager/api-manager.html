@@ -1,17 +1,17 @@
 <ion-header no-border>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon color='primary' name="menu"></ion-icon>
-    </button>
-  </ion-navbar>
+  <brand-header></brand-header>
 </ion-header>
 <ion-content>
-  <header></header>
   <br>
-  <div class="section">
-    <ion-list class="list-full-border" (click)="openLink()" id="AppBaseFeature" text-center>
-      <h5>App Base: TDCT 2</h5>
-      <h6>Account Manager: Troy DC Thompson</h6>
-    </ion-list>
+  <div (click)="openLink()" class="feature" text-center>
+    <h6 id="AppBase">App Base: TDCT 3</h6>
+    <h6 id="AccountManager">Account Manager: Troy DC Thompson</h6>
+  </div>
+  <br>
+  <div class="feature" text-center>
+    <h6 id="UserCount"><b> {{users.length}} </b> Users</h6>
+    <h6 id="PinCount"><b> {{pins.length}} </b> Pins</h6>
+    <h6 id="StatementCount"><b> {{statements.length}} </b> Statements</h6>
+    <h6 id="GoalCount"><b> {{goals.length}} </b> Goals</h6>
   </div>
 </ion-content>

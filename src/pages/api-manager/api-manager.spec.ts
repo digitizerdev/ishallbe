@@ -86,18 +86,62 @@ describe('ApiManagerPage', () => {
         expect(component instanceof ApiManagerPage).toBe(true);
     });
 
-    it('should display header', () => {
+    it('should display BrandHeaderComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('header'));
+        de = fixture.debugElement.query(By.css('brand-header'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });
 
-    it('should display AppBaseFeature', () => {
+    it('should display AppBase', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#AppBaseFeature'));
+        de = fixture.debugElement.query(By.css('#AppBase'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display AccountManager', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#AccountManager'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display UserCount', () => {
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#UserCount'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display PinCount', () => {
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#PinCount'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display StatementCount', () => {
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#StatementCount'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
+    it('should display GoalCount', () => {
+        fixture.detectChanges();
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('#GoalCount'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });

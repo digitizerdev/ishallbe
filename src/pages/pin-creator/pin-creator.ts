@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, Events, Platform } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 
-import { PostManagerPage } from '../post-manager/post-manager';
+import { HomePage } from '../home/home';
 
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 
@@ -20,6 +20,7 @@ export class PinCreatorPage {
   mondayForm: {
     title?: string
     link?: string,
+    description?: string
   } = {};
   tuesdayForm: {
     title?: string,
@@ -48,6 +49,7 @@ export class PinCreatorPage {
   monday = false;
   tuesday = false;
   wedToSun = false;
+  complete = false;
 
   constructor(
     private navCtrl: NavController,
@@ -55,14 +57,13 @@ export class PinCreatorPage {
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private events: Events,
+    private platform: Platform,
     private firebase: FirebaseProvider
   ) {
   }
 
   ionViewDidLoad() {
-    console.log("Loaded Pin Creator");
     this.selectedDay = this.navParams.get('selectedDay');
-    console.log("Selected Day: " + this.selectedDay);
     this.displaySelectedDay = moment(this.selectedDay).format("MMM D YYYY").toUpperCase();
     this.timestampPage();
     this.listenForCanceledUpload();
@@ -73,8 +74,6 @@ export class PinCreatorPage {
     let today = parseInt(moment(this.selectedDay).format("YYYYMMDD"));
     let pinCol = this.firebase.afs.collection('pins', ref => ref.where('postDate', '==', today));
     return pinCol.valueChanges().subscribe((existingPin) => {
-      console.log("Got existing pin");
-      console.log(existingPin);
       this.pin = existingPin[0];
       if (existingPin.length == 1) this.setExistingPinFields();
     });
@@ -88,6 +87,7 @@ export class PinCreatorPage {
         this.pinName = this.pin.filename;
         this.loadingImage = false;
         this.imageReady = true;
+        this.mondayForm.description = this.pin.description;
       }
         break;
       case 'Tuesday': {
@@ -122,7 +122,8 @@ export class PinCreatorPage {
   }
 
   loadImage() {
-    this.imageRetrievalMethod = "pin";
+    if (!this.platform.is('cordova')) this.imageRetrievalMethod = 'browser-image';
+    else this.imageRetrievalMethod = "pin";
     this.loadingImage = true;
   }
 
@@ -169,7 +170,7 @@ export class PinCreatorPage {
     loading.present();
     this.buildPin(form).subscribe((pin) => {
       this.createPin(pin).then(() => {
-        this.navCtrl.setRoot(PostManagerPage);
+        this.navCtrl.setRoot(HomePage);
         loading.dismiss();
       }, (error) => {
       });
@@ -254,6 +255,9 @@ export class PinCreatorPage {
     this.pinImageUrl = null;
     this.imageReady = false;
     this.loadingImage = true;
-    this.events.publish('redoUpload', 'pin', this.pinName);
+    let contentType = 'pin';
+    if (!this.platform.is('cordova'))
+      contentType = 'browser-image';
+    this.events.publish('redoUpload', contentType, this.pinName);
   }
 }

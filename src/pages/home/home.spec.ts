@@ -137,34 +137,12 @@ describe('HomePage', () => {
         expect(el).toBeUndefined();
     });
 
-    it('should display HomeSetRootStatementCreatorPageButton if selected and no statements', () => {
-        component.postSegment = 'statements';
-        component.noStatements = true;
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#HomeSetRootStatementCreatorPageButton'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
     it('should display goals scroller if selected', () => {
         component.postSegment = 'goals';
         fixture.detectChanges();
         let de: DebugElement;
         let el: HTMLElement;
         de = fixture.debugElement.query(By.css('#GoalsScroller'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
-
-    it('should display HomeSetRootGoalCreatorPageButton if selected and no goals', () => {
-        component.postSegment = 'goals';
-        component.noGoals = true;
-        fixture.detectChanges();
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#HomeSetRootGoalCreatorPageButton'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });

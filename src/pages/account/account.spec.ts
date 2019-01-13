@@ -78,19 +78,11 @@ describe('AccountPage', () => {
     it('should be created', () => {
         expect(component instanceof AccountPage).toBe(true);
     });
-    
-    it('should display ToolbarLogoComponent', () => {
-        let de: DebugElement;
-        let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('toolbar-logo'));
-        el = de.nativeElement.src;
-        expect(el).toBeUndefined();
-    });
 
-    it('should display setRootHomePageIcon', () => {
+    it('should display BrandHeaderComponent', () => {
         let de: DebugElement;
         let el: HTMLElement;
-        de = fixture.debugElement.query(By.css('#setRootHomePageIcon'));
+        de = fixture.debugElement.query(By.css('brand-header'));
         el = de.nativeElement.src;
         expect(el).toBeUndefined();
     });

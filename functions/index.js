@@ -3,72 +3,10 @@ const admin = require('firebase-admin');
 const moment = require('moment');
 admin.initializeApp(functions.config().firebase);
 
-exports.hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => {
-    console.log("Cron Hourly Tick");
-    var wrapped = moment(new Date()); 
-    console.log("Moment Date is ");
-    console.log(wrapped); 
-    let currentTime = moment(new Date()).unix();
-    console.log("Current time in unix is " + currentTime);
-    let overNextHourTime = currentTime + 3600;
-    console.log("Over Next Hour Time in unix is " + overNextHourTime);
-    let fireData = admin.firestore();
-    let goals = fireData.collection('goals').where("dueDate", ">=", currentTime).
-    where("dueDate", "<=", overNextHourTime);
-    return goals.get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            let goal = doc.data()
-            console.log("Got goal");
-            console.log(goal);
-            console.log("Goal due date in unix is " + goal.dueDate);
-            createGoalReminder(goal);
-        });
-        return;
-    });
-});
 
-function createGoalReminder(goal) {
-    console.log("Creating Goal Reminder");
-    console.log(goal);
-    let fireData = admin.firestore();
-    let id = goal.id + moment(new Date()).unix();
-    console.log("Id is " + id);
-    let displayTimestamp = moment().format('MMM DD YYYY');
-    let timestamp = moment().unix();
-    let description = "Your " + goal.title + " goal is due soon";
-    let notification = {
-      id: id,
-      uid: goal.uid,
-      name: goal.name,
-      face: goal.face,
-      title: goal.title,
-      description: description,
-      read: false,
-      collection: "reminder",
-      docId: goal.id,
-      receiverUid: goal.uid,
-      message: false,
-      pinLike: false,
-      statementLike: false,
-      goalLike: false,
-      commentLike: false,
-      comment: false,
-      reminder: true,
-      displayTimestamp: displayTimestamp,
-      timestamp: timestamp
-    }
-    console.log("Notification Built");
-    console.log(notification);
-    let goalReminderPath = "notifications/" + id;
-    console.log("Goal reminder path is " + goalReminderPath);
-    return fireData.doc(goalReminderPath).create(notification);
-}
-
-exports.updateProfilePosts = functions.firestore.document('users/{userId}').onUpdate(event => {
-    console.log("Updating Profile Posts");
-    console.log(event);
+exports.updatedProfile = functions.firestore.document('users/{userId}').onUpdate(event => {
     let user = event.data.data();
-    console.log(user);
+    console.log(user.name + " updated their profile");
     return updateStatements(user).then(() => {
         return updateGoals(user);
     });
@@ -76,16 +14,13 @@ exports.updateProfilePosts = functions.firestore.document('users/{userId}').onUp
 
 function updateStatements(user) {
     console.log("Updating Statements");
-    console.log(user);
-    console.log("User uid is " + user.uid);
-    let fireData = admin.firestore();
-    let userStatements = fireData.collection('statements').where("uid", "==", user.uid);
+    let fs = admin.firestore();
+    let userStatements = fs.collection('statements').where("uid", "==", user.uid);
     return userStatements.get().then((querySnapshot) => {
         return querySnapshot.forEach((doc) => {
             let statement = doc.data();
             let statementPath = "statements/" + statement.id;
-            console.log("Statement path is " + statementPath);
-            let myStatement = fireData.doc(statementPath);
+            let myStatement = fs.doc(statementPath);
             return myStatement.update({
                 face: user.photo,
                 name: user.name
@@ -96,16 +31,13 @@ function updateStatements(user) {
 
 function updateGoals(user) {
     console.log("Updating Goals");
-    console.log(user);
-    console.log("User uid is " + user.uid);
-    let fireData = admin.firestore();
-    let userGoals = fireData.collection('goals').where("uid", "==", user.uid);
+    let fs = admin.firestore();
+    let userGoals = fs.collection('goals').where("uid", "==", user.uid);
     return userGoals.get().then((querySnapshot) => {
         return querySnapshot.forEach((doc) => {
             let goal = doc.data();
             let goalPath = "goals/" + goal.id;
-            console.log("Goal path is " + goalPath);
-            let myGoal = fireData.doc(goalPath);
+            let myGoal = fs.doc(goalPath);
             return myGoal.update({
                 face: user.photo,
                 name: user.name
@@ -114,9 +46,21 @@ function updateGoals(user) {
     });
 }
 
-exports.createNotification = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
-    console.log("Creating Notification");
+exports.newNotification = functions.firestore.document('notifications/{notificationId}').onCreate(event => {
     let notification = event.data.data();
+    console.log("New Notification");
+    console.log(notification);
+    if (notification.receiverUid !== "all") {
+        return createNotificationForSingleUser(notification);
+    } else {
+        if (notification.sendNow) {
+            return createNotificationForAllUsers(notification);
+        }
+    }
+});
+
+function createNotificationForSingleUser(notification) {
+    console.log("Creating Notification For Single User");
     console.log(notification);
     let pushMessage = notification.name + " " + notification.description;
     if (notification.reminder) pushMessage = "Your " + notification.title + " goal is due soon";
@@ -144,41 +88,157 @@ exports.createNotification = functions.firestore.document('notifications/{notifi
             displayTimestamp: notification.displayTimestamp,
             timestamp: notification.timestamp.toString(),
         }
-    }
-    console.log("Built Notification Payload");
-    console.log(payload);
-    let fireData = admin.firestore();
-    let userPath = "users/" + notification.receiverUid;
-    let user = fireData.doc(userPath);
-    return user.get().then((user) => {
-        console.log("Sending Notification to User");
-        contributor = user.data();
-        console.log(contributor);
-        admin.messaging().sendToDevice(contributor.fcmToken, payload);
+    };
+    return sendNotificationToSingleUser(payload);
+}
+
+function sendNotificationToSingleUser(notification) {
+    console.log("Sending Notification to Single User");
+    console.log(notification);
+    let fs = admin.firestore();
+    let userPath = "users/" + notification.data.receiverUid;
+    let user = fs.doc(userPath);
+    return user.get().then((userDoc) => {
+        user = userDoc.data();
+        console.log("Sending Notification to " + user.fcmToken);
+        return admin.messaging().sendToDevice(user.fcmToken, notification);
+    });
+}
+
+function createNotificationForAllUsers(notification) {
+    console.log("Creating Notification For All Users");
+    let payload = {
+        notification: {
+            body: notification.description,
+        },
+        data: {
+            id: notification.id,
+            uid: notification.uid,
+            name: notification.name,
+            face: notification.face,
+            description: notification.description,
+            read: notification.read.toString(),
+            collection: notification.collection,
+            docId: notification.docId,
+            receiverUid: notification.receiverUid,
+            message: notification.message.toString(),
+            pinLike: notification.pinLike.toString(),
+            statementLike: notification.statementLike.toString(),
+            goalLike: notification.goalLike.toString(),
+            comment: notification.comment.toString(),
+            commentLike: notification.commentLike.toString(),
+            reminder: notification.reminder.toString(),
+            displayTimestamp: notification.displayTimestamp,
+            timestamp: notification.timestamp.toString(),
+        }
+    };
+    return pushPayloadToEachUser(payload);
+}
+
+function pushPayloadToEachUser(payload) {
+    console.log("Pushing Payload To Each User");
+    let fs = admin.firestore();
+    let users = fs.collection('users');
+    return users.get().then((usersCol) => {
+        let promises = [];
+        usersCol.forEach((userSnapshot) => {
+            let user = userSnapshot.data();
+            console.log("Pushing Payload to " + user.fcmToken);
+            if (user.fcmToken) {
+                let promise = admin.messaging().sendToDevice(user.fcmToken, payload)
+                promises.push(promise);
+            }
+        });
+        console.log("Finished Loading Promises");
+        console.log(promises);
+        return sendMessages(promises);
+    });
+}
+
+function sendMessages(messages) {
+    console.log("Sending Messages");
+    console.log(messages);
+    return Promise.all(messages).then((res) => {
+        console.log("All Promises Resolved");
+        console.log(res);
+        return true;
+    }).catch((error) => {
+        console.error("There was an error");
+        console.error(error);
         return true;
     });
-});
+}
 
 exports.hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => {
     console.log("Cron Hourly Tick");
-    var wrapped = moment(new Date()); 
-    console.log("Moment Date is ");
-    console.log(wrapped); 
+    return checkForGoalsDueSoon().then(() => {
+        return checkForAffirmations();
+    })
+});
+
+function checkForGoalsDueSoon() {
+    console.log("Checking For Goals Due Soon");
     let currentTime = moment(new Date()).unix();
-    console.log("Current time in unix is " + currentTime);
     let overNextHourTime = currentTime + 3600;
-    console.log("Over Next Hour Time in unix is " + overNextHourTime);
-    let fireData = admin.firestore();
-    let goals = fireData.collection('goals').where("dueDate", ">=", currentTime).
+    let fs = admin.firestore();
+    let goals = fs.collection('goals').where("dueDate", ">=", currentTime).
     where("dueDate", "<=", overNextHourTime);
-    return goals.get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            let goal = doc.data()
-            console.log("Got goal");
-            console.log(goal);
-            console.log("Goal due date in unix is " + goal.dueDate);
-            createGoalReminder(goal);
+    return goals.get().then((pendingReminders) => {
+        pendingReminders.forEach((goalDoc) => {
+            let goal = goalDoc.data();
+            return createGoalReminder(goal);
         });
         return;
     });
-});
+}
+
+function createGoalReminder(goal) {
+    console.log("Creating Goal Reminder");
+    let fs = admin.firestore();
+    let id = goal.id + moment(new Date()).unix();
+    let displayTimestamp = moment().format('MMM DD YYYY');
+    let timestamp = moment().unix();
+    let description = "Your " + goal.title + " goal is due soon";
+    let notification = {
+        id: id,
+        uid: goal.uid,
+        name: goal.name,
+        face: goal.face,
+        title: goal.title,
+        description: description,
+        read: false,
+        collection: "reminder",
+        docId: goal.id,
+        receiverUid: goal.uid,
+        message: false,
+        pinLike: false,
+        statementLike: false,
+        goalLike: false,
+        commentLike: false,
+        comment: false,
+        reminder: true,
+        displayTimestamp: displayTimestamp,
+        timestamp: timestamp
+    };
+    let goalReminderPath = "notifications/" + id;
+    return fs.doc(goalReminderPath).create(notification);
+}
+
+function checkForAffirmations(affirmation) {
+    console.log("Checking For Affirmations");
+    let date = moment(new Date());
+    let currentTime = moment(new Date()).unix();
+    let overNextHourTime = currentTime + 3600;
+    let fs = admin.firestore();
+    let affirmations = fs.collection('notifications').
+    where("receiverUid", "==", "all").
+    where("timestamp", ">=", currentTime).
+    where("timestamp", "<=", overNextHourTime);
+    return affirmations.get().then((scheduledAffirmations) => {
+        return scheduledAffirmations.forEach((affirmationDoc) => {
+            let affirmation = affirmationDoc.data();
+            return createNotificationForAllUsers(affirmation)
+        });
+    });
+}
+

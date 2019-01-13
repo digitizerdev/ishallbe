@@ -13,7 +13,8 @@ export const contributor = {
   linkedin: null,
   twitter: null,
   contributor: true,
-  editor: false
+  editor: false,
+  admin: false
 }
 export const editor = {
   uid: "2",
@@ -29,6 +30,7 @@ export const editor = {
   linkedin: null,
   twitter: "ishallbe__",
   contributor: true,
-  editor: true
+  editor: true,
+  admin: true
 }
 export const mockUsers: User[] = [contributor, editor];       

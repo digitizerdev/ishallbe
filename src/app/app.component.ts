@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { Nav, NavController, Platform, Events, ToastController } from 'ionic-angular';
+import { Nav, NavController, Platform, Events, ToastController, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
@@ -16,6 +16,7 @@ import { AccountPage } from '../pages/account/account';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { UserManagerPage } from '../pages/user-manager/user-manager';
 import { ApiManagerPage } from '../pages/api-manager/api-manager';
+import { NotificationManagerPage } from '../pages/notification-manager/notification-manager';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { NotificationsPage } from '../pages/notifications/notifications';
 
@@ -33,12 +34,15 @@ export class iShallBe {
   affirmationsMenu: Array<{ title: string, icon: string, component: any }>;
   accountMenu: Array<{ title: string, icon: string, component: any }>;
   editorMenu: Array<{ title: string, icon: string, component: any }>;
+  adminMenu: Array<{ title: string, icon: string, component: any }>;
   providers: Array<{ title: string, component: any }>;
   pages: Array<{ title: string, component: any }>;
   editor = false;
+  blocked = false;
 
   constructor(
     private platform: Platform,
+    private alertCtrl: AlertController,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
     private events: Events,
@@ -67,6 +71,7 @@ export class iShallBe {
 
   listenToFCMPushNotifications() {
     console.log("Listening To FCM Notifications");
+    this.subscribeToPings();
     this.events.subscribe('fcm synced', () => {
       this.fcm.onNotification().subscribe(notification => {
         console.log("Got Notification");
@@ -81,6 +86,17 @@ export class iShallBe {
           this.displayNotificationAlert(notification);
         }
       });
+    });
+  }
+
+  subscribeToPings() {
+    console.log("Subscribing to Pings");
+    this.fcm.subscribeToTopic('pings').then((resp) => {
+      console.log("Subscribed to pings");
+      console.log(resp);
+    }).catch((error) => {
+      console.log("Error subscribing to pings");
+      console.log(error);
     });
   }
 
@@ -104,17 +120,33 @@ export class iShallBe {
 
   listenToTutorialLaunchEvents() {
     this.events.subscribe('show tutorial', () => {
-      this.nav.setRoot(TutorialPage);
+      if (!this.blocked) this.nav.setRoot(TutorialPage);
     });
   }
 
   listenToAccessControlEvents() {
     this.events.subscribe('user blocked', () => {
+      this.blocked = true;
       this.nav.setRoot(LoginPage);
       this.fcm.unsubscribeFromTopic('affirmations');
       if (this.editor) {
         this.editor = false;
       }
+    });
+    this.events.subscribe('access denied', () => {
+      this.blocked = true;
+      this.nav.setRoot(LoginPage);
+      this.firebase.endSession();
+      let alert = this.alertCtrl.create({
+        title: 'Access Denied',
+        message: 'Download iShallBe on the iOS App Store and Google Play',
+        buttons: [
+          {
+            text: 'Okay'
+          }
+        ]
+      });
+      alert.present();
     });
   }
 
@@ -129,7 +161,6 @@ export class iShallBe {
 
   listenToContributorPermissionEvents() {
     this.events.subscribe('contributor permission granted', () => {
-      this.fcm.subscribeToTopic('affirmations');
       if (this.firebase.notification) {
         this.nav.setRoot(NotificationsPage);
       } else {
@@ -150,15 +181,15 @@ export class iShallBe {
         component: HomePage
       },
       {
-        title: 'Profile',
-        icon: 'ios-person',
-        component: ProfilePage
-      },
-      {
         title: 'iShallBe TV',
         icon: 'ios-desktop',
         component: IshallbetvPage
       },
+      {
+        title: 'Profile',
+        icon: 'ios-person',
+        component: ProfilePage
+      }
     ];
     this.accountMenu = [
       {
@@ -177,19 +208,28 @@ export class iShallBe {
         component: AccountPage
       }
     ];
+
     this.editorMenu = [
       {
-        title: 'Post Manager',
+        title: 'Posts',
         icon: 'ios-albums',
         component: PostManagerPage
       },
       {
-        title: 'User Manager',
+        title: 'Notifications',
+        icon: 'ios-alert',
+        component: NotificationManagerPage
+      }
+    ];
+
+    this.adminMenu = [
+      {
+        title: 'Users',
         icon: 'ios-people',
         component: UserManagerPage
       },
       {
-        title: 'API Manager',
+        title: 'API',
         icon: 'ios-pulse',
         component: ApiManagerPage
       }

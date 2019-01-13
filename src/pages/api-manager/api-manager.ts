@@ -1,10 +1,16 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, Platform, LoadingController } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { Pro } from '@ionic/pro';
 
+import { AngularFirestoreCollection } from 'angularfire2/firestore';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+
+import { User } from '../../../test-data/users/model';
+import { Pin } from '../../../test-data/pins/model';
+import { Statement } from '../../../test-data/statements/model';
+import { Goal } from '../../../test-data/goals/model';
+
 
 @IonicPage()
 @Component({
@@ -13,58 +19,55 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 })
 export class ApiManagerPage {
 
-  user: any;
-  deployChannel = "";
-  isBeta = false;
-  editor = false;
+  userCollection: AngularFirestoreCollection<User>;
+  pinCollection: AngularFirestoreCollection<Pin>;
+  statementCollection: AngularFirestoreCollection<Statement>;
+  goalCollection: AngularFirestoreCollection<Goal>;
+  users = [];
+  pins = [];
+  statements = [];
+  goals = [];
 
   constructor(
-    private platform: Platform,
-    private loadingCtrl: LoadingController,
     private firebase: FirebaseProvider,
     public iab: InAppBrowser
   ) {
   }
 
   ionViewDidLoad() {
-    this.user = this.firebase.user;
-    if (this.user.editor) {
-      this.editor = true;
-      if (this.platform.is('cordova')) { this.checkChannel(); } 
-    }
+    this.loadUsers();
+    this.loadPins();
+    this.loadStatements();
+    this.loadGoals();  }
+
+  loadUsers() {
+    this.userCollection = this.firebase.afs.collection('users');
+    this.userCollection.valueChanges().subscribe((users) => {
+      this.users = users;
+    });
   }
 
-  async checkChannel() {
-    try {
-      const res = await Pro.deploy.info();
-      this.deployChannel = res.channel;
-      this.isBeta = (this.deployChannel === 'Beta')
-    } catch (err) { Pro.monitoring.exception(err)};
+  loadPins() {
+    this.pinCollection = this.firebase.afs.collection('pins');
+    this.pinCollection.valueChanges().subscribe((pins) => {
+      this.pins = pins;
+    });
   }
 
-  async toggleBeta() {
-    const config = { channel: (this.isBeta ? 'Beta' : 'Production')}
-    try {
-      await Pro.deploy.init(config);
-      await this.checkChannel();
-      await this.deployUpdate();
-    } catch (err) { Pro.monitoring.exception(err)};
+  loadStatements() {
+    this.statementCollection = this.firebase.afs.collection('statements');
+    this.statementCollection.valueChanges().subscribe((statements) => {
+      this.statements = statements;
+    });
   }
 
-  async deployUpdate() {
-    try {
-      const resp = await Pro.deploy.checkAndApply(true, function(progress){ this.downloadProgress = progress; });
-      if (resp.update) {
-        let loading = this.loadingCtrl.create({
-          content: "Deploying Update..."
-        });
-        loading.present();
-      }
-    } catch (err) { Pro.monitoring.exception(err)};
+  loadGoals() {
+    this.goalCollection = this.firebase.afs.collection('goals');
+    this.goalCollection.valueChanges().subscribe((goals) => {
+      this.goals = goals;
+    });
   }
-
   openLink() {
     this.iab.create('https://tdct.io', '_system');
   }
-
 }

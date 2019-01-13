@@ -1,0 +1,34 @@
+<ion-header no-border>
+  <ion-navbar padding-top>
+    <button ion-button menuToggle>
+      <ion-icon color='primary' name="menu" id="EnableMenuIcon"></ion-icon>
+    </button>
+    <toolbar-logo></toolbar-logo>
+    <ion-buttons id="PushNotificationCreatorPageIcon" end>
+      <button ion-button icon-only (click)="pushNotificationCreatorPage()">
+        <ion-icon color='primary' name="ios-add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar></ion-header>
+<ion-content [@staggerIn]="scheduledNotifications.length">
+  <div text-center id="ScheduledNotifications">
+    <h5 *ngIf="scheduledNotifications.length !== 1" id="ScheduledNotifications" class="feature">{{scheduledNotifications.length}} Scheduled Notifications</h5>
+    <h5 *ngIf="scheduledNotifications.length == 1" id="ScheduledNotifications" class="feature">{{scheduledNotifications.length}} Scheduled Notification</h5>
+  </div>
+  <ion-list no-lines padding-left padding-right>
+    <ion-item-sliding *ngFor="let notification of scheduledNotifications" #item class="scheduled-notifications" text-wrap>
+      <ion-item>
+        <ion-avatar item-left>
+          <img (click)="viewUser(notification.uid)" src="{{ notification.face }}">
+        </ion-avatar>
+        <h4 ion-text color="primary"><b>{{ notification.displayTimestamp }}</b></h4>
+        <h2>{{ notification.description }}</h2>
+      </ion-item>
+      <ion-item-options side="left">
+        <button (click)="delete(notification)" color="background" ion-button>
+          <ion-icon name="trash" color="danger"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

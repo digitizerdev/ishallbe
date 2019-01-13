@@ -1,9 +1,9 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { Pro } from '@ionic/pro';
 import { NgCalendarModule } from 'ionic2-calendar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -43,10 +43,12 @@ import { PinCreatorPage } from '../pages/pin-creator/pin-creator';
 import { PostManagerPage } from '../pages/post-manager/post-manager';
 import { UserManagerPage } from '../pages/user-manager/user-manager';
 import { ApiManagerPage } from '../pages/api-manager/api-manager';
+import { NotificationManagerPage } from '../pages/notification-manager/notification-manager';
 import { PostPage } from '../pages/post/post';
 import { IshallbetvPage } from '../pages/ishallbetv/ishallbetv';
 import { NotificationsPage } from '../pages/notifications/notifications';
 import { HomePage } from '../pages/home/home';
+import { NotificationCreatorPage } from '../pages/notification-creator/notification-creator';
 
 import { TutorialPage } from '../pages/tutorial/tutorial';
 
@@ -55,10 +57,6 @@ import { YoutubePipe } from '../pipes/youtube/youtube';
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
 import { ComponentsModule } from '../components/components.module';
-
-Pro.init('69d144ed', {
-  appVersion: '1.3.0'
-});
 
 @NgModule({
   declarations: [
@@ -86,12 +84,15 @@ Pro.init('69d144ed', {
     PostManagerPage,
     UserManagerPage,
     ApiManagerPage,
+    NotificationManagerPage,
     NotificationsPage,
     TutorialPage,
+    NotificationCreatorPage,
     YoutubePipe
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpModule,
     IonicModule.forRoot(iShallBe, {}, { links: [] }),
     ComponentsModule,
@@ -126,8 +127,10 @@ Pro.init('69d144ed', {
     PostManagerPage,
     UserManagerPage,
     ApiManagerPage,
+    NotificationManagerPage,
     NotificationsPage,
-    TutorialPage
+    TutorialPage,
+    NotificationCreatorPage
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
@@ -142,7 +145,7 @@ Pro.init('69d144ed', {
     Media,
     DatePicker,
     FCM,
-    FirebaseProvider
+    FirebaseProvider,
    ]
 })
 export class AppModule { }

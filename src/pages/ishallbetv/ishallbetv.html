@@ -11,18 +11,21 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content no-border id="Videos">
+<ion-content [@listAnimation]="videos.length" no-border id="Videos">
   <ion-refresher (ionRefresh)="refreshPage()" color="primary" no-border>
     <ion-refresher-content refreshingSpinner="dots" refreshingText="Refeshing" no-border>
     </ion-refresher-content>
   </ion-refresher>
   <br>
-  <div *ngFor="let video of videos" (click)="openPin(video)" text-center padding>
-    <h5>
-      <b>{{ video.description }}</b>
-    </h5>
-    <img class="one-image" src="{{ video.url }}">
-    <h6>{{ video.displayPostDate }}</h6>
+  <div *ngFor="let video of videos"  text-center padding>
+    <h6 (click)="openPin(video)">
+      {{ video.description }}
+    </h6>
+    <img class="one-image" src="{{ video.url }}" (click)="openPin(video)">
+    <post-footer [postDoc]="video"></post-footer>
   </div>
+  <ion-infinite-scroll *ngIf="!this.noMoreVideos" (ionInfinite)="$event.waitFor(loadMoreVideos($event))">
+    <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
   <footer></footer>
 </ion-content>

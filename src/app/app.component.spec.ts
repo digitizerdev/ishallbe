@@ -29,7 +29,7 @@ import {
   FirebaseProviderMock,
 } from '../../test-config/mocks-ionic';
 
-describe('iShallBe 1.4', () => {
+describe('iShallBe 2.1.1', () => {
   let fixture;
   let component;
   let platform: Platform;
@@ -95,7 +95,6 @@ describe('iShallBe 1.4', () => {
     expect(component instanceof iShallBe).toBe(true);
   });
 
-
   it('should display affirmations menu with three pages if user contributor', () => {
     expect(component.affirmationsMenu.length).toBe(3);
   });
@@ -104,8 +103,11 @@ describe('iShallBe 1.4', () => {
     expect(component.accountMenu.length).toBe(3);
   });
 
-  it('should display editor menu with three pages if user editor', () => {
-    expect(component.editorMenu.length).toBe(3);
+  it('should display first editor menu with two pages if user editor', () => {
+    expect(component.editorMenu.length).toBe(2);
   });
 
+  it('should display second editor menu with two pages if user editor', () => {
+    expect(component.adminMenu.length).toBe(2);
+  });
 });

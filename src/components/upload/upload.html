@@ -1,5 +1,5 @@
 <div>
-    <div *ngIf="gettingImage" id="ImagePanel" padding-left padding-right>
+    <div *ngIf="gettingImage && !browser" id="ImagePanel" padding-left padding-right>
         <div text-center>
             <img #imageSrc/>
         </div>
@@ -11,6 +11,12 @@
                 <button (click)="uploadImage()" color="primary" id="UploadButton" ion-button round full>SET IMAGE</button>
             </ion-col>
         </ion-row>
+    </div>
+    <div *ngIf="gettingImage && browser" class="browser-upload" padding text-center>
+        <br>
+        <progress value="0" max="100" id="uploader">0%</progress>
+        <input type="file" onclick="this.value = null" (change)="getBrowserFile()" id="files" name="files[]" class="choose-file"
+        />
     </div>
     <div *ngIf="recording" text-center padding-left padding-right>
         <button (click)="uploadAudio()" id="StopRecordingButton" color="danger" text-center ion-button icon-start round block large

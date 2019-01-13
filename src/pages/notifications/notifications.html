@@ -11,7 +11,7 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content [@staggerIn]="newNotifications.length" [@staggerIn]="earlierNotifications.length">
   <ion-refresher (ionRefresh)="refreshPage()" color="primary" no-border>
     <ion-refresher-content refreshingSpinner="dots" refreshingText="Refeshing" no-border>
     </ion-refresher-content>
@@ -19,40 +19,40 @@
   <ion-list no-lines>
     <div id="NewNotifications">
       <h5 class="feature">New Notifications</h5>
-      <ion-item *ngFor="let unreadNotification of unreadNotifications" (click)="openNotification(unreadNotification)" text-wrap no-lines>
-        <ion-avatar (click)="viewUser(unreadNotification.uid)" item-left>
-          <img src="{{ unreadNotification.face }}">
+      <ion-item *ngFor="let newNotification of newNotifications" (click)="openNotification(newNotification)" text-wrap no-lines>
+        <ion-avatar (click)="viewUser(newNotification.uid)" item-left>
+          <img src="{{ newNotification.face }}">
         </ion-avatar>
-        <ion-icon item-end *ngIf="unreadNotification.pinLike || unreadNotification.statementLike || unreadNotification.goalLike || unreadNotification.commentLike "
+        <ion-icon item-end *ngIf="newNotification.pinLike || newNotification.statementLike || newNotification.goalLike || newNotification.commentLike "
           name="heart" color="primary"></ion-icon>
-        <ion-icon item-end *ngIf="unreadNotification.comment " name="ios-chatboxes"
+        <ion-icon item-end *ngIf="newNotification.comment " name="ios-chatboxes"
           color="primary"></ion-icon>
-        <ion-icon item-end *ngIf="unreadNotification.reminder" name="ios-checkbox"
+        <ion-icon item-end *ngIf="newNotification.reminder" name="ios-checkbox"
           color="primary"></ion-icon>
         <span  ion-text color="primary">
-          <b>{{ unreadNotification.name }}</b>
+          <b>{{ newNotification.name }}</b>
         </span>
-        <span> {{ unreadNotification.description }} </span>
+        <span> {{ newNotification.description }} </span>
         <br>
-        <span ion-text color="steel">{{ unreadNotification.displayTimestamp }}</span>
+        <span ion-text color="steel">{{ newNotification.displayTimestamp }}</span>
       </ion-item>
     </div>
     <div id="EarlierNotifications">
       <h5 class="feature">Earlier Notifications</h5>
-      <ion-item *ngFor="let readNotification of readNotifications" (click)="openNotification(readNotification)" text-wrap no-lines>
-        <ion-avatar (click)="viewUser(readNotification.uid)" item-left>
-          <img src="{{ readNotification.face }}">
+      <ion-item *ngFor="let earlierNotification of earlierNotifications" (click)="openNotification(earlierNotification)" text-wrap no-lines>
+        <ion-avatar (click)="viewUser(earlierNotification.uid)" item-left>
+          <img src="{{ earlierNotification.face }}">
         </ion-avatar>
-        <ion-icon item-end *ngIf="readNotification.pinLike || readNotification.statementLike || readNotification.goalLike || readNotification.commentLike "
+        <ion-icon item-end *ngIf="earlierNotification.pinLike || earlierNotification.statementLike || earlierNotification.goalLike || earlierNotification.commentLike "
            name="heart-outline" color="primary"></ion-icon>
-        <ion-icon item-end *ngIf="readNotification.comment " name="ios-chatboxes-outline" color="primary"></ion-icon>
-        <ion-icon item-end *ngIf="readNotification.reminder" name="ios-checkbox-outline" color="primary"></ion-icon>
+        <ion-icon item-end *ngIf="earlierNotification.comment " name="ios-chatboxes-outline" color="primary"></ion-icon>
+        <ion-icon item-end *ngIf="earlierNotification.reminder" name="ios-checkbox-outline" color="primary"></ion-icon>
         <span ion-text color="primary">
-          <b>{{ readNotification.name }}</b>
+          <b>{{ earlierNotification.name }}</b>
         </span>
-        <span> {{ readNotification.description }} </span>
+        <span> {{ earlierNotification.description }} </span>
         <br>
-        <span ion-text color="steel">{{ readNotification.displayTimestamp }}</span>
+        <span ion-text color="steel">{{ earlierNotification.displayTimestamp }}</span>
       </ion-item>
     </div>
   </ion-list>

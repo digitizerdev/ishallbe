@@ -85,6 +85,14 @@ describe('UserManagerPage', () => {
         expect(component instanceof UserManagerPage).toBe(true);
     });
 
+    it('should display BrandHeaderComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('brand-header'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+
     it('should display NoBlockedUsers if no blocked users', () => {
         component.usersBlocked = false;
         fixture.detectChanges();

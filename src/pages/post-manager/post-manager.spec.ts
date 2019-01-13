@@ -83,7 +83,14 @@ describe('PostManagerPage', () => {
         expect(component instanceof PostManagerPage).toBe(true);
     });
 
-
+    it('should display BrandHeaderComponent', () => {
+        let de: DebugElement;
+        let el: HTMLElement;
+        de = fixture.debugElement.query(By.css('brand-header'));
+        el = de.nativeElement.src;
+        expect(el).toBeUndefined();
+    });
+    
     it('should display PinsSegment if postType is pins', () => {
         component.postType = 'pins';
         fixture.detectChanges();

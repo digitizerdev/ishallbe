@@ -363,6 +363,7 @@ export class PostPage {
         collection: this.post.collection,
         docId: this.post.id,
         receiverUid: comment.receiverUid,
+        sendNow: false,
         message: false,
         pinLike: false,
         statementLike: false,

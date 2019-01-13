@@ -36,6 +36,7 @@ export class GoalCreatorPage {
   displayPostDate: string;
   dueDate: number;
   displayDueDate: string;
+  date: any;
   audio: any;
   submitted = false;
   dateSelected = false;
@@ -46,6 +47,8 @@ export class GoalCreatorPage {
   dueThisWeek = false;
   dueLater = false;
   private = false;
+  browser = false;
+  pickingBrowserDate = false;
 
   constructor(
     private navCtrl: NavController,
@@ -58,18 +61,23 @@ export class GoalCreatorPage {
     private media: Media,
     private firebase: FirebaseProvider
   ) {
+    if (!this.platform.is('cordova')) this.browser = true;
     this.timestampPage();
     this.listenForUploadTimeout();
     this.listenForCanceledUpload();
   }
 
   timestampPage() {
+    this.date = moment().format("YYYY");
+    console.log("Today is " + this.date);
     this.postDate = parseInt(moment().format("YYYYMMDD"));
     this.displayPostDate = moment().format('MMM DD YYYY');
     this.timestamp = moment().unix();
     this.displayTimestamp = moment().format('L');
-    this.dueDate = this.postDate + 7;
-    this.displayDueDate = moment(this.dueDate).format('L');
+  }
+
+  getCurrentTime() {
+    return moment().format();
   }
 
   submit(form) {
@@ -127,7 +135,14 @@ export class GoalCreatorPage {
     return this.firebase.afs.doc(goalPath).set(goal);
   }
 
+  pickBrowserDate() {
+    console.log("Picking Browser Date");
+    this.pickingBrowserDate = true;
+    this.dueDate = null;
+  }
+
   pickDate() {
+    console.log("Picking Date");
     this.dueToday = false;
     this.dueThisWeek = false;
     this.dueLater = false;
@@ -139,10 +154,17 @@ export class GoalCreatorPage {
       allowOldDates: false,
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
     }).then((date) => {
-      this.dueDate = moment(date).unix();
-      this.displayDueDate = moment(date).fromNow();
-      this.dateSelected = true;
+      this.setDate(date);
     }, (err) => { });
+  }
+
+  setDate(date) {
+    console.log("Setting Date");
+    console.log(date);
+    this.dueDate = moment(date).unix();
+    if (this.browser) this.displayDueDate = moment(date).add(4, 'hours').fromNow();
+    else this.displayDueDate = moment(date).add(4, 'hours').fromNow();
+    this.dateSelected = true;
   }
 
   listenToAudioEvents() {
@@ -177,7 +199,7 @@ export class GoalCreatorPage {
       this.audio.play();
       this.listenToAudioEvents();
     }, (error) => {
-    }); 
+    });
   }
 
   stopPlayback() {
@@ -242,4 +264,4 @@ export class GoalCreatorPage {
   makePublic() {
     this.private = false;
   }
-}
+} 

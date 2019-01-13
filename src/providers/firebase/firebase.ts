@@ -17,10 +17,11 @@ export class FirebaseProvider {
   fcmToken: string;
   session = false;
   loaded = false;
-  hasSeenTutorial = false;
   signingUp = false;
   socialAuthentication = false;
   notification = false;
+  browser = false;
+  incompleteProfileResolved = false;
 
   constructor(
     public alertCtrl: AlertController,
@@ -29,6 +30,7 @@ export class FirebaseProvider {
     public afs: AngularFirestore,
     public afa: AngularFireAuth
   ) {
+    this.browser = !this.platform.is('cordova');
     if (!this.loaded) {
       this.loaded = true;
       this.checkForSession();
@@ -61,6 +63,8 @@ export class FirebaseProvider {
         this.registerUser();
       else if (user.blocked) {
         this.blockUser();
+      } else if (this.browser && !user.editor) {
+        this.haltNonManager();
       } else {
         this.startSession(user);
       }
@@ -81,6 +85,10 @@ export class FirebaseProvider {
     alert.present();
   }
 
+  haltNonManager() {
+    this.events.publish('access denied');
+  }
+
   startSession(user) {
     this.user = user;
     this.syncFcmToken();
@@ -92,11 +100,11 @@ export class FirebaseProvider {
   }
 
   syncFcmToken() {
-    if (this.platform.is('cordova')) {
+    if (!this.browser) {
       if (this.fcmToken) {
         if (this.user.fcmToken !== this.fcmToken) {
           let userPath = "users/" + this.user.uid;
-          this.afs.doc(userPath).update({ fcmToken: this.fcmToken});
+          this.afs.doc(userPath).update({ fcmToken: this.fcmToken });
           this.events.publish('fcm synced');
         }
       }
@@ -108,21 +116,12 @@ export class FirebaseProvider {
       this.showTutorial();
     }
     else {
-      this.createNonSocialUser().then(() => {
-        this.showTutorial();
-      });
+      this.showTutorial();
     }
   }
 
   showTutorial() {
     this.events.publish('show tutorial')
-  }
-
-  createNonSocialUser() {
-    return this.afa.auth.currentUser.updateProfile({
-      displayName: "Unnamed User",
-      photoURL: "assets/img/default-profile.png"
-    });
   }
 
   signupUser() {
@@ -194,7 +193,8 @@ export class FirebaseProvider {
         linkedin: "",
         twitter: "",
         contributor: true,
-        editor: false
+        editor: false,
+        admin: false
       }
       observer.next(user);
     });

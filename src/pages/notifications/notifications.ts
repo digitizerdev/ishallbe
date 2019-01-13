@@ -1,4 +1,11 @@
 import { Component } from '@angular/core';
+import { trigger, 
+         style, 
+         transition, 
+         animate, 
+         query, 
+         stagger } from '@angular/animations';
+
 import { IonicPage, NavController } from 'ionic-angular';
 
 import moment from 'moment';
@@ -12,13 +19,21 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 @Component({
   selector: 'page-notifications',
   templateUrl: 'notifications.html',
+  animations: [
+    trigger('staggerIn', [
+      transition('* => *', [
+        query(':enter', style({ opacity: 0, transform: `translate3d(0,10px,0)` }), { optional: true }),
+        query(':enter', stagger('100ms', [animate('300ms', style({ opacity: 1, transform: `translate3d(0,0,0)` }))]), { optional: true })
+      ])
+    ])
+  ]
 })
 export class NotificationsPage {
 
   rawDate: number;
   notificationsCol: any;
-  readNotifications: any[];
-  unreadNotifications: any[];
+  earlierNotifications: any[] = [];
+  newNotifications: any[] = [];
   viewingUser = false;
 
   constructor(
@@ -34,25 +49,47 @@ export class NotificationsPage {
   }
 
   loadNotifications() {
-    this.notificationsCol = this.firebase.afs.collection('notifications', ref => ref.
-      where("receiverUid", "==", this.firebase.user.uid).
-      where("message", "==", false).
-      orderBy('timestamp', 'desc').limit(50));
-    this.notificationsCol.valueChanges().subscribe((notifications) => {
-      this.setNotifications(notifications);
+    this.loadNewNotifications();
+    this.loadEarlierNotifications();
+  }
+
+  loadNewNotifications() {
+    this.newNotifications = [];
+    let newNotificationsCol = this.firebase.afs.collection('notifications', ref => ref.
+    where("receiverUid", "==", this.firebase.user.uid).
+    where("message", "==", false).
+    where("read", "==", false).
+    orderBy('timestamp', 'desc').limit(50));
+    newNotificationsCol.valueChanges().subscribe((newNotifications) => {
+      this.setNewNotifications(newNotifications);
     });
   }
 
-  setNotifications(notifications) {
-    this.unreadNotifications = [];
-    this.readNotifications = [];
-    notifications.forEach((notification) => {
-      let date = moment.unix(notification.timestamp);
-      notification.displayTimestamp = moment(date).fromNow();
-      if (notification.read)
-        this.readNotifications.push(notification);
-      else
-        this.unreadNotifications.push(notification);
+  setNewNotifications(newNotifications) {
+    newNotifications.forEach((newNotification) => {
+      let date = moment.unix(newNotification.timestamp);
+      newNotification.displayTimestamp = moment(date).fromNow();
+      this.newNotifications.push(newNotification);
+    });
+  }
+
+  loadEarlierNotifications() {
+    this.earlierNotifications = [];
+    let earlierNotificationsCol = this.firebase.afs.collection('notifications', ref => ref.
+    where("receiverUid", "==", this.firebase.user.uid).
+    where("message", "==", false).
+    where("read", "==", true).
+    orderBy('timestamp', 'desc').limit(50));
+    earlierNotificationsCol.valueChanges().subscribe((earlierNotifications) => {
+      this.setEarlierNotifications(earlierNotifications);
+    });
+  }
+
+  setEarlierNotifications(earlierNotifications) {
+    earlierNotifications.forEach((earlierNotification) => {
+      let date = moment.unix(earlierNotification.timestamp);
+      earlierNotification.displayTimestamp = moment(date).fromNow();
+      this.earlierNotifications.push(earlierNotification);
     });
   }
 

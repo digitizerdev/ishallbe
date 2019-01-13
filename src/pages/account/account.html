@@ -1,15 +1,5 @@
 <ion-header no-border>
-  <ion-navbar >
-    <button ion-button menuToggle>
-      <ion-icon color='primary' name="menu"></ion-icon>
-    </button>
-    <toolbar-logo></toolbar-logo>
-    <ion-buttons id="setRootHomePageIcon" end>
-      <button ion-button icon-only (click)="setRootHomePage()">
-        <ion-icon color='primary' name="md-home"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
+  <brand-header></brand-header>
 </ion-header>
 <ion-content>
   <br>
@@ -25,7 +15,7 @@
       <button ion-button (click)="pushEmailUpdatePage()" id="pushEmailUpdatePageButton" color="primary" round strong>UPDATE EMAIL</button>
     </ion-col>
     <ion-col text-center>
-      <button ion-button (click)="pushPasswordUpdatePage()" id="pushPasswordUpdatePageButton" color="primary" round  strong>UPDATE PASSWORD</button>
+      <button ion-button (click)="pushPasswordUpdatePage()" id="pushPasswordUpdatePageButton" color="primary" round strong>UPDATE PASSWORD</button>
     </ion-col>
   </ion-row>
   <br>
